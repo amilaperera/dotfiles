@@ -1,0 +1,99 @@
+#!/bin/bash
+#############################################################
+# Author: Amila Perera
+# File Name: .bash_alias
+#############################################################
+
+##ls family aliases
+alias ls="ls $LS_OPTIONS"            # add colors for filetype recognition
+alias la="ls $LS_OPTIONS -Al"        # long list with hidden files
+alias ll="ls $LS_OPTIONS -l"         # long listing
+alias lr="ls $LS_OPTIONS -lR"        # recursive ls
+alias lc="ls $LS_OPTIONS -ltcr"      # sort by and show change time, most recent last
+alias lu="ls $LS_OPTIONS -ltur"      # sort by and show access time, most recent last
+alias lk="ls $LS_OPTIONS -lSr"       # sort by size, biggest last
+alias lx="ls $LS_OPTIONS -lXB"       # sort by extension
+alias lm="ls $LS_OPTIONS -Al | more" # pipe through 'more'
+alias tree='tree -Csu'               # nice alternative to recursive ls
+
+alias h='history'
+alias r='fc -s --'
+alias j='jobs -l'
+alias p='ps -f'
+
+alias F='fbm'  # folder bookmark utility
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias mkdir='mkdir -p'
+
+alias Q='exit'
+alias cls='clear'
+alias clr='cd ~/ && clear'
+
+alias S='source'
+
+alias du='du -kh'
+alias df='df -kTh'
+
+if [[ $workinghost == CYGWIN* ]]; then
+	alias ifconfig='ipconfig'
+	alias vim='$VISUAL'
+	alias C='cygstart.exe'
+elif [[ $workinghost == Linux* ]]; then
+	alias C='nautilus'
+fi
+
+alias more='less'
+alias e='$VISUAL'       # edit in VISUAL, E is a function to edit in gvim in background
+alias view='$VISUAL -R' # opens the file in readonly mode
+alias vi='$VISUAL'
+
+alias which='type -a'
+
+alias path="echo $PATH | tr ':' '\n'"
+alias flist="find . -type f | sed -n 's/.*\/\(.*\)/\1/p'"
+
+alias ct='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q  $(find . \( -name "*.c" -o -name "*.cpp" -o -name "*.cxx" -o -name "*.h" \) -type f)'
+
+alias rmtmp='find . -name "*~" -type f | xargs -I {} rm -rf {}'
+
+## alias alternative to up() function
+alias ..='cd ../'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
+
+## ack aliases
+for path in ${PATH//:/ }; do
+	if [ -f "$path/ack-grep" ]; then
+		alias ack='ack-grep'
+		alias ackc='ack-grep --cc'
+		alias ackg='ack-grep --nogroup'
+		alias ackp='ack-grep --nopager'
+		break
+	else
+		alias ack='ack'
+		alias ackc='ack --cc'
+		alias ackg='ack --nogroup'
+		alias ackp='ack --nopager'
+	fi
+done
+
+## encoding conversion
+alias nkfeuc='nkf -Lu -e --overwrite' # converts to EUC and overwrites the file
+alias nkfutf='nkf -Lu -w --overwrite' # converts to UTF-8 and overwrites the file
+
+# linking cunit and gcov when compiling
+alias cunit='gcc -lcunit -lcurses -fprofile-arcs -ftest-coverage'
+
+## this distro identification may not work for some systems
+if [[ $distroname == "Ubuntu" ]]; then
+	alias U='sudo apt-get update && sudo apt-get upgrade'
+else
+	alias U='yum update'
+fi
+
+alias py='bpython'
