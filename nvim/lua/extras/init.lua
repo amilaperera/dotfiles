@@ -1,0 +1,6 @@
+require("extras.auto_commands")
+require("extras.quickfix")
+require("extras.gui")
+require("extras.rotate")
+require("extras.statusline").setup({})
+require("extras.termdebug")
