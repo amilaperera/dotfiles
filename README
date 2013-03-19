@@ -1,10 +1,14 @@
 This repository contains my personal configuration files.
 
 * bash configuration files
-    .bash/.bash_alias - aliases
-    .bash/.bash_colors - color settings for file types and several commands
-    .bash/.bash_env - environment variables
-    .bash/.bash_fbm - a folder bookmarking utility(very useful to switch between different directories)
-    .bash/.bash_func - useful functions
-    .bash/.bash_prompt - bash prompt settings
+    + .bash/.bash_alias   - aliases
+    + .bash/.bash_colors  - color settings for file types and several commands
+    + .bash/.bash_env     - environment variables
+    + .bash/.bash_fbm     - a folder bookmarking utility(very useful to switch between different directories)
+    + .bash/.bash_func    - useful functions
+    + .bash/.bash_prompt  - bash prompt settings
+
+* vim configuration files
+    + .vimrc
+    + .gvimrc
 
