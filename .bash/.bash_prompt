@@ -78,16 +78,16 @@ esac
 if (($UID != 0)); then
 ## prompt for normal user
 PS1="$TITLEBAR\
-${EMY}-${EMB}-(${EMM}\$un${EMB}@${EMM}\$hn${EMB}:${EMY}\$curr_dir${EMB})${EMG}\${git_prompt}\n\
-${EMY}-${EMB}-(${EMC}\#${EMB})${NONE}${NONE} ${EMW}\\$ ${NONE}"
+${EMK}-${EMB}-(${EMM}\$un${EMB}@${EMM}\$hn${EMB}:${EMK}\$curr_dir${EMB})${EMR}\${git_prompt}\n\
+${EMK}-${EMB}-(${EMM}\#${EMB})${NONE}${NONE} ${EMK}\\$ ${NONE}"
 else
 ## prompt for root
 PS1="$TITLEBAR\
-${EMY}-${EMB}-(${EMR}\$un${EMB}@${EMM}\$hn${EMB}:${EMY}\$curr_dir${EMB})${EMG}\${git_prompt}\n\
-${EMY}-${EMB}-(${EMC}\#${EMB})${NONE}${NONE} ${EMW}\\$ ${NONE}"
+${EMK}-${EMB}-(${EMR}\$un${EMB}@${EMM}\$hn${EMB}:${EMK}\$curr_dir${EMB})${EMR}\${git_prompt}\n\
+${EMK}-${EMB}-(${EMM}\#${EMB})${NONE}${NONE} ${EMK}\\$ ${NONE}"
 fi
 
-PS2="${EMB}-${EMY}-${EMY}Continue${EMB}:${NONE} "
+PS2="${EMB}-${EMB}-${EMB}Continue${EMB}:${NONE} "
 PS3=$(echo -e -n "\033[1;34m-\033[1;33m-Enter Your Option\033[1;34m:\033[0m ")
 PS4="+xtrace $0[$LINENO]: "
 

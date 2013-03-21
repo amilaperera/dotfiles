@@ -33,7 +33,7 @@ LS_COLORS="${LS_COLORS}":'*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi
 LS_COLORS="${LS_COLORS}":'*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36'
 
 LS_COLORS="${LS_COLORS}":'*.c=01;96:*.cpp=00;04;95:*.cxx=00;04;95:*.c++=00;04;95'
-LS_COLORS="${LS_COLORS}":'*.h=00;93'
+LS_COLORS="${LS_COLORS}":'*.h=01;32'
 
 LS_COLORS="${LS_COLORS}":'*.csv=00;37;46:*.dsv=00;37;46:*.db=00;37;46:*.sql=00;37;46:*.meta=00;37;46'
 LS_COLORS="${LS_COLORS}":'*.xml=00;37;46:*.yaml=00;37;46:*.yml=00;37;46:*.conf=00;37;46'
