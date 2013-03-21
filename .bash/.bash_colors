@@ -49,7 +49,7 @@ export LS_COLORS
 
 # setting GREP_COLORS
 # making grep colors same as ack
-export GREP_COLORS="ms=00;30;43:mc=00;30;43:mt=00;30;43:fn=01;92:ln=01;33:bn=35:se=36"
+export GREP_COLORS="ms=00;30;43:mc=00;30;43:mt=00;30;43:fn=01;92:ln=01;31:bn=35:se=36"
 
 # setting ack color variables
 for path in ${PATH//:/ }; do
@@ -57,7 +57,7 @@ for path in ${PATH//:/ }; do
 		[ -f "$HOME/.ackrc" ] && break;      # read all the settings from the .ackrc
 		export ACK_COLOR_MATCH="black on_yellow"  # default
 		export ACK_COLOR_FILENAME="bold green"    # default
-		export ACK_COLOR_LINENO="bold yellow"     # default
+		export ACK_COLOR_LINENO="bold red"
 		export ACK_PAGER='less -r'
 		break
 	fi
