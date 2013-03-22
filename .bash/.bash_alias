@@ -86,7 +86,7 @@ done
 alias nkfeuc='nkf -Lu -e --overwrite' # converts to EUC and overwrites the file
 alias nkfutf='nkf -Lu -w --overwrite' # converts to UTF-8 and overwrites the file
 
-# linking cunit and gcov when compiling
+## linking cunit and gcov when compiling
 alias cunit='gcc -lcunit -lcurses -fprofile-arcs -ftest-coverage'
 
 ## this distro identification may not work for some systems
@@ -96,4 +96,5 @@ else
 	alias U='yum update'
 fi
 
-alias py='bpython'
+## build & compiling related
+alias mk='make clean && make'

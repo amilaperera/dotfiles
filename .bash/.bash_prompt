@@ -87,8 +87,8 @@ ${EMK}-${EMB}-(${EMR}\$un${EMB}@${EMM}\$hn${EMB}:${EMK}\$curr_dir${EMB})${EMR}\$
 ${EMK}-${EMB}-(${EMM}\#${EMB})${NONE}${NONE} ${EMK}\\$ ${NONE}"
 fi
 
-PS2="${EMB}-${EMB}-${EMB}Continue${EMB}:${NONE} "
-PS3=$(echo -e -n "\033[1;34m-\033[1;33m-Enter Your Option\033[1;34m:\033[0m ")
+PS2="${EMK}-${EMB}-${EMK}Continue${EMB}:${NONE} "
+PS3=$(echo -e -n "\033[1;34m-\033[1;30m-Enter Your Option\033[1;34m:\033[0m ")
 PS4="+xtrace $0[$LINENO]: "
 
 export MYSQL_PS1="\u@\h [\d] > "
