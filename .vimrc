@@ -234,8 +234,8 @@ set diffopt+=context:3
 "--------------------------------------------------------------
 if has("gui_running")
 " WindowSize {
-    set lines=43
-    set columns=185
+    set lines=999
+    set columns=999
 "}
 " GUI options {
     set guioptions=c                        " use console dialogs
