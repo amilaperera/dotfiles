@@ -442,5 +442,14 @@ function color_codes()
 		fc=$(echo $rows | cut -c$((f+1)))
 		printf "$fc $vline$no\nb$fc$vline$bo\n"
 	done
+}
 
+##################################################################
+## start tmux
+##################################################################
+function T()
+{
+	if [ $TERM != "screen-256color" ] && [ $TERM != "screen" ]; then
+		tmux attach || tmux new; exit
+	fi
 }
