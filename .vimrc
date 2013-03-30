@@ -126,7 +126,7 @@ let s:myFavouriteTermColorSchem = "default"
 if has("gui_running")
     " colorscheme for GVIM
     execute "colorscheme " . s:myFavouriteGuiColorScheme
-elseif (&term == "xterm-256color")
+elseif (&term == "xterm-256color" || &term == "screen-256color")
     " colorscheme for VIM if it has xterm-256color
     execute "colorscheme " . s:myFavouriteGuiColorScheme
 else

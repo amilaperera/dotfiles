@@ -94,3 +94,6 @@ fi
 
 ## build & compiling related
 alias mk='make clean && make'
+
+## start tmux
+alias T='tmux -2'
