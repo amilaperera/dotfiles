@@ -70,15 +70,11 @@ alias ......='cd ../../../../../'
 for path in ${PATH//:/ }; do
 	if [ -f "$path/ack-grep" ]; then
 		alias ack='ack-grep'
-		alias ackc='ack-grep --cc -cpp'
-		alias ackg='ack-grep --nogroup'
-		alias ackp='ack-grep --nopager'
+		alias ackc='ack-grep --cc --cpp'
 		break
 	else
 		alias ack='ack'
 		alias ackc='ack --cc --cpp'
-		alias ackg='ack --nogroup'
-		alias ackp='ack --nopager'
 	fi
 done
 
