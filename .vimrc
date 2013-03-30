@@ -293,13 +293,6 @@ hi MBEChanged guifg=#CD5907 guibg=fg
 hi MBENormal guifg=#808080 guibg=fg
 " }
 
-" Obvious Resize {
-noremap <silent> <C-Up>    :ObviousResizeUp<CR>
-noremap <silent> <C-Down>  :ObviousResizeDown<CR>
-noremap <silent> <C-Left>  :ObviousResizeLeft<CR>
-noremap <silent> <C-Right> :ObviousResizeRight<CR>
-"}
-
 " NerdCommenter Settings {
 let g:NERDSpaceDelims       = 1
 let g:NERDRemoveExtraSpaces = 1
