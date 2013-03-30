@@ -128,10 +128,10 @@ if has("gui_running")
     execute "colorscheme " . s:myFavouriteGuiColorScheme
 elseif (&term == "xterm-256color")
     " colorscheme for VIM if it has xterm-256color
-    execute "colorscheme " . s:myFavouriteTermColorSchem
+    execute "colorscheme " . s:myFavouriteGuiColorScheme
 else
     " sets default colorsheme if neither GVIM nor VIM with xterm-256color
-    colorscheme default
+    execute "colorscheme " . s:myFavouriteTermColorSchem
 endif
 
 "--------------------------------------------------------------
