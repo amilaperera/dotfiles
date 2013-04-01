@@ -135,6 +135,8 @@ export LS_OPTIONS="--color=auto -F -h"
 
 export GREP_OPTIONS='-rns --color=always'
 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
 ################################################################################
 ## shell behaviour adjustment with shopt options and set options
 ################################################################################
