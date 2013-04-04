@@ -7,6 +7,7 @@ This repository contains my personal configuration files.
     + .bash/.bash_fbm     - a folder bookmarking utility(useful to switch between different directories)
     + .bash/.bash_func    - useful functions
     + .bash/.bash_prompt  - bash prompt settings
+    + .bash/.bash_utility - bash utility functions
 
 * vim configuration files
     + .vimrc
