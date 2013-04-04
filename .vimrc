@@ -115,20 +115,19 @@ set textwidth=100                           " maximum width of the text that is 
 set title                                   " display title
 set display=lastline                        " show as much as possible of the last line
 
-set background=dark                         " set background dark
 
 " ColorScheme {
-let s:myFavouriteGuiColorScheme = "xoria256"
-let s:myFavouriteTermColorSchem = "default"
-" let s:myFavouriteColorScheme = "lucius"
-" let s:myFavouriteColorScheme = "twilight"
-" let s:myFavouriteColorScheme = "solarized"
+let s:myFavouriteGuiColorScheme     = "xoria256"
+let s:myFavouriteTermColorScheme256 = "xoria256"
+let s:myFavouriteTermColorSchem     = "default"
 if has("gui_running")
+    set background=dark                         " set background dark
     " colorscheme for GVIM
     execute "colorscheme " . s:myFavouriteGuiColorScheme
 elseif (&term == "xterm-256color" || &term == "screen-256color")
+    set background=dark                         " set background dark
     " colorscheme for VIM if it has xterm-256color
-    execute "colorscheme " . s:myFavouriteGuiColorScheme
+    execute "colorscheme " . s:myFavouriteTermColorScheme256
 else
     " sets default colorsheme if neither GVIM nor VIM with xterm-256color
     execute "colorscheme " . s:myFavouriteTermColorSchem
