@@ -42,7 +42,11 @@ if [[ $workinghost == CYGWIN* ]]; then
 	alias vim='$VISUAL'
 	alias C='cygstart.exe'
 elif [[ $workinghost == Linux* ]]; then
-	alias C='nautilus'
+	if [[ $DESKTOP_SESSION == "xfce" ]]; then
+		alias C='thunar'
+	else
+		alias C='nautilus' # by default it is assumed to be nautilus
+	fi
 fi
 
 alias more='less'
