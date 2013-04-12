@@ -101,3 +101,6 @@ alias mk='make clean && make'
 
 ## start tmux
 alias T='tmux -2'
+
+## start irb(interactive ruby shell)
+alias R='irb'
