@@ -178,7 +178,7 @@ function hig()
 {
 	# this function removes the default grep line number from the history which is troublsome
 	# line number is given in GREP_OPTIONS variable
-	history | egrep "${@}" | sed -n 's/[0-9][0-9]*[^:]*:  *//p'
+	history | egrep --color=always "${@}" | sed -n 's/[0-9][0-9]*[^:]*:  *//p'
 }
 
 ##################################################################

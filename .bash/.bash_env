@@ -137,6 +137,7 @@ export GREP_OPTIONS='-rns --color=always'
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 ################################################################################
 ## shell behaviour adjustment with shopt options and set options
 ################################################################################
