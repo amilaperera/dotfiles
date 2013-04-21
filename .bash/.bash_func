@@ -443,3 +443,15 @@ function color_codes()
 		printf "$fc $vline$no\nb$fc$vline$bo\n"
 	done
 }
+
+##################################################################
+## start tmux session
+## FIXME: in Fedora 18 calling this function at the end of
+## .bashrc does not allow user to login.
+##################################################################
+function start_tmux
+{
+	if [ $TERM != "screen-256color"  ] && [  $TERM != "screen"  ]; then
+		tmux -2 attach || tmux -2 new; exit
+	fi
+}
