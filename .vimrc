@@ -605,6 +605,14 @@ function! CFilesOnlySettings()
 endfunction
 "}
 
+" Ruby Files only setlocaltings
+function! RubyFilesOnlySettings()
+    setlocal tabstop=2              " number of spaces that a tab counts for
+    setlocal shiftwidth=2           " number of spaces to be used in each step of indent
+    setlocal softtabstop=2          " number of spaces that a tab counts for while editing
+    setlocal foldmethod=indent      " fold on indent level
+endfunction
+
 " function to format XML text
 function! DoFormatXML() range
     " Save the file type
@@ -707,6 +715,11 @@ augroup END
 augroup personal_c_file_settings
     au!
     autocmd BufNewFile,BufRead *.c,*.cpp,*.cxx,*.h      :call CFilesOnlySettings()   " C files only settings
+augroup END
+
+augroup personal_ruby_file_settings
+    au!
+    autocmd BufNewFile,BufRead *.rb     :call RubyFilesOnlySettings() " Ruby files only settings
 augroup END
 
 augroup personal_becky_file_settings
