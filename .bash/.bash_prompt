@@ -88,12 +88,12 @@ esac
 if (($UID != 0)); then
 ## prompt for normal user
 PS1="$TITLEBAR\
-${EMK}-${EMB}-(${EMM}\$un${EMB}@${EMM}\$hn${EMB}:${EMK}\$curr_dir${EMB})${EMG}\${git_prompt}\${svn_prompt}\n\
+${EMK}-${EMB}-(${EMM}\$un${EMB}@${EMM}\$hn${EMB}:${EMK}\$curr_dir${EMB})${EMR}\${git_prompt}\${svn_prompt}\n\
 ${EMK}-${EMB}-(${EMM}\#${EMB})${NONE}${NONE} ${EMK}\\$ ${NONE}"
 else
 ## prompt for root
 PS1="$TITLEBAR\
-${EMK}-${EMB}-(${EMR}\$un${EMB}@${EMM}\$hn${EMB}:${EMK}\$curr_dir${EMB})${EMG}\${git_prompt}\${svn_prompt}\n\
+${EMK}-${EMB}-(${EMR}\$un${EMB}@${EMM}\$hn${EMB}:${EMK}\$curr_dir${EMB})${EMR}\${git_prompt}\${svn_prompt}\n\
 ${EMK}-${EMB}-(${EMM}\#${EMB})${NONE}${NONE} ${EMK}\\$ ${NONE}"
 fi
 
