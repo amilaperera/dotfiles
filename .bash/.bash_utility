@@ -4,18 +4,21 @@
 # File Name: .bash_utility
 #############################################################
 
+BASH_TRUE='true'
+BASH_FALSE='false'
+
 ##################################################################
 ## outputs console log
 ##################################################################
-function _console_log()
+_console_log()
 {
 	echo '['$(date +'%a %Y-%m-%d %H:%M:%S %z')']' $1
 }
 
 ##################################################################
-## prompts the user for confirmation and returns y/n
+## prompts the user for confirmation and returns 'y'/'n'
 ##################################################################
-function _confirm()
+_confirm()
 {
 	local answer=''
 	local choice=''
@@ -32,5 +35,13 @@ function _confirm()
 		esac
 	done
 
-	echo $choice
+	[ "$choice" = "y" ] && echo $BASH_TRUE || echo $BASH_FALSE
+}
+
+_check_for_shell_interactivity()
+{
+	case "$-" in
+		*i* ) echo $BASH_TRUE;;
+		* ) echo $BASH_FALSE;;
+	esac
 }
