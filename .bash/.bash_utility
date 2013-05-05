@@ -38,6 +38,9 @@ _confirm()
 	[ "$choice" = "y" ] && echo $BASH_TRUE || echo $BASH_FALSE
 }
 
+##################################################################
+## checks if the current shell is interactive
+##################################################################
 _check_for_shell_interactivity()
 {
 	case "$-" in
