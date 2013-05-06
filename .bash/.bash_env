@@ -138,6 +138,11 @@ export GREP_OPTIONS='-rns --color=always'
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# set BG_COLOR to 'light' or 'dark'
+# this will alter the prompt color, ls color, grep colors accordingly
+export BG_COLOR='dark'
+
 ################################################################################
 ## shell behaviour adjustment with shopt options and set options
 ################################################################################

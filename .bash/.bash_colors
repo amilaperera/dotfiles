@@ -34,7 +34,13 @@ LS_COLORS="${LS_COLORS}":'*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=0
 
 LS_COLORS="${LS_COLORS}":'*.c=01;96:*.cpp=00;04;95:*.cxx=00;04;95:*.c++=00;04;95'
 LS_COLORS="${LS_COLORS}":'*.h=01;32'
-LS_COLORS="${LS_COLORS}":'*.rb=00;31'
+if [[ $BG_COLOR == "light" ]]; then
+	LS_COLORS="${LS_COLORS}":'*.rb=00;31'
+	LS_COLORS="${LS_COLORS}":'*.erb=04;31'
+else
+	LS_COLORS="${LS_COLORS}":'*.rb=00;33'
+	LS_COLORS="${LS_COLORS}":'*.erb=04;33'
+fi
 
 LS_COLORS="${LS_COLORS}":'*.csv=01;37;46:*.dsv=01;37;46:*.db=01;37;46:*.sql=01;37;46:*.meta=01;37;46'
 LS_COLORS="${LS_COLORS}":'*.xml=01;37;46:*.yaml=01;37;46:*.yml=01;37;46:*.conf=01;37;46'
