@@ -101,13 +101,13 @@ else
 	if (($UID != 0)); then
 	## prompt for normal user
 	PS1="$TITLEBAR\
-${EMW}-${EMB}-(${EMM}\$un${EMB}@${EMM}\$hn${EMB}:${EMY}\$curr_dir${EMB})${EMR}\${git_prompt}\${svn_prompt}\n\
-${EMW}-${EMB}-(${EMM}\#${EMB})${NONE}${NONE} ${EMW}\\$ ${NONE}"
+${EMW}-${EMC}-(${EMM}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMC})${EMR}\${git_prompt}\${svn_prompt}\n\
+${EMW}-${EMC}-(${EMM}\#${EMC})${NONE}${NONE} ${EMW}\\$ ${NONE}"
 	else
 	## prompt for root
 	PS1="$TITLEBAR\
-${EMW}-${EMB}-(${EMR}\$un${EMB}@${EMM}\$hn${EMB}:${EMY}\$curr_dir${EMB})${EMR}\${git_prompt}\${svn_prompt}\n\
-${EMW}-${EMB}-(${EMM}\#${EMB})${NONE}${NONE} ${EMW}\\$ ${NONE}"
+${EMW}-${EMC}-(${EMR}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMC})${EMR}\${git_prompt}\${svn_prompt}\n\
+${EMW}-${EMC}-(${EMM}\#${EMC})${NONE}${NONE} ${EMW}\\$ ${NONE}"
 	fi
 fi
 
