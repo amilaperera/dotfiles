@@ -54,8 +54,6 @@ alias e='$VISUAL'       # edit in VISUAL, E is a function to edit in gvim in bac
 alias view='$VISUAL -R' # opens the file in readonly mode
 alias vi='$VISUAL'
 
-alias which='type -a'
-
 alias path="echo $PATH | tr ':' '\n'"
 alias flist="find . -type f | sed -n 's/.*\/\(.*\)/\1/p'"
 
