@@ -15,7 +15,8 @@ alias lk="ls $LS_OPTIONS -lSr"       # sort by size, biggest last
 alias lx="ls $LS_OPTIONS -lXB"       # sort by extension
 alias lm="ls $LS_OPTIONS -Al | more" # pipe through 'more'
 alias lz="ls $LS_OPTIONS -lZ"        # SE contexts
-alias tree='tree -Csu'               # nice alternative to recursive ls
+alias tree='tree -C'                 # nice alternative to recursive ls
+alias treel='tree -C | less -R'      # nice alternative to recursive ls
 
 alias h='history'
 alias r='fc -s --'

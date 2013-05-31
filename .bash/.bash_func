@@ -86,6 +86,16 @@ function cd()
 }
 
 ##################################################################
+## cdf()
+## fuzzy cd function
+## NOTE: ignore-case does not work with fuzzy cd
+##################################################################
+function cdf()
+{
+	cd *$1*
+}
+
+##################################################################
 ## d()
 ## own version of dirs
 ## dispalys the directory stack of the current session and gets
