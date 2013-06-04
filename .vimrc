@@ -300,7 +300,7 @@ let g:NERDRemoveExtraSpaces = 1
 " Nerdtree settings {
 map <silent> <left> :NERDTreeToggle<CR>
 let g:NERDTreeShowBookmarks = 1
-let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\~$']
+let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\.git$', '\~$']
 "}
 
 " MRU {
