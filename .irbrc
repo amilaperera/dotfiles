@@ -10,10 +10,12 @@ require 'wirble'
 Wirble.init
 Wirble.colorize
 
-# the default symbol and symbol_prefix colors are yellow and
-# since they don't go well with light terminal color theme adjust the colors
-Wirble::Colorize::DEFAULT_COLORS[:symbol] = :purple
-Wirble::Colorize::DEFAULT_COLORS[:symbol_prefix] = :purple
+# changing some of the default colors in order to suit a dark background
+# blue -> purple
+Wirble::Colorize::DEFAULT_COLORS[:object_addr_prefix] = :purple
+Wirble::Colorize::DEFAULT_COLORS[:object_line_prefix] = :purple
+Wirble::Colorize::DEFAULT_COLORS[:comma] = :purple
+Wirble::Colorize::DEFAULT_COLORS[:refers] = :purple
 
 IRB.conf[:AUTO_INDENT] = true
 
