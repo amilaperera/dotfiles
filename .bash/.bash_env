@@ -100,6 +100,10 @@ function _set_path()
 _set_path
 export PATH
 
+# setting term colors
+[ -z $TMUX ] && export TERM=xterm-256color        # let tmux decide TERM to use,
+                                                  # otherwise set it to xterm-256color
+
 export HISTSIZE=5000                              # No of commands in history stack in memory
 export HISTFILESIZE=5000                          # No of commands in history file
 export HISTCONTROL=ignoredups:ignorespace         # omit dups and lines starting with spaces

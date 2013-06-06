@@ -720,6 +720,7 @@ augroup END
 augroup personal_ruby_file_settings
     au!
     autocmd BufNewFile,BufRead *.rb,*erb     :call RubyFilesOnlySettings() " Ruby files only settings
+    autocmd Filetype ruby                    :call RubyFilesOnlySettings() " Ruby files only settings
 augroup END
 
 augroup personal_becky_file_settings
