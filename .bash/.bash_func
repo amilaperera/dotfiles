@@ -459,7 +459,20 @@ function color_codes()
 ## FIXME: in Fedora 18 calling this function at the end of
 ## .bashrc does not allow user to login.
 ##################################################################
-if [[ "$TERM" != "screen-256color"  ]]; then
-	tmux attach-session -t "$USER" || tmux new-session -s "$USER"
-	exit
-fi
+function tmux_start()
+{
+	if [[ "$TERM" != "screen-256color"  ]]; then
+		tmux attach-session -t "$USER" || tmux new-session -s "$USER"
+		exit
+	fi
+}
+
+##################################################################
+## display tmux colors
+##################################################################
+function tmux_colors()
+{
+	for i in {0..255}; do
+		printf "\x1b[38;5;${i}mcolour${i}\n"
+	done | less
+}
