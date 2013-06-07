@@ -36,6 +36,7 @@ alias mv='mv -i'
 alias mkdir='mkdir -p'
 
 alias Q='exit'
+alias quit='exit'
 alias cls='clear'
 alias clr='cd ~/ && clear'
 
