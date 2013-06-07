@@ -18,4 +18,3 @@ for file in ${config_file_list}; do
 done
 
 unset dir_path config_file_list
-

@@ -747,6 +747,8 @@ nmap <Leader>w :w!<CR><CR>
 " Fast editing of the .vimrc/.gvimrc {
 map <Leader>v :e! $HOME/.vimrc<CR>
 map <Leader>vg :e! $HOME/.gvimrc<CR>
+
+map <Leader>t :e! $HOME/.tmux.conf<CR>
 " }
 " When .vimrc/.gvimrc is edited, reload it {
 autocmd! BufWritePost .vimrc source $HOME/.vimrc
