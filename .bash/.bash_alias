@@ -106,15 +106,10 @@ fi
 alias mk='make clean && make'
 
 ## start tmux
-alias T='tmux'
-alias TA='tmux attach-session -t'
-alias TK='tmux kill-session -t'
-alias TL='tmux list-sessions'
-
-## tmuxinator
-alias TX='tmuxinator'
-alias TXO='tmuxinator open'
-alias TXL='tmuxinator list'
+alias t='tmux'
+alias ta='tmux attach-session -t'
+alias tk='tmux kill-session -t'
+alias tl='tmux list-sessions'
 
 ## start irb(interactive ruby shell)
 alias R='irb'

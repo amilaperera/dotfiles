@@ -233,35 +233,6 @@ function mcd()
 }
 
 ##################################################################
-## t()
-## creating an empty file with user given permission
-##################################################################
-function t()
-{
-	if (($# == 0)); then
-		echo "Usage: t: t <mode> file1 file2 ..."
-		return 101
-	fi
-
-	if (( $# == 1 )); then
-		[ -f "${1}" ] && { echo "file already exists"; return 102; } \
-		|| { touch "${1}"; }
-	else
-		local file= perm=
-		if [[ "${1}" == [0-7][0-7][0-7] || "${1}" =~ ^[agu].*[+-] ]]; then
-			perm=${1}
-			shift
-		else
-			perm="644"
-		fi
-		for file in ${@}; do
-			[ -f ${file} ] && echo "file already exists: ${file}" \
-			|| { touch ${file}; chmod ${perm} ${file}; }
-		done
-	fi
-}
-
-##################################################################
 ## um()
 ## displays the umask in both permission bits and acl
 ##################################################################
