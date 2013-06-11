@@ -16,7 +16,7 @@
 
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 
-[ -f $HOME/.bin/tmuxinator_completion ] && source $HOME/.bin/tmuxinator_completion
+[ -f $HOME/bin/tmuxinator_completion ] && source $HOME/bin/tmuxinator_completion
 
 comp_file=/usr/share/bash-completion/bash_completion
 [ -f $comp_file ] && source $comp_file
