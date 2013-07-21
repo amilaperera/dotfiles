@@ -600,7 +600,7 @@ endfunction
 " C Files only setlocaltings
 function! CFilesOnlySettings()
     setlocal tabstop=4              " number of spaces that a tab counts for
-    setlocal noexpandtab            " don't use spaces to insert a tab
+    setlocal expandtab              " use spaces to insert a tab
     setlocal shiftwidth=4           " number of spaces to be used in each step of indent
     setlocal softtabstop=4          " number of spaces that a tab counts for while editing
 endfunction
