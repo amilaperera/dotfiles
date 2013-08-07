@@ -155,6 +155,7 @@ shopt -s cdspell            # correct minor spelling mistakes with cd command
 shopt -s checkwinsize       # update COLUMNS and LINES variables according to window size
 shopt -s cmdhist            # makes multiline commands 1 line in history
 shopt -s extglob            # extended globbing
+shopt -s globstar           # ** globbing operator matches file names and directories recursively
 shopt -s sourcepath         # The source builtin uses $PATH to find the file to be sourced
 
 shopt -u mailwarn           # disable mail mail warning
