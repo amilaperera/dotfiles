@@ -314,12 +314,6 @@ nnoremap <silent> <Leader>ae      :AcpEnable<CR>
 nnoremap <silent> <Leader>ad      :AcpDisable<CR>
 "}
 
-" Sessions Settings {
-let g:session_directory = '~/.vim_sessions'
-let g:session_autosave  = 'no'
-let g:session_autoload  = 'no'
-" }
-
 " YankRing Settings {
 nnoremap <silent> <F11>     :YRShow<CR>
 let g:yankring_max_history  = 100
@@ -352,19 +346,6 @@ let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabNoCompleteBefore      = []
 let g:SuperTabNoCompleteAfter       = [',', ';', ':', '{', '}', '(', ')', '[', ']', '<', '>', '\s']
 "}
-
-" Conque_Term Settings {
-nmap <silent> <F8>              :ConqueTermSplit bash<CR>
-let g:ConqueTerm_FastMode       = 1
-let g:ConqueTerm_ReadUnfocused  = 1
-let g:ConqueTerm_InsertOnEnter  = 0
-let g:ConqueTerm_SessionSupport = 0
-let g:ConqueTerm_TERM           = 'xterm'
-"}
-
-" HistWin Settings {
-let g:undo_tree_wdth=50
-" }
 
 " BuffKill Plugin {
 nmap <silent> <Leader>bd :BD<cr>
@@ -446,50 +427,6 @@ function! MyFoldText()
     return printf('%s%*s', l:linetext, l:align, l:foldtext)
 endfunction
 
-" Count words in the selected region
-function! CountWords() range
-    let startLine = line("'<")
-    let wCount = 0
-    let cCount = 0
-    while startLine <= line("'>")
-        " counting words
-        let wCount = wCount + len(split(getline(startLine)))
-
-        " counting non-space words
-        let currLineList = split(getline(startLine), '\zs')
-        let cCount = cCount + len(currLineList) - count(currLineList, ' ')
-
-        " counting lines
-        let startLine = startLine + 1
-    endwhile
-    echo (line ("'>") - line("'<") + 1) . " lines " . wCount . " words " . cCount . " characters"
-endfunction
-
-" Insert bullets
-function! BulletList() range
-    let startLine = line("'<")
-    while startLine <= line("'>")
-        call setline(startLine, "   * " . getline(startLine))
-        let startLine = startLine + 1
-    endwhile
-endfunction
-
-" Numbers a list
-function! NumberList() range
-    let startLine = line("'<")
-    let endLine = line("'>")
-    let diffSize = endLine - startLine + 1
-    let preSp = ' '
-    while(startLine <= endLine)
-        if match(diffSize, '^9*$') == 0
-            let preSp .= ' '
-        endif
-        call setline(endLine, preSp . diffSize . "." . "  " .  getline(endLine))
-        let endLine -= 1
-        let diffSize -= 1
-    endwhile
-endfunction
-
 " Converts to title case
 function! TitleCase()
     let modLine = substitute(getline("."), "\\w\\+", "\\u\\0", "g")
@@ -522,44 +459,6 @@ function! AppendModeline()
     let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
     call append(line("$"), l:modeline)
 endfunction
-
-" Search for selected text.
-let s:save_cpo = &cpo | set cpo&vim
-if !exists('g:VeryLiteral')
-    let g:VeryLiteral = 0
-endif
-
-function! s:VSetSearch(cmd)
-    let old_reg = getreg('"')
-    let old_regtype = getregtype('"')
-    normal! gvy
-    if @@ =~? '^[0-9a-z,_]*$' || @@ =~? '^[0-9a-z ,_]*$' && g:VeryLiteral
-        let @/ = @@
-    else
-        let pat = escape(@@, a:cmd.'\')
-        if g:VeryLiteral
-            let pat = substitute(pat, '\n', '\\n', 'g')
-        else
-            let pat = substitute(pat, '^\_s\+', '\\s\\+', '')
-            let pat = substitute(pat, '\_s\+$', '\\s\\*', '')
-            let pat = substitute(pat, '\_s\+', '\\_s\\+', 'g')
-        endif
-        let @/ = '\V'.pat
-    endif
-    normal! gV
-    call setreg('"', old_reg, old_regtype)
-endfunction
-
-vnoremap <silent> * :<C-U>call <SID>VSetSearch('/')<CR>/<C-R>/<CR>
-vnoremap <silent> # :<C-U>call <SID>VSetSearch('?')<CR>?<C-R>/<CR>
-vmap <kMultiply> *
-
-nmap <silent> <Plug>VLToggle :let g:VeryLiteral = !g:VeryLiteral
-  \\| echo "VeryLiteral " . (g:VeryLiteral ? "On" : "Off")<CR>
-if !hasmapto("<Plug>VLToggle")
-    nmap <unique> <Leader>vl <Plug>VLToggle
-endif
-let &cpo = s:save_cpo | unlet s:save_cpo
 
 " Diffs with the saved file
 function! DiffWithFileFromDisk()
