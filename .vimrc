@@ -351,24 +351,8 @@ let g:SuperTabNoCompleteAfter       = [',', ';', ':', '{', '}', '(', ')', '[', '
 nmap <silent> <Leader>bd :BD<cr>
 " }
 
-" FontSize Plugin {
-  nmap <silent> <Leader>=  <Plug>FontsizeBegin
-  nmap <silent> <Leader>+  <Plug>FontsizeInc
-  nmap <silent> <Leader>-  <Plug>FontsizeDec
-  nmap <silent> <Leader>0  <Plug>FontsizeDefault
-" }
-
 " Auto-Pairs Plugin {
 let g:AutoPairsMapCR = 0        " enabling this gives 2 CRs at a single press.
-" }
-
-" Doxygen Toolkit Plugin {
-let g:load_doxygen_syntax = 1                           " load doxygen syntax by default
-nmap <silent> <Leader>do    :Dox<CR>
-
-let g:DoxygenToolkit_blockHeader="***************************************************************************"
-let g:DoxygenToolkit_paramTag_pre = "@param[in, out] "
-let g:DoxygenToolkit_returnTag = "@retval "
 " }
 
 " OmniCppComplete {
@@ -657,10 +641,7 @@ autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
 " nohlsearch, after a search {
 nnoremap <silent> <Space> :nohlsearch<CR>
 "}
-" buffer traversal {
-nnoremap <silent> <C-k> :bn<CR>
-nnoremap <silent> <C-j> :bp<CR>
-"}
+
 " retain visual selection after indentation {
 vnoremap > >gv
 vnoremap < <gv
@@ -722,10 +703,7 @@ inoremap <silent> <C-l><C-b> <C-k>b*
 " QuickFixWindow Toggle {
 nmap <silent> <Leader>q <ESC>:QFix<CR>
 "}
-" Next/Previous Error in QuickFixWindow {
-nmap <silent> <F3> <ESC>:cnext<CR>
-nmap <silent> <S-F3> <ESC>:cprevious<CR>
-" }
+
 " Append a modeline {
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 "}
