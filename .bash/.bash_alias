@@ -99,7 +99,7 @@ alias cunit='gcc -lcunit -lcurses -fprofile-arcs -ftest-coverage'
 if [[ $distroname == "Ubuntu" ]]; then
 	alias U='sudo apt-get update && sudo apt-get upgrade'
 else
-	alias U='yum update -y'
+	alias U='sudo yum update -y'
 fi
 
 ## build & compiling related
