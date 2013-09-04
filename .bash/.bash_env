@@ -159,6 +159,6 @@ shopt -s sourcepath         # The source builtin uses $PATH to find the file to 
 shopt -u mailwarn           # disable mail mail warning
 unset MAILCHECK
 
-set -o ignoreeof    # Don't let Ctrl+D exit the shell
+set -o ignoreeof    # Dont let Ctrl+D exit the shell
 set -o noclobber    # prevents overwriting existing files
 set -o vi           # specifies vi editing mode for command-line editing
