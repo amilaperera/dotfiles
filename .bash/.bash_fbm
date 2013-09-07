@@ -29,22 +29,28 @@ function _fbm_help()
 	HELPMSG
 }
 
-function _fbm_checkbm()
+function _check_if_bm_exists()
 {
 	local bmexist= name="${1}" bmfile="${2}"
-	[ ! -f "${bmfile}" ] && return 0
+	[ ! -f "${bmfile}" ] && return 0		# returns false since bookmark file doesn't exist
+
+	# check if book mark exists in particular bookmark file
 	bmexist=$(awk -F':' '$1 == "'${name}'" { print $1 }' ${bmfile})
-	[ ! -z $bmexist ] && { return 1; }
-	return 0
+	[ ! -z $bmexist ] && { return 1; } || { return 0; }
 }
 
 function _fbm_gotobm()
 {
 	local name=${1} bmfile=${2} dirname=
+
+	_check_if_bm_exists $name $bmfile
+	[ $? -eq 0 ] && { printf "fbm: bookmark doesn't exist\n" 1>&2; return 1; }
+
 	dirname=$(awk -F':' '$1 == "'${name}'" { print $2 }' ${bmfile})
+
 	[ ! -d "${dirname}" ] && { printf "fbm: directory doesn't exist\n" 1>&2; return 1; }
-	[ -z "${dirname}" ] && { printf "fbm: bookmark doesn't exist\n" 1>&2; return 1; } \
-					|| cd "${dirname}"
+
+	cd "${dirname}"
 	return 0
 }
 
@@ -76,7 +82,7 @@ function _fbm_checkvar()
 ##################################################################
 function fbm()
 {
-	local bm= dir= create=0 list=0 file="${HOME}/.fbookmarks"
+	local bm= dir= file="${HOME}/.fbookmarks"
 
 	case $1 in
 	-c)
@@ -88,7 +94,7 @@ function fbm()
 		else
 			[[ "${2}" =~ ^~ || "${2}" =~ ^\/[^\/]* ]] && dir="${2}" || dir="$PWD/${2}"
 		fi
-		_fbm_checkbm $bm $file
+		_check_if_bm_exists $bm $file
 		[ $? -eq 1 ] && { printf "fbm: bookmark name already exists\n" 1>&2; return 102; }
 		dir=$(echo "${dir}/" | sed 's/\/\/*$/\//')	# appending a / at the end of directory whether user supplies one or not
 		[ ! -d "${dir}" ] \
@@ -99,7 +105,7 @@ function fbm()
 	-d)
 		shift
 		for bm in "$@"; do
-			_fbm_checkbm $bm $file
+			_check_if_bm_exists $bm $file
 			if [ $? -eq 1 ]; then
 				local tempfile="${file}"".tmp"
 				sed "/$bm:/d" $file > $tempfile; mv -f $tempfile $file
@@ -113,7 +119,7 @@ function fbm()
 		shift
 		[ $# -ne 2 ] && { _fbm_usage; return 101; }
 		local oldbm=${1} newbm=${2}
-		_fbm_checkbm $oldbm $file
+		_check_if_bm_exists $oldbm $file
 		if [ $? -eq 1 ]; then
 			local tempfile="${file}"".tmp"
 			sed "s/$oldbm:/$newbm:/" $file > $tempfile; mv -f $tempfile $file
@@ -131,7 +137,7 @@ function fbm()
 		else
 			[[ "${2}" =~ ^~ || "${2}" =~ ^\/[^\/]* ]] && dir="${2}" || dir="$PWD/${2}"
 		fi
-		_fbm_checkbm $bm $file
+		_check_if_bm_exists $bm $file
 		if [ $? -eq 1 ]; then
 			[ ! -d "${dir}" ] && { printf "fbm: directory doesn't exists\n" 1>&2; return 101; }
 			dir=$(echo "${dir}/" | sed 's/\/\/*$/\//')	# appending a / at the end of directory whether user supplies one or not
@@ -149,7 +155,7 @@ function fbm()
 		for bm in "$@"; do
 			local existVar=$(_fbm_checkvar $bm)
 			(($existVar > 0)) && { printf "fbm: environment variable already exists\n" 1>&2; return 1; }
-			_fbm_checkbm $bm $file
+			_check_if_bm_exists $bm $file
 			if [ $? -eq 1 ]; then
 				local dirname=$(awk -F':' '$1 == "'$bm'" { print $2 }' $file)
 				[ ! -d $dirname ] && { printf "fbm: directory doesn't exist\n" 1>&2; return 1; }
