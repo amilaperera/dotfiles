@@ -14,14 +14,20 @@
 #	done
 #fi
 
+# general bash completions
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 
+bash_comp_file=/usr/share/bash-completion/bash_completion
+[ -f $bash_comp_file ] && source $bash_comp_file
+
+# rvm completions
+[ -r $rvm_path/scripts/completion ] && . $rvm_path/scripts/completion
+
+# tmuxinator completions
 [ -f $HOME/bin/tmuxinator_completion ] && source $HOME/bin/tmuxinator_completion
 
-comp_file=/usr/share/bash-completion/bash_completion
-[ -f $comp_file ] && source $comp_file
-
-complete -F _fbm_comp fbm F   # completion function for folder bookmark utility
+# folder bookmark completions
+complete -F _fbm_comp fbm F
 
 complete -o dirnames -f -X '!*.@(?([xX]|[sS])[hH][tT][mM]?([lL]))' ff cb
 complete -o dirnames -f -X '!*.[pf]df' pdf
