@@ -26,6 +26,9 @@ bash_comp_file=/usr/share/bash-completion/bash_completion
 # tmuxinator completions
 [ -f $HOME/bin/tmuxinator_completion ] && source $HOME/bin/tmuxinator_completion
 
+# rails completion
+[ -f $HOME/bin/rails.bash ] && source $HOME/bin/rails.bash
+
 # folder bookmark completions
 complete -F _fbm_comp fbm F
 
