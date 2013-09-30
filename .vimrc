@@ -421,43 +421,50 @@ endfunction
 " FileType Settings functions {
 " TextFiles only settings
 function! TextFilesOnlySettings()
-    setlocal tabstop=2              " number of spaces that a tab counts for
-    setlocal shiftwidth=2           " number of spaces to be used in each step of indent
-    setlocal softtabstop=2          " number of spaces that a tab counts for while editing
-    setlocal foldmethod=indent      " fold on indent level
+    setlocal tabstop=2
+    setlocal shiftwidth=2
+    setlocal softtabstop=2
+    setlocal foldmethod=indent
 endfunction
 
 " BeckyMails only settings
 function! BeckyMailsOnlySettings()
-    setlocal tabstop=2              " number of spaces that a tab counts for
-    setlocal shiftwidth=2           " number of spaces to be used in each step of indent
-    setlocal softtabstop=2          " number of spaces that a tab counts for while editing
-    setlocal foldmethod=indent      " fold on indent level
-    setlocal colorcolumn=75         " color column for beckymails
-    setlocal textwidth=74           " textwidth for beckymails
+    setlocal tabstop=2
+    setlocal shiftwidth=2
+    setlocal softtabstop=2
+    setlocal foldmethod=indent
+    setlocal colorcolumn=75
+    setlocal textwidth=74
 endfunction
 
 " Shell Files only setlocaltings
 function! SHFilesOnlySettings()
-    setlocal tabstop=4              " number of spaces that a tab counts for
-    setlocal noexpandtab            " don't use spaces to insert a tab since it falis for HERE docs
+    setlocal tabstop=4
+    setlocal noexpandtab
 endfunction
 
 " C Files only setlocaltings
 function! CFilesOnlySettings()
-    setlocal tabstop=4              " number of spaces that a tab counts for
-    setlocal expandtab              " use spaces to insert a tab
-    setlocal shiftwidth=4           " number of spaces to be used in each step of indent
-    setlocal softtabstop=4          " number of spaces that a tab counts for while editing
+    setlocal tabstop=4
+    setlocal expandtab
+    setlocal shiftwidth=4
+    setlocal softtabstop=4
 endfunction
 "}
 
 " Ruby Files only setlocaltings
 function! RubyFilesOnlySettings()
-    setlocal tabstop=2              " number of spaces that a tab counts for
-    setlocal shiftwidth=2           " number of spaces to be used in each step of indent
-    setlocal softtabstop=2          " number of spaces that a tab counts for while editing
-    setlocal foldmethod=indent      " fold on indent level
+    setlocal tabstop=2
+    setlocal shiftwidth=2
+    setlocal softtabstop=2
+    setlocal foldmethod=indent
+endfunction
+
+function! HtmlFilesOnlySettings()
+    setlocal tabstop=2
+    setlocal shiftwidth=2
+    setlocal softtabstop=2
+    setlocal foldmethod=indent
 endfunction
 
 " Return indent (all whitespace at start of a line), converted from
@@ -513,6 +520,12 @@ augroup personal_ruby_file_settings
     au!
     autocmd BufNewFile,BufRead *.rb,*erb     :call RubyFilesOnlySettings() " Ruby files only settings
     autocmd Filetype ruby                    :call RubyFilesOnlySettings() " Ruby files only settings
+augroup END
+
+augroup personal_html_file_settings
+    au!
+    autocmd BufNewFile,BufRead *.html     :call HtmlFilesOnlySettings() " Html files only settings
+    autocmd Filetype html                 :call HtmlFilesOnlySettings() " Html files only settings
 augroup END
 
 augroup personal_becky_file_settings
