@@ -85,31 +85,18 @@ xterm*|rxvt*	)	TITLEBAR='\[\033]0;\u@\h:\w\007\]' ;;
 *				)	TITLEBAR="" ;;
 esac
 
-if [[ $BG_COLOR == "light" ]]; then
-	if (($UID != 0)); then
-	## prompt for normal user
-	PS1="$TITLEBAR\
-${EMK}-${EMB}-(${EMM}\$un${EMB}@${EMM}\$hn${EMB}:${EMK}\$curr_dir${EMB})${EMR}\${git_prompt}\${svn_prompt}\n\
-${EMK}-${EMB}-(${EMM}\#${EMB})${NONE}${NONE} ${EMK}\\$ ${NONE}"
-	else
-	## prompt for root
-	PS1="$TITLEBAR\
-${EMK}-${EMB}-(${EMR}\$un${EMB}@${EMM}\$hn${EMB}:${EMK}\$curr_dir${EMB})${EMR}\${git_prompt}\${svn_prompt}\n\
-${EMK}-${EMB}-(${EMM}\#${EMB})${NONE}${NONE} ${EMK}\\$ ${NONE}"
-	fi
-else
-	if (($UID != 0)); then
+if (($UID != 0)); then
 	## prompt for normal user
 	PS1="$TITLEBAR\
 ${EMW}-${EMC}-(${EMM}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMC})${EMR}\${git_prompt}\${svn_prompt}\n\
 ${EMW}-${EMC}-(${EMM}\#${EMC})${NONE}${NONE} ${EMW}\\$ ${NONE}"
-	else
+else
 	## prompt for root
 	PS1="$TITLEBAR\
 ${EMW}-${EMC}-(${EMR}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMC})${EMR}\${git_prompt}\${svn_prompt}\n\
 ${EMW}-${EMC}-(${EMM}\#${EMC})${NONE}${NONE} ${EMW}\\$ ${NONE}"
-	fi
 fi
+
 
 PS2="${EMK}-${EMB}-${EMK}Continue${EMB}:${NONE} "
 PS3=$(echo -e -n "\033[1;34m-\033[1;30m-Enter Your Option\033[1;34m:\033[0m ")
