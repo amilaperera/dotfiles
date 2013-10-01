@@ -53,15 +53,3 @@ LS_COLORS="${LS_COLORS}":'*.html=00;04;94:*.htm=00;04;94'
 
 LS_COLORS="${LS_COLORS}":'*.diff=00;35;47:*.patch=00;35;47'
 export LS_COLORS
-
-# setting ack color variables
-for path in ${PATH//:/ }; do
-	if [ -x "$path/ack" -o -x "$path/ack.pl" ]; then
-		[ -f "$HOME/.ackrc" ] && break;      # read all the settings from the .ackrc
-		export ACK_COLOR_MATCH="black on_yellow"  # default
-		export ACK_COLOR_FILENAME="bold green"    # default
-		export ACK_COLOR_LINENO="bold red"
-		export ACK_PAGER='less -r'
-		break
-	fi
-done

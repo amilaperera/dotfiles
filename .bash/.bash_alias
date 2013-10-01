@@ -97,7 +97,7 @@ alias cunit='gcc -lcunit -lcurses -fprofile-arcs -ftest-coverage'
 
 ## this distro identification may not work for some systems
 if [[ $distroname == "Ubuntu" ]]; then
-	alias U='sudo apt-get update && sudo apt-get upgrade'
+	alias U='sudo apt-get update && sudo apt-get upgrade -y'
 else
 	alias U='sudo yum update -y'
 fi
