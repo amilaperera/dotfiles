@@ -435,8 +435,10 @@ function vim_bundle_update()
 	local vim_bundle_dir=$HOME/.vim/bundle
 	if [ ! -d $vim_bundle_dir ]; then
 		echo "couldn't find the directory : $vim_bundle_dir"
-		exit 1
+		return 1
 	fi
+
+	_check_if_command_exists git || { echo "couldn't find git command"; return 1; }
 
 	local current_dir=$(pwd)
 
@@ -453,4 +455,26 @@ function vim_bundle_update()
 	done
 
 	cd $current_dir
+}
+
+##################################################################
+## synchronize configuration files in git directory with the
+## originals
+##################################################################
+function sync_config_with_orig()
+{
+	local abs_file_list=
+	local dst=$HOME/WORK/src/configs
+
+	[ ! -d $dst ] && { echo "destination directory $dst doesn't exist"; return 1; }
+
+	file_list="ackrc bash_logout bash_profile bashrc colordiffrc gvimrc inputrc irbrc tmux.conf vimrc"
+	for f in ${file_list}; do
+		abs_file_list="$abs_file_list $HOME/.$f"
+	done
+
+	[ -d $HOME/.bash ] && abs_file_list="$abs_file_list $HOME/.bash"
+
+	echo "synchronizing config(git managed) directory with the original files"
+	rsync -av $abs_file_list $dst
 }

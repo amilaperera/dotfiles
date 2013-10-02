@@ -20,7 +20,4 @@ for file in ${config_file_list}; do
 	[ -f ${abs_file_path} ] && source ${abs_file_path}
 done
 
-# if the command archey exists we execute it
-_check_if_command_exists archey && archey
-
 unset dir_path config_file_list
