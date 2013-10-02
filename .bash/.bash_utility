@@ -4,17 +4,16 @@
 # File Name: .bash_utility
 #############################################################
 
-BASH_TRUE=0
-BASH_FALSE=1
-
-bash_reset_color="\033[0m"
+# defining bash true/false
+bash_true=0
+bash_false=1
 
 # regular colors
 bash_red_color="\033[0;31m"
 bash_green_color="\033[0;32m"
 bash_yellow_color="\033[0;33m"
 bash_blue_color="\033[0;34m"
-
+bash_reset_color="\033[0m"
 
 ##################################################################
 ## echo in red color
@@ -76,7 +75,7 @@ _confirm()
 		esac
 	done
 
-	[ "$choice" = "y" ] && return $BASH_TRUE || return $BASH_FALSE
+	[ "$choice" = "y" ] && return $bash_true || return $bash_false
 }
 
 ##################################################################
@@ -85,7 +84,20 @@ _confirm()
 _check_for_shell_interactivity()
 {
 	case "$-" in
-		*i* ) return $BASH_TRUE;;
-		* ) return $BASH_FALSE;;
+		*i* ) return $bash_true;;
+		* ) return $bash_false;;
 	esac
+}
+
+##################################################################
+## checks if command exists
+##################################################################
+_check_if_command_exists()
+{
+	if [ $# -ne 1 ]; then
+		echo "_check_if_command_exists function should take exactly one argument"
+		return $bash_false
+	fi
+
+	type -P $1 >/dev/null
 }
