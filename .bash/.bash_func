@@ -4,6 +4,8 @@
 # File Name: .bash_func
 #############################################################
 
+source "$HOME/.bash/.bash_utility"
+
 ##################################################################
 ## setenv()
 ## keeps tcsh users happy
@@ -425,4 +427,32 @@ function tmux_colors()
 	for i in {0..255}; do
 		printf "\x1b[38;5;${i}mcolour${i}\n"
 	done | less
+}
+
+##################################################################
+## update vim plugins in .vim/bundle directory
+##################################################################
+function vim_bundle_update()
+{
+	local vim_bundle_dir=$HOME/.vim/bundle
+	if [ ! -d $vim_bundle_dir ]; then
+		echo "couldn't find the directory : $vim_bundle_dir"
+		exit 1
+	fi
+
+	local current_dir=$(pwd)
+
+	for d in $vim_bundle_dir/*; do
+		cd $d
+		echo "entering $d"
+		if [ -d ".git" ]; then
+			echo "updating from $(git remote -v | head -n 1 | tr '\t' ' ' | cut -d" " -f 2)"
+			git pull
+		else
+			_echo_red "  couldn't find .git directory\n  leaving directory without updating"
+		fi
+		cd ..
+	done
+
+	cd $current_dir
 }

@@ -4,8 +4,49 @@
 # File Name: .bash_utility
 #############################################################
 
-BASH_TRUE='true'
-BASH_FALSE='false'
+BASH_TRUE=0
+BASH_FALSE=1
+
+bash_reset_color="\033[0m"
+
+# regular colors
+bash_red_color="\033[0;31m"
+bash_green_color="\033[0;32m"
+bash_yellow_color="\033[0;33m"
+bash_blue_color="\033[0;34m"
+
+
+##################################################################
+## echo in red color
+##################################################################
+_echo_red()
+{
+	echo -e $bash_red_color"$@"$bash_reset_color
+}
+
+##################################################################
+## echo in green color
+##################################################################
+_echo_green()
+{
+	echo -e $bash_green_color"$@"$bash_reset_color
+}
+
+##################################################################
+## echo in yellow color
+##################################################################
+_echo_yellow()
+{
+	echo -e $bash_yellow_color"$@"$bash_reset_color
+}
+
+##################################################################
+## echo in blue color
+##################################################################
+_echo_blue()
+{
+	echo -e $bash_blue_color"$@"$bash_reset_color
+}
 
 ##################################################################
 ## outputs console log
@@ -35,7 +76,7 @@ _confirm()
 		esac
 	done
 
-	[ "$choice" = "y" ] && echo $BASH_TRUE || echo $BASH_FALSE
+	[ "$choice" = "y" ] && return $BASH_TRUE || return $BASH_FALSE
 }
 
 ##################################################################
@@ -44,7 +85,7 @@ _confirm()
 _check_for_shell_interactivity()
 {
 	case "$-" in
-		*i* ) echo $BASH_TRUE;;
-		* ) echo $BASH_FALSE;;
+		*i* ) return $BASH_TRUE;;
+		* ) return $BASH_FALSE;;
 	esac
 }
