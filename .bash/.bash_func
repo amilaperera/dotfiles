@@ -458,23 +458,49 @@ function vim_bundle_update()
 }
 
 ##################################################################
+## synchronize from_dir with to_dir
+## this should be called as _synchronize_files from_dir to_dir
+##################################################################
+function _synchronize_files()
+{
+	if [ $# -ne 2 ]; then
+		echo "function is called with wrong number of arguments"
+		return 1
+	fi
+
+	[ ! -d $1 ] && { echo "source directory($1) doesn't exist"; return 1; }
+	[ ! -d $2 ] && { echo "destination directory($2) doesn't exist"; return 1; }
+
+	local src=$1 dst=$2
+	echo "You are about to copy files from $src to $dst"
+	! _confirm && return 1
+
+	local abs_src_file_list=
+
+	file_list=".ackrc .bash_logout .bash_profile .bashrc .colordiffrc .gvimrc .inputrc .irbrc .tmux.conf .vimrc"
+	for f in ${file_list}; do
+		[ -f $src/$f ] && abs_src_file_list="$abs_src_file_list $src/$f"
+	done
+
+	[ -d $src/.bash ] && abs_src_file_list="$abs_src_file_list $src/.bash"
+
+	echo "synchronizing $src with $dst"
+	rsync -av $abs_src_file_list $dst
+}
+
+##################################################################
 ## synchronize configuration files in git directory with the
 ## originals
 ##################################################################
 function sync_config_with_orig()
 {
-	local abs_file_list=
-	local dst=$HOME/WORK/src/configs
+	_synchronize_files $HOME $HOME/WORK/src/configs
+}
 
-	[ ! -d $dst ] && { echo "destination directory $dst doesn't exist"; return 1; }
-
-	file_list="ackrc bash_logout bash_profile bashrc colordiffrc gvimrc inputrc irbrc tmux.conf vimrc"
-	for f in ${file_list}; do
-		abs_file_list="$abs_file_list $HOME/.$f"
-	done
-
-	[ -d $HOME/.bash ] && abs_file_list="$abs_file_list $HOME/.bash"
-
-	echo "synchronizing config(git managed) directory with the original files"
-	rsync -av $abs_file_list $dst
+##################################################################
+## synchronize original files with those in configs directory
+##################################################################
+function sync_orig_with_config()
+{
+	_synchronize_files $HOME/WORK/src/configs $HOME
 }
