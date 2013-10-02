@@ -19,27 +19,6 @@ function setenv()
 }
 
 ##################################################################
-## path
-## prints path in a more readable format
-##################################################################
-# function path()
-# {
-# 	if [ $# -gt 0 ]; then
-# 		echo "Usage: path" 1>&2
-# 	else
-# 		local pathlist=$(echo ${PATH} | tr ':' '\n')
-# 		local count=0 apath
-# 		printf '%s\n' 'Current PATH list'
-# 		printf '%s\n' '================='
-# 		for apath in ${pathlist}
-# 		do
-# 			((count +=1))
-# 			printf '%03d ------> %s\n' $count "${apath}"
-# 		done
-# 	fi
-# }
-
-##################################################################
 ## E()
 ## starts gvim in background
 ##################################################################
@@ -263,6 +242,41 @@ function bak()
 }
 
 ##################################################################
+## diffWithOrig()
+## diff files with their .bak or .orig extension files
+##################################################################
+function diffWithOrig()
+{
+	local file= file2= opt="-puw"
+	if [[ $1 == "--help" ]]; then
+		cat <<- HELPMSG
+			diffWithOrig [diff_options] file1 file2 ...
+			Note: if no diff_options are given -puw is the default
+		HELPMSG
+		return 101
+	elif [[ $1 =~ \-.* ]]; then
+		opt="${1}"
+		shift
+	fi
+
+	for file in "${@}"; do
+		if [ -f ${file} ]; then
+			if [ -f ${file}".bak" ]; then
+				file2=${file}".bak"
+				eval diff ${opt} ${file2} ${file}
+			elif [ -f ${file}."orig" ]; then
+				file2=${file}".orig"
+				eval diff ${opt} ${file2} ${file}
+			else
+				printf "%s: No file to compare with\n" ${file}
+			fi
+		else
+			printf "%s: file doesn't exist\n" ${file}
+		fi
+	done
+}
+
+##################################################################
 ## swap()
 ## swap two files
 ##################################################################
@@ -342,41 +356,6 @@ function engman()
 	local lang=$LANG
 	LANG=en_US.UTF8 && man "${@}"
 	export LANG=$lang
-}
-
-##################################################################
-## diffWithOrig()
-## diff files with their .bak or .orig extension files
-##################################################################
-function diffWithOrig()
-{
-	local file= file2= opt="-puw"
-	if [[ $1 == "--help" ]]; then
-		cat <<- HELPMSG
-			diffWithOrig [diff_options] file1 file2 ...
-			Note: if no diff_options are given -puw is the default
-		HELPMSG
-		return 101
-	elif [[ $1 =~ \-.* ]]; then
-		opt="${1}"
-		shift
-	fi
-
-	for file in "${@}"; do
-		if [ -f ${file} ]; then
-			if [ -f ${file}".bak" ]; then
-				file2=${file}".bak"
-				eval diff ${opt} ${file2} ${file}
-			elif [ -f ${file}."orig" ]; then
-				file2=${file}".orig"
-				eval diff ${opt} ${file2} ${file}
-			else
-				printf "%s: No file to compare with\n" ${file}
-			fi
-		else
-			printf "%s: file doesn't exist\n" ${file}
-		fi
-	done
 }
 
 ##################################################################
