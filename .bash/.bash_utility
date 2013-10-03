@@ -13,6 +13,12 @@ bash_red_color="\033[0;31m"
 bash_green_color="\033[0;32m"
 bash_yellow_color="\033[0;33m"
 bash_blue_color="\033[0;34m"
+
+bash_bold_red_color="\033[1;31m"
+bash_bold_green_color="\033[1;32m"
+bash_bold_yellow_color="\033[1;33m"
+bash_bold_blue_color="\033[1;34m"
+
 bash_reset_color="\033[0m"
 
 ##################################################################
