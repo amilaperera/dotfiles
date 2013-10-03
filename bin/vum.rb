@@ -12,15 +12,21 @@ class Vum
   attr_reader :repolist
 
   def initialize
-    @repolist = get_repolist_from_file
+    @repolist = get_repolist_from_file # if success repolist hash is sorted by plugin name
     @ok_repolist = []
     @failed_repolist = []
   end
 
   def get_repolist_from_file
+    @repolist = []
     if File.exists?(VUM_REPOS_FILE)
-      File.open(VUM_REPOS_FILE, 'r') do |file|
-        file.readlines.collect { |line| line.chomp }
+      File.open(VUM_REPOS_FILE, 'r').each_line do |line|
+        repo_line = line.chomp
+        @repolist << { :plugin_name => get_plugin_name(repo_line), :repo_site => repo_line }
+      end
+
+      unless @repolist.empty?
+        sort_repolist_by_plugin_name(@repolist)
       end
     end
   end
@@ -31,7 +37,8 @@ class Vum
 
     puts
     puts "#{@ok_repolist.length}/#{@repolist.length}".bold.green +
-          " repositories seem to be good enough for downloading"
+          " repositories seem to be good enough for downloading" if @ok_repolist.length > 0
+
     puts "#{@failed_repolist.length}/#{@repolist.length}".bold.red +
           " repositories were found to have some troubles" +
           " and vum will not use those repositories for downloading" if @failed_repolist.length > 0
@@ -43,23 +50,32 @@ class Vum
     download_plugins
   end
 
+  def install_plugins_without_check
+    @ok_repolist = @repolist
+    download_plugins
+  end
+
   def check_for_repo_existence
     @ok_repolist.clear
     @failed_repolist.clear
-    repo_max_length = 0
 
-    @repolist.each { |repo| repo_max_length = repo.length if repo.length > repo_max_length }
+    # get maximum reposite name
+    max_repo_plugin_site_name_length = 0
+    @repolist.each do |repo|
+      if (repo[:repo_site].length + repo[:plugin_name].length) > max_repo_plugin_site_name_length
+        max_repo_plugin_site_name_length = repo[:repo_site].length + repo[:plugin_name].length
+      end
+    end
 
     @repolist.each do |repo|
-      `git ls-remote #{repo} > /dev/null`
-
-      padding_length = repo_max_length + 5 - repo.length
+      padding_length = max_repo_plugin_site_name_length + 8 - repo[:repo_site].length - repo[:plugin_name].length
+      `git ls-remote #{repo[:repo_site]} 2>/dev/null 1>&2`
       if $?.exitstatus == 0
         @ok_repolist << repo
-        puts "#{repo} " + ("." * padding_length) + " [   "+ "OK".bold.green + "   ]"
+        puts "#{repo[:plugin_name]} (#{repo[:repo_site]}) " + ("." * padding_length) + " [   "+ "OK".bold.green + "   ]"
       else
         @failed_repolist << repo
-        puts "#{repo} " + ("." * padding_length) + " [ "+ "FAILED".bold.red + " ]"
+        puts "#{repo[:plugin_name]} (#{repo[:repo_site]}) " + ("." * padding_length) + " [ "+ "FAILED".bold.red + " ]"
       end
     end
   end
@@ -67,7 +83,7 @@ class Vum
   def download_plugins
     puts "Plugins download starts"
     @ok_repolist.each do |repo|
-      `git clone #{repo} 1>/dev/null 2>&1`
+      `git clone #{repo}`
       if $?.exitstatus == 0
         puts "#{repo} download success"
       else
@@ -75,8 +91,17 @@ class Vum
       end
     end
   end
+
+  def get_plugin_name(line)
+    line.gsub(/.*\//, "").gsub(/\..*$/, "").capitalize
+  end
+
+  def sort_repolist_by_plugin_name(repolist)
+    repolist.sort_by { |repo| repo[:plugin_name] }
+  end
+
 end
 
 # main
 vum = Vum.new
-vum.install_plugins_with_check
+vum.check_for_repo_existence
