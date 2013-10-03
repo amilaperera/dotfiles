@@ -178,9 +178,11 @@ function fbm()
 		if [ $# -eq 0 ]; then
 			_fbm_list "$file"
 		elif [ $# -gt 1 ]; then
-			_fbm_usage;
+			_fbm_usage; return 1;
 		else
-			_fbm_gotobm $1 $file ; [ $? -ne 0 ] && _fbm_usage;
+			_fbm_gotobm $1 $file
+			[ $? -ne 0 ] && { _fbm_usage; return 1; };
+			return 0
 		fi
 		;;
 	esac

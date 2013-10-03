@@ -86,19 +86,18 @@ esac
 if (($UID != 0)); then
 	## prompt for normal user
 	PS1="$TITLEBAR\
-${EMW}\342\224\214${EMW}(${EMM}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
+${EMW}\342\224\214\342\224\200\342\224\200${EMW}(${EMM}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
 ${EMW}\342\224\200${EMW}(\$(if [[ \$? == 0 ]]; then echo \"\[\033[01;32m\]\342\234\223\"; else echo \"\[\033[01;31m\]\342\234\227\"; fi)${EMW})\
 ${EMR}\${git_prompt}\${svn_prompt}\n\
-${EMW}\342\224\224\342\224\200\342\224\200\342\224\200${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
+${EMW}\342\224\224\342\224\200\342\224\200${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
 else
 	## prompt for root
 	PS1="$TITLEBAR\
-${EMW}\342\224\214${EMW}(${EMR}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
+${EMW}\342\224\214\342\224\200\342\224\200${EMW}(${EMR}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
 ${EMW}\342\224\200${EMW}(\$(if [[ \$? == 0 ]]; then echo \"\[\033[01;32m\]\342\234\223\"; else echo \"\[\033[01;31m\]\342\234\227\"; fi)${EMW})\
 ${EMR}\${git_prompt}\${svn_prompt}\n\
-${EMW}\342\224\224\342\224\200\342\224\200\342\224\200${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
+${EMW}\342\224\224\342\224\200\342\224\200${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
 fi
-
 
 PS2="${EMK}-${EMB}-${EMK}Continue${EMB}:${NONE} "
 PS3=$(echo -e -n "\033[1;34m-\033[1;30m-Enter Your Option\033[1;34m:\033[0m ")
