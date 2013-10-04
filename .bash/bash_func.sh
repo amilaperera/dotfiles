@@ -473,7 +473,7 @@ function _synchronize_files()
 
 	local src=$1 dst=$2
 	echo "You are about to copy files from $src to $dst"
-	! _confirm && return 1
+	! _confirm && return 0
 
 	local abs_src_file_list=
 

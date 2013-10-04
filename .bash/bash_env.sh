@@ -139,7 +139,13 @@ export LS_OPTIONS="--color=auto -F -h"
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
+# loads rvm functions
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# the default ruby/rails version did not work properly when
+# switching to tmux
+# the following fixed it
+[[ $TERM = "screen-256color" ]] && rvm use default > /dev/null
 
 ################################################################################
 ## shell behaviour adjustment with shopt options and set options
