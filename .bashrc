@@ -20,4 +20,7 @@ for file in ${config_file_list}; do
 	[ -f ${abs_file_path} ] && source ${abs_file_path}
 done
 
+# fires up a tmux session with the user's name at start up
+tmux_start $USER
+
 unset dir_path config_file_list

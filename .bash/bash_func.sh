@@ -406,14 +406,27 @@ function color_codes()
 
 ##################################################################
 ## start tmux session
-## FIXME: in Fedora 18 calling this function at the end of
-## .bashrc does not allow user to login.
+## NOTE: This function can be called in .bashrc
 ##################################################################
 function tmux_start()
 {
-	if [[ "$TERM" != "screen-256color"  ]]; then
-		tmux attach-session -t "$USER" || tmux new-session -s "$USER"
-		exit
+	local session_name= archey_cmd="archey"
+
+	[ $# -eq 0 ] && session_name="$USER" || session_name=$1
+
+	if _check_if_command_exists tmux; then
+		if [[ "$TERM" != "screen-256color" ]]; then
+			tmux attach-session -t "$session_name"
+			if [ $? -ne 0 ]; then
+				# if a $session_name named tmux session doesn't exist,
+				# then create a new session
+				tmux new-session -s "$session_name" -d # first create in detached mode
+
+				_check_if_command_exists $archey_cmd && tmux send-keys -t "$session_name" "$archey_cmd" C-m
+
+				tmux attach-session # attach the session
+			fi
+		fi
 	fi
 }
 
