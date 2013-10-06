@@ -490,7 +490,8 @@ function _synchronize_files()
 
 	local abs_src_file_list=
 
-	file_list=".ackrc .bash_logout .bash_profile .bashrc .colordiffrc .gvimrc .inputrc .irbrc .tmux.conf .vimrc"
+	file_list=".ackrc .bash_logout .bash_profile .bashrc .colordiffrc .gvimrc .inputrc"
+	file_list=$file_list" .irbrc .tmux.conf .vimrc .vum_repos"
 	for f in ${file_list}; do
 		[ -f $src/$f ] && abs_src_file_list="$abs_src_file_list $src/$f"
 	done

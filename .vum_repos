@@ -23,7 +23,6 @@ https://github.com/scrooloose/nerdtree
 https://github.com/jabbourb/omnicpp
 https://github.com/ervandew/snipmate.vim
 https://github.com/ervandew/supertab
-https://github.com/tomtom/tlib_vim
 https://github.com/tpope/vim-abolish
 https://github.com/tpope/vim-bundler.git
 https://github.com/tpope/vim-fugitive
@@ -36,3 +35,6 @@ https://github.com/Lokaltog/vim-easymotion
 https://github.com/nelstrom/vim-textobj-rubyblock
 https://github.com/nelstrom/vim-visual-star-search
 https://github.com/kana/vim-textobj-user
+https://github.com/mattn/emmet-vim
+https://github.com/tomtom/tlib_vim.git
+https://github.com/tpope/vim-rails
