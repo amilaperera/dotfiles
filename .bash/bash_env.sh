@@ -145,7 +145,9 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 # the default ruby/rails version did not work properly when
 # switching to tmux
 # the following fixed it
-[[ $TERM = "screen-256color" ]] && rvm use default > /dev/null
+if _check_if_command_exists rvm; then
+	[[ $TERM = "screen-256color" ]] && rvm use default > /dev/null
+fi
 
 ################################################################################
 ## shell behaviour adjustment with shopt options and set options
