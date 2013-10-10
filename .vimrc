@@ -118,7 +118,7 @@ set display=lastline                        " show as much as possible of the la
 
 " ColorScheme {
 let s:myFavouriteGuiColorScheme     = "xoria256"
-let s:myFavouriteTermColorScheme256 = "xoria256"
+let s:myFavouriteTermColorScheme256 = "wombat256mod"
 let s:myFavouriteTermColorSchem     = "default"
 if has("gui_running")
     set background=dark                         " set background dark
