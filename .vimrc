@@ -35,10 +35,10 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " let Vundle manage github repos
-Bundle 'vim-scripts/a.vim'
+
+" General enhancements
 Bundle 'vim-scripts/Align'
 Bundle 'vim-scripts/AutoComplPop'
-Bundle 'vim-scripts/DoxygenToolkit.vim'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'vim-scripts/EasyGrep'
 Bundle 'vim-scripts/FuzzyFinder'
@@ -52,13 +52,6 @@ Bundle 'vim-scripts/taglist.vim'
 Bundle 'vim-scripts/vcscommand.vim'
 Bundle 'vim-scripts/L9'
 Bundle 'vim-scripts/txt.vim'
-Bundle 'c9s/bufexplorer'
-Bundle 'Raimondi/delimitMate'
-Bundle 'tmhedberg/matchit'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/nerdtree'
-Bundle 'jabbourb/omnicpp'
-Bundle 'ervandew/supertab'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-bundler.git'
 Bundle 'tpope/vim-fugitive'
@@ -66,14 +59,33 @@ Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-tbone'
 Bundle 'tpope/vim-unimpaired'
+Bundle 'c9s/bufexplorer'
+Bundle 'Raimondi/delimitMate'
+Bundle 'tmhedberg/matchit'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/nerdtree'
+Bundle 'ervandew/supertab'
 Bundle 'Lokaltog/vim-easymotion'
-Bundle 'nelstrom/vim-textobj-rubyblock'
 Bundle 'nelstrom/vim-visual-star-search'
-Bundle 'kana/vim-textobj-user'
-Bundle 'mattn/emmet-vim'
+
+" General development related
+Bundle 'vim-scripts/DoxygenToolkit.vim'
 Bundle 'scrooloose/syntastic'
+
+" HTML editing
+Bundle 'mattn/emmet-vim'
 Bundle 'othree/html5.vim'
+
+" C/C++ enhancements
+Bundle 'vim-scripts/a.vim'
+Bundle 'jabbourb/omnicpp'
+
+" Colorschemes
 Bundle 'flazz/vim-colorschemes'
+
+" Custom textobjects
+Bundle 'nelstrom/vim-textobj-rubyblock'
+Bundle 'kana/vim-textobj-user'
 
 " Ruby enhancements
 Bundle 'tpope/vim-bundler'
