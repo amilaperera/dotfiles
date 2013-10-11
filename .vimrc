@@ -27,6 +27,67 @@ filetype off
 call pathogen#infect()
 call pathogen#helptags()
 
+" Vundle setup
+set rtp+=!/.vim/bundle/vundle
+call vundle#rc()
+
+" let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+" let Vundle manage github repos
+Bundle 'vim-scripts/a.vim'
+Bundle 'vim-scripts/Align'
+Bundle 'vim-scripts/AutoComplPop'
+Bundle 'vim-scripts/DoxygenToolkit.vim'
+Bundle 'vim-scripts/DrawIt'
+Bundle 'vim-scripts/EasyGrep'
+Bundle 'vim-scripts/FuzzyFinder'
+Bundle 'vim-scripts/VisIncr'
+Bundle 'vim-scripts/YankRing.vim'
+Bundle 'vim-scripts/ZoomWin'
+Bundle 'vim-scripts/bufkill.vim'
+Bundle 'vim-scripts/highlight.vim'
+Bundle 'vim-scripts/mru.vim'
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'vim-scripts/vcscommand.vim'
+Bundle 'vim-scripts/L9'
+Bundle 'vim-scripts/txt.vim'
+Bundle 'c9s/bufexplorer'
+Bundle 'Raimondi/delimitMate'
+Bundle 'tmhedberg/matchit'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/nerdtree'
+Bundle 'jabbourb/omnicpp'
+Bundle 'ervandew/supertab'
+Bundle 'tpope/vim-abolish'
+Bundle 'tpope/vim-bundler.git'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-tbone'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'nelstrom/vim-textobj-rubyblock'
+Bundle 'nelstrom/vim-visual-star-search'
+Bundle 'kana/vim-textobj-user'
+Bundle 'mattn/emmet-vim'
+Bundle 'scrooloose/syntastic'
+Bundle 'othree/html5.vim'
+Bundle 'flazz/vim-colorschemes'
+
+" Ruby enhancements
+Bundle 'tpope/vim-bundler'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-rake'
+Bundle 'vim-ruby/vim-ruby'
+
+" snipmate plugin, related dependencies & snippets
+Bundle 'garbas/vim-snipmate'
+Bundle 'tomtom/tlib_vim.git'
+Bundle 'MarcWeber/vim-addon-mw-utils.git'
+Bundle 'honza/vim-snippets'
+
 filetype on                         " filetype detection on
 filetype plugin on                  " filetype plugin on
 filetype indent on                  " filetype indent on
