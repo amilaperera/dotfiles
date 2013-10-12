@@ -491,7 +491,8 @@ function _synchronize_files()
 	local abs_src_file_list=
 
 	file_list=".ackrc .bash_logout .bash_profile .bashrc .colordiffrc .gvimrc .inputrc"
-	file_list=$file_list" .irbrc .tmux.conf .vimrc .vum_repos"
+	file_list=$file_list" .irbrc .tmux.conf .vimrc"
+
 	for f in ${file_list}; do
 		[ -f $src/$f ] && abs_src_file_list="$abs_src_file_list $src/$f"
 	done
@@ -517,4 +518,12 @@ function sync_config_with_orig()
 function sync_orig_with_config()
 {
 	_synchronize_files $HOME/WORK/src/configs $HOME
+}
+
+##################################################################
+## github clone
+##################################################################
+function ghc()
+{
+	git clone https://github.com/"${1}"
 }

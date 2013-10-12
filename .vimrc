@@ -53,7 +53,6 @@ Bundle 'vim-scripts/vcscommand.vim'
 Bundle 'vim-scripts/L9'
 Bundle 'vim-scripts/txt.vim'
 Bundle 'tpope/vim-abolish'
-Bundle 'tpope/vim-bundler.git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
@@ -81,7 +80,9 @@ Bundle 'vim-scripts/a.vim'
 Bundle 'jabbourb/omnicpp'
 
 " Colorschemes
-Bundle 'flazz/vim-colorschemes'
+" Using my own colorschemes
+" This is a fork from https://github.com/flazz/vim-colorschemes
+Bundle 'amilaperera/vim-colorschemes'
 
 " Custom textobjects
 Bundle 'nelstrom/vim-textobj-rubyblock'
