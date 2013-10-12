@@ -69,7 +69,6 @@ Bundle 'nelstrom/vim-visual-star-search'
 
 " General development related
 Bundle 'vim-scripts/DoxygenToolkit.vim'
-Bundle 'scrooloose/syntastic'
 
 " HTML editing
 Bundle 'mattn/emmet-vim'
@@ -78,6 +77,7 @@ Bundle 'othree/html5.vim'
 " C/C++ enhancements
 Bundle 'vim-scripts/a.vim'
 Bundle 'jabbourb/omnicpp'
+Bundle 'octol/vim-cpp-enhanced-highlight'
 
 " Colorschemes
 " Using my own colorschemes
