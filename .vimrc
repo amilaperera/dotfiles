@@ -192,7 +192,7 @@ set display=lastline                        " show as much as possible of the la
 
 " ColorScheme {
 let s:myFavouriteGuiColorScheme     = "xoria256"
-let s:myFavouriteTermColorScheme256 = "wombat256mod"
+let s:myFavouriteTermColorScheme256 = "wombat256"
 let s:myFavouriteTermColorSchem     = "default"
 if has("gui_running")
     set background=dark                         " set background dark
@@ -372,9 +372,9 @@ let g:fuf_file_exclude      = '\v\~$|\.(o|exe|dll|obj|d|swp)$|/test/data\.|(^|[/
 let g:fuf_splitPathMatching = 0
 let g:fuf_maxMenuWidth      = 120
 let g:fuf_timeFormat        = ''
+nmap <silent> <Leader>f  :FufFile<CR>
 nmap <silent> <Leader>fv :FufFile ~/.vim/<CR>
 nmap <silent> <Leader>fb :FufBuffer<CR>
-nmap <silent> <Leader>ff :FufFile<CR>
 nmap <silent> <Leader>fd :FufDir<CR>
 "}
 
