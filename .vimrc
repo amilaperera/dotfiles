@@ -37,7 +37,6 @@ Bundle 'gmarik/vundle'
 " let Vundle manage github repos
 
 " General enhancements
-Bundle 'vim-scripts/Align'
 Bundle 'vim-scripts/AutoComplPop'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'vim-scripts/EasyGrep'
@@ -45,7 +44,6 @@ Bundle 'vim-scripts/FuzzyFinder'
 Bundle 'vim-scripts/VisIncr'
 Bundle 'vim-scripts/YankRing.vim'
 Bundle 'vim-scripts/ZoomWin'
-Bundle 'vim-scripts/bufkill.vim'
 Bundle 'vim-scripts/highlight.vim'
 Bundle 'vim-scripts/mru.vim'
 Bundle 'vim-scripts/taglist.vim'
@@ -56,19 +54,31 @@ Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-tbone'
 Bundle 'tpope/vim-unimpaired'
+Bundle 'tpope/vim-eunuch'
 Bundle 'c9s/bufexplorer'
-Bundle 'Raimondi/delimitMate'
-Bundle 'tmhedberg/matchit'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'ervandew/supertab'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'nelstrom/vim-visual-star-search'
+Bundle 'godlygeek/tabular'
+Bundle 'tmhedberg/matchit'
+Bundle 'Raimondi/delimitMate'
 
 " General development related
 Bundle 'vim-scripts/DoxygenToolkit.vim'
+
+" Vim tmux integration
+Bundle 'tpope/vim-tbone'
+
+" Vim custom text objects
+Bundle 'kana/vim-textobj-user'
+Bundle 'kana/vim-textobj-entire'
+Bundle 'kana/vim-textobj-indent'
+Bundle 'kana/vim-textobj-syntax'
+Bundle 'kana/vim-textobj-line'
+Bundle 'nelstrom/vim-textobj-rubyblock'
 
 " HTML editing
 Bundle 'mattn/emmet-vim'
@@ -84,10 +94,6 @@ Bundle 'octol/vim-cpp-enhanced-highlight'
 " This is a fork from https://github.com/flazz/vim-colorschemes
 Bundle 'amilaperera/vim-colorschemes'
 
-" Custom textobjects
-Bundle 'nelstrom/vim-textobj-rubyblock'
-Bundle 'kana/vim-textobj-user'
-
 " Ruby enhancements
 Bundle 'tpope/vim-bundler'
 Bundle 'tpope/vim-rails'
@@ -97,8 +103,8 @@ Bundle 'vim-ruby/vim-ruby'
 
 " snipmate plugin, related dependencies & snippets
 Bundle 'garbas/vim-snipmate'
-Bundle 'tomtom/tlib_vim.git'
-Bundle 'MarcWeber/vim-addon-mw-utils.git'
+Bundle 'tomtom/tlib_vim'
+Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'honza/vim-snippets'
 
 filetype on                         " filetype detection on
@@ -146,7 +152,7 @@ set tags+=../../tags
 
 " Allow '/' in directory paths in Windows {
 if has('win32') || has('win64')
-    set shellslash
+  set shellslash
 endif
 "}
 
@@ -195,16 +201,16 @@ let s:myFavouriteGuiColorScheme     = "xoria256"
 let s:myFavouriteTermColorScheme256 = "wombat256"
 let s:myFavouriteTermColorSchem     = "default"
 if has("gui_running")
-    set background=dark                         " set background dark
-    " colorscheme for GVIM
-    execute "colorscheme " . s:myFavouriteGuiColorScheme
+  set background=dark                         " set background dark
+  " colorscheme for GVIM
+  execute "colorscheme " . s:myFavouriteGuiColorScheme
 elseif (&term == "xterm-256color" || &term == "screen-256color")
-    set background=dark                         " set background dark
-    " colorscheme for VIM if it has xterm-256color
-    execute "colorscheme " . s:myFavouriteTermColorScheme256
+  set background=dark                         " set background dark
+  " colorscheme for VIM if it has xterm-256color
+  execute "colorscheme " . s:myFavouriteTermColorScheme256
 else
-    " sets default colorsheme if neither GVIM nor VIM with xterm-256color
-    execute "colorscheme " . s:myFavouriteTermColorSchem
+  " sets default colorsheme if neither GVIM nor VIM with xterm-256color
+  execute "colorscheme " . s:myFavouriteTermColorSchem
 endif
 
 "--------------------------------------------------------------
@@ -213,23 +219,23 @@ endif
 " Setting Statusline {
 set laststatus=2                                " set status line visible even in single window mode
 if has('iconv')
-    set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P\ 
+  set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P\ 
 else
-    set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P\ 
+  set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P\ 
 endif
 
 function! FencB()
-    let c = matchstr(getline('.'), '.', col('.') - 1)
-    let c = iconv(c, &enc, &fenc)
-    return s:Byte2hex(s:Str2byte(c))
+  let c = matchstr(getline('.'), '.', col('.') - 1)
+  let c = iconv(c, &enc, &fenc)
+  return s:Byte2hex(s:Str2byte(c))
 endfunction
 
 function! s:Str2byte(str)
-    return map(range(len(a:str)), 'char2nr(a:str[v:val])')
+  return map(range(len(a:str)), 'char2nr(a:str[v:val])')
 endfunction
 
 function! s:Byte2hex(bytes)
-    return join(map(copy(a:bytes), 'printf("%02X", v:val)'), '')
+  return join(map(copy(a:bytes), 'printf("%02X", v:val)'), '')
 endfunction
 "}
 
@@ -238,28 +244,28 @@ endfunction
 "--------------------------------------------------------------
 " Set encoding & fileformat settings {
 if has('win32') || has('win64')
-    source $HOME\vimfiles\charencode_plugin\encode.vim              " source the encoding file
-    set encoding=japan
+  source $HOME\vimfiles\charencode_plugin\encode.vim              " source the encoding file
+  set encoding=japan
 else
-    set encoding=utf-8
-    set fileencoding=utf-8
-    set fileformats=unix,dos,mac
-    set fileencodings=ucs-bom,utf-8,euc-jp,cp932,iso-2022-jp,ucs-2le,ucs-2
+  set encoding=utf-8
+  set fileencoding=utf-8
+  set fileformats=unix,dos,mac
+  set fileencodings=ucs-bom,utf-8,euc-jp,cp932,iso-2022-jp,ucs-2le,ucs-2
 endif
 "}
 
 " Display ZenkakuSpace, tabs and trailing spaces {
 if has("syntax")
-    syntax on
-    syn sync fromstart
-    function! ActivateInvisibleIndicator()
-        highlight InvisibleJISX0208Space term=NONE ctermbg=Blue guibg=darkgray gui=NONE
-        syntax match InvisibleJISX0208Space "　" display containedin=ALL
-    endfunction
-    augroup invisible
-        autocmd! invisible
-        autocmd FileType * call ActivateInvisibleIndicator()
-    augroup END
+  syntax on
+  syn sync fromstart
+  function! ActivateInvisibleIndicator()
+    highlight InvisibleJISX0208Space term=NONE ctermbg=Blue guibg=darkgray gui=NONE
+    syntax match InvisibleJISX0208Space "　" display containedin=ALL
+  endfunction
+  augroup invisible
+    autocmd! invisible
+    autocmd FileType * call ActivateInvisibleIndicator()
+  augroup END
 endif
 
 "--------------------------------------------------------------
@@ -273,26 +279,26 @@ set diffopt+=context:3
 " GUI Specific Settings
 "--------------------------------------------------------------
 if has("gui_running")
-" WindowSize {
-    set lines=999
-    set columns=999
-"}
-" GUI options {
-    set guioptions=c                        " use console dialogs
-    set guioptions+=e                       " use gui tabs
-    set guioptions+=m                       " menubar is present
-    set guioptions+=g                       " greyout inactive menuitems
-    set guioptions+=r                       " righthand scrollbar is always present
-    set guioptions+=L                       " for vsplits lefthand scrollbar is present
-    set guioptions+=T                       " include toolbar
-"}
-    set mousehide                           " hide mouse when typing
+  " WindowSize {
+  set lines=999
+  set columns=999
+  "}
+  " GUI options {
+  set guioptions=c                        " use console dialogs
+  set guioptions+=e                       " use gui tabs
+  set guioptions+=m                       " menubar is present
+  set guioptions+=g                       " greyout inactive menuitems
+  set guioptions+=r                       " righthand scrollbar is always present
+  set guioptions+=L                       " for vsplits lefthand scrollbar is present
+  set guioptions+=T                       " include toolbar
+  "}
+  set mousehide                           " hide mouse when typing
 
-    if has("unix")
-        set guifont=Monospace\ 09           " preferred font font for Linux
-    else
-        set guifont=Ms\ Gothic:h10          " preferred font for Windows
-    endif
+  if has("unix")
+    set guifont=Monospace\ 09           " preferred font font for Linux
+  else
+    set guifont=Ms\ Gothic:h10          " preferred font for Windows
+  endif
 endif
 
 "--------------------------------------------------------------
@@ -321,17 +327,6 @@ let Tlist_WinWidth             = 40      " Taglist window 40 columns wide
 " BufferExplorer mappings {
 nnoremap <silent> <F12> :BufExplorer<CR>
 "}
-
-" MiniBufExpl Colors {
-map <Leader>t :TMiniBufExplorer<cr>
-
-hi MBEVisibleActive guifg=#A6DB29 guibg=fg
-hi MBEVisibleChangedActive guifg=#F1266F guibg=fg
-hi MBEVisibleChanged guifg=#F1266F guibg=fg
-hi MBEVisibleNormal guifg=#5DC2D6 guibg=fg
-hi MBEChanged guifg=#CD5907 guibg=fg
-hi MBENormal guifg=#808080 guibg=fg
-" }
 
 " NerdCommenter Settings {
 let g:NERDSpaceDelims       = 1
@@ -388,10 +383,6 @@ let g:SuperTabNoCompleteBefore      = []
 let g:SuperTabNoCompleteAfter       = ['^', ',', ';', ':', '{', '}', '(', ')', '[', ']', '<', '>', '\s']
 "}
 
-" BuffKill Plugin {
-nmap <silent> <Leader>bd :BD<cr>
-" }
-
 " OmniCppComplete {
 let OmniCpp_NamespaceSearch = 1
 let OmniCpp_GlobalScopeSearch = 1
@@ -406,8 +397,13 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 "}
 
-" indent guides {
-let g:indent_guides_guide_size=1
+" Tabularize {
+if exists(":Tabularize")
+  nmap <Leader>a= :Tabularize /=<CR>
+  vmap <Leader>a= :Tabularize /=<CR>
+  nmap <Leader>a: :Tabularize /:\zs<CR>
+  vmap <Leader>a: :Tabularize /:\zs<CR>
+endif
 " }
 
 "--------------------------------------------------------------
@@ -415,60 +411,60 @@ let g:indent_guides_guide_size=1
 "--------------------------------------------------------------
 " Set a nicer foldtext function
 function! MyFoldText()
-    " for now, just don't try if version isn't 7 or higher
-    if v:version < 701
-        return foldtext()
-    endif
-    " clear fold from fillchars to set it up the way we want later
-    let &l:fillchars = substitute(&l:fillchars,',\?fold:.','','gi')
-    let l:numwidth = (v:version < 701 ? 8 : &numberwidth)
-    if &fdm=='diff'
-        let l:linetext=''
-        let l:foldtext='---------- '.(v:foldend-v:foldstart+1).' lines the same ----------'
-        let l:align = winwidth(0)-&foldcolumn-(&nu ? Max(strlen(line('$'))+1, l:numwidth) : 0)
-        let l:align = (l:align / 2) + (strlen(l:foldtext)/2)
-        " note trailing space on next line
-        setlocal fillchars+=fold:\ 
-    elseif !exists('b:foldpat') || b:foldpat==0
-        let l:foldtext = ' '.(v:foldend-v:foldstart).' lines folded'.v:folddashes.'|'
-        let l:endofline = (&textwidth>0 ? &textwidth : 80)
-        let l:linetext = strpart(getline(v:foldstart),0,l:endofline-strlen(l:foldtext))
-        let l:align = l:endofline-strlen(l:linetext)
-        setlocal fillchars+=fold:-
-    elseif b:foldpat==1
-        let l:align = winwidth(0)-&foldcolumn-(&nu ? Max(strlen(line('$'))+1, l:numwidth) : 0)
-        let l:foldtext = ' '.v:folddashes
-        let l:linetext = substitute(getline(v:foldstart),'\s\+$','','')
-        let l:linetext .= ' ---'.(v:foldend-v:foldstart-1).' lines--- '
-        let l:linetext .= substitute(getline(v:foldend),'^\s\+','','')
-        let l:linetext = strpart(l:linetext,0,l:align-strlen(l:foldtext))
-        let l:align -= strlen(l:linetext)
-        setlocal fillchars+=fold:-
-    endif
-    return printf('%s%*s', l:linetext, l:align, l:foldtext)
+  " for now, just don't try if version isn't 7 or higher
+  if v:version < 701
+    return foldtext()
+  endif
+  " clear fold from fillchars to set it up the way we want later
+  let &l:fillchars = substitute(&l:fillchars,',\?fold:.','','gi')
+  let l:numwidth = (v:version < 701 ? 8 : &numberwidth)
+  if &fdm=='diff'
+    let l:linetext=''
+    let l:foldtext='---------- '.(v:foldend-v:foldstart+1).' lines the same ----------'
+    let l:align = winwidth(0)-&foldcolumn-(&nu ? Max(strlen(line('$'))+1, l:numwidth) : 0)
+    let l:align = (l:align / 2) + (strlen(l:foldtext)/2)
+    " note trailing space on next line
+    setlocal fillchars+=fold:\ 
+  elseif !exists('b:foldpat') || b:foldpat==0
+    let l:foldtext = ' '.(v:foldend-v:foldstart).' lines folded'.v:folddashes.'|'
+    let l:endofline = (&textwidth>0 ? &textwidth : 80)
+    let l:linetext = strpart(getline(v:foldstart),0,l:endofline-strlen(l:foldtext))
+    let l:align = l:endofline-strlen(l:linetext)
+    setlocal fillchars+=fold:-
+  elseif b:foldpat==1
+    let l:align = winwidth(0)-&foldcolumn-(&nu ? Max(strlen(line('$'))+1, l:numwidth) : 0)
+    let l:foldtext = ' '.v:folddashes
+    let l:linetext = substitute(getline(v:foldstart),'\s\+$','','')
+    let l:linetext .= ' ---'.(v:foldend-v:foldstart-1).' lines--- '
+    let l:linetext .= substitute(getline(v:foldend),'^\s\+','','')
+    let l:linetext = strpart(l:linetext,0,l:align-strlen(l:foldtext))
+    let l:align -= strlen(l:linetext)
+    setlocal fillchars+=fold:-
+  endif
+  return printf('%s%*s', l:linetext, l:align, l:foldtext)
 endfunction
 
 " Converts to title case
 function! TitleCase()
-    let modLine = substitute(getline("."), "\\w\\+", "\\u\\0", "g")
-    call setline(line("."), modLine)
+  let modLine = substitute(getline("."), "\\w\\+", "\\u\\0", "g")
+  call setline(line("."), modLine)
 endfunction
 
 " QuickFix window toggling function {
 command! -bang -nargs=? QFix call QFixToggle(<bang>0)
 function! QFixToggle(forced)
-    if exists("g:qfix_win") && a:forced == 0
-        cclose
-    else
-        execute "botright cwindow " . g:jah_Quickfix_Win_Height
-    endif
+  if exists("g:qfix_win") && a:forced == 0
+    cclose
+  else
+    execute "botright cwindow " . g:jah_Quickfix_Win_Height
+  endif
 endfunction
 
 " used to track the quickfix window
 augroup QFixToggle
-    autocmd!
-    autocmd BufWinEnter quickfix let g:qfix_win = bufnr("$")
-    autocmd BufWinLeave * if exists("g:qfix_win") && expand("<abuf>") == g:qfix_win | unlet! g:qfix_win | endif
+  autocmd!
+  autocmd BufWinEnter quickfix let g:qfix_win = bufnr("$")
+  autocmd BufWinLeave * if exists("g:qfix_win") && expand("<abuf>") == g:qfix_win | unlet! g:qfix_win | endif
 augroup END
 
 let g:jah_Quickfix_Win_Height = 10          " setting qfix window height
@@ -476,82 +472,91 @@ let g:jah_Quickfix_Win_Height = 10          " setting qfix window height
 
 " Append modeline after last line in buffer.
 function! AppendModeline()
-    let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d :", &tabstop, &shiftwidth, &textwidth)
-    let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-    call append(line("$"), l:modeline)
+  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d :", &tabstop, &shiftwidth, &textwidth)
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
 endfunction
 
 " Diffs with the saved file
 function! DiffWithFileFromDisk()
-    let filename = expand('%')
-    let diffname = filename . '.fileFromBuffer'
-    exec 'saveas! ' . diffname
-    diffthis
-    vsplit
-    exec 'edit ' . filename
-    diffthis
+  let filename = expand('%')
+  let diffname = filename . '.fileFromBuffer'
+  exec 'saveas! ' . diffname
+  diffthis
+  vsplit
+  exec 'edit ' . filename
+  diffthis
 endfunction
 
 " FileType Settings functions {
 " TextFiles only settings
 function! TextFilesOnlySettings()
-    setlocal tabstop=2
-    setlocal shiftwidth=2
-    setlocal softtabstop=2
-    setlocal foldmethod=indent
+  setlocal tabstop=2
+  setlocal shiftwidth=2
+  setlocal softtabstop=2
+  setlocal foldmethod=indent
 endfunction
 
 " BeckyMails only settings
 function! BeckyMailsOnlySettings()
-    setlocal tabstop=2
-    setlocal shiftwidth=2
-    setlocal softtabstop=2
-    setlocal foldmethod=indent
-    setlocal colorcolumn=75
-    setlocal textwidth=74
+  setlocal tabstop=2
+  setlocal shiftwidth=2
+  setlocal softtabstop=2
+  setlocal foldmethod=indent
+  setlocal colorcolumn=75
+  setlocal textwidth=74
 endfunction
 
 " Shell Files only setlocaltings
 function! SHFilesOnlySettings()
-    setlocal tabstop=4
-    setlocal noexpandtab
+  setlocal tabstop=4
+  setlocal noexpandtab
 endfunction
 
 " C Files only setlocaltings
 function! CFilesOnlySettings()
-    setlocal tabstop=4
-    setlocal expandtab
-    setlocal shiftwidth=4
-    setlocal softtabstop=4
+  setlocal tabstop=4
+  setlocal expandtab
+  setlocal shiftwidth=4
+  setlocal softtabstop=4
 endfunction
 "}
 
 " Ruby Files only setlocaltings
 function! RubyFilesOnlySettings()
-    setlocal tabstop=2
-    setlocal shiftwidth=2
-    setlocal softtabstop=2
-    setlocal foldmethod=indent
+  setlocal tabstop=2
+  setlocal shiftwidth=2
+  setlocal softtabstop=2
+  setlocal foldmethod=indent
 endfunction
 
+" Html Files only setlocaltings
 function! HtmlFilesOnlySettings()
-    setlocal tabstop=2
-    setlocal shiftwidth=2
-    setlocal softtabstop=2
-    setlocal foldmethod=indent
+  setlocal tabstop=2
+  setlocal shiftwidth=2
+  setlocal softtabstop=2
+  setlocal foldmethod=indent
+endfunction
+
+" Vim Files only setlocaltings
+function! VimFilesOnlySettings()
+  setlocal tabstop=2
+  setlocal shiftwidth=2
+  setlocal softtabstop=2
+  setlocal foldmethod=indent
 endfunction
 
 " Return indent (all whitespace at start of a line), converted from
 " tabs to spaces if what = 1, or from spaces to tabs otherwise.
 " When converting to tabs, result has no redundant spaces.
 function! Indenting(indent, what, cols)
-    let spccol = repeat(' ', a:cols)
-    let result = substitute(a:indent, spccol, '\t', 'g')
-    let result = substitute(result, ' \+\ze\t', '', 'g')
-    if a:what == 1
-        let result = substitute(result, '\t', spccol, 'g')
-    endif
-    return result
+  let spccol = repeat(' ', a:cols)
+  let result = substitute(a:indent, spccol, '\t', 'g')
+  let result = substitute(result, ' \+\ze\t', '', 'g')
+  if a:what == 1
+    let result = substitute(result, '\t', spccol, 'g')
+  endif
+  return result
 endfunction
 
 " Convert whitespace used for indenting (before first non-whitespace).
@@ -560,11 +565,11 @@ endfunction
 " The cursor position is restored, but the cursor will be in a different
 " column when the number of characters in the indent of the line is changed.
 function! IndentConvert(line1, line2, what, cols)
-    let savepos = getpos('.')
-    let cols = empty(a:cols) ? &tabstop : a:cols
-    execute a:line1 . ',' . a:line2 . 's/^\s\+/\=Indenting(submatch(0), a:what, cols)/e'
-    call histdel('search', -1)
-    call setpos('.', savepos)
+  let savepos = getpos('.')
+  let cols = empty(a:cols) ? &tabstop : a:cols
+  execute a:line1 . ',' . a:line2 . 's/^\s\+/\=Indenting(submatch(0), a:what, cols)/e'
+  call histdel('search', -1)
+  call setpos('.', savepos)
 endfunction
 command! -nargs=? -range=% Space2Tab call IndentConvert(<line1>,<line2>,0,<q-args>)
 command! -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-args>)
@@ -574,47 +579,53 @@ command! -nargs=? -range=% RetabIndent call IndentConvert(<line1>,<line2>,&et,<q
 " FileTypes
 "--------------------------------------------------------------
 augroup personal_txt_file_settings
-    au!
-    autocmd BufNewFile,BufRead *.txt,*.notes      setlocal filetype=text           " set filetype to TEXT
-    autocmd BufNewFile,BufRead *.txt,*.notes      setlocal syntax=txt              " recognize *.txt files as txt files
-    autocmd BufNewFile,BufRead *.txt,*.notes      :call TextFilesOnlySettings()    " text files only settins
+  au!
+  autocmd BufNewFile,BufRead *.txt,*.notes      setlocal filetype=text           " set filetype to TEXT
+  autocmd BufNewFile,BufRead *.txt,*.notes      setlocal syntax=txt              " recognize *.txt files as txt files
+  autocmd BufNewFile,BufRead *.txt,*.notes      :call TextFilesOnlySettings()    " text files only settins
 augroup END
 
 augroup personal_bash_file_settings
-    au!
-    autocmd Filetype sh        :call SHFilesOnlySettings()  " bash files only settings
+  au!
+  autocmd Filetype sh        :call SHFilesOnlySettings()  " bash files only settings
 augroup END
 
 augroup personal_c_file_settings
-    au!
-    autocmd BufNewFile,BufRead *.c,*.cpp,*.cxx,*.h      :call CFilesOnlySettings()   " C files only settings
+  au!
+  autocmd BufNewFile,BufRead *.c,*.cpp,*.cxx,*.h      :call CFilesOnlySettings()   " C files only settings
 augroup END
 
 augroup personal_ruby_file_settings
-    au!
-    autocmd BufNewFile,BufRead *.rb,*erb     :call RubyFilesOnlySettings() " Ruby files only settings
-    autocmd Filetype ruby                    :call RubyFilesOnlySettings() " Ruby files only settings
+  au!
+  autocmd BufNewFile,BufRead *.rb,*erb     :call RubyFilesOnlySettings() " Ruby files only settings
+  autocmd Filetype ruby                    :call RubyFilesOnlySettings() " Ruby files only settings
 augroup END
 
 augroup personal_html_file_settings
-    au!
-    autocmd BufNewFile,BufRead *.html     :call HtmlFilesOnlySettings() " Html files only settings
-    autocmd Filetype html                 :call HtmlFilesOnlySettings() " Html files only settings
+  au!
+  autocmd BufNewFile,BufRead *.html     :call HtmlFilesOnlySettings() " Html files only settings
+  autocmd Filetype html                 :call HtmlFilesOnlySettings() " Html files only settings
+augroup END
+
+augroup personal_vim_file_settings
+  au!
+  autocmd BufNewFile,BufRead *.vim     :call VimFilesOnlySettings() " Vim files only settings
+  autocmd Filetype vim                 :call VimFilesOnlySettings() " Vim files only settings
 augroup END
 
 augroup personal_becky_file_settings
-    au!
-    if has("win32") || has("win64")
-        autocmd BufNewFile,BufRead *.tmp     setlocal filetype=beckymail    " set filetype to BECKYMAIL
-        autocmd BufNewFile,BufRead *.tmp     setlocal syntax=beckymail      " recoginize .tmp files as Beckymails
-        autocmd BufNewFile,BufRead *.tmp     :call BeckyMailsOnlySettings() " beckymail files only settings
-    endif
+  au!
+  if has("win32") || has("win64")
+    autocmd BufNewFile,BufRead *.tmp     setlocal filetype=beckymail    " set filetype to BECKYMAIL
+    autocmd BufNewFile,BufRead *.tmp     setlocal syntax=beckymail      " recoginize .tmp files as Beckymails
+    autocmd BufNewFile,BufRead *.tmp     :call BeckyMailsOnlySettings() " beckymail files only settings
+  endif
 augroup END
 
 augroup personal_qmake_file_settings
-    au!
-    autocmd BufNewFile,BufRead *.pro setlocal filetype=QT_PROJECT_FILE
-    autocmd BufNewFile,BufRead *.pro setlocal syntax=make
+  au!
+  autocmd BufNewFile,BufRead *.pro setlocal filetype=QT_PROJECT_FILE
+  autocmd BufNewFile,BufRead *.pro setlocal syntax=make
 augroup END
 
 "--------------------------------------------------------------
@@ -710,5 +721,5 @@ nmap <silent> <Leader>ta <ESC>:Space2Tab<CR>
 nmap <silent> <Leader>sp <ESC>:Tab2Space<CR>
 " }
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim: set ts=4 sw=4 tw=100 :
+" vim: set ts=2 sw=2 tw=100 :
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
