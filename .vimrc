@@ -398,12 +398,10 @@ set completeopt=menuone,menu,longest,preview
 "}
 
 " Tabularize {
-if exists(":Tabularize")
-  nmap <Leader>a= :Tabularize /=<CR>
-  vmap <Leader>a= :Tabularize /=<CR>
-  nmap <Leader>a: :Tabularize /:\zs<CR>
-  vmap <Leader>a: :Tabularize /:\zs<CR>
-endif
+nmap <silent> <Leader>a= :Tabularize /=<CR>
+vmap <silent> <Leader>a= :Tabularize /=<CR>
+nmap <silent> <Leader>a: :Tabularize /:\zs<CR>
+vmap <silent> <Leader>a: :Tabularize /:\zs<CR>
 " }
 
 "--------------------------------------------------------------
