@@ -486,64 +486,6 @@ function! DiffWithFileFromDisk()
   diffthis
 endfunction
 
-" FileType Settings functions {
-" TextFiles only settings
-function! TextFilesOnlySettings()
-  setlocal tabstop=2
-  setlocal shiftwidth=2
-  setlocal softtabstop=2
-  setlocal foldmethod=indent
-endfunction
-
-" BeckyMails only settings
-function! BeckyMailsOnlySettings()
-  setlocal tabstop=2
-  setlocal shiftwidth=2
-  setlocal softtabstop=2
-  setlocal foldmethod=indent
-  setlocal colorcolumn=75
-  setlocal textwidth=74
-endfunction
-
-" Shell Files only setlocaltings
-function! SHFilesOnlySettings()
-  setlocal tabstop=4
-  setlocal noexpandtab
-endfunction
-
-" C Files only setlocaltings
-function! CFilesOnlySettings()
-  setlocal tabstop=4
-  setlocal expandtab
-  setlocal shiftwidth=4
-  setlocal softtabstop=4
-endfunction
-"}
-
-" Ruby Files only setlocaltings
-function! RubyFilesOnlySettings()
-  setlocal tabstop=2
-  setlocal shiftwidth=2
-  setlocal softtabstop=2
-  setlocal foldmethod=indent
-endfunction
-
-" Html Files only setlocaltings
-function! HtmlFilesOnlySettings()
-  setlocal tabstop=2
-  setlocal shiftwidth=2
-  setlocal softtabstop=2
-  setlocal foldmethod=indent
-endfunction
-
-" Vim Files only setlocaltings
-function! VimFilesOnlySettings()
-  setlocal tabstop=2
-  setlocal shiftwidth=2
-  setlocal softtabstop=2
-  setlocal foldmethod=indent
-endfunction
-
 " Return indent (all whitespace at start of a line), converted from
 " tabs to spaces if what = 1, or from spaces to tabs otherwise.
 " When converting to tabs, result has no redundant spaces.
@@ -574,56 +516,25 @@ command! -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-arg
 command! -nargs=? -range=% RetabIndent call IndentConvert(<line1>,<line2>,&et,<q-args>)
 
 "--------------------------------------------------------------
-" FileTypes
+" file type specific settings
 "--------------------------------------------------------------
-augroup personal_txt_file_settings
-  au!
-  autocmd BufNewFile,BufRead *.txt,*.notes      setlocal filetype=text           " set filetype to TEXT
-  autocmd BufNewFile,BufRead *.txt,*.notes      setlocal syntax=txt              " recognize *.txt files as txt files
-  autocmd BufNewFile,BufRead *.txt,*.notes      :call TextFilesOnlySettings()    " text files only settins
+augroup FTCheck
+  autocmd!
+  autocmd BufNewFile,BufRead *.text,*.notes,*.memo setl ft=txt
 augroup END
 
-augroup personal_bash_file_settings
-  au!
-  autocmd Filetype sh        :call SHFilesOnlySettings()  " bash files only settings
-augroup END
+augroup FTOptions
+  autocmd!
+  autocmd Filetype sh,zsh,csh,tcsh setl ts=4 noet
+  autocmd Filetype ruby,eruby      setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype html,css        setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype vim             setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype txt,mail        setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype gitcommit       setl spell
 
-augroup personal_c_file_settings
-  au!
-  autocmd BufNewFile,BufRead *.c,*.cpp,*.cxx,*.h      :call CFilesOnlySettings()   " C files only settings
-augroup END
+  autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4 noet
 
-augroup personal_ruby_file_settings
-  au!
-  autocmd BufNewFile,BufRead *.rb,*erb     :call RubyFilesOnlySettings() " Ruby files only settings
-  autocmd Filetype ruby                    :call RubyFilesOnlySettings() " Ruby files only settings
-augroup END
-
-augroup personal_html_file_settings
-  au!
-  autocmd BufNewFile,BufRead *.html     :call HtmlFilesOnlySettings() " Html files only settings
-  autocmd Filetype html                 :call HtmlFilesOnlySettings() " Html files only settings
-augroup END
-
-augroup personal_vim_file_settings
-  au!
-  autocmd BufNewFile,BufRead *.vim     :call VimFilesOnlySettings() " Vim files only settings
-  autocmd Filetype vim                 :call VimFilesOnlySettings() " Vim files only settings
-augroup END
-
-augroup personal_becky_file_settings
-  au!
-  if has("win32") || has("win64")
-    autocmd BufNewFile,BufRead *.tmp     setlocal filetype=beckymail    " set filetype to BECKYMAIL
-    autocmd BufNewFile,BufRead *.tmp     setlocal syntax=beckymail      " recoginize .tmp files as Beckymails
-    autocmd BufNewFile,BufRead *.tmp     :call BeckyMailsOnlySettings() " beckymail files only settings
-  endif
-augroup END
-
-augroup personal_qmake_file_settings
-  au!
-  autocmd BufNewFile,BufRead *.pro setlocal filetype=QT_PROJECT_FILE
-  autocmd BufNewFile,BufRead *.pro setlocal syntax=make
+  autocmd BufNewFile,BufRead *.pro setl ft=QT_PROJECT_FILE syn=make
 augroup END
 
 "--------------------------------------------------------------
