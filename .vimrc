@@ -197,21 +197,19 @@ set display=lastline                        " show as much as possible of the la
 
 
 " ColorScheme {
-let s:myFavouriteGuiColorScheme     = "xoria256"
-let s:myFavouriteTermColorScheme256 = "wombat256"
-let s:myFavouriteTermColorSchem     = "default"
+let s:myFavouriteGuiColorScheme  = "xoria256"
+let s:myFavourite256ColorScheme  = "wombat256"
+let s:myFavouriteTermColorScheme = "default"
+
+set background=dark
 if has("gui_running")
-  set background=dark                         " set background dark
-  " colorscheme for GVIM
   execute "colorscheme " . s:myFavouriteGuiColorScheme
 elseif (&term == "xterm-256color" || &term == "screen-256color")
-  set background=dark                         " set background dark
-  " colorscheme for VIM if it has xterm-256color
-  execute "colorscheme " . s:myFavouriteTermColorScheme256
+  execute "colorscheme " . s:myFavourite256ColorScheme
 else
-  " sets default colorsheme if neither GVIM nor VIM with xterm-256color
-  execute "colorscheme " . s:myFavouriteTermColorSchem
+  execute "colorscheme " . s:myFavouriteTermColorScheme
 endif
+"}
 
 "--------------------------------------------------------------
 " StatusLine Settings
@@ -284,20 +282,20 @@ if has("gui_running")
   set columns=999
   "}
   " GUI options {
-  set guioptions=c                        " use console dialogs
-  set guioptions+=e                       " use gui tabs
-  set guioptions+=m                       " menubar is present
-  set guioptions+=g                       " greyout inactive menuitems
-  set guioptions+=r                       " righthand scrollbar is always present
-  set guioptions+=L                       " for vsplits lefthand scrollbar is present
-  set guioptions+=T                       " include toolbar
+  set guioptions=c                " use console dialogs
+  set guioptions+=e               " use gui tabs
+  set guioptions+=m               " menubar is present
+  set guioptions+=g               " greyout inactive menuitems
+  set guioptions+=r               " righthand scrollbar is always present
+  set guioptions+=L               " for vsplits lefthand scrollbar is present
+  set guioptions+=T               " include toolbar
   "}
-  set mousehide                           " hide mouse when typing
+  set mousehide                   " hide mouse when typing
 
   if has("unix")
-    set guifont=Monospace\ 09           " preferred font font for Linux
+    set guifont=Monospace\ 09     " preferred font font for Linux
   else
-    set guifont=Ms\ Gothic:h10          " preferred font for Windows
+    set guifont=Ms\ Gothic:h10    " preferred font for Windows
   endif
 endif
 
@@ -345,7 +343,7 @@ nnoremap <silent> <C-CR>   :MRU<CR>
 "}
 
 " AutoCompletionPopup {
-let g:acp_enableAtStartup = 0                       " disable acp at startup
+let g:acp_enableAtStartup = 0 " disable acp at startup
 nnoremap <silent> <Leader>ae      :AcpEnable<CR>
 nnoremap <silent> <Leader>ad      :AcpDisable<CR>
 "}
