@@ -421,9 +421,6 @@ function tmux_start()
 				# if a $session_name named tmux session doesn't exist,
 				# then create a new session
 				tmux new-session -s "$session_name" -d # first create in detached mode
-
-				_check_if_command_exists $archey_cmd && tmux send-keys -t "$session_name" "$archey_cmd" C-m
-
 				tmux attach-session # attach the session
 			fi
 		fi
@@ -526,4 +523,15 @@ function sync_orig_with_config()
 function ghc()
 {
 	git clone https://github.com/"${1}"
+}
+
+function config_vim()
+{
+	./configure --prefix=/usr/local \
+	--enable-gui=auto \
+	--enable-multibyte \
+	--enable-pythoninterp=yes \
+	--enable-rubyinterp=yes \
+	--enable-perlinterp=yes \
+	--with-features=huge
 }

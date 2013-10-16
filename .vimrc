@@ -40,6 +40,7 @@ Bundle 'vim-scripts/AutoComplPop'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'vim-scripts/EasyGrep'
 Bundle 'vim-scripts/FuzzyFinder'
+Bundle 'wincent/Command-T'
 Bundle 'vim-scripts/VisIncr'
 Bundle 'vim-scripts/ZoomWin'
 Bundle 'vim-scripts/highlight.vim'
@@ -502,7 +503,6 @@ autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
 " Fast editing of the vim, tmux configuration files
 map <Leader>v :e! $HOME/.vimrc<CR>
 map <Leader>vg :e! $HOME/.gvimrc<CR>
-map <Leader>t :e! $HOME/.tmux.conf<CR>
 " Fast saving of a file
 nmap <Leader>w :w!<CR><CR>
 " nohlsearch, after a search
