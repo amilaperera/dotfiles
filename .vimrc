@@ -7,21 +7,20 @@
 "--------------------------------------------------------------
 " General
 "--------------------------------------------------------------
-set nocompatible                    " gets out of vi compatible mode
-set noexrc                          " don't use a local version of .(g)vimrc
-set hidden                          " hide unsaved buffers
-set autochdir                       " changes to the directory containing the file which was opened or selected
-set autowriteall                    " writes the contents of the file when moving to another file
-set autoread                        " read automatically when a file is changed
-set backspace=indent,eol,start      " backspace more flexible
-set mouse=n                         " use mouse in normal mode
-set noerrorbells                    " no error bells
-set novisualbell                    " no visual bells
-set visualbell t_vb=                " no beep, no flash NOTE: for some reason this has tobe set in .gvimrc too
+set nocompatible               " gets out of vi compatible mode
+set noexrc                     " don't use a local version of .(g)vimrc
+set hidden                     " hide unsaved buffers
+set autochdir                  " changes to the directory containing the file which was opened or selected
+set autowriteall               " writes the contents of the file when moving to another file
+set autoread                   " read automatically when a file is changed
+set backspace=indent,eol,start " backspace more flexible
+set mouse=n                    " use mouse in normal mode
+set noerrorbells               " no error bells
+set novisualbell               " no visual bells
+set visualbell t_vb=           " no beep, no flash NOTE: for some reason this has tobe set in .gvimrc too
+set noswapfile                 " no swap files
 
-set noswapfile                      " no swap files
-
-let mapleader = ","                 " set mapleader to ,
+let mapleader = "," " set mapleader to ,
 
 filetype off
 call pathogen#infect()
@@ -107,26 +106,26 @@ Bundle 'tomtom/tlib_vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'honza/vim-snippets'
 
-filetype on                         " filetype detection on
-filetype plugin on                  " filetype plugin on
-filetype indent on                  " filetype indent on
+filetype on               " filetype detection on
+filetype plugin on        " filetype plugin on
+filetype indent on        " filetype indent on
 
-syntax on                           " always syntax on
+syntax on                 " always syntax on
 
-set autoindent                      " auto-indent on
-set foldenable                      " enable fold functionality
-set foldmethod=syntax               " foldmethod to syntax
-set foldtext=MyFoldText()           " custom fold text
+set autoindent            " auto-indent on
+set foldenable            " enable fold functionality
+set foldmethod=syntax     " foldmethod to syntax
+set foldtext=MyFoldText() " custom fold text
 
-set wildmenu                        " command line completion wildmenu
-set wildmode=full                   " completes till longest common string
-" use all keys to wrap to the previous/next line {
-set whichwrap=b,s                   " <BS>, <Space>
-set whichwrap+=<,>                  " <Left, Right> Normal & Visual
-set whichwrap+=~                    " ~
-set whichwrap+=[,]                  " <Left, Right> Insert & Replace
-"}
-" Ignore below when file name completion {
+set wildmenu              " command line completion wildmenu
+set wildmode=full         " completes till longest common string
+
+set whichwrap=b,s         " <BS>, <Space>
+set whichwrap+=<,>        " <Left, Right> Normal & Visual
+set whichwrap+=~          " ~
+set whichwrap+=[,]        " <Left, Right> Insert & Replace
+
+" Ignore below when file name completion
 set wildignore=*.o
 set wildignore+=*.obj
 set wildignore+=*.a
@@ -140,9 +139,8 @@ set wildignore+=*.dpkg
 set wildignore+=*.rpm
 set wildignore+=*.pdf
 set wildignore+=*.chm
-"}
 
-set history=1000                     " 1000 entries are stored
+set history=1000 " 1000 entries are stored
 
 " Set possible locations for the tags file {
 set tags=./tags
@@ -159,41 +157,43 @@ endif
 "--------------------------------------------------------------
 " UI Settings
 "--------------------------------------------------------------
-set list                                    " strings to be used in list mode
-set listchars=tab:\|.,trail:-               " strings to be used in list mode
+set list                      " strings to be used in list mode
+set listchars=tab:\|.,trail:- " strings to be used in list mode
 
-set tabstop=4                               " number of spaces that a tab counts for
-set shiftwidth=4                            " number of spaces to be used in each step of indent
-set softtabstop=4                           " number of spaces that a tab counts for while editing
-set expandtab                               " use spaces to insert a tab
+set tabstop=4                 " number of spaces that a tab counts for
+set shiftwidth=4              " number of spaces to be used in each step of indent
+set softtabstop=4             " number of spaces that a tab counts for while editing
+set expandtab                 " use spaces to insert a tab
 
 set cino=:0
 set cino=l1
 
-set nocursorline                            " display nocursorline - window redraw is slow
-set nocursorcolumn                          " display nocursorcolumn - window redraw is slow
+set nocursorline              " display nocursorline - window redraw is slow
+set nocursorcolumn            " display nocursorcolumn - window redraw is slow
 
-set nonumber                                " show line numbers
-set numberwidth=6                           " safe upto 999999
+set nonumber                  " show line numbers
+set numberwidth=6             " safe upto 999999
 
-set hlsearch                                " highlight searched phrases
-set incsearch                               " highlight as you type your search phrase
-set ignorecase                              " if caps are included in search string go case sensitive
-set magic                                   " keeps the magic option to its default value for maximum portability
+set hlsearch                  " highlight searched phrases
+set incsearch                 " highlight as you type your search phrase
+set ignorecase                " if caps are included in search string go case sensitive
+set magic                     " keeps the magic option to its default value for maximum portability
 
-set scrolloff=5                             " keeps 5 lines for scope when scrolling
-set matchtime=5                             " tenth of milliseconds to show the matching paren
-set lazyredraw                              " don't redraw screen while typing macros
-set nostartofline                           " leave my cursor where it was
-set showcmd                                 " show the command being typed
-set cmdheight=1                             " set command height to 1
-set report=0                                " always report the number of lines changed
-set ruler                                   " always shows the current position bottom the screen
+set scrolloff=5               " keeps 5 lines for scope when scrolling
+set matchtime=5               " tenth of milliseconds to show the matching paren
+set lazyredraw                " don't redraw screen while typing macros
+set nostartofline             " leave my cursor where it was
+set showcmd                   " show the command being typed
+set cmdheight=1               " set command height to 1
+set report=0                  " always report the number of lines changed
+set ruler                     " always shows the current position bottom the screen
 
-set textwidth=100                           " maximum width of the text that is being inserted
+set textwidth=100             " maximum width of the text that is being inserted
 
-set title                                   " display title
-set display=lastline                        " show as much as possible of the last line
+set title                     " display title
+set display=lastline          " show as much as possible of the last line
+
+set pastetoggle=<F2>          " toggle paste mode
 
 
 " ColorScheme {
@@ -215,7 +215,7 @@ endif
 " StatusLine Settings
 "--------------------------------------------------------------
 " Setting Statusline {
-set laststatus=2                                " set status line visible even in single window mode
+set laststatus=2 " set status line visible even in single window mode
 if has('iconv')
   set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P\ 
 else
@@ -242,7 +242,7 @@ endfunction
 "--------------------------------------------------------------
 " Set encoding & fileformat settings {
 if has('win32') || has('win64')
-  source $HOME\vimfiles\charencode_plugin\encode.vim              " source the encoding file
+  source $HOME\vimfiles\charencode_plugin\encode.vim " source the encoding file
   set encoding=japan
 else
   set encoding=utf-8
@@ -282,29 +282,29 @@ if has("gui_running")
   set columns=999
   "}
   " GUI options {
-  set guioptions=c                " use console dialogs
-  set guioptions+=e               " use gui tabs
-  set guioptions+=m               " menubar is present
-  set guioptions+=g               " greyout inactive menuitems
-  set guioptions+=r               " righthand scrollbar is always present
-  set guioptions+=L               " for vsplits lefthand scrollbar is present
-  set guioptions+=T               " include toolbar
-  "}
-  set mousehide                   " hide mouse when typing
+  set guioptions=c             " use console dialogs
+  set guioptions+=e            " use gui tabs
+  set guioptions+=m            " menubar is present
+  set guioptions+=g            " greyout inactive menuitems
+  set guioptions+=r            " righthand scrollbar is always present
+  set guioptions+=L            " for vsplits lefthand scrollbar is present
+  set guioptions+=T            " include toolbar
+                               " }
+  set mousehide                " hide mouse when typing
 
   if has("unix")
-    set guifont=Monospace\ 09     " preferred font font for Linux
+    set guifont=Monospace\ 09  " preferred font font for Linux
   else
-    set guifont=Ms\ Gothic:h10    " preferred font for Windows
+    set guifont=Ms\ Gothic:h10 " preferred font for Windows
   endif
 endif
 
 "--------------------------------------------------------------
 " Dictionary & Spell Checking
 "- -------------------------------------------------------------
-set spelllang=en                            " set spell language to English
-set nospell                                 " no spell checking by default
-set dictionary+=/usr/share/dict/words       " set the dictionary file
+set spelllang=en                      " set spell language to English
+set nospell                           " no spell checking by default
+set dictionary+=/usr/share/dict/words " set the dictionary file
 
 "--------------------------------------------------------------
 " Settings related to external plugins
@@ -370,14 +370,14 @@ let g:SuperTabNoCompleteAfter       = ['^', ',', ';', ':', '{', '}', '(', ')', '
 "}
 
 " OmniCppComplete {
-let OmniCpp_NamespaceSearch = 1
-let OmniCpp_GlobalScopeSearch = 1
-let OmniCpp_ShowAccess = 1
+let OmniCpp_NamespaceSearch     = 1
+let OmniCpp_GlobalScopeSearch   = 1
+let OmniCpp_ShowAccess          = 1
 let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
-let OmniCpp_MayCompleteDot = 1 " autocomplete after .
-let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
-let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
-let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+let OmniCpp_MayCompleteDot      = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow    = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope    = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces   = ["std", "_GLIBCXX_STD"]
 " automatically open and close the popup menu / preview window
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
@@ -456,7 +456,7 @@ augroup QFixToggle
   autocmd BufWinLeave * if exists("g:qfix_win") && expand("<abuf>") == g:qfix_win | unlet! g:qfix_win | endif
 augroup END
 
-let g:jah_Quickfix_Win_Height = 10          " setting qfix window height
+let g:jah_Quickfix_Win_Height = 10 " setting qfix window height
 "}
 
 " Append modeline after last line in buffer.
@@ -541,64 +541,45 @@ augroup END
 "--------------------------------------------------------------
 " Personal Mappings
 "--------------------------------------------------------------
-" Fast saving {
-nmap <Leader>w :w!<CR><CR>
-" }
-" Fast editing of the .vimrc/.gvimrc {
-map <Leader>v :e! $HOME/.vimrc<CR>
-map <Leader>vg :e! $HOME/.gvimrc<CR>
-
-map <Leader>t :e! $HOME/.tmux.conf<CR>
-" }
-" When .vimrc/.gvimrc is edited, reload it {
+" When .vimrc/.gvimrc is edited, reload it
 autocmd! BufWritePost .vimrc source $HOME/.vimrc
 autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
-" }
-" nohlsearch, after a search {
+" Fast editing of the vim, tmux configuration files
+map <Leader>v :e! $HOME/.vimrc<CR>
+map <Leader>vg :e! $HOME/.gvimrc<CR>
+map <Leader>t :e! $HOME/.tmux.conf<CR>
+" Fast saving of a file
+nmap <Leader>w :w!<CR><CR>
+" nohlsearch, after a search
 nnoremap <silent> <Space> :nohlsearch<CR>
-"}
-
-" retain visual selection after indentation {
+" retain visual selection after indentation
 vnoremap > >gv
 vnoremap < <gv
-" }
-
-" vimgrep  {
+" vimgrep
 " Displays a vimgrep command template
 map <Leader>g :vimgrep // ../**/*.<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 " Search the current file for the word under the cursor and display matches
 nmap <silent> <Leader>gw :vimgrep /<C-r><C-w>/ %<CR>:cclose<CR>:cwindow<CR><C-W>J:nohlsearch<CR>
-" }
-" force encoding conversion {
+" force encoding conversion
 map <silent> <Leader>e :e! ++enc=euc-jp<CR>
 map <silent> <Leader>u :e! ++enc=utf-8<CR>
-" }
-
-" changes directory to the directory of the current buffer {
+" changes directory to the directory of the current buffer
 nmap <silent> <Leader>cd :lcd %:h<CR>:pwd<CR>
-"}
-
-" Heading {
+" Heading
 noremap <silent> <Leader>h1 yyp^v$r=
 noremap <silent> <Leader>h2 yyp^v$r-
 noremap <silent> <Leader>he <ESC>070i=<ESC>
 noremap <silent> <Leader>hh <ESC>070i-<ESC>
 noremap <silent> <Leader>hs <ESC>070i*<ESC>
-"}
-
-" Window closing commands {
-" Close this window {
+" Window closing commands
+" Close this window
 noremap <silent> <Leader>clw :close<CR>
-"}
-" Close the other window {
+" Close the other window
 noremap <silent> <Leader>clj :wincmd j<CR>:close<CR>
 noremap <silent> <Leader>clk :wincmd k<CR>:close<CR>
 noremap <silent> <Leader>clh :wincmd h<CR>:close<CR>
 noremap <silent> <Leader>cll :wincmd l<CR>:close<CR>
-"}
-"}
-
-" Useful Digraphs {
+" Useful Digraphs
 " diamond(◆)
 inoremap <silent> <C-l><C-d> <C-k>Db
 " triangle(▲)
@@ -611,25 +592,19 @@ inoremap <silent> <C-l><C-s> <C-k>*2
 inoremap <silent> <C-l><C-a> <C-k>a*
 " beta(β)
 inoremap <silent> <C-l><C-b> <C-k>b*
-" }
 
 "--------------------------------------------------------------
 " Mappings for functions
 "--------------------------------------------------------------
-" QuickFixWindow Toggle {
+" QuickFixWindow Toggle
 nmap <silent> <Leader>q <ESC>:QFix<CR>
-"}
-
-" Append a modeline {
+" Append a modeline
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
-"}
-" Diffs with the original file from disk {
+" Diffs with the original file from disk
 nnoremap <silent> <F7>   :call DiffWithFileFromDisk()<CR>
-"}
-" Space-Tab conversion {
+" Space-Tab conversion
 nmap <silent> <Leader>ta <ESC>:Space2Tab<CR>
 nmap <silent> <Leader>sp <ESC>:Tab2Space<CR>
-" }
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim: set ts=2 sw=2 tw=100 :
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
