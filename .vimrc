@@ -64,6 +64,10 @@ Bundle 'godlygeek/tabular'
 Bundle 'tmhedberg/matchit'
 Bundle 'Raimondi/delimitMate'
 Bundle 'maxbrunsfeld/vim-yankstack'
+" using the updated version of bufkill plugin
+" since the original vim-script repository is not yet
+" updated, get the fork it and updated it
+Bundle 'amilaperera/bufkill.vim'
 
 " General development related
 Bundle 'vim-scripts/DoxygenToolkit.vim'
@@ -115,7 +119,7 @@ syntax on                 " always syntax on
 set autoindent            " auto-indent on
 set foldenable            " enable fold functionality
 set foldmethod=syntax     " foldmethod to syntax
-set foldtext=MyFoldText() " custom fold text
+set foldtext=NeatFoldText()
 
 set wildmenu              " command line completion wildmenu
 set wildmode=full         " completes till longest common string
@@ -142,17 +146,15 @@ set wildignore+=*.chm
 
 set history=1000 " 1000 entries are stored
 
-" Set possible locations for the tags file {
+" Set possible locations for the tags file
 set tags=./tags
 set tags+=../tags
 set tags+=../../tags
-"}
 
-" Allow '/' in directory paths in Windows {
+" Allow '/' in directory paths in Windows
 if has('win32') || has('win64')
   set shellslash
 endif
-"}
 
 "--------------------------------------------------------------
 " UI Settings
@@ -196,7 +198,7 @@ set display=lastline          " show as much as possible of the last line
 set pastetoggle=<F2>          " toggle paste mode
 
 
-" ColorScheme {
+" ColorScheme
 let s:myFavouriteGuiColorScheme  = "xoria256"
 let s:myFavourite256ColorScheme  = "wombat256"
 let s:myFavouriteTermColorScheme = "default"
@@ -209,17 +211,16 @@ elseif (&term == "xterm-256color" || &term == "screen-256color")
 else
   execute "colorscheme " . s:myFavouriteTermColorScheme
 endif
-"}
 
 "--------------------------------------------------------------
 " StatusLine Settings
 "--------------------------------------------------------------
-" Setting Statusline {
+" Setting Statusline
 set laststatus=2 " set status line visible even in single window mode
 if has('iconv')
-  set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P\ 
+  set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P
 else
-  set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P\ 
+  set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P
 endif
 
 function! FencB()
@@ -235,12 +236,11 @@ endfunction
 function! s:Byte2hex(bytes)
   return join(map(copy(a:bytes), 'printf("%02X", v:val)'), '')
 endfunction
-"}
 
 "--------------------------------------------------------------
 " Japanese Settings
 "--------------------------------------------------------------
-" Set encoding & fileformat settings {
+" Set encoding & fileformat settings
 if has('win32') || has('win64')
   source $HOME\vimfiles\charencode_plugin\encode.vim " source the encoding file
   set encoding=japan
@@ -250,9 +250,8 @@ else
   set fileformats=unix,dos,mac
   set fileencodings=ucs-bom,utf-8,euc-jp,cp932,iso-2022-jp,ucs-2le,ucs-2
 endif
-"}
 
-" Display ZenkakuSpace, tabs and trailing spaces {
+" Display ZenkakuSpace, tabs and trailing spaces
 if has("syntax")
   syntax on
   syn sync fromstart
@@ -309,7 +308,7 @@ set dictionary+=/usr/share/dict/words " set the dictionary file
 "--------------------------------------------------------------
 " Settings related to external plugins
 "--------------------------------------------------------------
-" TagList Settings {
+" TagList Settings
 map <silent> <right> :Tlist<CR>
 let Tlist_Auto_Open            = 0       " let the tag list open automatically
 let Tlist_Compact_Format       = 1       " show small menu
@@ -320,35 +319,29 @@ let Tlist_File_Fold_Auto_Close = 0       " fold closed other trees
 let Tlist_Sort_Type            = "name"  " order by name
 let Tlist_Use_Right_Window     = 1       " split to the right side of the screen
 let Tlist_WinWidth             = 40      " Taglist window 40 columns wide
-"}
 
-" BufferExplorer mappings {
+" BufferExplorer mappings
 nnoremap <silent> <F12> :BufExplorer<CR>
-"}
 
-" NerdCommenter Settings {
+" NerdCommenter Settings
 let g:NERDSpaceDelims       = 1
 let g:NERDRemoveExtraSpaces = 1
-"}
 
-" Nerdtree settings {
+" Nerdtree settings
 map <silent> <left> :NERDTreeToggle<CR>
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\.git$', '\~$']
-"}
 
-" MRU {
+" MRU
 let MRU_Window_Height = 8
 nnoremap <silent> <C-CR>   :MRU<CR>
-"}
 
-" AutoCompletionPopup {
+" AutoCompletionPopup
 let g:acp_enableAtStartup = 0 " disable acp at startup
 nnoremap <silent> <Leader>ae      :AcpEnable<CR>
 nnoremap <silent> <Leader>ad      :AcpDisable<CR>
-"}
 
-" FuzzyFinder Settings {
+" FuzzyFinder Settings
 let g:fuf_file_exclude      = '\v\~$|\.(o|exe|dll|obj|d|swp)$|/test/data\.|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
 let g:fuf_splitPathMatching = 0
 let g:fuf_maxMenuWidth      = 120
@@ -357,19 +350,16 @@ nmap <silent> <Leader>f  :FufFile<CR>
 nmap <silent> <Leader>fv :FufFile ~/.vim/<CR>
 nmap <silent> <Leader>fb :FufBuffer<CR>
 nmap <silent> <Leader>fd :FufDir<CR>
-"}
 
-" EasyGrep Settings {
+" EasyGrep Settings
 let g:EasyGrepWindowPosition = "botright"
-"}
 
-" SuperTab Settings {
+" SuperTab Settings
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabNoCompleteBefore      = []
 let g:SuperTabNoCompleteAfter       = ['^', ',', ';', ':', '{', '}', '(', ')', '[', ']', '<', '>', '\s']
-"}
 
-" OmniCppComplete {
+" OmniCppComplete
 let OmniCpp_NamespaceSearch     = 1
 let OmniCpp_GlobalScopeSearch   = 1
 let OmniCpp_ShowAccess          = 1
@@ -381,65 +371,39 @@ let OmniCpp_DefaultNamespaces   = ["std", "_GLIBCXX_STD"]
 " automatically open and close the popup menu / preview window
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
-"}
 
-" Tabularize {
+" Tabularize
 nmap <silent> <Leader>a= :Tabularize /=<CR>
 vmap <silent> <Leader>a= :Tabularize /=<CR>
 nmap <silent> <Leader>a: :Tabularize /:\zs<CR>
 vmap <silent> <Leader>a: :Tabularize /:\zs<CR>
 " }
 
-" yankstack {
+" yankstack
 nmap <C-p> <Plug>yankstack_substitute_older_paste
 nmap <C-n> <Plug>yankstack_substitute_newer_paste
+
+" bufkill
+nmap <silent> <Leader>bd :BD<CR>
 " }
 
 "--------------------------------------------------------------
 " Functions
 "--------------------------------------------------------------
-" Set a nicer foldtext function
-function! MyFoldText()
-  " for now, just don't try if version isn't 7 or higher
-  if v:version < 701
-    return foldtext()
-  endif
-  " clear fold from fillchars to set it up the way we want later
-  let &l:fillchars = substitute(&l:fillchars,',\?fold:.','','gi')
-  let l:numwidth = (v:version < 701 ? 8 : &numberwidth)
-  if &fdm=='diff'
-    let l:linetext=''
-    let l:foldtext='---------- '.(v:foldend-v:foldstart+1).' lines the same ----------'
-    let l:align = winwidth(0)-&foldcolumn-(&nu ? Max(strlen(line('$'))+1, l:numwidth) : 0)
-    let l:align = (l:align / 2) + (strlen(l:foldtext)/2)
-    " note trailing space on next line
-    setlocal fillchars+=fold:\ 
-  elseif !exists('b:foldpat') || b:foldpat==0
-    let l:foldtext = ' '.(v:foldend-v:foldstart).' lines folded'.v:folddashes.'|'
-    let l:endofline = (&textwidth>0 ? &textwidth : 80)
-    let l:linetext = strpart(getline(v:foldstart),0,l:endofline-strlen(l:foldtext))
-    let l:align = l:endofline-strlen(l:linetext)
-    setlocal fillchars+=fold:-
-  elseif b:foldpat==1
-    let l:align = winwidth(0)-&foldcolumn-(&nu ? Max(strlen(line('$'))+1, l:numwidth) : 0)
-    let l:foldtext = ' '.v:folddashes
-    let l:linetext = substitute(getline(v:foldstart),'\s\+$','','')
-    let l:linetext .= ' ---'.(v:foldend-v:foldstart-1).' lines--- '
-    let l:linetext .= substitute(getline(v:foldend),'^\s\+','','')
-    let l:linetext = strpart(l:linetext,0,l:align-strlen(l:foldtext))
-    let l:align -= strlen(l:linetext)
-    setlocal fillchars+=fold:-
-  endif
-  return printf('%s%*s', l:linetext, l:align, l:foldtext)
+" Custom fold text
+" taken from http://dhruvasagar.com/2013/03/28/vim-better-foldtext
+function! NeatFoldText()
+  let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+  let lines_count = v:foldend - v:foldstart + 1
+  let lines_count_text = '| ' . printf("%10s", lines_count . ' lines') . ' |'
+  let foldchar = matchstr(&fillchars, 'fold:\zs.')
+  let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
+  let foldtextend = lines_count_text . repeat(foldchar, 8)
+  let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
+  return foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
 endfunction
 
-" Converts to title case
-function! TitleCase()
-  let modLine = substitute(getline("."), "\\w\\+", "\\u\\0", "g")
-  call setline(line("."), modLine)
-endfunction
-
-" QuickFix window toggling function {
+" QuickFix window toggling function
 command! -bang -nargs=? QFix call QFixToggle(<bang>0)
 function! QFixToggle(forced)
   if exists("g:qfix_win") && a:forced == 0
@@ -457,24 +421,12 @@ augroup QFixToggle
 augroup END
 
 let g:jah_Quickfix_Win_Height = 10 " setting qfix window height
-"}
 
 " Append modeline after last line in buffer.
 function! AppendModeline()
   let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d :", &tabstop, &shiftwidth, &textwidth)
   let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
   call append(line("$"), l:modeline)
-endfunction
-
-" Diffs with the saved file
-function! DiffWithFileFromDisk()
-  let filename = expand('%')
-  let diffname = filename . '.fileFromBuffer'
-  exec 'saveas! ' . diffname
-  diffthis
-  vsplit
-  exec 'edit ' . filename
-  diffthis
 endfunction
 
 " Return indent (all whitespace at start of a line), converted from
@@ -600,8 +552,6 @@ inoremap <silent> <C-l><C-b> <C-k>b*
 nmap <silent> <Leader>q <ESC>:QFix<CR>
 " Append a modeline
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
-" Diffs with the original file from disk
-nnoremap <silent> <F7>   :call DiffWithFileFromDisk()<CR>
 " Space-Tab conversion
 nmap <silent> <Leader>ta <ESC>:Space2Tab<CR>
 nmap <silent> <Leader>sp <ESC>:Tab2Space<CR>
