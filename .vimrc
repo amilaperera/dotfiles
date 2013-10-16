@@ -218,9 +218,9 @@ endif
 " Setting Statusline
 set laststatus=2 " set status line visible even in single window mode
 if has('iconv')
-  set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P
+  set statusline=%<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P\ 
 else
-  set statusline=%<%F\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P
+  set statusline=%<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[TYPE=%Y]\ %{fugitive#statusline()}%=[ASCII=0x%{FencB()}]\ [POS=(%l,%v)]\ [LINES=%L]%8P\ 
 endif
 
 function! FencB()
