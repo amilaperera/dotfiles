@@ -42,7 +42,6 @@ Bundle 'vim-scripts/DrawIt'
 Bundle 'vim-scripts/EasyGrep'
 Bundle 'vim-scripts/FuzzyFinder'
 Bundle 'vim-scripts/VisIncr'
-Bundle 'vim-scripts/YankRing.vim'
 Bundle 'vim-scripts/ZoomWin'
 Bundle 'vim-scripts/highlight.vim'
 Bundle 'vim-scripts/mru.vim'
@@ -65,6 +64,7 @@ Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'godlygeek/tabular'
 Bundle 'tmhedberg/matchit'
 Bundle 'Raimondi/delimitMate'
+Bundle 'maxbrunsfeld/vim-yankstack'
 
 " General development related
 Bundle 'vim-scripts/DoxygenToolkit.vim'
@@ -348,18 +348,6 @@ nnoremap <silent> <Leader>ae      :AcpEnable<CR>
 nnoremap <silent> <Leader>ad      :AcpDisable<CR>
 "}
 
-" YankRing Settings {
-nnoremap <silent> <F11>     :YRShow<CR>
-let g:yankring_max_history  = 100
-let g:yankring_history_dir  = '$HOME'
-let g:yankring_history_file = '.yankring_history'
-
-" Don't let yankring use f, t, /. It doesn't record them properly in macros
-" and that's my most common use. Yankring also blocks macros of macros (it
-" prompts for the macro register), but removing @ doesn't fix that :(
-let g:yankring_zap_keys = 'f F t T / ?'
-"}
-
 " FuzzyFinder Settings {
 let g:fuf_file_exclude      = '\v\~$|\.(o|exe|dll|obj|d|swp)$|/test/data\.|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
 let g:fuf_splitPathMatching = 0
@@ -400,6 +388,11 @@ nmap <silent> <Leader>a= :Tabularize /=<CR>
 vmap <silent> <Leader>a= :Tabularize /=<CR>
 nmap <silent> <Leader>a: :Tabularize /:\zs<CR>
 vmap <silent> <Leader>a: :Tabularize /:\zs<CR>
+" }
+
+" yankstack {
+nmap <C-p> <Plug>yankstack_substitute_older_paste
+nmap <C-n> <Plug>yankstack_substitute_newer_paste
 " }
 
 "--------------------------------------------------------------
