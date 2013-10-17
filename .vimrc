@@ -332,7 +332,7 @@ let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.dpkg$', '\.rpm$', '\.
 
 " MRU
 let MRU_Window_Height = 8
-nnoremap <silent> <C-CR>   :MRU<CR>
+nnoremap <silent> mr   :MRU<CR>
 
 " AutoCompletionPopup
 let g:acp_enableAtStartup = 0 " disable acp at startup
