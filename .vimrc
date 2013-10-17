@@ -498,6 +498,8 @@ autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
 " Fast editing of the vim, tmux configuration files
 map <Leader>v :e! $HOME/.vimrc<CR>
 map <Leader>vg :e! $HOME/.gvimrc<CR>
+" nohlsearch, after a search
+nnoremap <silent><Space> :nohlsearch<CR>
 " retain visual selection after indentation
 vnoremap > >gv
 vnoremap < <gv
