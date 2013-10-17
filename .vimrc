@@ -276,11 +276,10 @@ set diffopt+=context:3
 " GUI Specific Settings
 "--------------------------------------------------------------
 if has("gui_running")
-  " WindowSize {
+  " WindowSize
   set lines=999
   set columns=999
-  "}
-  " GUI options {
+  " GUI options
   set guioptions=c             " use console dialogs
   set guioptions+=e            " use gui tabs
   set guioptions+=m            " menubar is present
@@ -288,7 +287,6 @@ if has("gui_running")
   set guioptions+=r            " righthand scrollbar is always present
   set guioptions+=L            " for vsplits lefthand scrollbar is present
   set guioptions+=T            " include toolbar
-                               " }
   set mousehide                " hide mouse when typing
 
   if has("unix")
@@ -347,7 +345,7 @@ let g:fuf_splitPathMatching = 0
 let g:fuf_maxMenuWidth      = 120
 let g:fuf_timeFormat        = ''
 nmap <silent> <Leader>f  :FufFile<CR>
-nmap <silent> <Leader>fv :FufFile ~/.vim/<CR>
+nmap <silent> <Leader>fv :FufFile ~/.vim/**/<CR>
 nmap <silent> <Leader>fb :FufBuffer<CR>
 nmap <silent> <Leader>fd :FufDir<CR>
 
@@ -377,7 +375,6 @@ nmap <silent> <Leader>a= :Tabularize /=<CR>
 vmap <silent> <Leader>a= :Tabularize /=<CR>
 nmap <silent> <Leader>a: :Tabularize /:\zs<CR>
 vmap <silent> <Leader>a: :Tabularize /:\zs<CR>
-" }
 
 " yankstack
 " load the yankstack plugin immediately
@@ -388,7 +385,6 @@ nmap <C-n> <Plug>yankstack_substitute_newer_paste
 
 " bufkill
 nmap <silent> <Leader>bd :BD<CR>
-" }
 
 "--------------------------------------------------------------
 " Functions
@@ -502,10 +498,6 @@ autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
 " Fast editing of the vim, tmux configuration files
 map <Leader>v :e! $HOME/.vimrc<CR>
 map <Leader>vg :e! $HOME/.gvimrc<CR>
-" Fast saving of a file
-nmap <Leader>w :w!<CR><CR>
-" nohlsearch, after a search
-nnoremap <silent> <Space> :nohlsearch<CR>
 " retain visual selection after indentation
 vnoremap > >gv
 vnoremap < <gv
