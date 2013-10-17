@@ -524,14 +524,3 @@ function ghc()
 {
 	git clone https://github.com/"${1}"
 }
-
-function config_vim()
-{
-	./configure --prefix=/usr/local \
-	--enable-gui=auto \
-	--enable-multibyte \
-	--enable-pythoninterp=yes \
-	--enable-rubyinterp=yes \
-	--enable-perlinterp=yes \
-	--with-features=huge
-}
