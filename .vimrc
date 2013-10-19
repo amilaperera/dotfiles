@@ -19,6 +19,7 @@ set noerrorbells               " no error bells
 set novisualbell               " no visual bells
 set visualbell t_vb=           " no beep, no flash NOTE: for some reason this has tobe set in .gvimrc too
 set noswapfile                 " no swap files
+set helpheight=45              " height of the help window
 
 let mapleader = "," " set mapleader to ,
 
