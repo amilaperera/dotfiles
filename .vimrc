@@ -90,7 +90,6 @@ Bundle 'othree/html5.vim'
 " C/C++ enhancements
 Bundle 'vim-scripts/a.vim'
 Bundle 'jabbourb/omnicpp'
-Bundle 'octol/vim-cpp-enhanced-highlight'
 
 " Colorschemes
 " Using my own colorschemes
