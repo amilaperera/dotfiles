@@ -33,9 +33,10 @@ call vundle#rc()
 
 " let Vundle manage Vundle
 Bundle 'gmarik/vundle'
+" let Vundle manage pathogen
+Bundle 'tpope/vim-pathogen'
 
 " let Vundle manage github repos
-
 " General enhancements
 Bundle 'vim-scripts/AutoComplPop'
 Bundle 'vim-scripts/DrawIt'
