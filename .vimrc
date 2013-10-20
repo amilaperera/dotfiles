@@ -62,7 +62,6 @@ Bundle 'ervandew/supertab'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'godlygeek/tabular'
-Bundle 'tmhedberg/matchit'
 Bundle 'Raimondi/delimitMate'
 Bundle 'maxbrunsfeld/vim-yankstack'
 " using the updated version of bufkill plugin
@@ -113,8 +112,9 @@ Bundle 'honza/vim-snippets'
 filetype on               " filetype detection on
 filetype plugin on        " filetype plugin on
 filetype indent on        " filetype indent on
-
 syntax on                 " always syntax on
+
+runtime macros/matchit.vim " autoload the matchit plugin on startup
 
 set autoindent            " auto-indent on
 set foldenable            " enable fold functionality
