@@ -33,7 +33,10 @@ call vundle#rc()
 
 " let Vundle manage Vundle
 Bundle 'gmarik/vundle'
+
 " let Vundle manage pathogen
+" For a brand new vim installation download vim-pathogen to bundle directory
+" and create a link to $HOME/.vim/bundle/vim-pathogen/autoload in $HOME/.vim
 Bundle 'tpope/vim-pathogen'
 
 " let Vundle manage github repos
