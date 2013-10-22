@@ -225,9 +225,9 @@ endif
 " Setting Statusline
 set laststatus=2 " set status line visible even in single window mode
 if has('iconv')
-  set statusline=[%n]\ %<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[%Y]\ %{fugitive#statusline()}%=(0x%{FencB()})\ [col=%v,\ row=%l/%L]\ %3P\%{Space()}
+  set statusline=\ [%n]\ %<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[%Y]\ %{fugitive#statusline()}%=(0x%{FencB()})\ [col=%v,\ row=%l/%L]\ %3P\%{Space()}
 else
-  set statusline=[%n]\ %<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[%Y]\ %{fugitive#statusline()}%=(0x%B)\ [col=%v,\ row=%l/%L]\ %3P\%{Space()}
+  set statusline=\ [%n]\ %<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[%Y]\ %{fugitive#statusline()}%=(0x%B)\ [col=%v,\ row=%l/%L]\ %3P\%{Space()}
 endif
 
 function! Space()
