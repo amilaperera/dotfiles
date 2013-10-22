@@ -14,14 +14,15 @@ set autochdir                  " changes to the directory containing the file wh
 set autowriteall               " writes the contents of the file when moving to another file
 set autoread                   " read automatically when a file is changed
 set backspace=indent,eol,start " backspace more flexible
-set mouse=n                    " use mouse in normal mode
 set noerrorbells               " no error bells
 set novisualbell               " no visual bells
 set visualbell t_vb=           " no beep, no flash NOTE: for some reason this has tobe set in .gvimrc too
 set noswapfile                 " no swap files
 set helpheight=45              " height of the help window
+set mouse=nvi                  " use mouse in normal, visual & insert modes
+set mousemodel=popup           " right mosue button pops up a menu
 
-let mapleader = "," " set mapleader to ,
+let mapleader = "," " set mapleader to ','
 
 filetype off
 call pathogen#infect()
@@ -128,6 +129,9 @@ set foldtext=NeatFoldText()
 set wildmenu              " command line completion wildmenu
 set wildmode=full         " completes till longest common string
 
+set timeoutlen=1200 " more time for macros
+set ttimeoutlen=50  " makes Esc to work faster
+
 set whichwrap=b,s         " <BS>, <Space>
 set whichwrap+=<,>        " <Left, Right> Normal & Visual
 set whichwrap+=~          " ~
@@ -185,12 +189,12 @@ set incsearch                 " highlight as you type your search phrase
 set ignorecase                " if caps are included in search string go case sensitive
 set magic                     " keeps the magic option to its default value for maximum portability
 
-set scrolloff=5               " keeps 5 lines for scope when scrolling
-set matchtime=5               " tenth of milliseconds to show the matching paren
+set scrolloff=2               " keeps 5 lines for scope when scrolling
+set matchtime=10              " tenth of milliseconds to show the matching paren
 set lazyredraw                " don't redraw screen while typing macros
 set nostartofline             " leave my cursor where it was
 set showcmd                   " show the command being typed
-set cmdheight=1               " set command height to 1
+set cmdheight=2               " set command height to 2
 set report=0                  " always report the number of lines changed
 set ruler                     " always shows the current position bottom the screen
 
@@ -200,7 +204,6 @@ set title                     " display title
 set display=lastline          " show as much as possible of the last line
 
 set pastetoggle=<F2>          " toggle paste mode
-
 
 " ColorScheme
 let s:myFavouriteGuiColorScheme  = "xoria256"
@@ -222,10 +225,14 @@ endif
 " Setting Statusline
 set laststatus=2 " set status line visible even in single window mode
 if has('iconv')
-  set statusline=[%n]\ %<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[%Y]\ %{fugitive#statusline()}%=(0x%{FencB()})\ [col=%v,\ row=%l/%L]\ %3P\ 
+  set statusline=[%n]\ %<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[%Y]\ %{fugitive#statusline()}%=(0x%{FencB()})\ [col=%v,\ row=%l/%L]\ %3P\%{Space()}
 else
-  set statusline=[%n]\ %<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[%Y]\ %{fugitive#statusline()}%=(0x%B)\ [col=%v,\ row=%l/%L]\ %3P\ 
+  set statusline=[%n]\ %<%f\ %m\ %r%h%w%{'['.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']['.&ff.']'}\[%Y]\ %{fugitive#statusline()}%=(0x%B)\ [col=%v,\ row=%l/%L]\ %3P\%{Space()}
 endif
+
+function! Space()
+  return ' '
+endfunction
 
 function! FencB()
   let c = matchstr(getline('.'), '.', col('.') - 1)
@@ -538,12 +545,13 @@ inoremap <silent> <C-l><C-d> <C-k>Db
 inoremap <silent> <C-l><C-t> <C-k>UT
 " circle(●)
 inoremap <silent> <C-l><C-r> <C-k>0M
-" star(★)
-inoremap <silent> <C-l><C-s> <C-k>*2
 " alpha(α)
 inoremap <silent> <C-l><C-a> <C-k>a*
 " beta(β)
 inoremap <silent> <C-l><C-b> <C-k>b*
+
+" merge consecutive empty lines and clean up trailing spaces(from tpope's .vimrc file)
+map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
 
 "--------------------------------------------------------------
 " Mappings for functions
