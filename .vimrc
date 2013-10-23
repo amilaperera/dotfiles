@@ -225,18 +225,21 @@ endif
 " Setting Statusline
 set laststatus=2 " set status line visible even in single window mode
 
-  set statusline=\ [%n]\ %<%f   " buffer number and file name
-  set statusline+=\ %m\ %r%h%w  " modified flag, readonly flag, help buffer flag, preview window flag
-  set statusline+=\ %{'['.&ff.':'.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']'} " file type:file encoding
-  set statusline+=\ [%Y]                           " file type
-  set statusline+=\ %{fugitive#statusline()}       " fugitive prompt
+set statusline=\ [%n]\ %<%f   " buffer number and file name
+set statusline+=\ %m\ %r%h%w  " modified flag, readonly flag, help buffer flag, preview window flag
+set statusline+=\ %{'['.&ff.':'.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']'} " file type:file encoding
+set statusline+=\ [%Y]                           " file type
+set statusline+=\ %{fugitive#statusline()}       " fugitive prompt
+
+set statusline+=%= " right align
+
 if has('iconv')
-  set statusline+=\ %=(0x%{FencB()}) " value under cursor
+  set statusline+=\ (0x%{FencB()}) " value under cursor
 else
-  set statusline+=\ %=(0x%B)         " value under cursor
+  set statusline+=\ (0x%B)         " value under cursor
 endif
-  set statusline+=\ (%v,\ %l/%L) " virtual column number, line/total number of lines
-  set statusline+=\ --%3P--\     " percentage
+set statusline+=\ (%v,\ %l/%L) " virtual column number, line/total number of lines
+set statusline+=\ --%3P--\     " percentage
 
 function! FencB()
   let c = matchstr(getline('.'), '.', col('.') - 1)
