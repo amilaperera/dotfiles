@@ -206,17 +206,18 @@ set display=lastline          " show as much as possible of the last line
 set pastetoggle=<F2>          " toggle paste mode
 
 " ColorScheme
-let s:myFavouriteGuiColorScheme  = "xoria256"
 let s:myFavourite256ColorScheme  = "wombat256"
 let s:myFavouriteTermColorScheme = "default"
 
-set background=dark
-if has("gui_running")
-  execute "colorscheme " . s:myFavouriteGuiColorScheme
-elseif (&term == "xterm-256color" || &term == "screen-256color")
-  execute "colorscheme " . s:myFavourite256ColorScheme
-else
-  execute "colorscheme " . s:myFavouriteTermColorScheme
+" set the colorscheme only for terminal vim
+" for gui vim use the colorscheme in the .gvimrc
+if ! has('gui')
+  set background=dark
+  if (&term == "xterm-256color" || &term == "screen-256color")
+    execute "colorscheme " . s:myFavourite256ColorScheme
+  else
+    execute "colorscheme " . s:myFavouriteTermColorScheme
+  endif
 endif
 
 "--------------------------------------------------------------
@@ -270,7 +271,7 @@ else
 endif
 
 " Display ZenkakuSpace, tabs and trailing spaces
-if has("syntax")
+if has('syntax')
   syntax on
   syn sync fromstart
   function! ActivateInvisibleIndicator()
@@ -289,30 +290,6 @@ endif
 set diffopt=filler
 set diffopt+=vertical
 set diffopt+=context:3
-
-"--------------------------------------------------------------
-" GUI Specific Settings
-"--------------------------------------------------------------
-if has("gui_running")
-  " WindowSize
-  set lines=999
-  set columns=999
-  " GUI options
-  set guioptions=c             " use console dialogs
-  set guioptions+=e            " use gui tabs
-  set guioptions+=m            " menubar is present
-  set guioptions+=g            " greyout inactive menuitems
-  set guioptions+=r            " righthand scrollbar is always present
-  set guioptions+=L            " for vsplits lefthand scrollbar is present
-  set guioptions+=T            " include toolbar
-  set mousehide                " hide mouse when typing
-
-  if has("unix")
-    set guifont=Monospace\ 09  " preferred font font for Linux
-  else
-    set guifont=Ms\ Gothic:h10 " preferred font for Windows
-  endif
-endif
 
 "--------------------------------------------------------------
 " Dictionary & Spell Checking
