@@ -224,15 +224,19 @@ endif
 "--------------------------------------------------------------
 " Setting Statusline
 set laststatus=2 " set status line visible even in single window mode
-if has('iconv')
-  set statusline=\ [%n]\ %<%f\ %m\ %r%h%w%{'['.&ff.':'.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']'}\ \[%Y]\ %{fugitive#statusline()}%=(0x%{FencB()})\ (%v,\ %l/%L)\ %3P\%{Space()}
-else
-  set statusline=\ [%n]\ %<%f\ %m\ %r%h%w%{'['.&ff.':'.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']'}\ \[%Y]\ %{fugitive#statusline()}%=(0x%B)\ (%v,\ %l/%L)\ %3P\%{Space()}
-endif
 
-function! Space()
-  return ' '
-endfunction
+  set statusline=\ [%n]\ %<%f   " buffer number and file name
+  set statusline+=\ %m\ %r%h%w  " modified flag, readonly flag, help buffer flag, preview window flag
+  set statusline+=\ %{'['.&ff.':'.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']'} " file type:file encoding
+  set statusline+=\ [%Y]                           " file type
+  set statusline+=\ %{fugitive#statusline()}       " fugitive prompt
+if has('iconv')
+  set statusline+=\ %=(0x%{FencB()}) " value under cursor
+else
+  set statusline+=\ %=(0x%B)         " value under cursor
+endif
+  set statusline+=\ (%v,\ %l/%L) " virtual column number, line/total number of lines
+  set statusline+=\ --%3P--\     " percentage
 
 function! FencB()
   let c = matchstr(getline('.'), '.', col('.') - 1)
