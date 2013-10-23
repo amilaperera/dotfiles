@@ -480,7 +480,6 @@ augroup FTOptions
   autocmd Filetype gitcommit       setl spell
 
   autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4 noet
-
   autocmd BufNewFile,BufRead *.pro setl ft=QT_PROJECT_FILE syn=make
 augroup END
 
