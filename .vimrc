@@ -546,6 +546,3 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 " Space-Tab conversion
 nmap <silent> <Leader>ta <ESC>:Space2Tab<CR>
 nmap <silent> <Leader>sp <ESC>:Tab2Space<CR>
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim: set ts=2 sw=2 tw=100 :
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

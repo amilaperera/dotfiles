@@ -38,7 +38,3 @@ if has('x11')
 elseif has('gui_win32')
   set guifont=Ms\ Gothic:h10 " preferred font for Windows
 endif
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim: set ts=4 sw=4 tw=100 :
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
