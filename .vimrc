@@ -69,6 +69,7 @@ Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'godlygeek/tabular'
 Bundle 'Raimondi/delimitMate'
 Bundle 'maxbrunsfeld/vim-yankstack'
+Bundle 'mileszs/ack.vim'
 " using the updated version of bufkill plugin
 " since the original vim-script repository is not yet
 " updated, get the fork it and updated it
@@ -416,13 +417,6 @@ augroup END
 
 let g:jah_Quickfix_Win_Height = 10 " setting qfix window height
 
-" Append modeline after last line in buffer.
-function! AppendModeline()
-  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d :", &tabstop, &shiftwidth, &textwidth)
-  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-  call append(line("$"), l:modeline)
-endfunction
-
 " Return indent (all whitespace at start of a line), converted from
 " tabs to spaces if what = 1, or from spaces to tabs otherwise.
 " When converting to tabs, result has no redundant spaces.
@@ -541,8 +535,6 @@ map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
 "--------------------------------------------------------------
 " QuickFixWindow Toggle
 nmap <silent> <Leader>q <ESC>:QFix<CR>
-" Append a modeline
-nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 " Space-Tab conversion
 nmap <silent> <Leader>ta <ESC>:Space2Tab<CR>
 nmap <silent> <Leader>sp <ESC>:Tab2Space<CR>
