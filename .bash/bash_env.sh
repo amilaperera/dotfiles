@@ -152,15 +152,16 @@ fi
 ################################################################################
 ## shell behaviour adjustment with shopt options and set options
 ################################################################################
-shopt -s histappend         # appends rather than overwrite history on exit
-shopt -s cdspell            # correct minor spelling mistakes with cd command
-shopt -s checkwinsize       # update COLUMNS and LINES variables according to window size
-shopt -s cmdhist            # makes multiline commands 1 line in history
-shopt -s extglob            # extended globbing
-shopt -s globstar           # ** globbing operator matches file names and directories recursively
-shopt -s sourcepath         # The source builtin uses $PATH to find the file to be sourced
+shopt -s histappend   # appends rather than overwrite history on exit
+shopt -s cdspell      # correct minor spelling mistakes with cd command
+shopt -s checkwinsize # update COLUMNS and LINES variables according to window size
+shopt -s cmdhist      # makes multiline commands 1 line in history
+shopt -s extglob      # extended globbing
+shopt -s globstar     # ** globbing operator matches file names and directories recursively
+shopt -s sourcepath   # The source builtin uses $PATH to find the file to be sourced
+shopt -s autocd       # a name of a dir is executed as if it were the argument to cd
 
-shopt -u mailwarn           # disable mail mail warning
+shopt -u mailwarn     # disable mail mail warning
 unset MAILCHECK
 
 set -o ignoreeof    # Dont let Ctrl+D exit the shell
