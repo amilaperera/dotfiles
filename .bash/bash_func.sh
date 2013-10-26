@@ -527,3 +527,21 @@ function ghc()
 {
 	git clone https://github.com/"${1}"
 }
+
+##################################################################
+## cd and list
+##################################################################
+function cl()
+{
+	if (( $# == 0 )); then
+		# if no argument is supplied, just ls
+		ls -al --color=auto -F -h
+	else
+		if [[ -d "$1" ]]; then
+			cd "$1"
+			ls -al --color=auto -F -h
+		else
+			echo "bash: cl: '$1': Directory not found"
+		fi
+	fi
+}
