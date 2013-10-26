@@ -503,20 +503,21 @@ function _synchronize_files()
 }
 
 ##################################################################
-## synchronize configuration files in git directory with the
+## synchronize local dotfiles files in git directory with the
 ## originals
 ##################################################################
-function sync_config_with_orig()
+function sync_dotfiles_with_orig()
 {
-	_synchronize_files $HOME $HOME/WORK/src/configs
+	_synchronize_files $HOME $HOME/WORK/src/dotfiles
 }
 
 ##################################################################
-## synchronize original files with those in configs directory
+## synchronize original files with those in local dotfiles
+## directory
 ##################################################################
-function sync_orig_with_config()
+function sync_orig_with_dotfiles()
 {
-	_synchronize_files $HOME/WORK/src/configs $HOME
+	_synchronize_files $HOME/WORK/src/dotfiles $HOME
 }
 
 ##################################################################
