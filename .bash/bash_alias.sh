@@ -1,7 +1,7 @@
 #!/bin/bash
 #############################################################
 # Author: Amila Perera
-# File Name: .bash_alias
+# File Name: bash_alias.sh
 #############################################################
 
 ##ls family aliases
@@ -17,6 +17,7 @@ alias lx="ls $LS_OPTIONS -lXB"       # sort by extension
 alias lm="ls $LS_OPTIONS -Al | more" # pipe through 'more'
 alias lz="ls $LS_OPTIONS -lZ"        # SELinux contexts
 alias ldz="ls $LS_OPTIONS -ldZ"      # SELinux contexts for a directory
+
 alias tree='tree -C'                 # nice alternative to recursive ls
 alias treel='tree -C | less -R'      # nice alternative to recursive ls
 

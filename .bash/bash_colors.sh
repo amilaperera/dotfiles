@@ -1,7 +1,7 @@
 #!/bin/bash
 #############################################################
 # Author: Amila Perera
-# File Name: .bash_colors
+# File Name: bash_colors.sh
 #############################################################
 
 # Attribute codes: 00=none 01=bold 04=underscore 05=blink 07=reverse 08=concealed

@@ -1,7 +1,7 @@
 #!/bin/bash
 #############################################################
 # Author: Amila Perera
-# File Name: .bash_env
+# File Name: bash_env.sh
 #############################################################
 
 # set workinghost

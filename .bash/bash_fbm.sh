@@ -1,7 +1,7 @@
 #!/bin/bash
 #############################################################
 # Author: Amila Perera
-# File Name: .bash_fbm
+# File Name: bash_fbm.sh
 #############################################################
 
 function _fbm_usage()

@@ -1,18 +1,8 @@
 #!/bin/bash
 #############################################################
 # Author: Amila Perera
-# File Name: .bash_comp
-# Last Modified: Thu Feb 28, 2013  10:50PM
+# File Name: bash_comp.sh
 #############################################################
-
-
-#comp_dir=/etc/bash_completion.d
-#if [ -d $comp_dir ]; then
-#	for file in $comp_dir/*; do
-#		# source everything in the directory and ignore the errors
-#		[ -f $file ] && source $file 2>/dev/null
-#	done
-#fi
 
 # general bash completions
 [ -f /etc/bash_completion ] && source /etc/bash_completion
