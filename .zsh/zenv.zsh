@@ -26,8 +26,6 @@ export SVN_EDITOR="$VISUAL"
 export CVS_EDITOR="$VISUAL"
 export FCEDIT="$VISUAL"
 
-export LS_OPTIONS="--color=auto -F -h"
-
 # loads rvm environment
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 

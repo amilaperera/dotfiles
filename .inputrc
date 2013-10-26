@@ -11,6 +11,9 @@ $if Bash
 # ignore case when doing completion
 set completion-ignore-case on
 
+# replaces the word to be completed from the list of possible completions
+TAB: menu-complete
+
 # append "/" to all dirnames
 set mark-directories on
 # completed names which are symlinks to dirs hava "/" appended

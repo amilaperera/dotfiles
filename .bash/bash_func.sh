@@ -488,6 +488,7 @@ function _synchronize_files()
 	local abs_src_file_list=
 
 	file_list=".ackrc .bash_logout .bash_profile .bashrc .colordiffrc .gvimrc .inputrc"
+	file_list=$file_list" .zshrc"
 	file_list=$file_list" .irbrc .tmux.conf .vimrc"
 
 	for f in ${file_list}; do
@@ -495,6 +496,7 @@ function _synchronize_files()
 	done
 
 	[ -d $src/.bash ] && abs_src_file_list="$abs_src_file_list $src/.bash"
+	[ -d $src/.zsh ] && abs_src_file_list="$abs_src_file_list $src/.zsh"
 
 	echo "synchronizing $src with $dst"
 	rsync -av $abs_src_file_list $dst

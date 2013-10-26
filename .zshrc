@@ -7,6 +7,8 @@
 # source configuration files from $HOME/.zsh directory
 #############################################################
 
+#!/bin/zsh
+
 ZSH=$HOME/.zsh
 
 # add personal function & completion paths
@@ -14,6 +16,7 @@ ZSH=$HOME/.zsh
 [[ -d $ZSH/completions ]] && fpath=($ZSH/completions $fpath)
 
 # source all files in the ZSH directory
-for config_file (zenv zalias zprompt zcomp zcolors zfunc zutil); do
+files=(zenv zcolors zalias zprompt zcomp)
+for config_file in $files; do
 	source $ZSH/$config_file.zsh
 done

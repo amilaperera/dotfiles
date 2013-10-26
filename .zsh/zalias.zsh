@@ -4,18 +4,19 @@
 #############################################################
 
 ##ls family aliases
-alias ls="ls $LS_OPTIONS"            # add colors for filetype recognition
-alias la="ls $LS_OPTIONS -Al"        # long list with hidden files
-alias ll="ls $LS_OPTIONS -l"         # long listing
-alias lld="ls $LS_OPTIONS -ld"       # long list of directories
-alias lr="ls $LS_OPTIONS -lR"        # recursive ls
-alias lc="ls $LS_OPTIONS -ltcr"      # sort by and show change time, most recent last
-alias lu="ls $LS_OPTIONS -ltur"      # sort by and show access time, most recent last
-alias lk="ls $LS_OPTIONS -lSr"       # sort by size, biggest last
-alias lx="ls $LS_OPTIONS -lXB"       # sort by extension
-alias lm="ls $LS_OPTIONS -Al | more" # pipe through 'more'
-alias lz="ls $LS_OPTIONS -lZ"        # SELinux contexts
-alias ldz="ls $LS_OPTIONS -ldZ"      # SELinux contexts for a directory
+ls_options="--color=auto -F -h"
+alias ls="ls $ls_options"            # add colors for filetype recognition
+alias la="ls $ls_options -Al"        # long list with hidden files
+alias ll="ls $ls_options -l"         # long listing
+alias lld="ls $ls_options -ld"       # long list of directories
+alias lr="ls $ls_options -lR"        # recursive ls
+alias lc="ls $ls_options -ltcr"      # sort by and show change time, most recent last
+alias lu="ls $ls_options -ltur"      # sort by and show access time, most recent last
+alias lk="ls $ls_options -lSr"       # sort by size, biggest last
+alias lx="ls $ls_options -lXB"       # sort by extension
+alias lm="ls $ls_options -Al | more" # pipe through 'more'
+alias lz="ls $ls_options -lZ"        # SELinux contexts
+alias ldz="ls $ls_options -ldZ"      # SELinux contexts for a directory
 alias tree='tree -C'                 # nice alternative to recursive ls
 alias treel='tree -C | less -R'      # nice alternative to recursive ls
 
