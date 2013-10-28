@@ -8,7 +8,7 @@
 ## setenv()
 ## keeps tcsh users happy
 ##################################################################
-function setenv()
+setenv()
 {
 	if [ $# -eq 2 ]; then
 		eval $1=$2
@@ -22,7 +22,7 @@ function setenv()
 ## E()
 ## starts gvim in background
 ##################################################################
-function E()
+E()
 {
 	GVIM_COMM=/usr/bin/gvim
 	case $workinghost in
@@ -52,7 +52,7 @@ function E()
 ## cd()
 ## own pushd function to act as cd command
 ##################################################################
-function cd()
+cd()
 {
 	local directory
 	if [ $# -eq 0 ]; then
@@ -69,7 +69,7 @@ function cd()
 ## fuzzy cd function
 ## NOTE: ignore-case does not work with fuzzy cd
 ##################################################################
-function cdf()
+cdf()
 {
 	cd *$1*
 }
@@ -80,7 +80,7 @@ function cdf()
 ## dispalys the directory stack of the current session and gets
 ## the directory as an input
 ##################################################################
-function d()
+d()
 {
 	local tempdirstack=$(dirs)
 	local dirstack=($(echo $tempdirstack | tr ' ' '\n' | sort -u))
@@ -109,7 +109,7 @@ function d()
 ## up()
 ## goes up in the directory hierachy
 ##################################################################
-function up()
+up()
 {
 	: ${CDUPVALUEDEFAULT:=5}	# set default value to 5 if not set externally
 
@@ -143,7 +143,7 @@ function up()
 ## ht()
 ## histroy tail function
 ##################################################################
-function ht()
+ht()
 {
 	: ${HISTORYTAILDEFAULT:=30}
 	if [  $# -eq 0 ]; then
@@ -163,7 +163,7 @@ function ht()
 ## hig()
 ## history grep
 ##################################################################
-function hig()
+hig()
 {
 	# this function removes the default grep line number from the history which is troublsome
 	# line number is given in GREP_OPTIONS variable
@@ -174,7 +174,7 @@ function hig()
 ## calc()
 ## Trivial command line calculator
 ##################################################################
-function calc()
+calc()
 {
 	awk "BEGIN {print \"The answer is : \" $*}";
 }
@@ -183,7 +183,7 @@ function calc()
 ## mcd()
 ## creates a new directory and cd to it
 ##################################################################
-function mcd()
+mcd()
 {
 	local dir=
 	local mcd_usage="Usage: mcd <mode> directory"
@@ -215,7 +215,7 @@ function mcd()
 ## um()
 ## displays the umask in both permission bits and acl
 ##################################################################
-function um()
+um()
 {
 	if (($# != 0)); then
 		echo "Usage: um"
@@ -229,7 +229,7 @@ function um()
 ## bak()
 ## make backup file(s)
 ##################################################################
-function bak()
+bak()
 {
 	local ext="bak"
 	if [[ "${1}" == "-o" ]]; then
@@ -245,7 +245,7 @@ function bak()
 ## diffWithOrig()
 ## diff files with their .bak or .orig extension files
 ##################################################################
-function diffWithOrig()
+diffWithOrig()
 {
 	local file= file2= opt="-puw"
 	if [[ $1 == "--help" ]]; then
@@ -280,7 +280,7 @@ function diffWithOrig()
 ## swap()
 ## swap two files
 ##################################################################
-function swap()
+swap()
 {
 	local tempfile=swaptemp.$$
 	mv -f "${1}" "${tempfile}" && mv -f "${2}" "${1}" && mv -f "${tempfile}" "${2}"
@@ -290,7 +290,7 @@ function swap()
 ## ff()
 ## opens firefox
 ##################################################################
-function ff()
+ff()
 {
 	firefox "${@}" 2>/dev/null &
 }
@@ -299,7 +299,7 @@ function ff()
 ## cb()
 ## opens chromium browser
 ##################################################################
-function cb()
+cb()
 {
 	if [[ $distroname == "Fedora" ]]; then
 		google-chrome "${@}" 2>/dev/null &
@@ -312,7 +312,7 @@ function cb()
 ## pdf()
 ## opens acrobat reader
 ##################################################################
-function pdf()
+pdf()
 {
 	acroread "${@}" 2>/dev/null &
 }
@@ -324,7 +324,7 @@ function pdf()
 ## to comment the existing cdiff completion which is hardly used
 ## refer to /etc/bash_completion file
 ##################################################################
-function cdiff()
+cdiff()
 {
 	colordiff -puw "${@}" | less -R
 }
@@ -333,7 +333,7 @@ function cdiff()
 ## svndiff()
 ## svn diff with colordiff
 ##################################################################
-function svndiff()
+svndiff()
 {
 	svn diff "${@}" | colordiff | less -R
 }
@@ -342,7 +342,7 @@ function svndiff()
 ## cvsdiff()
 ## cvs diff with colordiff
 ##################################################################
-function cvsdiff()
+cvsdiff()
 {
 	cvs diff "${@}" | colordiff | less -R
 }
@@ -351,7 +351,7 @@ function cvsdiff()
 ## engman()
 ## view man page in english
 ##################################################################
-function engman()
+engman()
 {
 	local lang=$LANG
 	LANG=en_US.UTF8 && man "${@}"
@@ -362,7 +362,7 @@ function engman()
 ## find man pages
 ## colorizing the matching result
 ##################################################################
-function fman()
+fman()
 {
 	apropos "$@" | grep -i "$@"
 }
@@ -371,7 +371,7 @@ function fman()
 ## find man pages
 ## colorizing the matching result
 ##################################################################
-function gccgtk()
+gccgtk()
 {
 	gcc "${@}" -o gtkprg `pkg-config --cflags --libs gtk+-2.0`
 }
@@ -380,7 +380,7 @@ function gccgtk()
 ## display ansi color combinations
 ## hacked from http://www.pixelbeat.org/docs/terminal_colours/
 ##################################################################
-function color_codes()
+color_codes()
 {
 	e="\033["
 	vline=$(tput smacs 2>/dev/null; printf 'x'; tput rmacs 2>/dev/null)
@@ -408,7 +408,7 @@ function color_codes()
 ## start tmux session
 ## NOTE: This function can be called in .bashrc
 ##################################################################
-function tmux_start()
+tmux_start()
 {
 	local session_name= archey_cmd="archey"
 
@@ -430,7 +430,7 @@ function tmux_start()
 ##################################################################
 ## display tmux colors
 ##################################################################
-function tmux_colors()
+tmux_colors()
 {
 	for i in {0..255}; do
 		printf "\x1b[38;5;${i}mcolour${i}\n"
@@ -440,7 +440,7 @@ function tmux_colors()
 ##################################################################
 ## update vim plugins in .vim/bundle directory
 ##################################################################
-function vim_bundle_update()
+vim_bundle_update()
 {
 	local vim_bundle_dir=$HOME/.vim/bundle
 	if [ ! -d $vim_bundle_dir ]; then
@@ -471,7 +471,7 @@ function vim_bundle_update()
 ## synchronize from_dir with to_dir
 ## this should be called as _synchronize_files from_dir to_dir
 ##################################################################
-function _synchronize_files()
+_synchronize_files()
 {
 	if [ $# -ne 2 ]; then
 		echo "function is called with wrong number of arguments"
@@ -506,7 +506,7 @@ function _synchronize_files()
 ## synchronize local dotfiles files in git directory with the
 ## originals
 ##################################################################
-function sync_dotfiles_with_orig()
+sync_dotfiles_with_orig()
 {
 	_synchronize_files $HOME $HOME/WORK/src/dotfiles
 }
@@ -515,7 +515,7 @@ function sync_dotfiles_with_orig()
 ## synchronize original files with those in local dotfiles
 ## directory
 ##################################################################
-function sync_orig_with_dotfiles()
+sync_orig_with_dotfiles()
 {
 	_synchronize_files $HOME/WORK/src/dotfiles $HOME
 }
@@ -523,7 +523,7 @@ function sync_orig_with_dotfiles()
 ##################################################################
 ## github clone
 ##################################################################
-function ghc()
+ghc()
 {
 	git clone https://github.com/"${1}"
 }
@@ -531,7 +531,7 @@ function ghc()
 ##################################################################
 ## cd and list
 ##################################################################
-function cl()
+cl()
 {
 	if (( $# == 0 )); then
 		# if no argument is supplied, just ls
