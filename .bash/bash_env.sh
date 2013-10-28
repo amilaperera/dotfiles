@@ -112,17 +112,10 @@ export HISTTIMEFORMAT=': %Y-%m-%d_%H:%M:%S; '     # time stamp of histfile
 export HOSTFILE='/etc/hosts'                      # use this file for hostname completion
 export LC_COLLATE='C'                             # set traditional C sort order
 
+export LESS="--LONG-PROMPT --RAW-CONTROL-CHARS --clear-screen --QUIET"
+
 # setting man page viewr to less
 export MANPAGER="less"
-# colored output with less that works well with man pages
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;47;34m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
-export LESS="--LONG-PROMPT --RAW-CONTROL-CHARS --clear-screen --QUIET"
 
 #ulimit -S -c 0 >/dev/null 2>&1    # no core files by default
 case $workinghost in
