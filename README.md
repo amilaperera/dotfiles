@@ -6,7 +6,7 @@ This repo contains my personal dotfiles mainly related to bash, vim, tmux and ru
 
 Installation
 
-    gitclone https://github.com/amilaperera/dotfiles.git
+    git clone https://github.com/amilaperera/dotfiles.git
 
 RUBY
 ----
