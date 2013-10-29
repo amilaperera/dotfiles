@@ -4,9 +4,7 @@
 " File Name: .vimrc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"--------------------------------------------------------------
-" General
-"--------------------------------------------------------------
+" General settings {{{
 set nocompatible               " gets out of vi compatible mode
 set noexrc                     " don't use a local version of .(g)vimrc
 set hidden                     " hide unsaved buffers
@@ -21,14 +19,17 @@ set noswapfile                 " no swap files
 set helpheight=35              " height of the help window
 set mouse=nvi                  " use mouse in normal, visual & insert modes
 set mousemodel=popup           " right mosue button pops up a menu
+" }}}
 
+" Changing map leader {{{
 let mapleader = "," " set mapleader to ','
+" }}}
 
+" Vundle setup {{{
 filetype off
 call pathogen#infect()
 call pathogen#helptags()
 
-" Vundle setup
 set rtp+=!/.vim/bundle/vundle
 call vundle#rc()
 
@@ -114,6 +115,7 @@ Bundle 'garbas/vim-snipmate'
 Bundle 'tomtom/tlib_vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'honza/vim-snippets'
+" }}}
 
 filetype on               " filetype detection on
 filetype plugin on        " filetype plugin on
@@ -466,10 +468,10 @@ augroup END
 
 augroup FTOptions
   autocmd!
-  autocmd Filetype sh,zsh,csh,tcsh setl ts=4 noet
+  autocmd Filetype sh,zsh,csh,tcsh setl ts=4 noet fdm=marker
   autocmd Filetype ruby,eruby      setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype html,css        setl ts=2 sw=2 sts=2 fdm=indent
-  autocmd Filetype vim             setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype vim             setl ts=2 sw=2 sts=2 fdm=marker
   autocmd Filetype txt,mail        setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype gitcommit       setl spell
 
