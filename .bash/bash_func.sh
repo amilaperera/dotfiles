@@ -4,10 +4,8 @@
 # File Name: bash_func.sh
 #############################################################
 
-##################################################################
-## setenv()
-## keeps tcsh users happy
-##################################################################
+# setenv() {{{
+# keeps the csh users happy
 setenv()
 {
 	if [ $# -eq 2 ]; then
@@ -17,11 +15,10 @@ setenv()
 		echo "Usage: setenv NAME VALUE" 1>&2
 	fi
 }
+# }}}
 
-##################################################################
-## E()
-## starts gvim in background
-##################################################################
+# E() {{{
+# starts gvim in background
 E()
 {
 	GVIM_COMM=/usr/bin/gvim
@@ -48,10 +45,10 @@ E()
 			;;
 	esac
 }
-##################################################################
-## cd()
-## own pushd function to act as cd command
-##################################################################
+# }}}
+
+# cd() {{{
+# own pushd function to act as cd command
 cd()
 {
 	local directory
@@ -63,23 +60,21 @@ cd()
 	pushd "${directory}" > /dev/null
 	return $?
 }
+# }}}
 
-##################################################################
-## cdf()
-## fuzzy cd function
-## NOTE: ignore-case does not work with fuzzy cd
-##################################################################
+# cdf() {{{
+# fuzzy cd function
+# NOTE: ignore-case does not work with fuzzy cd
 cdf()
 {
 	cd *$1*
 }
+# }}}
 
-##################################################################
-## d()
-## own version of dirs
-## dispalys the directory stack of the current session and gets
-## the directory as an input
-##################################################################
+# d() {{{
+# own version of dirs
+# dispalys the directory stack of the current session and gets
+# the directory as an input
 d()
 {
 	local tempdirstack=$(dirs)
@@ -104,11 +99,10 @@ d()
 						# which refer its value
 	return $?
 }
+# }}}
 
-##################################################################
-## up()
-## goes up in the directory hierachy
-##################################################################
+# up() {{{
+# goes up in the directory hierachy
 up()
 {
 	: ${CDUPVALUEDEFAULT:=5}	# set default value to 5 if not set externally
@@ -138,11 +132,10 @@ up()
 	cd "$upvalue" # use user define cd not builtin cd
 	return 0
 }
+# }}}
 
-##################################################################
-## ht()
-## histroy tail function
-##################################################################
+# ht() {{{
+# histroy tail function
 ht()
 {
 	: ${HISTORYTAILDEFAULT:=30}
@@ -158,31 +151,28 @@ ht()
 
 	return $?
 }
+# }}}
 
-##################################################################
-## hig()
-## history grep
-##################################################################
+# hig() {{{
+# history grep
 hig()
 {
 	# this function removes the default grep line number from the history which is troublsome
 	# line number is given in GREP_OPTIONS variable
 	history | egrep --color=always "${@}"
 }
+# }}}
 
-##################################################################
-## calc()
-## Trivial command line calculator
-##################################################################
+# calc() {{{
+# Trivial command line calculator
 calc()
 {
 	awk "BEGIN {print \"The answer is : \" $*}";
 }
+# }}}
 
-##################################################################
-## mcd()
-## creates a new directory and cd to it
-##################################################################
+# mcd() {{{
+# creates a new directory and cd to it
 mcd()
 {
 	local dir=
@@ -210,11 +200,10 @@ mcd()
 
 	cd "$dir"	#calls my own cd not the builtin
 }
+# }}}
 
-##################################################################
-## um()
-## displays the umask in both permission bits and acl
-##################################################################
+# um() {{{
+# displays the umask in both permission bits and acl
 um()
 {
 	if (($# != 0)); then
@@ -224,11 +213,10 @@ um()
 	echo "umask is set as follows"
 	umask && umask -S
 }
+# }}}
 
-##################################################################
-## bak()
-## make backup file(s)
-##################################################################
+# bak() {{{
+# make backup file(s)
 bak()
 {
 	local ext="bak"
@@ -240,11 +228,10 @@ bak()
 		cp -f $file $file"."$ext
 	done
 }
+# }}}
 
-##################################################################
-## diffWithOrig()
-## diff files with their .bak or .orig extension files
-##################################################################
+# diffWithOrig() {{{
+# diff files with their .bak or .orig extension files
 diffWithOrig()
 {
 	local file= file2= opt="-puw"
@@ -275,30 +262,27 @@ diffWithOrig()
 		fi
 	done
 }
+# }}}
 
-##################################################################
-## swap()
-## swap two files
-##################################################################
+# swap() {{{
+# swap two files
 swap()
 {
 	local tempfile=swaptemp.$$
 	mv -f "${1}" "${tempfile}" && mv -f "${2}" "${1}" && mv -f "${tempfile}" "${2}"
 }
+# }}}
 
-##################################################################
-## ff()
-## opens firefox
-##################################################################
+# ff() {{{
+# opens firefox
 ff()
 {
 	firefox "${@}" 2>/dev/null &
 }
+# }}}
 
-##################################################################
-## cb()
-## opens chromium browser
-##################################################################
+# cb() {{{
+# opens chromium browser
 cb()
 {
 	if [[ $distroname == "Fedora" ]]; then
@@ -307,79 +291,64 @@ cb()
 		chromium-browser "${@}" 2>/dev/null &
 	fi
 }
+# }}}
 
-##################################################################
-## pdf()
-## opens acrobat reader
-##################################################################
+# pdf() {{{
+# opens acrobat reader
 pdf()
 {
 	acroread "${@}" 2>/dev/null &
 }
+# }}}
 
-##################################################################
-## diff()
-## diff with colordiff
-## in order to have bash completion worked properly you may have
-## to comment the existing cdiff completion which is hardly used
-## refer to /etc/bash_completion file
-##################################################################
+# diff() {{{
+# diff with colordiff
+# in order to have bash completion worked properly you may have
+# to comment the existing cdiff completion which is hardly used
+# refer to /etc/bash_completion file
 cdiff()
 {
 	colordiff -puw "${@}" | less -R
 }
+# }}}
 
-##################################################################
-## svndiff()
-## svn diff with colordiff
-##################################################################
+# svndiff() {{{
+# svn diff with colordiff
 svndiff()
 {
 	svn diff "${@}" | colordiff | less -R
 }
+# }}}
 
-##################################################################
-## cvsdiff()
-## cvs diff with colordiff
-##################################################################
+# cvsdiff() {{{
+# cvs diff with colordiff
 cvsdiff()
 {
 	cvs diff "${@}" | colordiff | less -R
 }
+# }}}
 
-##################################################################
-## engman()
-## view man page in english
-##################################################################
+# engman() {{{
+# view man page in english
 engman()
 {
 	local lang=$LANG
 	LANG=en_US.UTF8 && man "${@}"
 	export LANG=$lang
 }
+# }}}
 
-##################################################################
-## find man pages
-## colorizing the matching result
-##################################################################
+# fman() {{{
+# find man pages colorizing the matching result
 fman()
 {
-	apropos "$@" | grep -i "$@"
+	apropos "$@" | grep -i --color=auto "$@"
 }
+# }}}
 
-##################################################################
-## find man pages
-## colorizing the matching result
-##################################################################
-gccgtk()
-{
-	gcc "${@}" -o gtkprg `pkg-config --cflags --libs gtk+-2.0`
-}
-
-##################################################################
-## display ansi color combinations
-## hacked from http://www.pixelbeat.org/docs/terminal_colours/
-##################################################################
+# color_codes() {{{
+# display ansi color combinations
+# hacked from http://www.pixelbeat.org/docs/terminal_colours/
 color_codes()
 {
 	e="\033["
@@ -403,11 +372,11 @@ color_codes()
 		printf "$fc $vline$no\nb$fc$vline$bo\n"
 	done
 }
+# }}}
 
-##################################################################
-## start tmux session
-## NOTE: This function can be called in .bashrc
-##################################################################
+# tmux_start() {{{
+# start tmux session
+# NOTE: This function can be called in .bashrc
 tmux_start()
 {
 	local session_name= archey_cmd="archey"
@@ -426,9 +395,10 @@ tmux_start()
 		fi
 	fi
 }
+# }}}
 
-##################################################################
-## display tmux colors
+# tmux_colors() {{{
+# display tmux colors
 ##################################################################
 tmux_colors()
 {
@@ -436,10 +406,10 @@ tmux_colors()
 		printf "\x1b[38;5;${i}mcolour${i}\n"
 	done | less
 }
+# }}}
 
-##################################################################
-## update vim plugins in .vim/bundle directory
-##################################################################
+# vim_bundle_update() {{{
+# update vim plugins in .vim/bundle directory
 vim_bundle_update()
 {
 	local vim_bundle_dir=$HOME/.vim/bundle
@@ -466,11 +436,11 @@ vim_bundle_update()
 
 	cd $current_dir
 }
+# }}}
 
-##################################################################
-## synchronize from_dir with to_dir
-## this should be called as _synchronize_files from_dir to_dir
-##################################################################
+# _synchronize_files() {{{
+# synchronize from_dir with to_dir
+# this should be called as _synchronize_files from_dir to_dir
 _synchronize_files()
 {
 	if [ $# -ne 2 ]; then
@@ -501,36 +471,36 @@ _synchronize_files()
 	echo "synchronizing $src with $dst"
 	rsync -av $abs_src_file_list $dst
 }
+# }}}
 
-##################################################################
-## synchronize local dotfiles files in git directory with the
-## originals
-##################################################################
+# sync_dotfiles_with_orig() {{{
+# synchronize local dotfiles files in git directory with the
+# originals
 sync_dotfiles_with_orig()
 {
 	_synchronize_files $HOME $HOME/WORK/src/dotfiles
 }
+# }}}
 
-##################################################################
-## synchronize original files with those in local dotfiles
-## directory
-##################################################################
+# sync_orig_with_dotfiles() {{{
+# synchronize original files with those in local dotfiles
+# directory
 sync_orig_with_dotfiles()
 {
 	_synchronize_files $HOME/WORK/src/dotfiles $HOME
 }
+# }}}
 
-##################################################################
-## github clone
-##################################################################
+# ghc() {{{
+# github clone
 ghc()
 {
 	git clone https://github.com/"${1}"
 }
+# }}}
 
-##################################################################
-## cd and list
-##################################################################
+# cl() {{{
+# cd and list
 cl()
 {
 	if (( $# == 0 )); then
@@ -545,11 +515,11 @@ cl()
 		fi
 	fi
 }
+# }}}
 
-##################################################################
-## view man pages in colors
-## copied from https://wiki.archlinux.org/index.php/Man_Page
-##################################################################
+# man() {{{
+# view man pages in colors
+# copied from https://wiki.archlinux.org/index.php/Man_Page
 man()
 {
 	env LESS_TERMCAP_mb=$'\E[01;31m' \
@@ -561,3 +531,4 @@ man()
 	LESS_TERMCAP_us=$'\E[04;38;5;146m' \
 	man "$@"
 }
+# }}}
