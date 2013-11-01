@@ -2,7 +2,7 @@
 #
 # Set banner=no to suppress authorship info at top of
 # colordiff output
-banner=no
+banner=yes
 # By default, when colordiff output is being redirected
 # to a file, it detects this and does not colour-highlight
 # To make the patch file *include* colours, change the option
@@ -23,7 +23,7 @@ diff_cmd=diff
 # this, use the default output colour"
 #
 plain=black
-newtext=darkgreen
-oldtext=darkred
+newtext=green
+oldtext=red
 diffstuff=cyan
-cvsstuff=darkwhite
+cvsstuff=white

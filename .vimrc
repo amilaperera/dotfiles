@@ -4,27 +4,6 @@
 " File Name: .vimrc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" General settings {{{
-set nocompatible               " gets out of vi compatible mode
-set noexrc                     " don't use a local version of .(g)vimrc
-set hidden                     " hide unsaved buffers
-set autochdir                  " changes to the directory containing the file which was opened or selected
-set autowriteall               " writes the contents of the file when moving to another file
-set autoread                   " read automatically when a file is changed
-set backspace=indent,eol,start " backspace more flexible
-set noerrorbells               " no error bells
-set novisualbell               " no visual bells
-set visualbell t_vb=           " no beep, no flash NOTE: for some reason this has tobe set in .gvimrc too
-set noswapfile                 " no swap files
-set helpheight=35              " height of the help window
-set mouse=nvi                  " use mouse in normal, visual & insert modes
-set mousemodel=popup           " right mosue button pops up a menu
-" }}}
-
-" Changing map leader {{{
-let mapleader = "," " set mapleader to ','
-" }}}
-
 " Vundle setup {{{
 filetype off
 call pathogen#infect()
@@ -126,8 +105,31 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'garbas/vim-snipmate'
 Bundle 'tomtom/tlib_vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'honza/vim-snippets'
+" Using my own snippets
+" This is a fork from https://github.com/honza/vim-snippets
+Bundle 'amilaperera/vim-snippets'
 " }}}2
+" }}}
+
+" General settings {{{
+set nocompatible               " gets out of vi compatible mode
+set noexrc                     " don't use a local version of .(g)vimrc
+set hidden                     " hide unsaved buffers
+set autochdir                  " changes to the directory containing the file which was opened or selected
+set autowriteall               " writes the contents of the file when moving to another file
+set autoread                   " read automatically when a file is changed
+set backspace=indent,eol,start " backspace more flexible
+set noerrorbells               " no error bells
+set novisualbell               " no visual bells
+set visualbell t_vb=           " no beep, no flash NOTE: for some reason this has tobe set in .gvimrc too
+set noswapfile                 " no swap files
+set helpheight=35              " height of the help window
+set mouse=nvi                  " use mouse in normal, visual & insert modes
+set mousemodel=popup           " right mosue button pops up a menu
+" }}}
+
+" Changing map leader {{{
+let mapleader = "," " set mapleader to ','
 " }}}
 
 " Miscellaneous {{{
@@ -526,7 +528,7 @@ map <Leader>v :e! $HOME/.vimrc<CR>
 map <Leader>vg :e! $HOME/.gvimrc<CR>
 " }}}2
 " nohlsearch, after a search {{{2
-nnoremap <silent><Space> :nohlsearch<CR>
+nnoremap <silent> <C-L> :nohlsearch<CR>
 " }}}2
 " retain visual selection after indentation {{{2
 vnoremap > >gv
