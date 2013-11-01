@@ -22,8 +22,7 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-pathogen'
 " }}}2
 
-" let Vundle manage github repos {{{2
-" General enhancements
+" General enhancements {{{2
 Bundle 'vim-scripts/AutoComplPop'
 Bundle 'vim-scripts/DrawIt'
 Bundle 'vim-scripts/EasyGrep'
@@ -54,7 +53,7 @@ Bundle 'maxbrunsfeld/vim-yankstack'
 Bundle 'mileszs/ack.vim'
 " }}}2
 
-" using the updated version of bufkill plugin {{{2
+" Using the updated version of bufkill plugin {{{2
 " since the original vim-script repository is not yet
 " updated, get the fork it and updated it
 Bundle 'amilaperera/bufkill.vim'
@@ -101,7 +100,7 @@ Bundle 'tpope/vim-rake'
 Bundle 'vim-ruby/vim-ruby'
 " }}}2
 
-" snipmate plugin, related dependencies & snippets {{{2
+" Snipmate plugin, related dependencies & snippets {{{2
 Bundle 'garbas/vim-snipmate'
 Bundle 'tomtom/tlib_vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
