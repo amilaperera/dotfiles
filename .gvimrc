@@ -31,7 +31,7 @@ set guioptions+=m  " menubar is present
 set guioptions+=g  " greyout inactive menuitems
 set guioptions+=r  " righthand scrollbar is always present
 set guioptions+=L  " for vsplits lefthand scrollbar is present
-set guioptions+=T  " include toolbar
+set guioptions-=T  " hide toolbar
 
 if has('x11')
   set guifont=Monospace\ 10  " preferred font font for Linux
