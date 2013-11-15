@@ -1,6 +1,6 @@
 #############################################################
 # Author: Amila Perera
-# File Name: colors.zsh
+# File Name: zcolors.zsh
 #############################################################
 
 # Attribute codes: 00=none 01=bold 04=underscore 05=blink 07=reverse 08=concealed

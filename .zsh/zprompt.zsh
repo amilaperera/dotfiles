@@ -1,6 +1,6 @@
 #############################################################
 # Author: Amila Perera
-# File Name: prompt.zsh
+# File Name: zprompt.zsh
 #############################################################
 
 autoload -Uz promptinit

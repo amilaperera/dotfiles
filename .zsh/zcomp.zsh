@@ -3,12 +3,14 @@
 # File Name: zcomp.zsh
 #############################################################
 
-# Use modern completion system
-autoload -Uz compinit
-compinit
-
 setopt auto_menu
 setopt complete_in_word
+setopt completealiases
 setopt always_to_end
 
-zstyle ':completion:*' menu select=1
+# enable menu selection
+zstyle ':completion:*' menu select
+# case insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+# use exported LS_COLORS for completion
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
