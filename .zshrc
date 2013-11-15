@@ -43,9 +43,5 @@ done
 autoload -Uz compinit
 compinit
 
-
-# source plugin configurations
-[ -f $ZSH_PLUGINS_DIR/plugins_settings.zsh ] && source $ZSH_PLUGINS_DIR/plugins_settings.zsh
-
 # fires up a tmux session with the user's name at start up
 tmux_start $USER
