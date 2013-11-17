@@ -5,6 +5,9 @@
 
 # shell parameters {{{
 # setting PATH variable {{{2
+# making path array to contain only unique values
+declare -U path
+# adding addition directories to the path array
 path=($path $HOME/bin)
 # }}}2
 
@@ -45,12 +48,34 @@ export FCEDIT="$VISUAL"
 # loads rvm environment {{{2
 [ -s "$HOME/.rvm/scripts/rvm" ] && source "$HOME/.rvm/scripts/rvm"
 # }}}2
-
 # }}}
 
 # zsh options {{{
 # changing directories {{{2
 setopt autocd
+# }}}2
+
+# dirstack {{{2
+# taken from Arch linux wiki https://wiki.archlinux.org/index.php/zsh
+DIRSTACKFILE="$HOME/.dirs"
+if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
+	dirstack=( ${(f)"$(< $DIRSTACKFILE)"} )
+	[[ -d $dirstack[1] ]] && cd $dirstack[1]
+fi
+
+chpwd() {
+	print -l $PWD ${(u)dirstack} >$DIRSTACKFILE
+}
+
+DIRSTACKSIZE=50
+
+setopt autopushd pushdsilent pushdtohome
+
+## Remove duplicate entries
+setopt pushdignoredups
+
+## This reverts the +/- operators.
+setopt pushdminus
 # }}}2
 
 # Changing/making/removing directory {{{2
