@@ -1,6 +1,6 @@
 Personal dotfiles
 =================
-BASH + VIM + TMUX + RUBY
+ZSH/BASH + VIM + TMUX + RUBY
 ------------------------
 This repo contains my personal dotfiles mainly related to bash, vim, tmux and ruby.
 
