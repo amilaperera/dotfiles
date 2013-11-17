@@ -2,7 +2,7 @@ Personal dotfiles
 =================
 ZSH/BASH + VIM + TMUX + RUBY
 ------------------------
-This repo contains my personal dotfiles mainly related to bash, vim, tmux and ruby.
+This repo contains my personal dotfiles mainly related to zsh/bash, vim, tmux and ruby.
 
 Installation
 
