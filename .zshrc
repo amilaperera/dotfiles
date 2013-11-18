@@ -27,7 +27,7 @@ done
 ZSH_PLUGINS_DIR=$ZSH/plugins
 
 # plugins
-plugins=(rvm tmuxinator vundle git svn)
+plugins=(rvm tmuxinator vundle git svn rake rails3 rails4)
 
 # source plugins in the plugins directory
 for plugin in $plugins; do

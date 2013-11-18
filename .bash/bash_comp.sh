@@ -19,6 +19,9 @@ bash_comp_file=/usr/share/bash-completion/bash_completion
 # rails completion
 [ -f $HOME/bin/rails.bash ] && source $HOME/bin/rails.bash
 
+# rails completion
+[ -f $HOME/bin/rails.bash ] && source $HOME/bin/rails.bash
+
 # folder bookmark completions
 complete -F _fbm_comp fbm F
 

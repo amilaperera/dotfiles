@@ -41,7 +41,9 @@ alias quit='exit'
 alias cls='clear'
 alias clr='cd ~/ && clear'
 
-alias S='source'
+alias B='source ~/.bashrc'
+
+alias _='sudo'
 
 alias du='du -kh'
 alias df='df -kTh'
@@ -71,6 +73,7 @@ alias ct='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q  $(find . \( -name "*
 alias rmtmp='find . -name "*~" -type f | xargs -I {} rm -rf {}'
 
 ## alias alternative to up() function
+alias ,='cd -'
 alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'

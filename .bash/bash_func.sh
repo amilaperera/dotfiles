@@ -495,8 +495,6 @@ sync_orig_with_dotfiles()
 # github clone
 ghc()
 {
-	(( $# == 0 || $# >2 )) && { echo "ghc: ghc [-a|-v] reository_name"; return 101; }
-
 	if [[ "${1}" == "-a" ]]; then
 		# cloning a repo from personal github account
 		git clone https://github.com/amilaperera/"${2}"
