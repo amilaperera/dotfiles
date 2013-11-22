@@ -231,8 +231,6 @@ set textwidth=100             " maximum width of the text that is being inserted
 set title                     " display title
 set display=lastline          " show as much as possible of the last line
 
-set pastetoggle=<F2>          " toggle paste mode
-
 " ColorScheme {{{2
 let s:myFavourite256ColorScheme  = "wombat256"
 let s:myFavouriteTermColorScheme = "default"
