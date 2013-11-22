@@ -29,6 +29,6 @@ local cur_cmd="${op}%_${cp}"
 PROMPT2="%B%F{8}Continue%f%b : "
 
 ZSH_THEME_GIT_PROMPT_PREFIX="─%{$fg[white]%}(%{$fg_bold[white]%}git%{$reset_color%}%{$fg[white]%})%{$reset_color%}─%{$fg[white]%}(%{$fg_bold[green]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[white]%})%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$fg[white]%})%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%} %{$fg_bold[red]%}⚡%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%}"
