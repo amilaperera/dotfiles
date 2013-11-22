@@ -6,25 +6,7 @@
 autoload -Uz promptinit
 promptinit
 
-# # Set required options.
-# setopt promptsubst
-
-# # Load required modules.
-# autoload -U add-zsh-hook
-# autoload -Uz vcs_info
-
-# # Add hook for calling vcs_info before each command.
-# add-zsh-hook precmd vcs_info
-
-# # Set vcs_info parameters.
-# zstyle ':vcs_info:*' enable hg bzr git
-# zstyle ':vcs_info:*:*' check-for-changes true # Can be slow on big repos.
-# zstyle ':vcs_info:*:*' unstagedstr '!'
-# zstyle ':vcs_info:*:*' stagedstr '+'
-# zstyle ':vcs_info:*:*' actionformats "%S" "%r/%s/%b %u%c (%a)"
-# zstyle ':vcs_info:*:*' formats "%S" "%r/%s/%b %u%c"
-# zstyle ':vcs_info:*:*' nvcsformats "%~" ""
-
+setopt promptsubst # sets the PROMPT_SUBST option enabled
 # extracted from http://tsdh.wordpress.com/2007/12/06/my-funky-zsh-prompt/
 # and tweaked according to personal preferece
 local op="("
@@ -40,8 +22,13 @@ fi
 local hist_no="${op}%F{12}%h%f${cp}"
 local smiley="%(?,%{$fg[green]%}✓%{$reset_color%},%{$fg[red]%}✗%{$reset_color%})"
 
-PROMPT="╭─${op}${smiley}${cp}─${user_host_path}
-╰─${hist_no} %# "
+PROMPT='╭─${op}${smiley}${cp}─${user_host_path}$(git_prompt_info)
+╰─${hist_no} %# '
 
 local cur_cmd="${op}%_${cp}"
 PROMPT2="%B%F{8}Continue%f%b : "
+
+ZSH_THEME_GIT_PROMPT_PREFIX="─%{$fg[white]%}(%{$fg_bold[white]%}git%{$reset_color%}%{$fg[white]%})%{$reset_color%}─%{$fg[white]%}(%{$fg_bold[green]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[white]%})%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%} %{$fg_bold[red]%}⚡%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%}"

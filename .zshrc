@@ -17,6 +17,11 @@ ZSH=$HOME/.zsh
 # source utility functions
 [ -f $ZSH/zutil.zsh ] && source $ZSH/zutil.zsh
 
+ZSH_LIB_DIR=$ZSH/lib
+for lib in $ZSH_LIB_DIR/*.zsh; do
+	source $lib
+done
+
 # source files in the ZSH directory
 files=(zenv zcolors zalias zprompt zcomp zfunc zfbm)
 for config_file in $files; do
