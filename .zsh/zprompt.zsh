@@ -7,8 +7,10 @@ autoload -Uz promptinit
 promptinit
 
 setopt promptsubst # sets the PROMPT_SUBST option enabled
-# extracted from http://tsdh.wordpress.com/2007/12/06/my-funky-zsh-prompt/
+
+# The basic prompt extracted from http://tsdh.wordpress.com/2007/12/06/my-funky-zsh-prompt/
 # and tweaked according to personal preferece
+# For git/svn prompts to work you have to source the oh-my-zsh git/svn plugins and lib/git.zsh
 local op="("
 local cp=")"
 local username=$(whoami)
@@ -22,7 +24,7 @@ fi
 local hist_no="${op}%F{12}%h%f${cp}"
 local smiley="%(?,%{$fg[green]%}✓%{$reset_color%},%{$fg[red]%}✗%{$reset_color%})"
 
-PROMPT='╭─${op}${smiley}${cp}─${user_host_path}$(git_prompt_info)
+PROMPT='╭─${op}${smiley}${cp}─${user_host_path}$(git_prompt_info)$(svn_prompt_info)
 ╰─${hist_no} %# '
 
 local cur_cmd="${op}%_${cp}"
@@ -30,5 +32,10 @@ PROMPT2="%B%F{8}Continue%f%b : "
 
 ZSH_THEME_GIT_PROMPT_PREFIX="─%{$fg[white]%}(%{$fg_bold[white]%}git%{$reset_color%}%{$fg[white]%})%{$reset_color%}─%{$fg[white]%}(%{$fg_bold[green]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$fg[white]%})%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%} %{$fg_bold[red]%}⚡%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[red]%} ⚡%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$reset_color%}"
+
+ZSH_THEME_SVN_PROMPT_PREFIX="─%{$fg[white]%}(%{$fg_bold[white]%}svn%{$reset_color%}%{$fg[white]%})%{$reset_color%}─%{$fg[white]%}(%{$fg_bold[green]%}"
+ZSH_THEME_SVN_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_SVN_PROMPT_DIRTY="%{$fg_bold[red]%} ⚡%{$reset_color%}%{$fg[white]%})"
+ZSH_THEME_SVN_PROMPT_CLEAN="%{$reset_color%}%{$fg[white]%})"
