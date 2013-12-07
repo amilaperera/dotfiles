@@ -23,12 +23,12 @@ bash_comp_file=/usr/share/bash-completion/bash_completion
 [ -f $HOME/bin/rails.bash ] && source $HOME/bin/rails.bash
 
 # folder bookmark completions
-complete -F _fbm_comp fbm F
+complete -F _bm_comp bm B
 
 complete -o dirnames -f -X '!*.@(?([xX]|[sS])[hH][tT][mM]?([lL]))' ff cb
 complete -o dirnames -f -X '!*.[pf]df' pdf
 
-function _fbm_comp()
+function _bm_comp()
 {
 	local file="$HOME/.fbookmarks"
 	local cur=

@@ -1,21 +1,21 @@
 #!/bin/bash
 #############################################################
 # Author: Amila Perera
-# File Name: bash_fbm.sh
+# File Name: bash_bm.sh
 #############################################################
 
-function _fbm_usage()
+function _bm_usage()
 {
-	printf "Usage: fbm: fbm [option] [bookmarkname]\nType fbm -h for help\n" 1>&2
+	printf "Usage: bm: bm [option] [bookmarkname]\nType bm -h for help\n" 1>&2
 }
 
-function _fbm_help()
+function _bm_help()
 {
 	cat <<- HELPMSG
-			fbm: Folder BookMark Utility
-			Usage: fbm [OPTION] [BOOKMARK] [DIRECTORY]
+			bm: Folder BookMark Utility
+			Usage: bm [OPTION] [BOOKMARK] [DIRECTORY]
 
-			fbm BOOKMARK                     Jumps to the directory given by BOOKMARK
+			bm BOOKMARK                     Jumps to the directory given by BOOKMARK
 			Options:
 			  -c BOOKMARK [DIRECTORY]        Creates a bookmark.
 			                                 If no directory is given the current directory is bookmarked
@@ -24,7 +24,7 @@ function _fbm_help()
 			  -m BOOKMARK DIRECTORY          Modifies directory for a given bookmark
 			  -e BOOKMARK1 BOOKMARK2...      Export bookmarks as variables
 			                                 After exporting variables you can use \$BOOKMARK instead of the directory name
-			  -l                             Lists bookmarks(same operation is performed if fbm is executed with no option)
+			  -l                             Lists bookmarks(same operation is performed if bm is executed with no option)
 			  -h                             Displays this help
 	HELPMSG
 }
@@ -39,22 +39,22 @@ function _check_if_bm_exists()
 	[ ! -z $bmexist ] && { return 1; } || { return 0; }
 }
 
-function _fbm_gotobm()
+function _bm_gotobm()
 {
 	local name=${1} bmfile=${2} dirname=
 
 	_check_if_bm_exists $name $bmfile
-	[ $? -eq 0 ] && { printf "fbm: bookmark doesn't exist\n" 1>&2; return 1; }
+	[ $? -eq 0 ] && { printf "bm: bookmark doesn't exist\n" 1>&2; return 1; }
 
 	dirname=$(awk -F':' '$1 == "'${name}'" { print $2 }' ${bmfile})
 
-	[ ! -d "${dirname}" ] && { printf "fbm: directory doesn't exist\n" 1>&2; return 1; }
+	[ ! -d "${dirname}" ] && { printf "bm: directory doesn't exist\n" 1>&2; return 1; }
 
 	cd "${dirname}"
 	return 0
 }
 
-function _fbm_list()
+function _bm_list()
 {
 	if [ -f "${1}" ]; then
 		sed 's/:/\t/' ${1} | sort | \
@@ -66,28 +66,28 @@ function _fbm_list()
 		done
 		}
 	else
-		printf "No bookmarks are entered\n" 1>&2 && _fbm_usage
+		printf "No bookmarks are entered\n" 1>&2 && _bm_usage
 	fi
 }
 
-function _fbm_checkvar()
+function _bm_checkvar()
 {
 	local result=$(export -p | grep -c "${1}=")
 	echo $result
 }
 
 ##################################################################
-##fbm()
+##bm()
 ##folder bookmark function
 ##################################################################
-function fbm()
+function bm()
 {
 	local bm= dir= file="${HOME}/.fbookmarks"
 
 	case $1 in
 	-c)
 		shift
-		[ $# -gt 2 -o $# -eq 0 ] && { _fbm_usage; return 101; }
+		[ $# -gt 2 -o $# -eq 0 ] && { _bm_usage; return 101; }
 		bm=$1
 		if [ -z "${2}" ]; then
 			dir="${PWD}"
@@ -95,10 +95,10 @@ function fbm()
 			[[ "${2}" =~ ^~ || "${2}" =~ ^\/[^\/]* ]] && dir="${2}" || dir="$PWD/${2}"
 		fi
 		_check_if_bm_exists $bm $file
-		[ $? -eq 1 ] && { printf "fbm: bookmark name already exists\n" 1>&2; return 102; }
+		[ $? -eq 1 ] && { printf "bm: bookmark name already exists\n" 1>&2; return 102; }
 		dir=$(echo "${dir}/" | sed 's/\/\/*$/\//')	# appending a / at the end of directory whether user supplies one or not
 		[ ! -d "${dir}" ] \
-			&& printf "fbm: directory doesn't exist\n" 1>&2 \
+			&& printf "bm: directory doesn't exist\n" 1>&2 \
 			|| printf "%s:%s\n" "$bm" "$dir" >> $file
 		;;
 
@@ -110,27 +110,27 @@ function fbm()
 				local tempfile="${file}"".tmp"
 				sed "/$bm:/d" $file > $tempfile; mv -f $tempfile $file
 			else
-				printf "fbm: bookmark doesn't exist : %s\n" "$bm"
+				printf "bm: bookmark doesn't exist : %s\n" "$bm"
 			fi
 		done
 		;;
 
 	-r)
 		shift
-		[ $# -ne 2 ] && { _fbm_usage; return 101; }
+		[ $# -ne 2 ] && { _bm_usage; return 101; }
 		local oldbm=${1} newbm=${2}
 		_check_if_bm_exists $oldbm $file
 		if [ $? -eq 1 ]; then
 			local tempfile="${file}"".tmp"
 			sed "s/$oldbm:/$newbm:/" $file > $tempfile; mv -f $tempfile $file
 		else
-			printf "fbm: bookmark doesn't exist : %s\n" "$oldbm"
+			printf "bm: bookmark doesn't exist : %s\n" "$oldbm"
 		fi
 		;;
 
 	-m)
 		shift
-		[ $# -gt 2 -o $# -eq 0 ] && { _fbm_usage; return 101; }
+		[ $# -gt 2 -o $# -eq 0 ] && { _bm_usage; return 101; }
 		bm=$1
 		if [ -z "${2}" ]; then
 			dir="${PWD}"
@@ -139,49 +139,49 @@ function fbm()
 		fi
 		_check_if_bm_exists $bm $file
 		if [ $? -eq 1 ]; then
-			[ ! -d "${dir}" ] && { printf "fbm: directory doesn't exists\n" 1>&2; return 101; }
+			[ ! -d "${dir}" ] && { printf "bm: directory doesn't exists\n" 1>&2; return 101; }
 			dir=$(echo "${dir}/" | sed 's/\/\/*$/\//')	# appending a / at the end of directory whether user supplies one or not
 			local tempfile="${file}"".tmp"
 				sed "/$bm:/d" $file > $tempfile
 				printf "%s:%s\n" "$bm" "$dir" >> $tempfile
 				mv -f $tempfile $file
 		else
-			printf "fbm: bookmark doesn't exist : %s\n" "$bm"
+			printf "bm: bookmark doesn't exist : %s\n" "$bm"
 		fi
 		;;
 
 	-e)
 		shift
 		for bm in "$@"; do
-			local existVar=$(_fbm_checkvar $bm)
-			(($existVar > 0)) && { printf "fbm: environment variable already exists\n" 1>&2; return 1; }
+			local existVar=$(_bm_checkvar $bm)
+			(($existVar > 0)) && { printf "bm: environment variable already exists\n" 1>&2; return 1; }
 			_check_if_bm_exists $bm $file
 			if [ $? -eq 1 ]; then
 				local dirname=$(awk -F':' '$1 == "'$bm'" { print $2 }' $file)
-				[ ! -d $dirname ] && { printf "fbm: directory doesn't exist\n" 1>&2; return 1; }
+				[ ! -d $dirname ] && { printf "bm: directory doesn't exist\n" 1>&2; return 1; }
 				export $bm=$dirname
 			else
-				printf "fbm: bookmark doesn't exist : %s\n" "$bm"
+				printf "bm: bookmark doesn't exist : %s\n" "$bm"
 			fi
 		done
 		;;
 
 	-l)
 		shift
-		_fbm_list "$file"
+		_bm_list "$file"
 		;;
 
 	-h)
-		_fbm_help ;;
+		_bm_help ;;
 
 	*)
 		if [ $# -eq 0 ]; then
-			_fbm_list "$file"
+			_bm_list "$file"
 		elif [ $# -gt 1 ]; then
-			_fbm_usage; return 1;
+			_bm_usage; return 1;
 		else
-			_fbm_gotobm $1 $file
-			[ $? -ne 0 ] && { _fbm_usage; return 1; };
+			_bm_gotobm $1 $file
+			[ $? -ne 0 ] && { _bm_usage; return 1; };
 			return 0
 		fi
 		;;
