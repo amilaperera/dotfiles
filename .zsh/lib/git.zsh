@@ -1,1 +1,0 @@
-/home/amila/.oh-my-zsh/lib/git.zsh

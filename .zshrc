@@ -1,52 +1,40 @@
 #############################################################
 # Author: Amila Perera
 # File Name: .zshrc
-#
-# Description:
-# zshell initialization file
-# source configuration files from $HOME/.zsh directory
 #############################################################
 
-# setting zsh directory
-ZSH=$HOME/.zsh
+# Path to your oh-my-zsh configuration.
+ZSH=$HOME/.oh-my-zsh
 
-# add personal function & completion paths
-[ -d $ZSH/functions ] && fpath=($ZSH/functions $fpath)
-[ -d $ZSH/completions ] && fpath=($ZSH/completions $fpath)
+# my personal theme
+ZSH_THEME="amifav"
 
-# source utility functions
-[ -f $ZSH/zutil.zsh ] && source $ZSH/zutil.zsh
+# Uncomment following line if you want to disable autosetting terminal title.
+DISABLE_AUTO_TITLE="true"
 
-ZSH_LIB_DIR=$ZSH/lib
-for lib in $ZSH_LIB_DIR/*.zsh; do
-	source $lib
-done
+# Uncomment following line if you want to disable command autocorrection
+DISABLE_CORRECTION="true"
 
-# source files in the ZSH directory
-files=(zenv zcolors zalias zprompt zcomp zfunc zfbm)
-for config_file in $files; do
-	source $ZSH/$config_file.zsh
-done
+# Uncomment following line if you want to  shown in the command execution time stamp 
+# in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
+# yyyy-mm-dd
+HIST_STAMPS="yyyy-mm-dd"
 
-# setting pluigns directory
-ZSH_PLUGINS_DIR=$ZSH/plugins
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+plugins=(git svn rails tmux tmuxinator ruby jump)
 
-# plugins
-plugins=(rvm tmuxinator vundle git svn rake rails3 rails4)
+# source personal utility functions, which are used in
+# custom zsh files
+source $ZSH/custom/lib/zutil.zsh
 
-# source plugins in the plugins directory
-for plugin in $plugins; do
-	if [ -f $ZSH_PLUGINS_DIR/$plugin/$plugin.plugin.zsh ]; then
-		fpath=($ZSH_PLUGINS_DIR/$plugin $fpath)
-		source $ZSH_PLUGINS_DIR/$plugin/$plugin.plugin.zsh
-	elif [ -f $ZSH_PLUGINS_DIR/$plugin/_$plugin ]; then
-		fpath=($ZSH_PLUGINS_DIR/$plugin $fpath)
-	fi
-done
+# source main oh-my-zsh configuration file
+source $ZSH/oh-my-zsh.sh
 
-# load and run compinit after loading all the plugins
-autoload -Uz compinit
-compinit
+# User configuration
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export MANPATH="/usr/local/man:$MANPATH"
 
-# fires up a tmux session with the user's name at start up
-tmux_start $USER
+# start tmux on start
+tmux_start
