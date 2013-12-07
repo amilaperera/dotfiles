@@ -30,7 +30,7 @@ complete -o dirnames -f -X '!*.[pf]df' pdf
 
 function _bm_comp()
 {
-	local file="$HOME/.fbookmarks"
+	local file="$HOME/.bmarks"
 	local cur=
 	COMPREPLY=()
 	cur=${COMP_WORDS[$COMP_CWORD]}

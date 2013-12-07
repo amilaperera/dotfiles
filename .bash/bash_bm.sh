@@ -82,7 +82,7 @@ function _bm_checkvar()
 ##################################################################
 function bm()
 {
-	local bm= dir= file="${HOME}/.fbookmarks"
+	local bm= dir= file="${HOME}/.bmarks"
 
 	case $1 in
 	-c)
