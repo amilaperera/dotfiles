@@ -1,1 +1,38 @@
-/home/amila/.inputrc
+#############################################################
+# Author: Amila Perera
+# File Name: .inputrc
+#############################################################
+
+# include any systemwide bindings and variable assignments
+# /etc/inputrc
+$include /etc/inputrc
+
+$if Bash
+# ignore case when doing completion
+set completion-ignore-case on
+
+# replaces the word to be completed from the list of possible completions
+TAB: menu-complete
+
+# append "/" to all dirnames
+set mark-directories on
+# completed names which are symlinks to dirs hava "/" appended
+set mark-symlinked-directories on
+
+# list ls -F for completion
+# set visible-stats-on
+
+# Match all files
+set match-hidden-files on
+
+# Filename completion/expansion
+set show-all-if-ambiguous on
+
+# Expand homedir name
+#set expand-tilde on
+
+# 'Magic Space'
+# Insert a space character then performs
+# a history expansion in the line
+#Space: magic-space
+$endif
