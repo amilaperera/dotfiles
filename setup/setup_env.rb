@@ -24,12 +24,24 @@ class Env
     else
       github_repo_src = "https://github.com/#{repo_info.shift}"
       github_repo_dest = repo_info.shift
-      puts "Cloning from #{github_repo_src}"
-      if github_repo_dest.nil?
-        `git clone #{github_repo_src}`
-      else
-        `git clone #{github_repo_src} #{github_repo_dest}`
+
+      print "Cloning from #{github_repo_src} "
+
+      # creates thread to clone from github repository
+      clone_thread = Thread.new do
+        if github_repo_dest.nil?
+          `git clone #{github_repo_src} >/dev/null 2>&1`
+        else
+          `git clone #{github_repo_src} #{github_repo_dest} >/dev/null 2>&1`
+        end
       end
+
+      while clone_thread.alive?
+        sleep 1
+        print "."
+      end
+      clone_thread.join
+
       $?.success?
     end
   end
@@ -61,7 +73,7 @@ class Env
     end
   end
 
-  # create symbolic links
+  # create symbolic links from dotfiles to homedir
   def create_sym_links
     forceall, noforceall = false, false
     @syms.each do |sym|
@@ -152,7 +164,8 @@ class ZshSetup < Env
   def create_zshrc
     if File.exists?("#{OH_MY_ZSH_DIR}/custom/template/.zshrc")
       begin
-        FileUtils.ln_s("#{OH_MY_ZSH_DIR}/custom/template/.zshrc", "#{ENV['HOME']}/.zshrc", :force => true)
+        FileUtils.ln_s("#{OH_MY_ZSH_DIR}/custom/template/.zshrc",
+                       "#{ENV['HOME']}/.zshrc", :force => true)
       rescue Exception => e
         abort "oops! failed to create symlink. #{e.message}"
       end
@@ -178,9 +191,95 @@ class VimSetup < Env
     %w(.vimrc .gvimrc).each { |e| syms.push e }
   end
 
+  def check_for_vim
+    abort "vim doesn't exist.\nInstall vim first.." unless command_exists?("vim")
+  end
+
+  # download bundles that are in the .vimrc file
+  def download_bunldes
+    forceall, noforceall, bundle_found = false, false, false
+    bundle_root = "#{ENV['HOME']}/.vim/bundle"
+
+    # create bundle dir if it doesn't exist
+    unless File.directory?(bundle_root)
+      begin
+        FileUtils.mkdir_p(bundle_root)
+      rescue
+        puts "Can't create #{bundle_root}"
+      end
+    end
+
+    # read .vimrc and install the bundles
+    File.readlines("#{ENV['HOME']}/.vimrc").each do |line|
+      # NOTE: the following regex needs Ruby version >= 1.9.2
+      if /^Bundle ('|")(?<repo>.*)\/(?<bundle>.*)('|")/ =~ line
+        bundle_found = true
+        bundle_dir_name = "#{bundle_root}/#{bundle}"
+        if File.directory?(bundle_dir_name)
+          unless noforceall
+            unless forceall
+              print "#{bundle_dir_name} exists.\nReinstall #{bundle} (y|n|ya|na) ? "
+              reply = gets.chomp.downcase
+              forceall = true if reply == 'ya'
+              noforceall = true if reply == 'na'
+            end
+            if reply == 'y' || forceall
+              begin
+                FileUtils.rm_r(bundle_dir_name)
+                unless github_clone?("#{repo}/#{bundle}", "#{bundle_dir_name}")
+                  abort "Failed to download #{repo}/#{bundle}"
+                end
+                puts
+              rescue
+                abort "error redownloading #{repo}/#{bundle}"
+              end
+            end
+          end
+        else
+          puts "Downloading #{bundle_dir_name}"
+          unless github_clone?("#{repo}/#{bundle}", "#{bundle_dir_name}")
+            abort "Failed to download #{repo}/#{bundle}"
+          end
+          puts
+        end
+      end
+    end
+    puts "No bundles found in #{ENV['HOME']}/.vimrc" unless bundle_found
+  end
+
+  # creates a symlink in bundle/autoload directory to pathogen
+  def setup_pathogen
+    autoload_dir, pathogen_dir = "#{ENV['HOME']}/.vim/bundle/autoload", "#{ENV['HOME']}/.vim/bundle/vim-pathogen"
+    begin
+      unless File.directory?(pathogen_dir)
+        puts "pathogen doesn't exist in bundle directory\nTry to install pathogen first.."
+      else
+        unless File.directory?(autoload_dir)
+          FileUtils.mkdir_p(autoload_dir)
+        end
+        FileUtils.ln_s("#{pathogen_dir}/autoload/pathogen.vim", "#{autoload_dir}/pathogen.vim", :force => true)
+      end
+    rescue
+      abort "Failed to setup pathogen properly."
+    end
+  end
+
   # setup vim environment
   def setup_env
-    
+    puts "Checkinfg for vim"
+    check_for_vim
+
+    puts
+    puts "Creating symlinks"
+    create_sym_links
+
+    puts
+    puts "Downloading bundles"
+    download_bunldes
+
+    puts
+    puts "Setting up pathogen"
+    setup_pathogen
   end
 end
 
@@ -197,5 +296,5 @@ class SetupEnv
 end
 
 # main program
-my_env = SetupEnv.new(ZshSetup.new)
+my_env = SetupEnv.new(VimSetup.new)
 my_env.setup
