@@ -266,6 +266,10 @@ class VimSetup < Env
 
   # setup vim environment
   def setup_env
+    puts "Checking for dotfiles.."
+    download_dotfiles
+
+    puts
     puts "Checkinfg for vim"
     check_for_vim
 
