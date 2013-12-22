@@ -81,12 +81,21 @@ class Env
       unless sym_exists?(sym_src)
         abort "#{sym_src} doesn't exist. Consider downloading dotfiles again.."
       else
+
+        if forceall
+          puts "Forcefully creating symbolic link #{sym_dest}"
+        elsif noforceall
+          puts "Skip creating symbolic link #{sym_dest}"
+        else
+          puts "Creating symbolic link #{sym_dest}"
+        end
+
         if sym_exists?(sym_dest)
           # if the symlink exists
           unless noforceall
             begin
               unless forceall
-                print "Replace #{sym_dest} with #{sym_src} (y|n|ya|na) ? "
+                print "  Replace #{sym_dest} with #{sym_src} (y|n|ya|na) ? "
                 reply = gets.chomp.downcase
                 forceall = true if reply == 'ya'
                 noforceall = true if reply == 'na'
@@ -119,11 +128,15 @@ class BashSetup < Env
 
   # setup the bash environment
   def setup_env
-    puts "Checking for dotfiles.."
+    puts
+    puts "Setting up bash environment"
+    puts "==========================="
+    puts
+    puts "Checking for dotfiles .."
     download_dotfiles
 
     puts
-    puts "Creating symbolic links.."
+    puts "Creating symbolic links .."
     create_sym_links
   end
 end
@@ -176,11 +189,16 @@ class ZshSetup < Env
 
   # setup the zsh environment
   def setup_env
-    puts "Checking for oh-my-zsh"
+    puts
+    puts "Setting up zsh environment"
+    puts "=========================="
+
+    puts
+    puts "Checking for oh-my-zsh .."
     download_ohmyzsh_fork
 
     puts
-    puts "Creating .zshrc"
+    puts "Creating .zshrc .."
     create_zshrc
   end
 end
@@ -266,24 +284,79 @@ class VimSetup < Env
 
   # setup vim environment
   def setup_env
-    puts "Checking for dotfiles.."
+    puts
+    puts "Setting up vim environment"
+    puts "=========================="
+    puts
+    puts "Checking for dotfiles .."
     download_dotfiles
 
     puts
-    puts "Checkinfg for vim"
+    puts "Checkinfg for vim .."
     check_for_vim
 
     puts
-    puts "Creating symlinks"
+    puts "Creating symlinks .."
     create_sym_links
 
     puts
-    puts "Downloading bundles"
+    puts "Downloading bundles .."
     download_bunldes
 
     puts
-    puts "Setting up pathogen"
+    puts "Setting up pathogen .."
     setup_pathogen
+  end
+end
+
+class IrbEnv < Env
+  def initialize
+    super
+    %w(.irbrc).each { |e| syms.push e }
+  end
+
+  def setup_env
+    puts
+    puts "Setting irb"
+    puts "==========="
+
+    puts
+    puts "Creating symbolic links .."
+    create_sym_links
+  end
+end
+
+class TmuxEnv < Env
+  def initialize
+    super
+    %w(.tmux.conf).each { |e| syms.push e }
+  end
+
+  def setup_env
+    puts
+    puts "Setting tmux"
+    puts "============"
+
+    puts
+    puts "Creating symbolic links .."
+    create_sym_links
+  end
+end
+
+class ColorDiffEnv < Env
+  def initialize
+    super
+    %w(.colordiffrc).each { |e| syms.push e }
+  end
+
+  def setup_env
+    puts
+    puts "Setting colordiff"
+    puts "================="
+
+    puts
+    puts "Creating symbolic links .."
+    create_sym_links
   end
 end
 
@@ -300,5 +373,37 @@ class SetupEnv
 end
 
 # main program
-my_env = SetupEnv.new(VimSetup.new)
-my_env.setup
+reply = ""
+begin
+  puts
+  puts " 1. Setup Zsh Environment"
+  puts " 2. Setup Bash Environment"
+  puts " 3. Setup Vim Environment"
+  puts " 4. Setup Irb Environment"
+  puts " 5. Setup Tmux Environment"
+  puts " 6. Setup Colordiff Environment"
+  puts
+  puts " Q. Quit"
+  puts
+  print " Choice ? "
+  reply = gets.chomp.downcase
+
+  unless %w(quit q).include?(reply)
+    case reply
+    when "1"
+      SetupEnv.new(ZshSetup.new).setup
+    when "2"
+      SetupEnv.new(BashSetup.new).setup
+    when "3"
+      SetupEnv.new(VimSetup.new).setup
+    when "4"
+      SetupEnv.new(IrbEnv.new).setup
+    when "5"
+      SetupEnv.new(TmuxEnv.new).setup
+    when "6"
+      SetupEnv.new(ColorDiffEnv.new).setup
+    else
+      puts " Bad Choice.."
+    end
+  end
+end while not %w(quit q).include?(reply)
