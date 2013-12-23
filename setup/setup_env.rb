@@ -16,6 +16,14 @@ class Env
     $?.success?
   end
 
+  def get_distro
+    if command_exists?('lsb_release')
+      `lsb_release -si`
+    else
+      "no_distro"
+    end
+  end
+
   # clone a repo from github and returns true on success, false otherwise
   def github_clone?(*repo_info)
     unless command_exists?("git")
@@ -340,10 +348,61 @@ class TmuxEnv < Env
     %w(.tmux.conf).each { |e| syms.push e }
   end
 
+  def install_tmux
+    case get_distro
+    when /(Ubuntu)|(Debian)/
+      `sudo apt-get install tmux -y`
+    when /(Fedora)|(RedHat)/
+      `sudo yum install tmux -y`
+    else
+      abort "Can't install tmux, because the OS can't be identified."
+    end
+  end
+
+  def install_tmuxinator
+    `gem install tmuxinator --no-rdoc --no-ri`
+  end
+
   def setup_env
     puts
     puts "Setting tmux"
     puts "============"
+
+    puts
+    puts "Creating symbolic links .."
+    create_sym_links
+
+    puts
+    puts "Install tmuxinator"
+    install_tmuxinator
+  end
+end
+
+class AckEnv < Env
+  def initialize
+    super
+    %w(.ackrc).each { |e| syms.push e }
+  end
+
+  def install_ack
+    case get_distro
+    when /(Ubuntu)|(Debian)/
+      `sudo apt-get install ack-grep -y`
+    when /(Fedora)|(RedHat)/
+      `sudo yum install ack -y`
+    else
+      abort "Can't install ack, because the OS can't be identified."
+    end
+  end
+
+  def setup_env
+    puts
+    puts "Setting ackrc"
+    puts "============="
+
+    puts
+    puts "Install ack .."
+    install_ack
 
     puts
     puts "Creating symbolic links .."
@@ -357,10 +416,25 @@ class ColorDiffEnv < Env
     %w(.colordiffrc).each { |e| syms.push e }
   end
 
+  def install_colordiff
+    case get_distro
+    when /(Ubuntu)|(Debian)/
+      `sudo apt-get install colordiff -y`
+    when /(Fedora)|(RedHat)/
+      `sudo yum install colordiff -y`
+    else
+      abort "Can't install colordiff, because the OS can't be identified."
+    end
+  end
+
   def setup_env
     puts
     puts "Setting colordiff"
     puts "================="
+
+    puts
+    puts "Install colordiff .."
+    install_colordiff
 
     puts
     puts "Creating symbolic links .."
@@ -389,7 +463,8 @@ begin
   puts " 3. Setup Vim Environment"
   puts " 4. Setup Irb Environment"
   puts " 5. Setup Tmux Environment"
-  puts " 6. Setup Colordiff Environment"
+  puts " 6. Setup Ack Environment"
+  puts " 7. Setup Colordiff Environment"
   puts
   puts " Q. Quit"
   puts
@@ -409,6 +484,8 @@ begin
     when "5"
       SetupEnv.new(TmuxEnv.new).setup
     when "6"
+      SetupEnv.new(AckEnv.new).setup
+    when "7"
       SetupEnv.new(ColorDiffEnv.new).setup
     else
       puts " Bad Choice.."
