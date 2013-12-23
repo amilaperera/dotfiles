@@ -315,10 +315,18 @@ class IrbEnv < Env
     %w(.irbrc).each { |e| syms.push e }
   end
 
+  def install_gems_for_irb
+    `gem install wirble hirb awesome_print --no-rdoc --no-ri`
+  end
+
   def setup_env
     puts
     puts "Setting irb"
     puts "==========="
+
+    puts
+    puts "Installing necessary gems for irb .."
+    install_gems_for_irb
 
     puts
     puts "Creating symbolic links .."
