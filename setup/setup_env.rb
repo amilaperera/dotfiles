@@ -275,7 +275,7 @@ class VimSetup < Env
 
   # creates a symlink in bundle/autoload directory to pathogen
   def setup_pathogen
-    autoload_dir, pathogen_dir = "#{ENV['HOME']}/.vim/bundle/autoload", "#{ENV['HOME']}/.vim/bundle/vim-pathogen"
+    autoload_dir, pathogen_dir = "#{ENV['HOME']}/.vim/autoload", "#{ENV['HOME']}/.vim/bundle/vim-pathogen"
     begin
       unless File.directory?(pathogen_dir)
         puts "pathogen doesn't exist in bundle directory\nTry to install pathogen first.."
@@ -324,7 +324,7 @@ class IrbEnv < Env
   end
 
   def install_gems_for_irb
-    `gem install wirble hirb awesome_print --no-rdoc --no-ri`
+    `sudo gem install wirble hirb awesome_print --no-rdoc --no-ri`
   end
 
   def setup_env
@@ -350,9 +350,9 @@ class TmuxEnv < Env
 
   def install_tmux
     case get_distro
-    when /(Ubuntu)|(Debian)/
+    when /Ubuntu|Debian/
       `sudo apt-get install tmux -y`
-    when /(Fedora)|(RedHat)/
+    when /Fedora|RedHat/
       `sudo yum install tmux -y`
     else
       abort "Can't install tmux, because the OS can't be identified."
@@ -360,7 +360,7 @@ class TmuxEnv < Env
   end
 
   def install_tmuxinator
-    `gem install tmuxinator --no-rdoc --no-ri`
+    `sudo gem install tmuxinator --no-rdoc --no-ri`
   end
 
   def setup_env
@@ -386,9 +386,9 @@ class AckEnv < Env
 
   def install_ack
     case get_distro
-    when /(Ubuntu)|(Debian)/
+    when /Ubuntu|Debian/
       `sudo apt-get install ack-grep -y`
-    when /(Fedora)|(RedHat)/
+    when /Fedora|RedHat/
       `sudo yum install ack -y`
     else
       abort "Can't install ack, because the OS can't be identified."
@@ -418,9 +418,9 @@ class ColorDiffEnv < Env
 
   def install_colordiff
     case get_distro
-    when /(Ubuntu)|(Debian)/
+    when /Ubuntu|Debian/
       `sudo apt-get install colordiff -y`
-    when /(Fedora)|(RedHat)/
+    when /Fedora|RedHat/
       `sudo yum install colordiff -y`
     else
       abort "Can't install colordiff, because the OS can't be identified."
