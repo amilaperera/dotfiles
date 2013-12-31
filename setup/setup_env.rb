@@ -16,14 +16,6 @@ class Env
     $?.success?
   end
 
-  def get_distro
-    if command_exists?('lsb_release')
-      `lsb_release -si`
-    else
-      "no_distro"
-    end
-  end
-
   # clone a repo from github and returns true on success, false otherwise
   def github_clone?(*repo_info)
     unless command_exists?("git")
@@ -45,13 +37,22 @@ class Env
       end
 
       while clone_thread.alive?
-        sleep 1
-        print "."
+        print_with_sleep "-"
+        print_with_sleep "\b\\"
+        print_with_sleep "\b|"
+        print_with_sleep "\b/"
+        print_with_sleep "\b-"
+        print_with_sleep "\b."
       end
       clone_thread.join
 
       $?.success?
     end
+  end
+
+  def print_with_sleep(str, sleep_time = 0.15)
+    sleep sleep_time
+    print str
   end
 
   # check if the name sym exists as a file, a directory or a symlink
@@ -349,11 +350,10 @@ class TmuxEnv < Env
   end
 
   def install_tmux
-    case get_distro
-    when /Ubuntu|Debian/
+    if command_exists?('yum')
       `sudo apt-get install tmux -y`
-    when /Fedora|RedHat/
-      `sudo yum install tmux -y`
+    elsif command_exists?('apt-get')
+      `sudo apt-get install tmux -y`
     else
       abort "Can't install tmux, because the OS can't be identified."
     end
@@ -385,11 +385,10 @@ class AckEnv < Env
   end
 
   def install_ack
-    case get_distro
-    when /Ubuntu|Debian/
-      `sudo apt-get install ack-grep -y`
-    when /Fedora|RedHat/
+    if command_exists?('yum')
       `sudo yum install ack -y`
+    elsif command_exists?('apt-get')
+      `sudo apt-get install ack-grep -y`
     else
       abort "Can't install ack, because the OS can't be identified."
     end
@@ -417,11 +416,10 @@ class ColorDiffEnv < Env
   end
 
   def install_colordiff
-    case get_distro
-    when /Ubuntu|Debian/
-      `sudo apt-get install colordiff -y`
-    when /Fedora|RedHat/
+    if command_exists?('yum')
       `sudo yum install colordiff -y`
+    elsif command_exists?('apt-get')
+      `sudo apt-get install colordiff -y`
     else
       abort "Can't install colordiff, because the OS can't be identified."
     end
