@@ -454,15 +454,17 @@ end
 
 # main program
 reply = ""
+puts "Environment Setup"
+puts "================="
 begin
   puts
-  puts " 1. Setup Zsh Environment"
-  puts " 2. Setup Bash Environment"
-  puts " 3. Setup Vim Environment"
-  puts " 4. Setup Irb Environment"
-  puts " 5. Setup Tmux Environment"
-  puts " 6. Setup Ack Environment"
-  puts " 7. Setup Colordiff Environment"
+  puts " 1. Zsh Environment"
+  puts " 2. Bash Environment"
+  puts " 3. Vim Environment"
+  puts " 4. Irb Environment"
+  puts " 5. Tmux Environment"
+  puts " 6. Ack Environment"
+  puts " 7. Colordiff Environment"
   puts
   puts " Q. Quit"
   puts
