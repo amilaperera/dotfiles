@@ -544,6 +544,9 @@ map <silent> <Leader>u :e! ++enc=utf-8<CR>
 " changes directory to the directory of the current buffer {{{2
 nmap <silent> <Leader>cd :lcd %:h<CR>:pwd<CR>
 " }}}2
+" get the full path of the file in the buffer {{{2
+nmap <Leader> <Space> :echo expand('%:p')<CR>
+" }}}2
 " Heading {{{2
 noremap <silent> <Leader>h1 yyp^v$r=
 noremap <silent> <Leader>h2 yyp^v$r-
