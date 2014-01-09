@@ -342,6 +342,7 @@ nnoremap <silent> <F12> :BufExplorer<CR>
 " NerdCommenter Settings {{{2
 let g:NERDSpaceDelims       = 1
 let g:NERDRemoveExtraSpaces = 1
+imap <C-c> <plug>NERDCommenterInsert
 " }}}2
 
 " Nerdtree settings {{{2
