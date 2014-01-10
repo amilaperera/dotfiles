@@ -51,6 +51,7 @@ Bundle 'godlygeek/tabular'
 Bundle 'Raimondi/delimitMate'
 Bundle 'maxbrunsfeld/vim-yankstack'
 Bundle 'mileszs/ack.vim'
+Bundle 'jimsei/winresizer'
 " }}}2
 
 " Using the updated version of bufkill plugin {{{2
