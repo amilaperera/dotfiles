@@ -41,8 +41,6 @@ alias quit='exit'
 alias cls='clear'
 alias clr='cd ~/ && clear'
 
-alias B='source ~/.bashrc'
-
 alias _='sudo'
 
 alias du='du -kh'
