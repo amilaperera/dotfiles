@@ -29,7 +29,7 @@ alias j='jobs -l'
 alias p='ps -ef'   # every process on the system
 alias pz='ps -efZ' # SELinux contexts
 
-alias F='fbm'  # folder bookmark utility
+alias B='bm'  # folder bookmark utility
 
 alias rm='rm -i'
 alias cp='cp -i'
