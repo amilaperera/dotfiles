@@ -241,7 +241,11 @@ class VimSetup < Env
     # read .vimrc and install the bundles
     File.readlines("#{ENV['HOME']}/.vimrc").each do |line|
       # NOTE: the following regex needs Ruby version >= 1.9.2
-      if /^Bundle ('|")(?<repo>.*)\/(?<bundle>.*)('|")/ =~ line
+      # if /^Bundle ('|")(?<repo>.*)\/(?<bundle>.*)('|")/ =~ line
+      # changing to a regexp that is compatible with ruby 1.8.7 makes
+      # github clone thread to work in an unexpected behaviour
+      if /^Bundle ('|")(.*)\/(.*)('|")/ =~ line
+        repo, bundle = Regexp.last_match(2), Regexp.last_match(3)
         bundle_found = true
         bundle_dir_name = "#{bundle_root}/#{bundle}"
         if File.directory?(bundle_dir_name)
