@@ -42,6 +42,8 @@ class Env
         print_with_sleep "\b|"
         print_with_sleep "\b/"
         print_with_sleep "\b-"
+        print_with_sleep "\b\\"
+        print_with_sleep "\b|"
         print_with_sleep "\b."
       end
       clone_thread.join
@@ -50,7 +52,7 @@ class Env
     end
   end
 
-  def print_with_sleep(str, sleep_time = 0.15)
+  def print_with_sleep(str, sleep_time = 0.20)
     sleep sleep_time
     print str
   end
