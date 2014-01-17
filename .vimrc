@@ -186,6 +186,8 @@ set history=1000
 set tags=./tags
 set tags+=../tags
 set tags+=../../tags
+set tags+=../../../tags
+set tags+=../../../../tags
 " }}}2
 
 " Allow '/' in directory paths in Windows {{{2
