@@ -1,0 +1,9 @@
+[user]
+	name = Amila Perera
+	email = perera.amila@gmail.com
+[alias]
+	st = status
+	ci = commit
+	co = checkout
+[color]
+	ui = always
