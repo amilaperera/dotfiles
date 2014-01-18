@@ -131,7 +131,7 @@ class Env
 end
 
 # Bash setup
-class BashSetup < Env
+class BashEnv < Env
   def initialize
     super
     %w(.bashrc .bash_profile .bash_logout .bash .inputrc).each { |e| syms.push e }
@@ -142,7 +142,7 @@ class BashSetup < Env
     puts
     puts "Setting up bash environment"
     puts "==========================="
-    puts
+
     puts "Checking for dotfiles .."
     download_dotfiles
 
@@ -153,7 +153,7 @@ class BashSetup < Env
 end
 
 # ZShell setup
-class ZshSetup < Env
+class ZshEnv < Env
   OH_MY_ZSH_DIR = "#{ENV['HOME']}/.oh-my-zsh"
 
   def initialize
@@ -204,7 +204,6 @@ class ZshSetup < Env
     puts "Setting up zsh environment"
     puts "=========================="
 
-    puts
     puts "Checking for oh-my-zsh .."
     download_ohmyzsh_fork
 
@@ -214,7 +213,7 @@ class ZshSetup < Env
   end
 end
 
-class VimSetup < Env
+class VimEnv < Env
   def initialize
     super
     %w(.vimrc .gvimrc).each { |e| syms.push e }
@@ -302,7 +301,7 @@ class VimSetup < Env
     puts
     puts "Setting up vim environment"
     puts "=========================="
-    puts
+
     puts "Checking for dotfiles .."
     download_dotfiles
 
@@ -324,6 +323,59 @@ class VimSetup < Env
   end
 end
 
+class RvmEnv < Env
+  def initialize
+    super
+    @primary_rubies = [ "1.8.7", "1.9.3", "2.0.0", "2.1.0", "ruby-head" ]
+  end
+
+  def check_for_prq
+    abort "Can't find curl. Install curl first." unless command_exists?('curl')
+    abort "Can't find git. Install git first." unless command_exists?('git')
+  end
+
+  def install_rvm
+    `\\curl -sSL https://get.rvm.io | bash -s stable`
+    if $?.success?
+      puts "  rvm installed successfully"
+      `source ~/.profile`
+    else
+      puts "  failed to install rvm"
+    end
+  end
+
+  def install_primary_rubies
+    @primary_rubies.each do |ruby|
+      print "Do you want to install ruby #{ruby} (y|n) ? "
+      reply = gets.chomp.downcase
+      if reply == 'y'
+        `rvm install #{ruby}`
+        if $?.success?
+          puts "  ruby #{ruby} installed successfully"
+        else
+          puts "  failed to install ruby #{ruby}"
+        end
+      end
+    end
+  end
+
+  def setup_env
+    puts
+    puts "Setting rvm"
+    puts "==========="
+
+    puts "Checking for prerequisites before installing rvm .."
+    check_for_prq
+
+    puts "Installing rvm .."
+    install_rvm
+
+    puts "Installing primary rubies via rvm .."
+    install_primary_rubies
+  end
+
+end
+
 class IrbEnv < Env
   def initialize
     super
@@ -339,7 +391,6 @@ class IrbEnv < Env
     puts "Setting irb"
     puts "==========="
 
-    puts
     puts "Installing necessary gems for irb .."
     install_gems_for_irb
 
@@ -374,7 +425,6 @@ class TmuxEnv < Env
     puts "Setting tmux"
     puts "============"
 
-    puts
     puts "Creating symbolic links .."
     create_sym_links
 
@@ -464,13 +514,14 @@ puts "Environment Setup"
 puts "================="
 begin
   puts
-  puts " 1. Zsh Environment"
-  puts " 2. Bash Environment"
-  puts " 3. Vim Environment"
-  puts " 4. Irb Environment"
-  puts " 5. Tmux Environment"
-  puts " 6. Ack Environment"
-  puts " 7. Colordiff Environment"
+  puts " 1. zsh environment"
+  puts " 2. bash environment"
+  puts " 3. vim environment"
+  puts " 4. rvm environment"
+  puts " 5. irb environment"
+  puts " 6. tmux environment"
+  puts " 7. ack environment"
+  puts " 8. colordiff environment"
   puts
   puts " Q. Quit"
   puts
@@ -480,18 +531,20 @@ begin
   unless %w(quit q).include?(reply)
     case reply
     when "1"
-      SetupEnv.new(ZshSetup.new).setup
+      SetupEnv.new(ZshEnv.new).setup
     when "2"
-      SetupEnv.new(BashSetup.new).setup
+      SetupEnv.new(BashEnv.new).setup
     when "3"
-      SetupEnv.new(VimSetup.new).setup
+      SetupEnv.new(VimEnv.new).setup
     when "4"
-      SetupEnv.new(IrbEnv.new).setup
+      SetupEnv.new(RvmEnv.new).setup
     when "5"
-      SetupEnv.new(TmuxEnv.new).setup
+      SetupEnv.new(IrbEnv.new).setup
     when "6"
-      SetupEnv.new(AckEnv.new).setup
+      SetupEnv.new(TmuxEnv.new).setup
     when "7"
+      SetupEnv.new(AckEnv.new).setup
+    when "8"
       SetupEnv.new(ColorDiffEnv.new).setup
     else
       puts " Bad Choice.."
