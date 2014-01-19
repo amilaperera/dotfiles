@@ -240,7 +240,7 @@ let s:myFavouriteTermColorScheme = "default"
 
 " set the colorscheme only for terminal vim
 " for gui vim use the colorscheme in the .gvimrc
-if ! has('gui')
+if ! has('gui_running')
   set background=dark
   if (&term == "xterm-256color" || &term == "screen-256color")
     execute "colorscheme " . s:myFavourite256ColorScheme
