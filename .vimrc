@@ -418,6 +418,11 @@ nmap <C-n> <Plug>yankstack_substitute_newer_paste
 " bufkill {{{2
 nmap <silent> <Leader>bd :BD<CR>
 " }}}2
+
+" winresizer {{{2
+let g:winresizer_vert_resize = 2
+let g:winresizer_horiz_resize = 1
+" }}}2
 " }}}
 
 " Functions {{{
