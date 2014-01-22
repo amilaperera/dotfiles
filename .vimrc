@@ -351,7 +351,7 @@ imap <C-c> <plug>NERDCommenterInsert
 " Nerdtree settings {{{2
 map <silent> <left> :NERDTreeToggle<CR>
 let g:NERDTreeShowBookmarks = 1
-let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\.git$', '\~$']
+let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.so.*$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\.git$', '\~$']
 " }}}2
 
 " MRU {{{2
