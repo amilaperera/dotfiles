@@ -31,7 +31,6 @@ Bundle 'vim-scripts/VisIncr'
 Bundle 'vim-scripts/ZoomWin'
 Bundle 'vim-scripts/highlight.vim'
 Bundle 'vim-scripts/mru.vim'
-Bundle 'vim-scripts/taglist.vim'
 Bundle 'vim-scripts/vcscommand.vim'
 Bundle 'vim-scripts/L9'
 Bundle 'vim-scripts/txt.vim'
@@ -52,6 +51,7 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'maxbrunsfeld/vim-yankstack'
 Bundle 'mileszs/ack.vim'
 Bundle 'jimsei/winresizer'
+Bundle 'majutsushi/tagbar'
 " }}}2
 
 " Using the updated version of bufkill plugin {{{2
@@ -326,16 +326,18 @@ set dictionary+=/usr/share/dict/words " set the dictionary file
 
 " Settings related to external plugins {{{
 " TagList Settings {{{2
-map <silent> <right> :Tlist<CR>
-let Tlist_Auto_Open            = 0       " let the tag list open automatically
-let Tlist_Compact_Format       = 1       " show small menu
-let Tlist_Ctags_Cmd            = 'ctags' " location of ctags
-let Tlist_Enable_Fold_Column   = 0       " do not show column folding
-let Tlist_Exist_OnlyWindow     = 1       " if you are the last, kill yourself
-let Tlist_File_Fold_Auto_Close = 0       " fold closed other trees
-let Tlist_Sort_Type            = "name"  " order by name
-let Tlist_Use_Right_Window     = 1       " split to the right side of the screen
-let Tlist_WinWidth             = 40      " Taglist window 40 columns wide
+map <silent> <right> :TagbarToggle<CR>
+" Ruby specific tagbar settings
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:classes',
+        \ 'd:describes',
+        \ 'C:contexts',
+        \ 'f:methods',
+        \ 'F:singleton methods'
+    \ ]
+    \ }
 " }}}2
 
 " BufferExplorer mappings {{{2

@@ -340,7 +340,7 @@ class RvmEnv < Env
       puts "  rvm installed successfully"
       `source ~/.profile`
     else
-      puts "  failed to install rvm"
+      abort "  failed to install rvm"
     end
   end
 
