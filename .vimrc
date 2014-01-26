@@ -50,6 +50,7 @@ Bundle 'godlygeek/tabular'
 Bundle 'Raimondi/delimitMate'
 Bundle 'maxbrunsfeld/vim-yankstack'
 Bundle 'mileszs/ack.vim'
+Bundle 'rking/ag.vim'
 Bundle 'jimsei/winresizer'
 Bundle 'majutsushi/tagbar'
 " }}}2
