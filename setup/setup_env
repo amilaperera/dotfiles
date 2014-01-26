@@ -201,6 +201,28 @@ class ZshEnv < Env
     end
   end
 
+  def download_syntax_highlighiting
+    if File.directory?("#{OH_MY_ZSH_DIR}/custom")
+      unless File.directory?("#{OH_MY_ZSH_DIR}/custom/plugins")
+        begin
+          Dir.mkdir("#{OH_MY_ZSH_DIR}/custom/plugins")
+        rescue Exception => e
+          abort "oops! failed to create directory. #{e.message}"
+        end
+      end
+      begin
+        FileUtils.mkdir_p("#{OH_MY_ZSH_DIR}/custom/plugins/zsh-syntax-highlighting")
+        unless github_clone?("zsh-users/zsh-syntax-highlighting.git", "#{OH_MY_ZSH_DIR}/custom/plugins/zsh-syntax-highlighting")
+          abort "Failed to download zsh-syntax-highlighting.git"
+        end
+      rescue Exception => e
+        abort "oops! failed to create directory. #{e.message}"
+      end
+    else
+      abort "#{OH_MY_ZSH_DIR}/custom does not exist."
+    end
+  end
+
   # setup the zsh environment
   def setup_env
     puts
@@ -209,6 +231,10 @@ class ZshEnv < Env
 
     puts "Checking for oh-my-zsh .."
     download_ohmyzsh_fork
+
+    puts
+    puts "Setting syntax-highlighting plugin"
+    download_syntax_highlighiting
 
     puts
     puts "Creating .zshrc .."
