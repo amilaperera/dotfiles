@@ -201,7 +201,7 @@ class ZshEnv < Env
     end
   end
 
-  def download_syntax_highlighiting
+  def download_zsh_users_plugins
     if File.directory?("#{OH_MY_ZSH_DIR}/custom")
       unless File.directory?("#{OH_MY_ZSH_DIR}/custom/plugins")
         begin
@@ -215,11 +215,33 @@ class ZshEnv < Env
         unless github_clone?("zsh-users/zsh-syntax-highlighting.git", "#{OH_MY_ZSH_DIR}/custom/plugins/zsh-syntax-highlighting")
           abort "Failed to download zsh-syntax-highlighting.git"
         end
+        puts
+        FileUtils.mkdir_p("#{OH_MY_ZSH_DIR}/custom/plugins/zsh-completions")
+        unless github_clone?("zsh-users/zsh-completions.git", "#{OH_MY_ZSH_DIR}/custom/plugins/zsh-completions")
+          abort "Failed to download zsh-syntax-completions"
+        end
       rescue Exception => e
         abort "oops! failed to create directory. #{e.message}"
       end
     else
       abort "#{OH_MY_ZSH_DIR}/custom does not exist."
+    end
+  end
+
+  def create_symlinks_to_completions(*args)
+    custom_plugin_dir = "#{OH_MY_ZSH_DIR}/custom/plugins"
+    args.each do |arg|
+      completion_file = "#{OH_MY_ZSH_DIR}/custom/plugins/zsh-completions/src/_#{arg}"
+      unless File.exists?(completion_file)
+        puts "#{completion_file} doesn't exist"
+      else
+        begin
+          FileUtils.mkdir_p("#{custom_plugin_dir}/#{arg}")
+          FileUtils.ln_s("#{completion_file}", "#{custom_plugin_dir}/#{arg}", :force => true)
+        rescue Exception => e
+          abort "Failed in file operation. #{e.message}"
+        end
+      end
     end
   end
 
@@ -233,8 +255,12 @@ class ZshEnv < Env
     download_ohmyzsh_fork
 
     puts
-    puts "Setting syntax-highlighting plugin"
-    download_syntax_highlighiting
+    puts "Downloading syntax-highlighting and zsh-completions from zsh-users .."
+    download_zsh_users_plugins
+
+    puts
+    puts "Create symlinks to completions .."
+    create_symlinks_to_completions('ag', 'ack')
 
     puts
     puts "Creating .zshrc .."
