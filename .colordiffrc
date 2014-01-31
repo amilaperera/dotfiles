@@ -22,8 +22,8 @@ diff_cmd=diff
 # aliases for the same thing, namely "don't colour highlight
 # this, use the default output colour"
 #
-plain=black
-newtext=green
-oldtext=red
-diffstuff=cyan
-cvsstuff=white
+plain=darkwhite
+newtext=darkgreen
+oldtext=darkred
+diffstuff=darkcyan
+cvsstuff=darkmagenta
