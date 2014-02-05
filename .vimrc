@@ -342,7 +342,7 @@ let g:tagbar_type_ruby = {
 " }}}2
 
 " BufferExplorer mappings {{{2
-nnoremap <silent> <F12> :BufExplorer<CR>
+nnoremap <silent> <Leader>bb :BufExplorer<CR>
 " }}}2
 
 " NerdCommenter Settings {{{2
