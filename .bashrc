@@ -22,7 +22,4 @@ for file in ${config_file_list}; do
 	[ -f ${abs_file_path} ] && source ${abs_file_path}
 done
 
-# fires up a tmux session with the user's name at start up
-tmux_start $USER
-
 unset BASH_PATH config_file_list
