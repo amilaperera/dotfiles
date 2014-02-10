@@ -381,7 +381,6 @@ end
 class RvmEnv < Env
   def initialize
     super
-    @primary_rubies = [ "1.8.7", "1.9.3", "2.0.0", "2.1.0", "ruby-head" ]
   end
 
   def check_for_prq
@@ -399,21 +398,6 @@ class RvmEnv < Env
     end
   end
 
-  def install_primary_rubies
-    @primary_rubies.each do |ruby|
-      print "Do you want to install ruby #{ruby} (y|n) ? "
-      reply = gets.chomp.downcase
-      if reply == 'y'
-        `rvm install #{ruby}`
-        if $?.success?
-          puts "  ruby #{ruby} installed successfully"
-        else
-          puts "  failed to install ruby #{ruby}"
-        end
-      end
-    end
-  end
-
   def setup_env
     puts
     puts "Setting rvm"
@@ -424,9 +408,6 @@ class RvmEnv < Env
 
     puts "Installing rvm .."
     install_rvm
-
-    puts "Installing primary rubies via rvm .."
-    install_primary_rubies
   end
 
 end
