@@ -53,6 +53,7 @@ Bundle 'mileszs/ack.vim'
 Bundle 'rking/ag.vim'
 Bundle 'jimsei/winresizer'
 Bundle 'majutsushi/tagbar'
+Bundle 'brookhong/cscope.vim'
 " }}}2
 
 " Using the updated version of bufkill plugin {{{2
