@@ -237,7 +237,7 @@ set title                     " display title
 set display=lastline          " show as much as possible of the last line
 
 " ColorScheme {{{2
-let s:myFavourite256ColorScheme  = "wombat256"
+let s:myFavourite256ColorScheme  = "wombat256_amila"
 let s:myFavouriteTermColorScheme = "default"
 
 " set the colorscheme only for terminal vim
