@@ -140,7 +140,8 @@ filetype plugin on        " filetype plugin on
 filetype indent on        " filetype indent on
 syntax on                 " always syntax on
 
-runtime macros/matchit.vim " autoload the matchit plugin on startup
+runtime! macros/matchit.vim " autoload the matchit plugin on startup
+runtime! ftplugin/man.vim  " load the man page file type plugin on startup
 
 set autoindent            " auto-indent on
 set foldenable            " enable fold functionality
