@@ -269,7 +269,7 @@ class ZshEnv < Env
     download_zsh_users_plugins
 
     puts
-    puts "Create symlinks to completions .."
+    puts "Create symlinks to completion functions of ag, ack .."
     create_symlinks_to_completions('ag', 'ack')
 
     puts
@@ -282,10 +282,6 @@ class VimEnv < Env
   def initialize
     super
     %w(.vimrc .gvimrc).each { |e| syms.push e }
-  end
-
-  def check_for_vim
-    abort "vim doesn't exist.\nInstall vim first.." unless command_exists?("vim")
   end
 
   # download bundles that are in the .vimrc file
@@ -371,10 +367,6 @@ class VimEnv < Env
     download_dotfiles
 
     puts
-    puts "Checkinfg for vim .."
-    check_for_vim
-
-    puts
     puts "Creating symlinks .."
     create_sym_links
 
@@ -422,128 +414,17 @@ class RvmEnv < Env
 
 end
 
-class IrbEnv < Env
+class MiscEnv < Env
   def initialize
     super
-    %w(.irbrc).each { |e| syms.push e }
-  end
-
-  def install_gems_for_irb
-    `sudo gem install wirble hirb awesome_print --no-rdoc --no-ri`
+    %w(.tmux.conf .irbrc .ackrc .colordiffrc .gitconfig).each { |e| syms.push e }
   end
 
   def setup_env
-    puts
-    puts "Setting irb"
-    puts "==========="
-
-    puts "Installing necessary gems for irb .."
-    install_gems_for_irb
-
-    puts
-    puts "Creating symbolic links .."
+    puts "Creating basic setup(irbc, tmux, colordiff, git configuration etc.) .."
     create_sym_links
   end
-end
 
-class TmuxEnv < Env
-  def initialize
-    super
-    %w(.tmux.conf).each { |e| syms.push e }
-  end
-
-  def install_tmux
-    if command_exists?('yum')
-      `sudo apt-get install tmux -y`
-    elsif command_exists?('apt-get')
-      `sudo apt-get install tmux -y`
-    else
-      abort "Can't install tmux, because the OS can't be identified."
-    end
-  end
-
-  def install_tmuxinator
-    `sudo gem install tmuxinator --no-rdoc --no-ri`
-  end
-
-  def setup_env
-    puts
-    puts "Setting tmux"
-    puts "============"
-
-    puts "Creating symbolic links .."
-    create_sym_links
-
-    puts
-    puts "Install tmuxinator"
-    install_tmuxinator
-  end
-end
-
-class AgAckEnv < Env
-  def initialize
-    super
-    %w(.ackrc).each { |e| syms.push e }
-  end
-
-  def install_ack
-    if command_exists?('yum')
-      puts "Install ack .."
-      `sudo yum install ack -y`
-      puts "There are no binaries of silver searcher for fedora. Please install from sources."
-    elsif command_exists?('apt-get')
-      puts "Install ack .."
-      `sudo apt-get install ack-grep -y`
-      puts "Install silver searcher .."
-      `sudo apt-get install silversearcher-ag -y`
-    else
-      abort "Can't install ack, because the OS can't be identified."
-    end
-  end
-
-  def setup_env
-    puts
-    puts "Setting ackrc"
-    puts "============="
-
-    puts
-    install_ack
-
-    puts
-    puts "Creating symbolic links .."
-    create_sym_links
-  end
-end
-
-class ColorDiffEnv < Env
-  def initialize
-    super
-    %w(.colordiffrc).each { |e| syms.push e }
-  end
-
-  def install_colordiff
-    if command_exists?('yum')
-      `sudo yum install colordiff -y`
-    elsif command_exists?('apt-get')
-      `sudo apt-get install colordiff -y`
-    else
-      abort "Can't install colordiff, because the OS can't be identified."
-    end
-  end
-
-  def setup_env
-    puts
-    puts "Setting colordiff"
-    puts "================="
-
-    puts
-    puts "Install colordiff .."
-    install_colordiff
-
-    puts
-    puts "Creating symbolic links .."
-    create_sym_links
-  end
 end
 
 class SetupEnv
@@ -560,19 +441,15 @@ end
 
 # main program
 reply = ""
+puts
 puts "Environment Setup"
 puts "================="
 begin
-  puts
-  puts " 1. zsh environment"
-  puts " 2. bash environment"
-  puts " 3. vim environment"
-  puts " 4. rvm environment"
-  puts " 5. irb environment"
-  puts " 6. tmux environment"
-  puts " 7. ag/ack environment"
-  puts " 8. colordiff environment"
-  puts
+  puts " 1. Zsh Environment"
+  puts " 2. Bash Environment"
+  puts " 3. Vim Environment"
+  puts " 4. Rvm Environment"
+  puts " 5. Miscellaneous Settings"
   puts " Q. Quit"
   puts
   print " Choice ? "
@@ -589,13 +466,7 @@ begin
     when "4"
       SetupEnv.new(RvmEnv.new).setup
     when "5"
-      SetupEnv.new(IrbEnv.new).setup
-    when "6"
-      SetupEnv.new(TmuxEnv.new).setup
-    when "7"
-      SetupEnv.new(AgAckEnv.new).setup
-    when "8"
-      SetupEnv.new(ColorDiffEnv.new).setup
+      SetupEnv.new(MiscEnv.new).setup
     else
       puts " Bad Choice.."
     end
