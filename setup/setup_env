@@ -13,6 +13,12 @@ class Env
     @syms = [ ]
   end
 
+  # print and flush immediately
+  def print_and_flush(msg)
+    print msg
+    $stdout.flush
+  end
+
   # checks if a command exists
   def command_exists?(name)
     `which #{name}`
@@ -28,7 +34,7 @@ class Env
       github_repo_src = "https://github.com/#{repo_info.shift}"
       github_repo_dest = repo_info.shift
 
-      print "Cloning from #{github_repo_src} "
+      print_and_flush "Cloning from #{github_repo_src} "
 
       # creates thread to clone from github repository
       clone_thread = Thread.new do
@@ -40,14 +46,7 @@ class Env
       end
 
       while clone_thread.alive?
-        print_with_sleep "-"
-        print_with_sleep "\b\\"
-        print_with_sleep "\b|"
-        print_with_sleep "\b/"
-        print_with_sleep "\b-"
-        print_with_sleep "\b\\"
-        print_with_sleep "\b|"
-        print_with_sleep "\b."
+        animate_progress_rotation
       end
       clone_thread.join
 
@@ -55,9 +54,20 @@ class Env
     end
   end
 
+  def animate_progress_rotation
+    print_with_sleep "-"
+    print_with_sleep "\b\\"
+    print_with_sleep "\b|"
+    print_with_sleep "\b/"
+    print_with_sleep "\b-"
+    print_with_sleep "\b\\"
+    print_with_sleep "\b|"
+    print_with_sleep "\b."
+  end
+
   def print_with_sleep(str, sleep_time = 0.20)
     sleep sleep_time
-    print str
+    print_and_flush str
   end
 
   # check if the name sym exists as a file, a directory or a symlink
@@ -109,7 +119,7 @@ class Env
           unless noforceall
             begin
               unless forceall
-                print "  Replace #{sym_dest} with #{sym_src} (y|n|ya|na) ? "
+                print_and_flush "  Replace #{sym_dest} with #{sym_src} (y|n|ya|na) ? "
                 reply = gets.chomp.downcase
                 forceall = true if reply == 'ya'
                 noforceall = true if reply == 'na'
@@ -168,7 +178,7 @@ class ZshEnv < Env
   def download_ohmyzsh_fork
     if File.directory?(OH_MY_ZSH_DIR)
       puts "#{OH_MY_ZSH_DIR} already exists.."
-      print "Remove directory and reinstall (y|n) ? "
+      print_and_flush "Remove directory and reinstall (y|n) ? "
       if %w(yes y).include?(gets.chomp.downcase)
         begin
           FileUtils.rm_r(OH_MY_ZSH_DIR, :force => true)
@@ -296,8 +306,8 @@ class VimEnv < Env
     File.readlines("#{ENV['HOME']}/.vimrc").each do |line|
       # NOTE: the following regex needs Ruby version >= 1.9.2
       # if /^Bundle ('|")(?<repo>.*)\/(?<bundle>.*)('|")/ =~ line
-      # changing to a regexp that is compatible with ruby 1.8.7 makes
-      # github clone thread to work in an unexpected behaviour
+      #
+      # changing to a regexp that is compatible with ruby 1.8.7
       if /^Bundle ('|")(.*)\/(.*)('|")/ =~ line
         repo, bundle = Regexp.last_match(2), Regexp.last_match(3)
         bundle_found = true
@@ -305,7 +315,7 @@ class VimEnv < Env
         if File.directory?(bundle_dir_name)
           unless noforceall
             unless forceall
-              print "#{bundle_dir_name} exists.\nReinstall #{bundle} (y|n|ya|na) ? "
+              print_and_flush "#{bundle_dir_name} exists.\nReinstall #{bundle} (y|n|ya|na) ? "
               reply = gets.chomp.downcase
               forceall = true if reply == 'ya'
               noforceall = true if reply == 'na'
