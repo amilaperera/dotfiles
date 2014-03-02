@@ -18,6 +18,12 @@ class Env
     print msg
     $stdout.flush
   end
+  #
+  # print and sleep a little while
+  def print_with_sleep(str, sleep_time = 0.20)
+    sleep sleep_time
+    print_and_flush str
+  end
 
   # checks if a command exists
   def command_exists?(name)
@@ -54,6 +60,7 @@ class Env
     end
   end
 
+  # animating the rotation of a bar to inidicate the progress of an operation
   def animate_progress_rotation
     print_with_sleep "-"
     print_with_sleep "\b\\"
@@ -63,11 +70,6 @@ class Env
     print_with_sleep "\b\\"
     print_with_sleep "\b|"
     print_with_sleep "\b."
-  end
-
-  def print_with_sleep(str, sleep_time = 0.20)
-    sleep sleep_time
-    print_and_flush str
   end
 
   # check if the name sym exists as a file, a directory or a symlink
@@ -211,6 +213,7 @@ class ZshEnv < Env
     end
   end
 
+  # downloas the zsh-users plugins
   def download_zsh_users_plugins
     if File.directory?("#{OH_MY_ZSH_DIR}/custom")
       unless File.directory?("#{OH_MY_ZSH_DIR}/custom/plugins")
@@ -238,6 +241,7 @@ class ZshEnv < Env
     end
   end
 
+  # create symlinks to the completion files
   def create_symlinks_to_completions(*args)
     custom_plugin_dir = "#{OH_MY_ZSH_DIR}/custom/plugins"
     args.each do |arg|
@@ -278,6 +282,7 @@ class ZshEnv < Env
   end
 end
 
+# Vim environment setup
 class VimEnv < Env
   def initialize
     super
@@ -380,6 +385,7 @@ class VimEnv < Env
   end
 end
 
+# Rvm environment setup
 class RvmEnv < Env
   def initialize
     super
@@ -414,6 +420,8 @@ class RvmEnv < Env
 
 end
 
+# Miscellaneous environment setup
+# this includes the settings related to tmux, irb, ack, ag etc.
 class MiscEnv < Env
   def initialize
     super
@@ -427,6 +435,8 @@ class MiscEnv < Env
 
 end
 
+# The Setup class
+# This acts like a context class
 class SetupEnv
   attr_accessor :setup_env
 
