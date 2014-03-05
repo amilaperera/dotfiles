@@ -1,0 +1,8 @@
+# this file contains the forks and their relevant upstreams to be synchronized with.
+# please add the entries to the following appropriately conforming to the YAML format.
+---
+repos:
+  - name: oh-my-zsh
+    fork: oh-my-zsh
+    upstream: robbyrussell/oh-my-zsh
+---
