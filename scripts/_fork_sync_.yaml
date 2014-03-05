@@ -2,6 +2,12 @@
 # please add the entries to the following appropriately conforming to the YAML format.
 ---
 oh-my-zsh:
+  dir: ~/.oh-my-zsh
   fork: oh-my-zsh
+  upstream: robbyrussell/oh-my-zsh
+
+vim-snippets:
+  dir: ~/.vim/bundle/vim-snippets
+  fork: vim-snippets
   upstream: robbyrussell/oh-my-zsh
 ---
