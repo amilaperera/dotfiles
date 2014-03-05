@@ -30,7 +30,7 @@ dotfiles.
 4. execute the [_environment setup_](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env)
 script
 
-        ruby setup_env
+        ruby setup_env.rb
 
 
 **Interactive ruby shell settings**
