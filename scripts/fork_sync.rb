@@ -4,17 +4,15 @@
 require 'yaml'
 
 class ForkSync
-  def initialize(&block)
-    @forks = block.call
+  def initialize(config_file)
+    begin
+      @forks = YAML.load_file(config_file)
+    rescue
+      abort "can't open yaml file [ #{e.message} ]"
+    end
   end
 end
 
-fork_sync = ForkSync.new do
-  begin
-    YAML.load_file("_fork_sync3_.yaml")
-  rescue Exception => e
-    abort "can't open yaml file [ #{e.message} ]"
-  end
-end
+fork_sync = ForkSync.new('_fork_sync_.yaml')
 
 puts fork_sync.inspect
