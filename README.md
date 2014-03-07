@@ -4,7 +4,7 @@ Personal dotfiles
 This repo contains my personal dotfiles mainly related to zsh/bash, vim, tmux and irb.
 
 The best way to install the environment is to use the
-[environment setup](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env) script which is provided with the
+[environment setup](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env.rb) script which is provided with the
 dotfiles.
 
 **Installation**
@@ -27,7 +27,7 @@ dotfiles.
 
         cd ~/.dotfiles/scripts
 
-4. execute the [_environment setup_](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env)
+4. execute the [environment setup](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env.rb)
 script
 
         ruby setup_env.rb
