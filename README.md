@@ -40,10 +40,21 @@ My personal preferences for IRB customizations are stored in dotfiles/.irbrc.
 To get the most out of these you should install the following gems.
 
  * wirble
- * awesome_print
+ * awesome\_print
  * hirb
 
 To install the above gems
 
     gem install wirble awesome_print hirb --no-rdoc --no-ri
 
+**NOTE**
+
+There are some forked repositories that I use (such as oh-my-zsh, vim-snippets etc.).
+
+These repositories can be synchronized with the upstream by executing the
+[_fork\_sync.rb_](https://github.com/amilaperera/dotfiles/blob/master/scripts/fork_sync.rb) script which
+is also provided with the dotfiles.
+This script reads details about the forked repositories from the
+[_.fork\_sync.yaml_](https://github.com/amilaperera/dotfiles/blob/master/scripts/.fork_sync.yaml) file.
+
+**_Remember to push the commits after synchronization._**
