@@ -118,5 +118,5 @@ end
 ###########################################################
 # main program
 ###########################################################
-fork_sync = ForkSync.new('_fork_sync_.yaml')
+fork_sync = ForkSync.new('.fork_sync.yaml')
 fork_sync.execute
