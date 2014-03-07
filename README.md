@@ -4,7 +4,7 @@ Personal dotfiles
 This repo contains my personal dotfiles mainly related to zsh/bash, vim, tmux and irb.
 
 The best way to install the environment is to use the
-[_environment setup_](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env) script which is provided with the
+[environment setup](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env) script which is provided with the
 dotfiles.
 
 **Installation**
@@ -52,9 +52,9 @@ To install the above gems
 There are some forked repositories that I use (such as oh-my-zsh, vim-snippets etc.).
 
 These repositories can be synchronized with the upstream by executing the
-[_fork\_sync.rb_](https://github.com/amilaperera/dotfiles/blob/master/scripts/fork_sync.rb) script which
+[fork_sync.rb](https://github.com/amilaperera/dotfiles/blob/master/scripts/fork_sync.rb) script which
 is also provided with the dotfiles.
 This script reads details about the forked repositories from the
-[_.fork\_sync.yaml_](https://github.com/amilaperera/dotfiles/blob/master/scripts/.fork_sync.yaml) file.
+[.fork_sync.yaml](https://github.com/amilaperera/dotfiles/blob/master/scripts/.fork_sync.yaml) file.
 
 **_Remember to push the commits after synchronization._**
