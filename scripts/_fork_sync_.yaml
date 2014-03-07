@@ -3,11 +3,13 @@
 ---
 oh-my-zsh:
   dir: ~/.oh-my-zsh
-  fork: oh-my-zsh
   upstream: robbyrussell/oh-my-zsh
+
+vim-colorschemes:
+  dir: ~/.vim/bundle/vim-colorschemes
+  upstream: flazz/vim-colorschemes
 
 vim-snippets:
   dir: ~/.vim/bundle/vim-snippets
-  fork: vim-snippets
-  upstream: robbyrussell/oh-my-zsh
+  upstream: honza/vim-snippets
 ---
