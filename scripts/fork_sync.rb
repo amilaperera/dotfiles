@@ -51,6 +51,7 @@ class ForkRepo
   def sync_fork
     # change to the directory
     cd_to_dir
+    puts "Changing to directory: " + "#{@dir}".yellow
 
     # check for upstream remote
     unless upstream_exists?
