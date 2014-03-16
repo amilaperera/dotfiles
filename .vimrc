@@ -113,8 +113,10 @@ Bundle 'amilaperera/vim-snippets'
 " }}}
 
 " General settings {{{
+set exrc                       " use a local version of .(g)vimrc
+set secure                     " disable unsafe commands in local .vimrc files
+
 set nocompatible               " gets out of vi compatible mode
-set noexrc                     " don't use a local version of .(g)vimrc
 set hidden                     " hide unsaved buffers
 set autochdir                  " changes to the directory containing the file which was opened or selected
 set autowriteall               " writes the contents of the file when moving to another file
@@ -507,7 +509,7 @@ nmap <Leader>sgr :call <SID>SynStack()<CR>
 " }}}2
 " }}}
 
-" file type specific settings {{{
+" File type specific settings {{{
 augroup FTCheck
   autocmd!
   autocmd BufNewFile,BufRead *.text,*.notes,*.memo setl ft=txt
@@ -526,7 +528,6 @@ augroup FTOptions
   autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4
   autocmd BufNewFile,BufRead *.pro setl ft=QT_PROJECT_FILE syn=make
 augroup END
-" }}}2
 " }}}
 
 " Personal Mappings {{{
