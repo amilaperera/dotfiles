@@ -49,7 +49,6 @@ Bundle 'nelstrom/vim-visual-star-search'
 Bundle 'godlygeek/tabular'
 Bundle 'Raimondi/delimitMate'
 Bundle 'maxbrunsfeld/vim-yankstack'
-Bundle 'mileszs/ack.vim'
 Bundle 'rking/ag.vim'
 Bundle 'jimsei/winresizer'
 Bundle 'majutsushi/tagbar'
@@ -524,7 +523,7 @@ augroup FTOptions
   autocmd Filetype txt,mail        setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype gitcommit       setl spell
 
-  autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4 noet
+  autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4
   autocmd BufNewFile,BufRead *.pro setl ft=QT_PROJECT_FILE syn=make
 augroup END
 " }}}2

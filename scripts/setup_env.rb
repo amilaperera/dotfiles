@@ -102,7 +102,7 @@ class Env
   # create symbolic links from dotfiles to homedir
   def create_sym_links
     forceall, noforceall = false, false
-    @syms.each do |sym|
+    syms.each do |sym|
       sym_src, sym_dest = "#{DOTFILES_DIR}/#{sym}", "#{HOME_DIR}/#{sym}"
       unless sym_exists?(sym_src)
         abort "#{sym_src} doesn't exist. Consider downloading dotfiles again.."
