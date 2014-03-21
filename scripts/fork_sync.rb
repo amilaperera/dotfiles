@@ -53,9 +53,8 @@ class ForkRepo
   end
 
   def sync_fork
-    # change to the directory
-    cd_to_dir
-    puts "Changing to directory: " + "#{dir}".yellow
+    # cd to repository directory
+    goto_repo_dir
 
     # check for upstream remote
     unless upstream_exists?
@@ -64,9 +63,11 @@ class ForkRepo
       add_upstream_repo
     end
 
+    # fetch the upstream
     puts "Fetching from upstream #{upstream_repo}..."
     fetch_from_upstream
 
+    # merge with the upstream
     puts "Merging with the upstream #{upstream_repo}..."
     merge_with_upstream
     puts format_output(current_git_status)
@@ -75,9 +76,10 @@ class ForkRepo
 
   private
 
-  def cd_to_dir
+  def goto_repo_dir
     begin
       Dir.chdir(File.expand_path(dir))
+      puts "Changing to directory: " + "#{dir}".yellow
     rescue
       abort "Can't find the directory: #{dir}...[ #{e.message} ]"
     end
