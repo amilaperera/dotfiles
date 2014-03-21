@@ -571,12 +571,12 @@ noremap <silent> <Leader>hs <ESC>070i*<ESC>
 " }}}2
 " Window closing commands {{{2
 " Close this window
-noremap <silent> <Leader>cw :close<CR>
+noremap <silent> <Leader>clw :close<CR>
 " Close the other window
-noremap <silent> <Leader>cj :wincmd j<CR>:close<CR>
-noremap <silent> <Leader>ck :wincmd k<CR>:close<CR>
-noremap <silent> <Leader>ch :wincmd h<CR>:close<CR>
-noremap <silent> <Leader>cl :wincmd l<CR>:close<CR>
+noremap <silent> <Leader>clj :wincmd j<CR>:close<CR>
+noremap <silent> <Leader>clk :wincmd k<CR>:close<CR>
+noremap <silent> <Leader>clh :wincmd h<CR>:close<CR>
+noremap <silent> <Leader>cll :wincmd l<CR>:close<CR>
 " }}}2
 " Useful Digraphs {{{2
 " diamond(◆)
