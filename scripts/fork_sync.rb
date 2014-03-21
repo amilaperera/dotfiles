@@ -115,12 +115,8 @@ class ForkRepo
   end
 
   def format_output(output)
-    s = output.split("\n").at(1)
-    if s =~ /[0-9]+/
-      "  " + s.pink
-    else
-      "  " + s.yellow
-    end
+    s = output.split("\n").at(1).prepend "  "
+    s =~ /[0-9]+/ ? s.pink : s.yellow
   end
 end
 
