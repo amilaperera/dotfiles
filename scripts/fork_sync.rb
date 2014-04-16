@@ -56,6 +56,9 @@ class ForkRepo
     # cd to repository directory
     goto_repo_dir
 
+    # updating with remote
+    pull_from_remote
+
     # check for upstream remote
     unless upstream_exists?
       puts "Can't find the upstream remote..."
@@ -82,6 +85,14 @@ class ForkRepo
       puts "Changing to directory: " + "#{dir}".yellow
     rescue
       abort "Can't find the directory: #{dir}...[ #{e.message} ]"
+    end
+  end
+
+  def pull_from_remote
+    puts 'Pulling from origin/master'
+    `git pull`
+    unless $?.success?
+      abort "error pulling from remote..."
     end
   end
 
