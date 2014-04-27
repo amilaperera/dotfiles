@@ -420,6 +420,30 @@ class RvmEnv < Env
 
 end
 
+class PonySayEvn < Env
+  PONYSAY_DOWNLOAD_DIR = "/tmp/ponysay"
+  def initialize
+  end
+
+  def setup_env
+    unless github_clone?("erkin/ponysay", PONYSAY_DOWNLOAD_DIR)
+      abort "  failed to download ponysay"
+    end
+
+    abort "  can't find python3" unless command_exists?("python3")
+    Dir.chdir(PONYSAY_DOWNLOAD_DIR) do
+      puts
+      `sudo python3 setup.py --freedom=partial install >/dev/null 2>&1`
+      if $?.success?
+        puts "  ponysay installed successfully"
+      else
+        abort "  failed to install ponysay"
+      end
+      puts
+    end
+  end
+end
+
 # Miscellaneous environment setup
 # this includes the settings related to tmux, irb, ack, ag etc.
 class MiscEnv < Env
@@ -459,7 +483,8 @@ begin
   puts " 2. Bash Environment"
   puts " 3. Vim Environment"
   puts " 4. Rvm Environment"
-  puts " 5. Miscellaneous Settings"
+  puts " 5. PonySay"
+  puts " 6. Miscellaneous Settings"
   puts " Q. Quit"
   puts
   print " Choice ? "
@@ -476,6 +501,8 @@ begin
     when "4"
       SetupEnv.new(RvmEnv.new).setup
     when "5"
+      SetupEnv.new(PonySayEvn.new).setup
+    when "6"
       SetupEnv.new(MiscEnv.new).setup
     else
       puts " Bad Choice.."
