@@ -121,7 +121,7 @@ class Env
           unless noforceall
             begin
               unless forceall
-                print_and_flush "  Replace #{sym_dest} with #{sym_src} (y|n|ya|na) ? "
+                print_and_flush "Replace #{sym_dest} with #{sym_src} (y|n|ya|na) ? "
                 reply = gets.chomp.downcase
                 forceall = true if reply == 'ya'
                 noforceall = true if reply == 'na'
@@ -399,10 +399,10 @@ class RvmEnv < Env
   def install_rvm
     `\\curl -sSL https://get.rvm.io | bash -s stable`
     if $?.success?
-      puts "  rvm installed successfully"
+      puts "Rvm installed successfully"
       `source ~/.profile`
     else
-      abort "  failed to install rvm"
+      abort "Failed to install Rvm"
     end
   end
 
@@ -427,17 +427,17 @@ class PonySayEvn < Env
 
   def setup_env
     unless github_clone?("erkin/ponysay", PONYSAY_DOWNLOAD_DIR)
-      abort "  failed to download ponysay"
+      abort "Failed to download ponysay"
     end
 
-    abort "  can't find python3" unless command_exists?("python3")
+    abort "Can't find python3" unless command_exists?("python3")
     Dir.chdir(PONYSAY_DOWNLOAD_DIR) do
       puts
       `sudo python3 setup.py --freedom=partial install >/dev/null 2>&1`
       if $?.success?
-        puts "  ponysay installed successfully"
+        puts "Ponysay installation succeeded"
       else
-        abort "  failed to install ponysay"
+        abort "Ponysay installation failed"
       end
       puts
     end
