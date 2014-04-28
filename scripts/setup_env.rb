@@ -433,7 +433,7 @@ class PonySayEvn < Env
     abort "Can't find python3" unless command_exists?("python3")
     Dir.chdir(PONYSAY_DOWNLOAD_DIR) do
       puts
-      `sudo python3 setup.py --freedom=partial install >/dev/null 2>&1`
+      `sudo python3 setup.py --freedom=partial install`
       if $?.success?
         puts "Ponysay installation succeeded"
       else
