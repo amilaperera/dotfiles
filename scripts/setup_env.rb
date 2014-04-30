@@ -31,6 +31,39 @@ class Env
     $?.success?
   end
 
+  # install the package
+  def install_package(pkg)
+    abort "Failed to recognize OS\n Please try to install manually" if install_command == "UNKNOWN_COMMAND"
+    command = "#{install_command} #{pkg} -y"
+    puts "\n#{command}"
+    `#{command}`
+    if $?.success?
+      puts "Successfully installed #{pkg}"
+    else
+      abort "Failed to install #{pkg}"
+    end
+  end
+
+  # get linux distro
+  def linux_distro
+    if command_exists?('lsb_release')
+      distro = `lsb_release -si`
+    else
+    end
+    distro ||= "UNKNOWN_LINUX_DISTRO"
+  end
+
+  # get the install command
+  def install_command
+    case linux_distro
+    when /ubuntu/i
+      cmd = "sudo apt-get install"
+    when /fedora/i
+      cmd = "sudo yum install"
+    end
+    cmd ||= "UNKNOWN_COMMAND"
+  end
+
   # clone a repo from github and returns true on success, false otherwise
   def github_clone?(*repo_info)
     unless command_exists?("git")
@@ -425,6 +458,19 @@ class PonySayEvn < Env
   def initialize
   end
 
+  def install_fortune
+    case linux_distro
+    when /ubuntu/i
+      pkg = "fortune-mod"
+    when /fedora/i
+      pkg = "fortune-mod"
+    end
+
+    if pkg
+      install_package(pkg)
+    end
+  end
+
   def setup_env
     unless github_clone?("erkin/ponysay", PONYSAY_DOWNLOAD_DIR)
       abort "Failed to download ponysay"
@@ -433,6 +479,7 @@ class PonySayEvn < Env
     abort "Can't find python3" unless command_exists?("python3")
     Dir.chdir(PONYSAY_DOWNLOAD_DIR) do
       puts
+      puts "Installing ponysay"
       `sudo python3 setup.py --freedom=partial install`
       if $?.success?
         puts "Ponysay installation succeeded"
@@ -441,6 +488,8 @@ class PonySayEvn < Env
       end
       puts
     end
+    puts "Insalling fortune"
+    install_fortune
   end
 end
 
