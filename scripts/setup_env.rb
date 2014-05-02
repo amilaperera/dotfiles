@@ -319,7 +319,7 @@ end
 class VimEnv < Env
   def initialize
     super
-    %w(.vimrc .gvimrc).each { |e| syms.push e }
+    %w(.bundles.vim .vimrc .gvimrc).each { |e| syms.push e }
   end
 
   # download bundles that are in the .vimrc file
@@ -336,8 +336,8 @@ class VimEnv < Env
       end
     end
 
-    # read .vimrc and install the bundles
-    File.readlines("#{ENV['HOME']}/.vimrc").each do |line|
+    # read .bundles.vim and install the bundles
+    File.readlines("#{ENV['HOME']}/.bundles.vim").each do |line|
       # NOTE: the following regex needs Ruby version >= 1.9.2
       # if /^Bundle ('|")(?<repo>.*)\/(?<bundle>.*)('|")/ =~ line
       #
