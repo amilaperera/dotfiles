@@ -1,6 +1,11 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim Bundles File
+" Author: Amila Perera
+" File Name: .vimrc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Vundle setup {{{
 set nocompatible
-filetype off
 
 set rtp+=!/.vim/bundle/vundle
 call vundle#rc()
