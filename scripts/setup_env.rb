@@ -3,6 +3,17 @@
 
 require 'fileutils'
 
+# We just extend the String class to display some colors on the terminal
+class String
+  # colorization
+  # from http://stackoverflow.com/questions/1489183/colorized-ruby-output
+  def colorize(color_code); "\e[#{color_code}m#{self}\e[0m"; end
+  def red; colorize(31); end
+  def green; colorize(32); end
+  def yellow; colorize(33); end
+  def pink; colorize(35); end
+end
+
 class Env
   attr_accessor :syms
 
@@ -35,12 +46,11 @@ class Env
   def install_package(pkg)
     abort "Failed to recognize OS\n Please try to install manually" if install_command == "UNKNOWN_COMMAND"
     command = "#{install_command} #{pkg} -y"
-    puts "#{command}"
     `#{command}`
     if $?.success?
-      puts "Successfully installed #{pkg}\n\n"
+      puts "Successfully installed #{pkg}\n\n".green
     else
-      abort "Failed to install #{pkg}\n\n"
+      abort "Failed to install #{pkg}\n\n".red
     end
   end
 
@@ -67,7 +77,7 @@ class Env
   # clone a repo from github and returns true on success, false otherwise
   def github_clone?(*repo_info)
     unless command_exists?("git")
-      puts "Can't find git, install git first.."
+      puts "Can't find git, install git first..".red
       false
     else
       github_repo_src = "https://github.com/#{repo_info.shift}"
@@ -125,9 +135,9 @@ class Env
       puts "dotfiles do not exist in #{HOME_DIR}"
       puts "Trying to download dotfiles"
       unless github_clone?("amilaperera/dotfiles")
-        abort "Failed to download dotfiles."
+        abort "Failed to download dotfiles.".red
       else
-        puts "Successfully downloaded dotfiles."
+        puts "Successfully downloaded dotfiles.".green
       end
     end
   end
@@ -138,7 +148,7 @@ class Env
     syms.each do |sym|
       sym_src, sym_dest = "#{DOTFILES_DIR}/#{sym}", "#{HOME_DIR}/#{sym}"
       unless sym_exists?(sym_src)
-        abort "#{sym_src} doesn't exist. Consider downloading dotfiles again.."
+        abort "#{sym_src} doesn't exist. Consider downloading dotfiles again..".red
       else
 
         if forceall
@@ -162,7 +172,7 @@ class Env
               # create a symlink forcefully
               force_symlink_create(sym_src, sym_dest) if reply == 'y' || forceall
             rescue Exception => e
-              abort "oops! symlink exists..failed to create symlink. #{e.message}"
+              abort "oops! symlink exists..failed to create symlink. #{e.message}".red
             end
           end
         else
@@ -170,7 +180,7 @@ class Env
           begin
             FileUtils.ln_s(sym_src, sym_dest)
           rescue Exception => e
-            abort "oops! failed to create symlink. #{e.message}"
+            abort "oops! failed to create symlink. #{e.message}".red
           end
         end
       end
@@ -218,16 +228,16 @@ class ZshEnv < Env
         begin
           FileUtils.rm_r(OH_MY_ZSH_DIR, :force => true)
           unless github_clone?("amilaperera/oh-my-zsh", OH_MY_ZSH_DIR)
-            abort "Failed to download .oh-my-zsh"
+            abort "Failed to download .oh-my-zsh".red
           end
         rescue
-          abort "error in reinstalling #{OH_MY_ZSH_DIR}"
+          abort "error in reinstalling #{OH_MY_ZSH_DIR}".red
         end
       end
     else
       puts "Downloading oh-my-zsh"
       unless github_clone?("amilaperera/oh-my-zsh", OH_MY_ZSH_DIR)
-        abort "Failed to download .oh-my-zsh"
+        abort "Failed to download .oh-my-zsh".red
       end
     end
   end
@@ -239,7 +249,7 @@ class ZshEnv < Env
         FileUtils.ln_s("#{OH_MY_ZSH_DIR}/custom/template/.zshrc",
                        "#{ENV['HOME']}/.zshrc", :force => true)
       rescue Exception => e
-        abort "oops! failed to create symlink. #{e.message}"
+        abort "oops! failed to create symlink. #{e.message}".red
       end
     else
       abort "#{OH_MY_ZSH_DIR}/custom/template/.zshrc doesn't exist."
@@ -253,7 +263,7 @@ class ZshEnv < Env
         begin
           Dir.mkdir("#{OH_MY_ZSH_DIR}/custom/plugins")
         rescue Exception => e
-          abort "oops! failed to create directory. #{e.message}"
+          abort "oops! failed to create directory. #{e.message}".red
         end
       end
       begin
@@ -267,10 +277,10 @@ class ZshEnv < Env
           abort "Failed to download zsh-syntax-completions"
         end
       rescue Exception => e
-        abort "oops! failed to create directory. #{e.message}"
+        abort "oops! failed to create directory. #{e.message}".red
       end
     else
-      abort "#{OH_MY_ZSH_DIR}/custom does not exist."
+      abort "#{OH_MY_ZSH_DIR}/custom does not exist.".red
     end
   end
 
@@ -280,13 +290,13 @@ class ZshEnv < Env
     args.each do |arg|
       completion_file = "#{OH_MY_ZSH_DIR}/custom/plugins/zsh-completions/src/_#{arg}"
       unless File.exists?(completion_file)
-        puts "#{completion_file} doesn't exist"
+        puts "#{completion_file} doesn't exist".red
       else
         begin
           FileUtils.mkdir_p("#{custom_plugin_dir}/#{arg}")
           FileUtils.ln_s("#{completion_file}", "#{custom_plugin_dir}/#{arg}", :force => true)
         rescue Exception => e
-          abort "Failed in file operation. #{e.message}"
+          abort "Failed in file operation. #{e.message}".red
         end
       end
     end
@@ -358,18 +368,18 @@ class VimEnv < Env
               begin
                 FileUtils.rm_r(bundle_dir_name)
                 unless github_clone?("#{repo}/#{bundle}", "#{bundle_dir_name}")
-                  abort "Failed to download #{repo}/#{bundle}"
+                  abort "Failed to download #{repo}/#{bundle}".red
                 end
                 puts
               rescue
-                abort "error redownloading #{repo}/#{bundle}"
+                abort "error redownloading #{repo}/#{bundle}".red
               end
             end
           end
         else
           puts "Downloading #{bundle_dir_name}"
           unless github_clone?("#{repo}/#{bundle}", "#{bundle_dir_name}")
-            abort "Failed to download #{repo}/#{bundle}"
+            abort "Failed to download #{repo}/#{bundle}".red
           end
           puts
         end
@@ -383,7 +393,7 @@ class VimEnv < Env
     autoload_dir, pathogen_dir = "#{ENV['HOME']}/.vim/autoload", "#{ENV['HOME']}/.vim/bundle/vim-pathogen"
     begin
       unless File.directory?(pathogen_dir)
-        puts "pathogen doesn't exist in bundle directory\nTry to install pathogen first.."
+        puts "pathogen doesn't exist in bundle directory\nTry to install pathogen first..".red
       else
         unless File.directory?(autoload_dir)
           FileUtils.mkdir_p(autoload_dir)
@@ -391,7 +401,7 @@ class VimEnv < Env
         FileUtils.ln_s("#{pathogen_dir}/autoload/pathogen.vim", "#{autoload_dir}/pathogen.vim", :force => true)
       end
     rescue
-      abort "Failed to setup pathogen properly."
+      abort "Failed to setup pathogen properly.".red
     end
   end
 
@@ -425,17 +435,17 @@ class RvmEnv < Env
   end
 
   def check_for_prq
-    abort "Can't find curl. Install curl first." unless command_exists?('curl')
-    abort "Can't find git. Install git first." unless command_exists?('git')
+    abort "Can't find curl. Install curl first." unless command_exists?('curl').red
+    abort "Can't find git. Install git first." unless command_exists?('git').red
   end
 
   def install_rvm
     `\\curl -sSL https://get.rvm.io | bash -s stable`
     if $?.success?
-      puts "Rvm installed successfully"
+      puts "Rvm installed successfully".green
       `source ~/.profile`
     else
-      abort "Failed to install Rvm"
+      abort "Failed to install Rvm".red
     end
   end
 
@@ -471,17 +481,17 @@ class PonySayEvn < Env
 
   def setup_env
     unless github_clone?("erkin/ponysay", PONYSAY_DOWNLOAD_DIR)
-      abort "Failed to download ponysay"
+      abort "Failed to download ponysay".red
     end
 
     abort "Can't find python3" unless command_exists?("python3")
     Dir.chdir(PONYSAY_DOWNLOAD_DIR) do
-      puts "Installing ponysay"
+      puts "\nInstalling ponysay"
       `sudo python3 setup.py --freedom=partial install`
       if $?.success?
-        puts "Ponysay installation succeeded"
+        puts "Ponysay installation succeeded".green
       else
-        abort "Ponysay installation failed"
+        abort "Ponysay installation failed".red
       end
       puts
     end
