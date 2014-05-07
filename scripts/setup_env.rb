@@ -35,12 +35,12 @@ class Env
   def install_package(pkg)
     abort "Failed to recognize OS\n Please try to install manually" if install_command == "UNKNOWN_COMMAND"
     command = "#{install_command} #{pkg} -y"
-    puts "\n#{command}"
+    puts "#{command}"
     `#{command}`
     if $?.success?
-      puts "Successfully installed #{pkg}"
+      puts "Successfully installed #{pkg}\n\n"
     else
-      abort "Failed to install #{pkg}"
+      abort "Failed to install #{pkg}\n\n"
     end
   end
 
@@ -476,7 +476,6 @@ class PonySayEvn < Env
 
     abort "Can't find python3" unless command_exists?("python3")
     Dir.chdir(PONYSAY_DOWNLOAD_DIR) do
-      puts
       puts "Installing ponysay"
       `sudo python3 setup.py --freedom=partial install`
       if $?.success?
