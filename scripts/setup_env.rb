@@ -460,9 +460,7 @@ class PonySayEvn < Env
 
   def install_fortune
     case linux_distro
-    when /ubuntu/i
-      pkg = "fortune-mod"
-    when /fedora/i
+    when /ubuntu|fedora/i
       pkg = "fortune-mod"
     end
 
