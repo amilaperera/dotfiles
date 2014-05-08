@@ -530,12 +530,12 @@ class SetupEnv
 end
 
 # main program
-reply = ""
 exit_words = %w(exit quit q)
 puts
 puts "Environment Setup"
 puts "================="
 begin
+  puts
   puts " 1. Zsh Environment"
   puts " 2. Bash Environment"
   puts " 3. Vim Environment"
@@ -562,7 +562,7 @@ begin
     when "6"
       SetupEnv.new(MiscEnv.new).setup
     else
-      puts " Bad Choice.."
+      puts " Bad Choice.." unless reply.empty?
     end
   end
 end while not exit_words.include?(reply)
