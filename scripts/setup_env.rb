@@ -524,6 +524,7 @@ end
 
 # main program
 reply = ""
+exit_words = %w(exit quit q)
 puts
 puts "Environment Setup"
 puts "================="
@@ -539,7 +540,7 @@ begin
   print " Choice ? "
   reply = gets.chomp.downcase
 
-  unless %w(quit q).include?(reply)
+  unless exit_words.include?(reply)
     case reply
     when "1"
       SetupEnv.new(ZshEnv.new).setup
@@ -557,4 +558,6 @@ begin
       puts " Bad Choice.."
     end
   end
-end while not %w(quit q).include?(reply)
+end while not exit_words.include?(reply)
+
+puts "\n Bye!!!" if exit_words.include?(reply)
