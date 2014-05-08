@@ -1,5 +1,5 @@
-# this file contains the forks and their relevant upstreams to be synchronized with.
-# please add the entries to the following appropriately conforming to the YAML format.
+# This file contains the forks and their relevant upstreams to be synchronized with.
+# Add the entries to this file appropriately, conforming to the YAML format.
 ---
 oh-my-zsh:
   dir: ~/.oh-my-zsh
