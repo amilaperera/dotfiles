@@ -435,8 +435,8 @@ class RvmEnv < Env
   end
 
   def check_for_prq
-    abort "Can't find curl. Install curl first." unless command_exists?('curl').red
-    abort "Can't find git. Install git first." unless command_exists?('git').red
+    abort "Can't find curl. Install curl first.".red unless command_exists?('curl')
+    abort "Can't find git. Install git first.".red unless command_exists?('git')
   end
 
   def install_rvm
