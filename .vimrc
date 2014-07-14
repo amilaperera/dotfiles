@@ -93,6 +93,11 @@ set tags+=../tags
 set tags+=../../tags
 set tags+=../../../tags
 set tags+=../../../../tags
+set tags+=../../../../../tags
+set tags+=../../../../../../tags
+set tags+=../../../../../../../tags
+set tags+=../../../../../../../../tags
+set tags+=../../../../../../../../../tags
 " }}}2
 
 " Allow '/' in directory paths in Windows {{{2
@@ -114,7 +119,7 @@ set expandtab                 " use spaces to insert a tab
 set cino=:0
 set cino=l1
 
-set nocursorline              " display nocursorline - window redraw is slow
+set cursorline                " display cursor line(This might make the window redraw a little slow)
 set nocursorcolumn            " display nocursorcolumn - window redraw is slow
 
 set nonumber                  " show line numbers
