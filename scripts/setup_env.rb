@@ -66,7 +66,7 @@ class Env
   # get the install command
   def install_command
     case linux_distro
-    when /ubuntu/i
+    when /ubuntu|elementary/i
       cmd = "sudo apt-get install"
     when /fedora/i
       cmd = "sudo yum install"
@@ -470,7 +470,7 @@ class PonySayEvn < Env
 
   def install_fortune
     case linux_distro
-    when /ubuntu|fedora/i
+    when /ubuntu|elementary|fedora/i
       pkg = "fortune-mod"
     end
 
@@ -512,7 +512,7 @@ class MiscEnv < Env
     case linux_distro
     when /fedora/i
       pkg = "pkgconfig automake gcc zlib-devel pcre-devel xz-devel"
-    when /ubuntu/i
+    when /ubuntu|elementary/i
       pkg = "automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev"
     end
 
