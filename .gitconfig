@@ -5,6 +5,7 @@
 	st = status
 	ci = commit
 	co = checkout
+	br = branch
 [color]
 	ui = always
 [diff]
