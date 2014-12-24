@@ -506,46 +506,10 @@ class MiscEnv < Env
     %w(.tmux.conf .irbrc .ackrc .agignore .colordiffrc .gitconfig).each { |e| syms.push e }
   end
 
-  def install_silver_searcher
-    ag_download_dir = "/tmp/the_silver_searcher"
-
-    case linux_distro
-    when /fedora/i
-      pkg = "pkgconfig automake gcc zlib-devel pcre-devel xz-devel"
-    when /ubuntu|elementary/i
-      pkg = "automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev"
-    end
-
-    install_package(pkg) if pkg
-
-    unless github_clone?("ggreer/the_silver_searcher", ag_download_dir)
-      abort "Failed to download ponysay".red
-    end
-    Dir.chdir(ag_download_dir) do
-      `./build.sh`
-      if $?.success?
-        `sudo make install`
-        if $?.success?
-          puts "Silver searcher installation succeeded".green
-        else
-          abort "Silver searcher installation failed".red
-        end
-      else
-        abort "Silver searcher installation failed".red
-      end
-      puts
-    end
-  end
-
   def setup_env
     puts "Creating basic setup(irbc, tmux, ack, ag, colordiff, git configuration etc.) .."
     create_sym_links
-
-    puts
-    puts "Installing silver-searcher .."
-    install_silver_searcher
   end
-
 end
 
 # The Setup class
