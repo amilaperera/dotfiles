@@ -335,7 +335,12 @@ nmap <silent> <Leader>bd :BD<CR>
 let g:winresizer_vert_resize = 2
 let g:winresizer_horiz_resize = 1
 " }}}2
+
+" signify {{{2
+nmap <leader>sr :SignifyRefresh<CR>
+" }}}2
 " }}}
+
 
 " Functions {{{
 " Custom fold text {{{2
