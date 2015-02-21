@@ -7,8 +7,8 @@ if has('gui_running')
   set visualbell t_vb= "no beep, no flash
 
   " setting colorscheme"
-  let s:myFavouriteGuiColorScheme = "solarized"
-  set background=light
+  let s:myFavouriteGuiColorScheme = "lucius"
+  set background=dark
   execute "colorscheme " . s:myFavouriteGuiColorScheme
 
   " maximize window
@@ -34,7 +34,7 @@ set guioptions+=L  " for vsplits lefthand scrollbar is present
 set guioptions-=T  " hide toolbar
 
 if has('x11')
-  set guifont=Monospace\ 9  " preferred font font for Linux
+  set guifont=inconsolata-g\ 9  " preferred font font for Linux
 elseif has('gui_win32')
   set guifont=Ms\ Gothic:h10 " preferred font for Windows
 endif
