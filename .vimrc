@@ -341,7 +341,6 @@ nmap <leader>sr :SignifyRefresh<CR>
 " }}}2
 " }}}
 
-
 " Functions {{{
 " Custom fold text {{{2
 " taken from http://dhruvasagar.com/2013/03/28/vim-better-foldtext
