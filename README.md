@@ -39,7 +39,7 @@ script
 
 **Interactive ruby shell settings**
 
-My personal preferences for IRB customizations are stored in dotfiles/.irbrc.
+My personal preferences for IRB customizations are stored in [.irbrc](https://github.com/amilaperera/dotfiles/blob/master/.irbrc).
 
 To get the most out of these you should install the following gems.
 
@@ -56,8 +56,7 @@ To install the above gems
 There are some forked repositories that I use (such as oh-my-zsh, vim-snippets etc.).
 
 These repositories can be synchronized with the upstream by executing the
-[fork_sync.rb](https://github.com/amilaperera/dotfiles/blob/master/scripts/fork_sync.rb) script which
-is also provided with the dotfiles.
+[fork_sync.rb](https://github.com/amilaperera/dotfiles/blob/master/scripts/fork_sync.rb) script which is also provided with the dotfiles.
 This script reads details about the forked repositories from the
 [.fork_sync.yaml](https://github.com/amilaperera/dotfiles/blob/master/scripts/.fork_sync.yaml) file.
 
