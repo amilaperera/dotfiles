@@ -8,20 +8,6 @@
 require 'rubygems'
 require 'irb/completion'
 
-# checks for the availabilty of a specific gem
-def gem_available?(name)
-  Gem::Specification.find_by_name(name)
-rescue Gem::LoadError
-  false
-end
-
-# if wirble, awesome_print & hirb do not exist in the ruby environment
-# install them
-`gem install 'wirble' --no-rdoc --no-ri` unless gem_available?('wirble')
-`gem install 'awesome_print' --no-rdoc --no-ri` unless gem_available?('awesome_print')
-`gem install 'hirb' --no-rdoc --no-ri` unless gem_available?('hirb' )
-Gem.refresh
-
 # loads wirble for colored output
 begin
   require 'wirble'

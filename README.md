@@ -1,7 +1,7 @@
 Personal dotfiles
 =================
 
-This repo contains my personal dotfiles mainly related to zsh/bash, vim, tmux and irb.
+This repo contains my personal dotfiles mainly related to zsh/bash, vim, tmux, git, cgdb, irb etc.
 
 The best way to install the environment is to use the
 [environment setup](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env.rb) script which is provided with the
@@ -10,6 +10,10 @@ dotfiles.
 **Installation**
 
 1. Install ruby on your system
+
+    On Arch
+
+        sudo pacman -S ruby
 
     On Fedora/CentOS/RHEL
 
@@ -57,4 +61,4 @@ is also provided with the dotfiles.
 This script reads details about the forked repositories from the
 [.fork_sync.yaml](https://github.com/amilaperera/dotfiles/blob/master/scripts/.fork_sync.yaml) file.
 
-**_Remember to push the commits after synchronization._**
+**_If necessary, remember to push the commits after synchronization._**
