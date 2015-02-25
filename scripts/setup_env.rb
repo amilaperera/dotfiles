@@ -503,11 +503,11 @@ end
 class MiscEnv < Env
   def initialize
     super
-    %w(.tmux.conf .irbrc .ackrc .agignore .colordiffrc .gitconfig).each { |e| syms.push e }
+    %w(.tmux.conf .irbrc .ackrc .agignore .colordiffrc .gitconfig .cgdb).each { |e| syms.push e }
   end
 
   def setup_env
-    puts "Creating basic setup(irbc, tmux, ack, ag, colordiff, git configuration etc.) .."
+    puts "Creating basic setup(irbc, tmux, ack, ag, colordiff, git, cgdb configuration etc.) .."
     create_sym_links
   end
 end
