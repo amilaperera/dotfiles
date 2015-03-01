@@ -36,6 +36,8 @@ class ForkSync
     end
   end
 
+  private
+
   def get_values(repo_fork)
     abort "No value given for 'dir'" if [ nil, '' ].include?(repo_fork["dir"])
     abort "No value given for 'upstream'" if [ nil, '' ].include?(repo_fork["upstream"])
