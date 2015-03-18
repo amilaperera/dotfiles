@@ -347,6 +347,10 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 " }}}2
 
+" gundo {{{2
+nnoremap <F5> :GundoToggle<CR>
+" }}}2
+
 " Functions {{{
 " Custom fold text {{{2
 " taken from http://dhruvasagar.com/2013/03/28/vim-better-foldtext

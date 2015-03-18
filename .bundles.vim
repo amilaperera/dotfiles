@@ -54,6 +54,7 @@ Bundle 'jimsei/winresizer'
 Bundle 'majutsushi/tagbar'
 Bundle 'brookhong/cscope.vim'
 Bundle 'mhinz/vim-signify'
+Bundle 'sjl/gundo.vim.git'
 " }}}2
 
 " Using the updated version of bufkill plugin {{{2
