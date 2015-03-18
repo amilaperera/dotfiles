@@ -340,7 +340,12 @@ let g:winresizer_horiz_resize = 1
 " signify {{{2
 nmap <leader>sr :SignifyRefresh<CR>
 " }}}2
-" }}}
+
+" ultisnips {{{2
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+" }}}2
 
 " Functions {{{
 " Custom fold text {{{2

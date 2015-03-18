@@ -104,9 +104,7 @@ Bundle 'vim-ruby/vim-ruby'
 " }}}2
 
 " Snipmate plugin, related dependencies & snippets {{{2
-Bundle 'garbas/vim-snipmate'
-Bundle 'tomtom/tlib_vim'
-Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'sirver/ultisnips'
 " Using my own snippets
 " This is a fork from https://github.com/honza/vim-snippets
 Bundle 'amilaperera/vim-snippets'
