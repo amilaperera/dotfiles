@@ -1,113 +1,105 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim Bundles File
+" Vim Plugins File
 " Author: Amila Perera
 " File Name: .vimrc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Vundle setup {{{
-set nocompatible
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-set rtp+=!/.vim/bundle/vundle
-call vundle#rc()
-
-" let Vundle manage Vundle {{{2
-Bundle 'gmarik/vundle'
-" }}}2
-
-filetype plugin indent on
-
-" let Vundle manage pathogen {{{2
-" For a brand new vim installation download vim-pathogen to bundle directory
-" and create a link to $HOME/.vim/bundle/vim-pathogen/autoload in $HOME/.vim
-Bundle 'tpope/vim-pathogen'
+" let Vundle manage the plugins {{{2
+Plugin 'gmarik/Vundle.vim'
 " }}}2
 
 " General enhancements {{{2
-Bundle 'vim-scripts/AutoComplPop'
-Bundle 'vim-scripts/DrawIt'
-Bundle 'vim-scripts/EasyGrep'
-Bundle 'vim-scripts/FuzzyFinder'
-Bundle 'vim-scripts/VisIncr'
-Bundle 'vim-scripts/ZoomWin'
-Bundle 'vim-scripts/highlight.vim'
-Bundle 'vim-scripts/mru.vim'
-Bundle 'vim-scripts/vcscommand.vim'
-Bundle 'vim-scripts/L9'
-Bundle 'vim-scripts/txt.vim'
-Bundle 'tpope/vim-abolish'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'tpope/vim-eunuch'
-Bundle 'jlanzarotta/bufexplorer'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/nerdtree'
-Bundle 'ervandew/supertab'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'nelstrom/vim-visual-star-search'
-Bundle 'godlygeek/tabular'
-Bundle 'Raimondi/delimitMate'
-Bundle 'maxbrunsfeld/vim-yankstack'
-Bundle 'rking/ag.vim'
-Bundle 'jimsei/winresizer'
-Bundle 'majutsushi/tagbar'
-Bundle 'brookhong/cscope.vim'
-Bundle 'mhinz/vim-signify'
-Bundle 'sjl/gundo.vim.git'
+Plugin 'vim-scripts/AutoComplPop'
+Plugin 'vim-scripts/DrawIt'
+Plugin 'vim-scripts/EasyGrep'
+Plugin 'vim-scripts/FuzzyFinder'
+Plugin 'vim-scripts/VisIncr'
+Plugin 'vim-scripts/ZoomWin'
+Plugin 'vim-scripts/highlight.vim'
+Plugin 'vim-scripts/mru.vim'
+Plugin 'vim-scripts/vcscommand.vim'
+Plugin 'vim-scripts/L9'
+Plugin 'vim-scripts/txt.vim'
+Plugin 'tpope/vim-abolish'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-eunuch'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'ervandew/supertab'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'nelstrom/vim-visual-star-search'
+Plugin 'godlygeek/tabular'
+Plugin 'Raimondi/delimitMate'
+Plugin 'maxbrunsfeld/vim-yankstack'
+Plugin 'rking/ag.vim'
+Plugin 'jimsei/winresizer'
+Plugin 'majutsushi/tagbar'
+Plugin 'brookhong/cscope.vim'
+Plugin 'mhinz/vim-signify'
+Plugin 'sjl/gundo.vim.git'
 " }}}2
 
 " Using the updated version of bufkill plugin {{{2
 " since the original vim-script repository is not yet
 " updated, get the fork it and updated it
-Bundle 'amilaperera/bufkill.vim'
+Plugin 'amilaperera/bufkill.vim'
 " }}}2
 
 " General development related {{{2
-Bundle 'vim-scripts/DoxygenToolkit.vim'
+Plugin 'vim-scripts/DoxygenToolkit.vim'
 " }}}2
 
 " Vim tmux integration {{{2
-Bundle 'tpope/vim-tbone'
+Plugin 'tpope/vim-tbone'
 " }}}2
 
 " Vim custom text objects {{{2
-Bundle 'kana/vim-textobj-user'
-Bundle 'kana/vim-textobj-entire'
-Bundle 'kana/vim-textobj-indent'
-Bundle 'kana/vim-textobj-syntax'
-Bundle 'kana/vim-textobj-line'
-Bundle 'nelstrom/vim-textobj-rubyblock'
+Plugin 'kana/vim-textobj-user'
+Plugin 'kana/vim-textobj-entire'
+Plugin 'kana/vim-textobj-indent'
+Plugin 'kana/vim-textobj-syntax'
+Plugin 'kana/vim-textobj-line'
+Plugin 'nelstrom/vim-textobj-rubyblock'
 " }}}2
 
 " HTML editing {{{2
-Bundle 'mattn/emmet-vim'
-Bundle 'othree/html5.vim'
+Plugin 'mattn/emmet-vim'
+Plugin 'othree/html5.vim'
 " }}}2
 
 " C/C++ enhancements {{{2
-Bundle 'vim-scripts/a.vim'
-Bundle 'jabbourb/omnicpp'
+Plugin 'vim-scripts/a.vim'
+Plugin 'jabbourb/omnicpp'
 " }}}2
 
 " Colorschemes {{{2
 " Using my own colorschemes
 " This is a fork from https://github.com/flazz/vim-colorschemes
-Bundle 'amilaperera/vim-colorschemes'
+Plugin 'amilaperera/vim-colorschemes'
 " }}}2
 
 " Ruby enhancements {{{2
-Bundle 'tpope/vim-bundler'
-Bundle 'tpope/vim-rails'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-rake'
-Bundle 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-bundler'
+Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-rake'
+Plugin 'vim-ruby/vim-ruby'
 " }}}2
 
 " Snipmate plugin, related dependencies & snippets {{{2
-Bundle 'sirver/ultisnips'
+Plugin 'sirver/ultisnips'
 " Using my own snippets
 " This is a fork from https://github.com/honza/vim-snippets
-Bundle 'amilaperera/vim-snippets'
+Plugin 'amilaperera/vim-snippets'
 " }}}2
+
+call vundle#end()
 " }}}

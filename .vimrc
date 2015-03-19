@@ -3,11 +3,11 @@
 " Author: Amila Perera
 " File Name: .vimrc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Bundle setup {{{
-filetype off
-call pathogen#infect()
-call pathogen#helptags()
+" Vundle setup {{{
+set nocompatible               " gets out of vi compatible mode
+filetype off                   " required to set this off before sourcing the plugins
 
+" source plugins
 if has('unix')
   source ~/.bundles.vim
 end
@@ -17,7 +17,6 @@ end
 set exrc                       " use a local version of .(g)vimrc
 set secure                     " disable unsafe commands in local .vimrc files
 
-set nocompatible               " gets out of vi compatible mode
 set hidden                     " hide unsaved buffers
 set autochdir                  " changes to the directory containing the file which was opened or selected
 set autowriteall               " writes the contents of the file when moving to another file

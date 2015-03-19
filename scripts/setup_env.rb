@@ -352,7 +352,7 @@ class VimEnv < Env
       # if /^Bundle ('|")(?<repo>.*)\/(?<bundle>.*)('|")/ =~ line
       #
       # changing to a regexp that is compatible with ruby 1.8.7
-      if /^Bundle ('|")(.*)\/(.*)('|")/ =~ line
+      if /^Plugin ('|")(.*)\/(.*)('|")/ =~ line
         repo, bundle = Regexp.last_match(2), Regexp.last_match(3)
         bundle_found = true
         bundle_dir_name = "#{bundle_root}/#{bundle}"
@@ -388,23 +388,6 @@ class VimEnv < Env
     puts "No bundles found in #{ENV['HOME']}/.vimrc" unless bundle_found
   end
 
-  # creates a symlink in bundle/autoload directory to pathogen
-  def setup_pathogen
-    autoload_dir, pathogen_dir = "#{ENV['HOME']}/.vim/autoload", "#{ENV['HOME']}/.vim/bundle/vim-pathogen"
-    begin
-      unless File.directory?(pathogen_dir)
-        puts "pathogen doesn't exist in bundle directory\nTry to install pathogen first..".red
-      else
-        unless File.directory?(autoload_dir)
-          FileUtils.mkdir_p(autoload_dir)
-        end
-        FileUtils.ln_s("#{pathogen_dir}/autoload/pathogen.vim", "#{autoload_dir}/pathogen.vim", :force => true)
-      end
-    rescue
-      abort "Failed to setup pathogen properly.".red
-    end
-  end
-
   # setup vim environment
   def setup_env
     puts
@@ -421,10 +404,6 @@ class VimEnv < Env
     puts
     puts "Downloading bundles .."
     download_bunldes
-
-    puts
-    puts "Setting up pathogen .."
-    setup_pathogen
   end
 end
 
