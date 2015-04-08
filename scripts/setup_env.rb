@@ -349,7 +349,7 @@ class VimEnv < Env
     # read .bundles.vim and install the bundles
     File.readlines("#{ENV['HOME']}/.bundles.vim").each do |line|
       # NOTE: the following regex needs Ruby version >= 1.9.2
-      # if /^Bundle ('|")(?<repo>.*)\/(?<bundle>.*)('|")/ =~ line
+      # if /^Plugin ('|")(?<repo>.*)\/(?<bundle>.*)('|")/ =~ line
       #
       # changing to a regexp that is compatible with ruby 1.8.7
       if /^Plugin ('|")(.*)\/(.*)('|")/ =~ line
