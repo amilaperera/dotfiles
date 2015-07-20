@@ -154,7 +154,7 @@ shopt -s globstar     # ** globbing operator matches file names and directories 
 shopt -s sourcepath   # The source builtin uses $PATH to find the file to be sourced
 shopt -s autocd       # a name of a dir is executed as if it were the argument to cd
 
-shopt -u mailwarn     # disable mail mail warning
+shopt -u mailwarn     # disable mail warning
 unset MAILCHECK
 
 set -o ignoreeof    # Dont let Ctrl+D exit the shell
