@@ -86,15 +86,15 @@ esac
 if (($UID != 0)); then
 	## prompt for normal user
 	PS1="$TITLEBAR\
-${EMW}${EMW}(${EMM}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
+${W}┌─${EMW}(${EMM}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
 ${W}─${EMW}(\$(if [[ \$? == 0 ]]; then echo \"\[\033[01;32m\]\342\234\223\"; else echo \"\[\033[01;31m\]\342\234\227\"; fi)${EMW})\n\
-${EMW}${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
+${W}└─${EMW}${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
 else
 	## prompt for root
 	PS1="$TITLEBAR\
-${EMW}${EMW}(${EMR}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
+${W}┌─${EMW}(${EMR}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
 ${W}─${EMW}(\$(if [[ \$? == 0 ]]; then echo \"\[\033[01;32m\]\342\234\223\"; else echo \"\[\033[01;31m\]\342\234\227\"; fi)${EMW})\n\
-${EMW}${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
+${W}└─${EMW}${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
 fi
 
 ZSH_THEME_GIT_PROMPT_PREFIX="─%{$fg[white]%}(%{$fg_bold[white]%}git%{$reset_color%}%{$fg[white]%})%{$reset_color%}─%{$fg[white]%}(%{$fg[green]%}"
