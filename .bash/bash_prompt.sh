@@ -83,26 +83,29 @@ xterm*|rxvt*	)	TITLEBAR='\[\033]0;\u@\h:\w\007\]' ;;
 *				)	TITLEBAR="" ;;
 esac
 
+# setting PS1
+# PS1 is set separately for non-root users and root users
+# "\342\234\223" sequence displays a 'right' symbol if the last command executed succeeded
+# "\342\234\227" sequence displays a 'wrong' symbol if the last command executed failed
 if (($UID != 0)); then
 	## prompt for normal user
 	PS1="$TITLEBAR\
 ${W}┌─${EMW}(${EMM}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
-${W}─${EMW}(\$(if [[ \$? == 0 ]]; then echo \"\[\033[01;32m\]\342\234\223\"; else echo \"\[\033[01;31m\]\342\234\227\"; fi)${EMW})\n\
+${W}─${EMW}(\$(if [[ \$? == 0 ]]; then echo \"${EMG}\342\234\223\"; else echo \"${EMR}\342\234\227\"; fi)${EMW})\n\
 ${W}└─${EMW}${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
 else
 	## prompt for root
 	PS1="$TITLEBAR\
 ${W}┌─${EMW}(${EMR}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
-${W}─${EMW}(\$(if [[ \$? == 0 ]]; then echo \"\[\033[01;32m\]\342\234\223\"; else echo \"\[\033[01;31m\]\342\234\227\"; fi)${EMW})\n\
+${W}─${EMW}(\$(if [[ \$? == 0 ]]; then echo \"${EMG}\342\234\223\"; else echo \"${EMW}\342\234\227\"; fi)${EMW})\n\
 ${W}└─${EMW}${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
 fi
-
-ZSH_THEME_GIT_PROMPT_PREFIX="─%{$fg[white]%}(%{$fg_bold[white]%}git%{$reset_color%}%{$fg[white]%})%{$reset_color%}─%{$fg[white]%}(%{$fg[green]%}"
 
 PS2="${EMK}-${EMB}-${EMK}Continue${EMB}:${NONE} "
 PS3=$(echo -e -n "\033[1;34m-\033[1;30m-Enter Your Option\033[1;34m:\033[0m ")
 PS4="+xtrace $0[$LINENO]: "
 
+# setting MYSql prompt
 export MYSQL_PS1="\u@\h [\d] > "
 
 unset NONE K R G Y B M C W EMK EMR EMG EMY EMB EMM EMC EMW BGK BGR BGG BGY BGB BGM BGC BGW
