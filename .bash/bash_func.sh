@@ -24,9 +24,9 @@ E()
 	GVIM_COMM=/usr/bin/gvim
 	case $workinghost in
 		Linux )
-			local vimSrvName="GVIM"
-			local currentVimSrv=$($GVIM_COMM --serverlist | grep -c "$vimSrvName")
-			if (($currentVimSrv > 0)); then
+			local vim_srv_name="GVIM"
+			local curr_vim_srv=$($GVIM_COMM --serverlist | grep -c "$vim_srv_name")
+			if (($curr_vim_srv > 0)); then
 				## start editing with the current vim instance
 				if (($# == 0)); then
 					printf 'Vim instance is already started.\n'
@@ -37,7 +37,7 @@ E()
 				fi
 			else
 				## if there's no vim start one
-				$GVIM_COMM --servername "$vimSrvName" "${@}" &
+				$GVIM_COMM --servername "$vim_srv_name" "${@}" &
 			fi
 			;;
 		*)
@@ -230,14 +230,14 @@ bak()
 }
 # }}}
 
-# diffWithOrig() {{{
+# diff_with_orig() {{{
 # diff files with their .bak or .orig extension files
-diffWithOrig()
+diff_with_orig()
 {
 	local file= file2= opt="-puw"
 	if [[ $1 == "--help" ]]; then
 		cat <<- HELPMSG
-			diffWithOrig [diff_options] file1 file2 ...
+			diff_with_orig [diff_options] file1 file2 ...
 			Note: if no diff_options are given -puw is the default
 		HELPMSG
 		return 101
@@ -294,7 +294,7 @@ cb()
 # }}}
 
 # pdf() {{{
-# opens acrobat reader
+# opens acroread
 pdf()
 {
 	acroread "${@}" 2>/dev/null &
@@ -511,16 +511,18 @@ ghc()
 # cd and list
 cl()
 {
+	local ls_command="ls -al --color=auto -F -h"
 	if (( $# == 0 )); then
 		# if no argument is supplied, just ls
-		ls -al --color=auto -F -h
+		eval $ls_command
 	else
-		if [[ -d "$1" ]]; then
-			cd "$1"
-			ls -al --color=auto -F -h
-		else
-			echo "bash: cl: '$1': Directory not found"
+		# change the directory
+		cd "$1"
+		if (($? != 0)); then
+			return $?
 		fi
+		# list the directory contents
+		eval $ls_command
 	fi
 }
 # }}}
