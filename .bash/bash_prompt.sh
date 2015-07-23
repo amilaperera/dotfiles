@@ -88,17 +88,17 @@ esac
 # "\342\234\223" sequence displays a 'right' symbol if the last command executed succeeded
 # "\342\234\227" sequence displays a 'wrong' symbol if the last command executed failed
 if (($UID != 0)); then
-	## prompt for normal user
+	# prompt for normal user
 	PS1="$TITLEBAR\
-${W}┌─${EMW}(${EMM}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
-${W}─${EMW}(\$(if [[ \$? == 0 ]]; then echo \"${EMG}\342\234\223\"; else echo \"${EMR}\342\234\227\"; fi)${EMW})\n\
-${W}└─${EMW}${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
+${W}┌─(${M}\$un${C}@${M}\$hn${C}:${Y}\$curr_dir${W})\
+${W}─(\$(if [[ \$? == 0 ]]; then echo \"${EMG}\342\234\223\"; else echo \"${EMR}\342\234\227\"; fi)${W})\n\
+${W}└─(${M}\#${W})${NONE} \\$ "
 else
-	## prompt for root
+	# prompt for root
 	PS1="$TITLEBAR\
-${W}┌─${EMW}(${EMR}\$un${EMC}@${EMM}\$hn${EMC}:${EMY}\$curr_dir${EMW})\
-${W}─${EMW}(\$(if [[ \$? == 0 ]]; then echo \"${EMG}\342\234\223\"; else echo \"${EMW}\342\234\227\"; fi)${EMW})\n\
-${W}└─${EMW}${EMW}(${EMM}\#${EMW})${NONE} ${EMW}\\$ ${NONE}"
+${W}┌─(${R}\$un${C}@${M}\$hn${C}:${Y}\$curr_dir${W})\
+${W}─(\$(if [[ \$? == 0 ]]; then echo \"${EMG}\342\234\223\"; else echo \"${EMR}\342\234\227\"; fi)${W})\n\
+${W}└─(${M}\#${W})${NONE} \\$ "
 fi
 
 PS2="${EMK}-${EMB}-${EMK}Continue${EMB}:${NONE} "
