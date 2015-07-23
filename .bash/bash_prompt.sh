@@ -36,23 +36,16 @@ BGM="\[\033[45m\]"
 BGC="\[\033[46m\]"
 BGW="\[\033[47m\]"
 
-un= hn= tty_temp= cur_tty=
-
+hn=
 case $workinghost in
 CYGWIN*		)	hn=$(hostname) ;;
 *			)	hn=$(hostname -s);;
 esac
 
-if (($UID != 0)); then
-## user name for normal user
-	un=$(whoami)
-else
-## capitalize user name for root
-	un=$(whoami | tr 'a-z' 'A-Z')
-fi
-
-tty_temp="$(tty)"
-cur_tty="${tty_temp:5}"
+# get user name
+un=$(whoami)
+# for root user we just capitalize the user name, so that it becomes "ROOT"
+(($UID == 0)) && un=$(echo $un | tr 'a-z' 'A-Z')
 
 git_prompt_file=/usr/share/git-core/contrib/completion/git-prompt.sh
 [ -f $git_prompt_file ] && source $git_prompt_file
