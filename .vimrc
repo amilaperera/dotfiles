@@ -45,7 +45,6 @@ Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'rking/ag.vim'
 Plugin 'jimsei/winresizer'
 Plugin 'majutsushi/tagbar'
-Plugin 'brookhong/cscope.vim'
 Plugin 'mhinz/vim-signify'
 Plugin 'sjl/gundo.vim.git'
 
@@ -66,7 +65,6 @@ Plugin 'kana/vim-textobj-entire'
 Plugin 'kana/vim-textobj-indent'
 Plugin 'kana/vim-textobj-syntax'
 Plugin 'kana/vim-textobj-line'
-Plugin 'nelstrom/vim-textobj-rubyblock'
 
 " HTML editing
 Plugin 'mattn/emmet-vim'
@@ -79,13 +77,6 @@ Plugin 'vim-scripts/a.vim'
 " Using my own colorschemes
 " This is a fork from https://github.com/flazz/vim-colorschemes
 Plugin 'amilaperera/vim-colorschemes'
-
-" Ruby enhancements
-Plugin 'tpope/vim-bundler'
-Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-rake'
-Plugin 'vim-ruby/vim-ruby'
 
 " Snipmate plugin, related dependencies & snippets
 Plugin 'sirver/ultisnips'
