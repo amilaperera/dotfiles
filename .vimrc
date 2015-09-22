@@ -309,21 +309,6 @@ set dictionary+=/usr/share/dict/words " set the dictionary file
 " }}}
 
 " Settings related to external plugins {{{
-" TagList Settings {{{2
-map <silent> <right> :TagbarToggle<CR>
-" Ruby specific tagbar settings
-let g:tagbar_type_ruby = {
-    \ 'kinds' : [
-        \ 'm:modules',
-        \ 'c:classes',
-        \ 'd:describes',
-        \ 'C:contexts',
-        \ 'f:methods',
-        \ 'F:singleton methods'
-    \ ]
-    \ }
-" }}}2
-
 " BufferExplorer mappings {{{2
 nnoremap <silent> <F12> :BufExplorer<CR>
 " }}}2
@@ -511,7 +496,6 @@ augroup END
 augroup FTOptions
   autocmd!
   autocmd Filetype sh,zsh,csh,tcsh setl ts=4 noet fdm=marker
-  autocmd Filetype ruby,eruby      setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype yaml            setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype html,css        setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype vim             setl ts=2 sw=2 sts=2 fdm=marker
