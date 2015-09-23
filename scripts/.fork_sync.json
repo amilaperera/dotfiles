@@ -1,0 +1,17 @@
+[
+    {
+        "repo_name": "oh-my-zsh",
+        "dir": "~/.oh-my-zsh",
+        "upstream_repo": "robbyrussell/oh-my-zsh"
+    },
+    {
+        "repo_name": "vim-colorschemes",
+        "dir": "~/.vim/bundle/vim-colorschemes",
+        "upstream_repo": "flazz/vim-colorschemes"
+    },
+    {
+        "repo_name": "vim-snippets",
+        "dir": "~/.vim/bundle/vim-snippets",
+        "upstream_repo": "honza/vim-snippets"
+    }
+]
