@@ -9,9 +9,11 @@ import json
 import re
 
 def get_dev_null():
+    """Returns writable /dev/null file descriptor"""
     return open(os.devnull, 'w')
 
 class Colors(object):
+    """Class used to colorize the text"""
     Red = '\033[31m'
     Green = '\033[32m'
     Yellow = '\033[33m'
@@ -20,48 +22,51 @@ class Colors(object):
 
     @staticmethod
     def Colorize(*args):
+        """Static method used to colorize the text"""
         return args[1] + args[0] + Colors.End
 
 class ForkSync(object):
-
+    """The main application class which is used to synchronize
+    the forks with the upstream.
+    """
     def __init__(self, config_file):
         with open(config_file) as cf:
-            self._config_data = json.load(cf)
+            self.config_data = json.load(cf)
 
     def run(self):
-        for repo in self._config_data:
+        for repo in self.config_data:
             Fork(**repo).sync()
 
 
 class Fork(object):
-
+    """This class handle a single forked repository"""
     def __init__(self, **kwargs):
-        self._repo = kwargs
+        self.repo = kwargs
 
     def sync(self):
         try:
-            print(self.get_repo_start_message())
-            self.change_dir()
-            self.pull_from_remote()
+            print(self._getrepo_start_message())
+            self._change_dir()
+            self._pull_from_remote()
             # checks if the upstream repository exists
             print('checking for upstream')
             if subprocess.call(['git', 'ls-remote', 'upstream'],
                                stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True):
                 # since upstream repository is not added, add the upstream repo
                 print('can not find the upstream remote...')
-                print('adding {} as the upstream repository...'.format(self._repo['upstream_repo']))
-                self.add_upstream_repo()
+                print('adding {} as the upstream repository...'.format(self.repo['upstreamrepo']))
+                self._add_upstreamrepo()
 
-            self.fetch_from_upstream()
-            self.merge_with_upstream()
-            print(self.get_status())
+            self._fetch_from_upstream()
+            self._merge_with_upstream()
+            print(self._get_status())
 
         except Exception as e:
-            print('error synchronizing with the fork', file=sys.stderr)
+            print('error synchronizing with the fork. {}'.format(e), file=sys.stderr)
 
-    def get_repo_start_message(self):
+    def _getrepo_start_message(self):
         try:
-            msg = ' working on ' + Colors.Colorize(self._repo['repo_name'], Colors.Yellow) + ' '
+            msg = ' working on ' + Colors.Colorize(self.repo['repo_name'], Colors.Yellow) + ' '
             terminal_width = int(subprocess.check_output(['stty', 'size']).split()[1])
             format_spec = '{:-^'+ str(terminal_width - 10) + '}'
         except:
@@ -69,52 +74,45 @@ class Fork(object):
         else:
             return format_spec.format(msg)
 
-    def change_dir(self):
+    def _change_dir(self):
         try:
-            os.chdir(os.path.expanduser(self._repo['dir']))
-            print('changed to directory: {}'.format(self._repo['dir']))
-        except OSError as e:
-            print('error changing to directory: {} ({})'.format(self._repo['dir'], e),
-                  file=sys.stderr)
+            os.chdir(os.path.expanduser(self.repo['dir']))
+            print('changed to directory: {}'.format(self.repo['dir']))
+        except:
             raise
 
-    def pull_from_remote(self):
+    def _pull_from_remote(self):
         print('pulling from origin/master')
         if subprocess.call(['git', 'pull'],
                            stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True):
-            print('error pulling from remote', file=sys.stderr)
-            raise CoProcessError
+            raise CoProcessError('error pulling from remote')
 
-    def add_upstream_repo(self):
-        if subprocess.call(['git', 'remote', 'add', 'upstream', self.repo['upstream_repo']]):
-            print('error adding the remote upstream: {}'.format(self.repo['upstream_repo']),
-                  file=sys.stderr)
-            raise CoProcessError
+    def _add_upstreamrepo(self):
+        if subprocess.call(['git', 'remote', 'add', 'upstream', self.repo['upstreamrepo']]):
+            raise CoProcessError('error adding the remote upstream')
 
-    def fetch_from_upstream(self):
+    def _fetch_from_upstream(self):
         print('fetching from upstream')
         if subprocess.call(['git', 'fetch', 'upstream']):
-            print('error fetching from upstream', file=sys.stderr)
-            raise CoProcessError
+            raise CoProcessError('error fetching from upstream')
 
-    def merge_with_upstream(self):
+    def _merge_with_upstream(self):
         if subprocess.call(['git', 'checkout', 'master'],
                            stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True):
-            print('error switching to master branch')
-            raise CoProcessError
+            raise CoProcessError('error switching to master branch')
 
         print('merging with upstream')
         if subprocess.call(['git', 'merge', 'upstream/master'],
                            stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True):
-            print('error merging with upstream: {}'.format(self._repo['upstream_repo']),
-                  file=sys.stderr)
+            raise CoProcessError('error merging with upstream')
 
-    def get_status(self):
+    def _get_status(self):
         output = subprocess.check_output(['git', 'status']).split('\n')[1]
         return Colors.Colorize(output, Colors.Red) if re.search('[0-9]+', output) \
                else Colors.Colorize(output, Colors.Green)
 
 def main():
+    """Creates a ForkSync object and execute the sycnchronization of the forks"""
     try:
         ForkSync('.fork_sync.json').run()
     except Exception as e:
