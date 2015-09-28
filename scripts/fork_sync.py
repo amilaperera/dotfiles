@@ -45,20 +45,19 @@ class Fork(object):
 
     def sync(self):
         try:
+            # prints the starting message for the repository
             print(self._getrepo_start_message())
+
+            # the functions below carry out the fork synchronization per repository
+            # the functions are just self-explanatory
             self._change_dir()
             self._pull_from_remote()
-            # checks if the upstream repository exists
-            print('checking for upstream')
-            if subprocess.call(['git', 'ls-remote', 'upstream'],
-                               stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True):
-                # since upstream repository is not added, add the upstream repo
-                print('can not find the upstream remote...')
-                print('adding {} as the upstream repository...'.format(self.repo['upstreamrepo']))
-                self._add_upstreamrepo()
-
+            self._add_upstream_if_required()
             self._fetch_from_upstream()
             self._merge_with_upstream()
+
+            # takes the git status and prints it with color formatting,
+            # so that the user knows whether merged changes should be pushed or not
             print(self._get_status())
 
         except Exception as e:
@@ -83,28 +82,38 @@ class Fork(object):
 
     def _pull_from_remote(self):
         print('pulling from origin/master')
-        if subprocess.call(['git', 'pull'],
-                           stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True):
-            raise CoProcessError('error pulling from remote')
+        subprocess.check_call(['git', 'pull'],
+                stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True)
 
-    def _add_upstreamrepo(self):
-        if subprocess.call(['git', 'remote', 'add', 'upstream', self.repo['upstreamrepo']]):
-            raise CoProcessError('error adding the remote upstream')
+    def _add_upstream_if_required(self):
+        # checks if the upstream repository exists
+        print('checking for upstream')
+        try:
+            subprocess.check_call(['git', 'ls-remote', 'upstream'],
+                    stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True)
+        except:
+            # since upstream repository is not added, add the upstream repo
+            print('can not find the upstream remote...')
+            print('adding upstream repostiory...')
+            self._add_upstream()
+        else:
+            print('upstream found')
+
+    def _add_upstream(self):
+        subprocess.check_call(['git', 'remote', 'add', 'upstream',
+            self.repo['upstreamrepo']])
 
     def _fetch_from_upstream(self):
         print('fetching from upstream')
-        if subprocess.call(['git', 'fetch', 'upstream']):
-            raise CoProcessError('error fetching from upstream')
+        subprocess.check_call(['git', 'fetch', 'upstream'])
 
     def _merge_with_upstream(self):
-        if subprocess.call(['git', 'checkout', 'master'],
-                           stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True):
-            raise CoProcessError('error switching to master branch')
+        subprocess.check_call(['git', 'checkout', 'master'],
+                stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True)
 
         print('merging with upstream')
-        if subprocess.call(['git', 'merge', 'upstream/master'],
-                           stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True):
-            raise CoProcessError('error merging with upstream')
+        subprocess.check_call(['git', 'merge', 'upstream/master'],
+                stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True)
 
     def _get_status(self):
         output = subprocess.check_output(['git', 'status']).split('\n')[1]
