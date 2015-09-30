@@ -306,6 +306,10 @@ let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.so.*$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\.git$', '\~$']
 " }}}2
 
+" Tagbar settings {{{2
+map <silent> <right> :TagbarToggle<CR>
+" }}}2
+
 " MRU {{{2
 let MRU_Window_Height = 8
 nnoremap <silent> mr   :MRU<CR>
