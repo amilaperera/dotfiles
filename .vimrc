@@ -72,6 +72,7 @@ Plugin 'othree/html5.vim'
 
 " C/C++ enhancements
 Plugin 'vim-scripts/a.vim'
+Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Colorschemes
 " Using my own colorschemes
