@@ -492,12 +492,20 @@ augroup END
 if has('win32') || has('win64')
   autocmd! BufWritePost _vimrc source $MYVIMRC
   autocmd! BufWritePost vimrc source $MYVIMRC
+  autocmd! BufWritePost _gvimrc source $HOME/_gvimrc
+  autocmd! BufWritePost gvimrc source $HOME/gvimrc
 else
   autocmd! BufWritePost .vimrc source $MYVIMRC
+  autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
 endif
 " }}}2
 " Fast editing of the vim, tmux configuration files {{{2
 map <Leader>v :e! $MYVIMRC<CR>
+if has('win32') || has('win64')
+  map <Leader>gv :e! $HOME/_gvimrc<CR>
+else
+  map <Leader>gv :e! $HOME/.gvimrc<CR>
+endif
 " }}}2
 " nohlsearch, after a search {{{2
 nnoremap <silent> <C-L> :nohlsearch<CR>
