@@ -269,31 +269,11 @@ function! s:Byte2hex(bytes)
 endfunction
 " }}}
 
-" Japanese encoding settings {{{
-" Set encoding & fileformat settings
-if has('win32') || has('win64')
-  source $HOME\vimfiles\charencode_plugin\encode.vim " source the encoding file
-  set encoding=japan
-else
-  set encoding=utf-8
-  set fileencoding=utf-8
-  set fileformats=unix,dos,mac
-  set fileencodings=ucs-bom,utf-8,euc-jp,cp932,iso-2022-jp,ucs-2le,ucs-2
-endif
-
-" Display ZenkakuSpace, tabs and trailing spaces
-if has('syntax')
-  syntax on
-  syn sync fromstart
-  function! ActivateInvisibleIndicator()
-    highlight InvisibleJISX0208Space term=NONE ctermbg=Blue guibg=darkgray gui=NONE
-    syntax match InvisibleJISX0208Space "　" display containedin=ALL
-  endfunction
-  augroup invisible
-    autocmd! invisible
-    autocmd FileType * call ActivateInvisibleIndicator()
-  augroup END
-endif
+" Set encoding & fileformat settings {{{
+set encoding=utf-8
+set fileencoding=utf-8
+set fileformats=unix,dos,mac
+set fileencodings=ucs-bom,utf-8,euc-jp,cp932,iso-2022-jp,ucs-2le,ucs-2
 " }}}
 
 " Diff Settings {{{
@@ -508,13 +488,16 @@ augroup END
 " }}}
 
 " Personal Mappings {{{
-" When .vimrc/.gvimrc is edited, reload it {{{2
-autocmd! BufWritePost .vimrc source $HOME/.vimrc
-autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
+" When .vimrc is edited, reload it {{{2
+if has('win32') || has('win64')
+  autocmd! BufWritePost _vimrc source $MYVIMRC
+  autocmd! BufWritePost vimrc source $MYVIMRC
+else
+  autocmd! BufWritePost .vimrc source $MYVIMRC
+endif
 " }}}2
 " Fast editing of the vim, tmux configuration files {{{2
-map <Leader>v :e! $HOME/.vimrc<CR>
-map <Leader>vg :e! $HOME/.gvimrc<CR>
+map <Leader>v :e! $MYVIMRC<CR>
 " }}}2
 " nohlsearch, after a search {{{2
 nnoremap <silent> <C-L> :nohlsearch<CR>
@@ -554,18 +537,6 @@ noremap <silent> <Leader>clj :wincmd j<CR>:close<CR>
 noremap <silent> <Leader>clk :wincmd k<CR>:close<CR>
 noremap <silent> <Leader>clh :wincmd h<CR>:close<CR>
 noremap <silent> <Leader>cll :wincmd l<CR>:close<CR>
-" }}}2
-" Useful Digraphs {{{2
-" diamond(◆)
-inoremap <silent> <C-l><C-d> <C-k>Db
-" triangle(▲)
-inoremap <silent> <C-l><C-t> <C-k>UT
-" circle(●)
-inoremap <silent> <C-l><C-r> <C-k>0M
-" alpha(α)
-inoremap <silent> <C-l><C-a> <C-k>a*
-" beta(β)
-inoremap <silent> <C-l><C-b> <C-k>b*
 " }}}2
 
 " merge consecutive empty lines and clean up trailing spaces(from tpope's .vimrc file) {{{2

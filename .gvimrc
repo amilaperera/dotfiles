@@ -7,7 +7,7 @@ if has('gui_running')
   set visualbell t_vb= "no beep, no flash
 
   " setting colorscheme"
-  let s:myFavouriteGuiColorScheme = "lucius"
+  let s:myFavouriteGuiColorScheme = "xoria256"
   set background=dark
   execute "colorscheme " . s:myFavouriteGuiColorScheme
 
@@ -15,7 +15,7 @@ if has('gui_running')
   set lines=999
   set columns=999
 
-  set mousehide      " hide mouse when typing
+  set mousehide    " hide mouse when typing
 
   "Display a different cursor color in IME mode
   if has('multi_byte_ime') || has('xim')
