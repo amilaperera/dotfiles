@@ -45,7 +45,6 @@ Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'rking/ag.vim'
 Plugin 'jimsei/winresizer'
 Plugin 'majutsushi/tagbar'
-Plugin 'mhinz/vim-signify'
 Plugin 'sjl/gundo.vim.git'
 
 " Using the updated version of bufkill plugin
@@ -73,6 +72,9 @@ Plugin 'othree/html5.vim'
 " C/C++ enhancements
 Plugin 'vim-scripts/a.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
+
+" Vim-Jinja2 syntax hightlighting
+Plugin 'Glench/Vim-Jinja2-Syntax'
 
 " Colorschemes
 " Using my own colorschemes
@@ -239,7 +241,7 @@ endif
 " StatusLine Settings {{{
 set laststatus=2 " set status line visible even in single window mode
 
-set statusline=\ [%n]\ %<%f   " buffer number and file name
+set statusline=\ [%n]\ %<%F   " buffer number and file name
 set statusline+=\ %m\ %r%h%w  " modified flag, readonly flag, help buffer flag, preview window flag
 set statusline+=\ %{'['.&ff.':'.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']'} " file type:file encoding
 set statusline+=\ [%Y]                           " file type
@@ -489,6 +491,7 @@ augroup FTOptions
 
   autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4
   autocmd BufNewFile,BufRead *.pro setl ft=QT_PROJECT_FILE syn=make
+  autocmd BufNewFile,BufRead *.tmpl set ft=jinja
 augroup END
 " }}}
 
