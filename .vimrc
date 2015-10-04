@@ -304,7 +304,11 @@ imap <C-c> <plug>NERDCommenterInsert
 
 " Nerdtree settings {{{2
 map <silent> <left> :NERDTreeToggle<CR>
+let g:NERDTreeDirArrows     = 1
+let g:NERDTreeShowHidden    = 1
+let g:NERDTreeWinSize       = 1
 let g:NERDTreeShowBookmarks = 1
+let g:NERDTreeChDirMode     = 2         "CWD is changed whenever the root directory is changed
 let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.so.*$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\.git$', '\~$']
 " }}}2
 
