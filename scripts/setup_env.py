@@ -5,25 +5,55 @@ from __future__ import print_function
 import argparse
 import os
 import platform
+import shutil
 import subprocess
 import sys
 import time
 import threading
-
-def get_dev_null():
-    """Returns writable /dev/null file descriptor"""
-    return open(os.devnull, 'w')
+import re
 
 class Env(object):
     """Environment setup base class"""
     def __init__(self):
-        pass
+        self.home = None
 
     def setup(self):
         pass
 
+    def is_windows(self):
+        return sys.platform.startswith('win')
+
+    def is_linux(self):
+        return sys.platform.startswith('linux')
+
+    def set_home(self, dir=None):
+        if self.home is None or dir is not None:
+            if (dir is not None):
+                self.home = dir
+            else:
+                # vim usually looks for vimrc in $HOME folder
+                self.home = os.environ['HOME']
+                if self.home in ('', None):
+                    raise OSError('$HOME environment variable is not set')
+
+    def get_home(self):
+        self.set_home()
+        return self.home
+
+    def get_env_name(self):
+        if self.is_linux():
+            return 'linux'
+        elif self.is_windows():
+            return 'windows'
+        else:
+            # NOTE: add these as necessary for different environments
+            raise OSError('unknown os detected')
+
+    def get_setup_welcome_msg(self, setup_str):
+        return 'Setting up {} environment on {}...'.format(setup_str, self.get_env_name())
+
     def _get_install_command(self):
-        if sys.platform.startwith('linux'):
+        if sys.platform.startswith('linux'):
             pass
 
     def _install_package(self):
@@ -32,7 +62,7 @@ class Env(object):
     def _print_with_sleep(self, str):
         sys.stdout.write(str)
         sys.stdout.flush()
-        time.sleep(0.10)
+        time.sleep(0.20)
 
     def _animate_progress_rotation(self):
         self._print_with_sleep('-')
@@ -42,6 +72,7 @@ class Env(object):
         self._print_with_sleep('\b-')
         self._print_with_sleep('\b\\')
         self._print_with_sleep('\b|')
+        self._print_with_sleep('\b/')
         self._print_with_sleep('\b.')
 
     def _clone_thread(self, repo, dest):
@@ -49,8 +80,9 @@ class Env(object):
         if dest is not None:
             git_cmd.append(dest)
 
-        subprocess.check_call(git_cmd, stdout=get_dev_null(),
-                stderr=subprocess.STDOUT, close_fds=True)
+        with open(os.devnull, 'w') as devnull:
+            subprocess.check_call(git_cmd, stdout=devnull,
+                    stderr=subprocess.STDOUT)
 
     def clone_repo(self, **kwargs):
         if self._is_cloneable(**kwargs):
@@ -62,7 +94,7 @@ class Env(object):
             while clone_thread.is_alive():
                 self._animate_progress_rotation()
 
-            print()
+            print('[done]')
         else:
             print('aborting repository cloning')
 
@@ -84,13 +116,16 @@ class Env(object):
             print('destination directory not empty', file=sys.stderr)
             return False
 
+        print(repo)
+
         try:
             # we check if the remote repo is valid.
             # if it is invalid git ls-remote <url> would return error status,
             # causing subprocess.Popen() to throw an exception
-            subprocess.Popen(['git', 'ls-remote', repo],
-                    stdout=get_dev_null(), stderr=subprocess.STDOUT,
-                    env=new_env, close_fds=True)
+            with open(os.devnull, 'w') as devnull:
+                subprocess.Popen(['git', 'ls-remote', repo],
+                        stdout=devnull, stderr=subprocess.STDOUT,
+                        env=new_env)
         except:
             print('repository is invalid', file=sys.stderr)
             return False
@@ -119,7 +154,42 @@ class Vim(Env):
     """Vim environment setup class"""
 
     def __init__(self):
-        pass
+        super(Vim, self).__init__()
+
+    def _set_vimrc_files(self):
+        home_path = self.get_home()
+        print('copying vimrc files to {}'.format(home_path))
+        for f in ('.vimrc', '.gvimrc'):
+            if self.is_windows():
+                # copy .vimrc & .gvimrc files as _vimrc and _gvimrc files respectively
+                # to the $HOME folder
+                shutil.copy(os.path.join('../', f),
+                        os.path.join(home_path, '_' + f.split('.')[1]))
+            elif self.is_linux():
+                # create a link to .vimrc & .gvimrc files in the home directory
+                os.symlink(os.path.join('../', f), home_path)
+            else:
+                raise OSError('unknown os detected')
+
+    def _install_vim_plugins(self):
+        plugin_path = os.path.join(self.get_home(), os.path.join('.vim', 'bundle'))
+        if not os.path.isdir(plugin_path):
+            os.makedirs(plugin_path)
+        os.chdir(plugin_path)
+
+        print('installing vim plugins to {}'.format(plugin_path))
+        p = re.compile('^Plugin +[\'\"](?P<plugin>[^\'\"]*)[\'\"]')
+        with open(os.path.join(self.get_home(), '_vimrc')) as fh:
+            for line in fh.readlines():
+                res = p.match(line)
+                if res:
+                    self.clone_repo(**dict(repo='https://github.com/' + res.group('plugin')))
+
+    def setup(self, args):
+        print(self.get_setup_welcome_msg('vim'))
+        self.set_home(args.dir)
+        self._set_vimrc_files()
+        self._install_vim_plugins()
 
 class Misc(Env):
     """Misc environment setup class"""
@@ -132,17 +202,22 @@ def main():
     parser.add_argument('-e', '--env',
                         choices=['zsh', 'bash', 'vim', 'misc'],
                         help='sets up the specified environment')
+    parser.add_argument('-d', '--dir',
+                        help='install directory')
     args = parser.parse_args()
     if args.env == 'zsh':
         Zsh().setup()
     elif args.env == 'bash':
         Bash().setup()
     elif args.env == 'vim':
-        Bash().setup()
+        Vim().setup(args)
     elif args.env == 'misc':
         Misc().setup()
     else:
         pass
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        print('{}: error: {}'.format(sys.argv[0], e))
