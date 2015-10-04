@@ -34,7 +34,7 @@ set guioptions+=L  " for vsplits lefthand scrollbar is present
 set guioptions-=T  " hide toolbar
 
 if has('x11')
-  set guifont=inconsolata-g\ 9  " preferred font font for Linux
+  set guifont=DejaVu\ Sans\ Mono\ 9  " preferred font font for Linux
 elseif has('gui_win32')
   set guifont=Consolas:h9       " preferred font for Windows
 endif
