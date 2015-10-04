@@ -14,9 +14,8 @@ import re
 
 class Env(object):
     """Environment setup base class"""
-    def __init__(self, *d):
+    def __init__(self):
         self.home = None
-        self.dotfiles = *d
 
     def setup(self):
         pass
@@ -43,15 +42,24 @@ class Env(object):
     def get_setup_welcome_msg(setup_str):
         return 'Setting up {} environment on {}...'.format(setup_str, Env.get_env_name())
 
+    @staticmethod
+    def get_home_env_var():
+        if Env.is_linux():
+            return 'HOME'
+        elif Env.is_windows():
+            return 'USERPROFILE'
+        else:
+            raise('unknown user variable')
+
     def set_home(self, dir=None):
         if self.home is None or dir is not None:
             if (dir is not None):
                 self.home = dir
             else:
-                # vim usually looks for vimrc in $HOME folder
-                self.home = os.environ['HOME']
+                # vim usually looks for vimrc in HOME folder
+                self.home = os.environ[Env.get_home_env_var()]
                 if self.home in ('', None):
-                    raise OSError('$HOME environment variable is not set')
+                    raise OSError('HOME environment variable is not set')
 
     def get_home(self):
         self.set_home()
@@ -99,8 +107,6 @@ class Env(object):
         if os.path.isdir(dest):
             print('destination directory not empty', file=sys.stderr)
             return False
-
-        print(repo)
 
         try:
             # we check if the remote repo is valid.
@@ -151,7 +157,7 @@ class VimEnv(Env):
     """Vim environment setup class"""
 
     def __init__(self):
-        super(VimEnv, self).__init__(*tuple('.vimrc', '.gvimrc'))
+        super(VimEnv, self).__init__()
 
     @staticmethod
     def get_vimrc_file_name():
