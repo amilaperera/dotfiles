@@ -175,12 +175,6 @@ set tags+=../../../../../../../tags
 set tags+=../../../../../../../../tags
 set tags+=../../../../../../../../../tags
 " }}}2
-
-" Allow '/' in directory paths in Windows {{{2
-if has('win32') || has('win64')
-  set shellslash
-endif
-" }}}2
 " }}}
 
 " UI Settings {{{

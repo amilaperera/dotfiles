@@ -14,8 +14,9 @@ import re
 
 class Env(object):
     """Environment setup base class"""
-    def __init__(self):
+    def __init__(self, *d):
         self.home = None
+        self.dotfiles = *d
 
     def setup(self):
         pass
@@ -81,19 +82,6 @@ class Env(object):
             subprocess.check_call(git_cmd, stdout=devnull,
                     stderr=subprocess.STDOUT)
 
-    def clone_repo(self, **kwargs):
-        if self._is_cloneable(**kwargs):
-            repo, dest = kwargs.get('repo'), kwargs.get('dest')
-            print('cloning from repository {} '.format(repo), end='')
-            clone_thread = threading.Thread(target=self._clone_thread, args=(repo, dest))
-            clone_thread.start()
-
-            while clone_thread.is_alive():
-                self._animate_progress_rotation()
-            print('[done]')
-        else:
-            print('aborting repository cloning')
-
     def _is_cloneable(self, **kwargs):
         # prevent git from asking password for bad urls
         new_env = os.environ.copy()
@@ -128,6 +116,19 @@ class Env(object):
 
         return True
 
+    def clone_repo(self, **kwargs):
+        if self._is_cloneable(**kwargs):
+            repo, dest = kwargs.get('repo'), kwargs.get('dest')
+            print('cloning from repository {} '.format(repo), end='')
+            clone_thread = threading.Thread(target=self._clone_thread, args=(repo, dest))
+            clone_thread.start()
+
+            while clone_thread.is_alive():
+                self._animate_progress_rotation()
+            print('[done]')
+        else:
+            print('aborting repository cloning')
+
 class ZshEnv(Env):
     """Zsh environment setup class"""
 
@@ -150,7 +151,7 @@ class VimEnv(Env):
     """Vim environment setup class"""
 
     def __init__(self):
-        super(VimEnv, self).__init__()
+        super(VimEnv, self).__init__(*tuple('.vimrc', '.gvimrc'))
 
     @staticmethod
     def get_vimrc_file_name():
