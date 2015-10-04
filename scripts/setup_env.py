@@ -93,7 +93,6 @@ class Env(object):
 
             while clone_thread.is_alive():
                 self._animate_progress_rotation()
-
             print('[done]')
         else:
             print('aborting repository cloning')

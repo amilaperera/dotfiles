@@ -45,7 +45,7 @@ Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'rking/ag.vim'
 Plugin 'jimsei/winresizer'
 Plugin 'majutsushi/tagbar'
-Plugin 'sjl/gundo.vim.git'
+Plugin 'sjl/gundo.vim'
 
 " Using the updated version of bufkill plugin
 " since the original vim-script repository is not yet
