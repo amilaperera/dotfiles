@@ -172,7 +172,8 @@ class VimEnv(Env):
                         os.path.join(home_path, '_' + f.split('.')[1]))
             elif Env.is_linux():
                 # create a link to .vimrc & .gvimrc files in the home directory
-                os.symlink(os.path.join('../', f), os.path.join(home_path, f))
+                os.symlink(os.path.abspath(os.path.join('../', f)),
+                        os.path.join(home_path, f))
             else:
                 raise OSError('unknown os detected')
 
