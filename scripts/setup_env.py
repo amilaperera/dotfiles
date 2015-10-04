@@ -20,11 +20,27 @@ class Env(object):
     def setup(self):
         pass
 
-    def is_windows(self):
+    @staticmethod
+    def is_windows():
         return sys.platform.startswith('win')
 
-    def is_linux(self):
+    @staticmethod
+    def is_linux():
         return sys.platform.startswith('linux')
+
+    @staticmethod
+    def get_env_name():
+        if Env.is_linux():
+            return 'linux'
+        elif Env.is_windows():
+            return 'windows'
+        else:
+            # NOTE: add these as necessary for different environments
+            raise OSError('unknown os detected')
+
+    @staticmethod
+    def get_setup_welcome_msg(setup_str):
+        return 'Setting up {} environment on {}...'.format(setup_str, Env.get_env_name())
 
     def set_home(self, dir=None):
         if self.home is None or dir is not None:
@@ -39,25 +55,6 @@ class Env(object):
     def get_home(self):
         self.set_home()
         return self.home
-
-    def get_env_name(self):
-        if self.is_linux():
-            return 'linux'
-        elif self.is_windows():
-            return 'windows'
-        else:
-            # NOTE: add these as necessary for different environments
-            raise OSError('unknown os detected')
-
-    def get_setup_welcome_msg(self, setup_str):
-        return 'Setting up {} environment on {}...'.format(setup_str, self.get_env_name())
-
-    def _get_install_command(self):
-        if sys.platform.startswith('linux'):
-            pass
-
-    def _install_package(self):
-        pass
 
     def _print_with_sleep(self, str):
         sys.stdout.write(str)
@@ -131,7 +128,7 @@ class Env(object):
 
         return True
 
-class Zsh(Env):
+class ZshEnv(Env):
     """Zsh environment setup class"""
 
     def __init__(self):
@@ -143,30 +140,39 @@ class Zsh(Env):
                 )
         self.clone_repo(**args)
 
-class Bash(Env):
+class BashEnv(Env):
     """Bash environment setup class"""
 
     def __init__(self):
         pass
 
-class Vim(Env):
+class VimEnv(Env):
     """Vim environment setup class"""
 
     def __init__(self):
-        super(Vim, self).__init__()
+        super(VimEnv, self).__init__()
+
+    @staticmethod
+    def get_vimrc_file_name():
+        if Env.is_linux():
+            return '.vimrc'
+        elif Env.is_windows():
+            return '_vimrc'
+        else:
+            return None
 
     def _set_vimrc_files(self):
         home_path = self.get_home()
         print('copying vimrc files to {}'.format(home_path))
         for f in ('.vimrc', '.gvimrc'):
-            if self.is_windows():
+            if Env.is_windows():
                 # copy .vimrc & .gvimrc files as _vimrc and _gvimrc files respectively
                 # to the $HOME folder
                 shutil.copy(os.path.join('../', f),
                         os.path.join(home_path, '_' + f.split('.')[1]))
-            elif self.is_linux():
+            elif Env.is_linux():
                 # create a link to .vimrc & .gvimrc files in the home directory
-                os.symlink(os.path.join('../', f), home_path)
+                os.symlink(os.path.join('../', f), os.path.join(home_path, f))
             else:
                 raise OSError('unknown os detected')
 
@@ -178,19 +184,19 @@ class Vim(Env):
 
         print('installing vim plugins to {}'.format(plugin_path))
         p = re.compile('^Plugin +[\'\"](?P<plugin>[^\'\"]*)[\'\"]')
-        with open(os.path.join(self.get_home(), '_vimrc')) as fh:
+        with open(os.path.join(self.get_home(), VimEnv.get_vimrc_file_name())) as fh:
             for line in fh.readlines():
                 res = p.match(line)
                 if res:
                     self.clone_repo(**dict(repo='https://github.com/' + res.group('plugin')))
 
     def setup(self, args):
-        print(self.get_setup_welcome_msg('vim'))
+        print(Env.get_setup_welcome_msg('vim'))
         self.set_home(args.dir)
         self._set_vimrc_files()
         self._install_vim_plugins()
 
-class Misc(Env):
+class MiscEnv(Env):
     """Misc environment setup class"""
 
     def __init__(self):
@@ -205,13 +211,13 @@ def main():
                         help='install directory')
     args = parser.parse_args()
     if args.env == 'zsh':
-        Zsh().setup()
+        ZshEnv().setup()
     elif args.env == 'bash':
-        Bash().setup()
+        BashEnv().setup()
     elif args.env == 'vim':
-        Vim().setup(args)
+        VimEnv().setup(args)
     elif args.env == 'misc':
-        Misc().setup()
+        MiscEnv().setup()
     else:
         pass
 

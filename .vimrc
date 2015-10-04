@@ -9,11 +9,11 @@ filetype off                   " required to set this off before sourcing the pl
 
 " source plugins
 " Vundle setup
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.vim/bundle/Vundle
 call vundle#begin()
 
 " let Vundle manage the plugins
-Plugin 'gmarik/Vundle.vim'
+Plugin 'gmarik/Vundle'
 
 " General enhancements
 Plugin 'vim-scripts/AutoComplPop'
