@@ -76,6 +76,9 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 " Vim-Jinja2 syntax hightlighting
 Plugin 'Glench/Vim-Jinja2-Syntax'
 
+" SCons syntax highlighting
+Plugin 'vim-scripts/scons.vim'
+
 " Colorschemes
 " Using my own colorschemes
 " This is a fork from https://github.com/flazz/vim-colorschemes
@@ -83,6 +86,7 @@ Plugin 'amilaperera/vim-colorschemes'
 
 " Snipmate plugin, related dependencies & snippets
 Plugin 'sirver/ultisnips'
+
 " Using my own snippets
 " This is a fork from https://github.com/honza/vim-snippets
 Plugin 'amilaperera/vim-snippets'
@@ -490,6 +494,7 @@ augroup FTOptions
   autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4
   autocmd BufNewFile,BufRead *.pro setl ft=QT_PROJECT_FILE syn=make
   autocmd BufNewFile,BufRead *.tmpl set ft=jinja
+  autocmd BufNewFile,BufRead SCons* set ft=scons
 augroup END
 " }}}
 
