@@ -101,7 +101,7 @@ class Fork(object):
 
     def _add_upstream(self):
         subprocess.check_call(['git', 'remote', 'add', 'upstream',
-            self.repo['upstreamrepo']])
+            'https://github.com/' + self.repo['upstream_repo']])
 
     def _fetch_from_upstream(self):
         print('fetching from upstream')
