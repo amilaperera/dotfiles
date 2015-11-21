@@ -46,7 +46,7 @@ class Fork(object):
     def sync(self):
         try:
             # prints the starting message for the repository
-            print(self._getrepo_start_message())
+            print(self._get_repo_start_msg())
 
             # the functions below carry out the fork synchronization per repository
             # the functions are just self-explanatory
@@ -63,7 +63,7 @@ class Fork(object):
         except Exception as e:
             print('error synchronizing with the fork. {}'.format(e), file=sys.stderr)
 
-    def _getrepo_start_message(self):
+    def _get_repo_start_msg(self):
         try:
             msg = ' working on ' + Colors.Colorize(self.repo['repo_name'], Colors.Yellow) + ' '
             terminal_width = int(subprocess.check_output(['stty', 'size']).split()[1])
