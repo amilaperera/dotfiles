@@ -218,6 +218,16 @@ def main():
     parser.add_argument('-d', '--dir',
                         help='install directory')
     args = parser.parse_args()
+
+    git_exe = None
+    for dir in os.environ['PATH'].split(';'):
+        git_exe = os.path.join(dir, 'git.exe' if Env.is_windows else 'git')
+        if os.path.exists(git_exe):
+            break
+
+    if git_exe is None:
+        raise OSError('Could not find the git executable in the PATH')
+
     if args.env == 'zsh':
         ZshEnv().setup()
     elif args.env == 'bash':
