@@ -21,12 +21,16 @@ class Env(object):
         pass
 
     @staticmethod
+    def get_platform_name():
+        return sys.platform.lower()
+
+    @staticmethod
     def is_windows():
         return sys.platform.startswith('win')
 
     @staticmethod
     def is_linux():
-        return sys.platform.startswith('linux')
+        return Env.get_platform_name().startswith('linux') or Env.get_platform_name().startswith('cygwin')
 
     @staticmethod
     def get_env_name():
