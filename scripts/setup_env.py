@@ -35,9 +35,9 @@ class Env(object):
     @staticmethod
     def get_env_name():
         if Env.is_linux():
-            return 'linux'
+            return 'Linux'
         elif Env.is_windows():
-            return 'windows'
+            return 'Windows'
         else:
             # NOTE: add these as necessary for different environments
             raise OSError('unknown os detected')
