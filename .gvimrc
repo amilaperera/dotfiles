@@ -36,5 +36,5 @@ set guioptions-=T  " hide toolbar
 if has('x11')
   set guifont=DejaVu\ Sans\ Mono\ 9  " preferred font font for Linux
 elseif has('gui_win32')
-  set guifont=Consolas:h9       " preferred font for Windows
+  set guifont=Consolas:h8       " preferred font for Windows
 endif
