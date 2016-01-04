@@ -255,7 +255,8 @@ def main():
 
     # search the PATH and check if 'git' command is available
     git_executable = None
-    for dir in re.split('[;:]', os.environ['PATH']):
+    split_regex = '[;]' if Env.is_windows() else '[:]'
+    for dir in re.split(split_regex, os.environ['PATH']):
         git_executable = os.path.join(dir, 'git.exe' if Env.is_windows() else 'git')
         if os.path.exists(git_executable):
             break
