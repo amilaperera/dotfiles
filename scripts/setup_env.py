@@ -26,13 +26,32 @@ init(autoreset=True)
 class Env(object):
     """Environment setup base class"""
 
+    # class variable
+    # git command
     git_cmd = None
 
-    def __init__(self):
-        self.install_dir = Env.get_home()
+    def __init__(self, args):
+        self.set_install_dir(args)
+        self.set_env_name(args)
 
-    def setup(self):
-        pass
+    @staticmethod
+    def check_for_git_cmd():
+        # search the PATH and check if 'git' command is available
+        git_executable = None
+        split_regex = '[;]' if Env.is_windows() else '[:]'
+        for dir in re.split(split_regex, os.environ['PATH']):
+            git_executable = os.path.join(dir, 'git.exe' if Env.is_windows() else 'git')
+            if os.path.exists(git_executable):
+                break
+            else:
+                git_executable = None
+
+        # if we can't find 'git' in the PATH just raise and exception and terminate the program
+        if git_executable is None:
+            raise OSError('Could not find the git executable in PATH')
+        else:
+            Env.git_cmd = git_executable
+            print('git executable is found at {}'.format(Env.git_cmd))
 
     @staticmethod
     def get_platform_name():
@@ -57,8 +76,8 @@ class Env(object):
             raise OSError('unknown os detected')
 
     @staticmethod
-    def get_setup_welcome_msg(setup_str):
-        return Fore.YELLOW + 'Setting up {} environment on {}...'.format(setup_str, Env.get_env_name())
+    def get_welcome_msg(setup_str):
+        return 'Setting up {} environment on {}...'.format(setup_str, Env.get_env_name())
 
     @staticmethod
     def get_home_env_var():
@@ -151,45 +170,60 @@ class Env(object):
             raise OSError('HOME environment variable is not set')
         return home
 
-    def set_install_dir(self, arg):
-        if arg is not None:
-            abs_path = os.path.abspath(arg)
+    def set_install_dir(self, args):
+        if args.dir is None:
+            self.install_dir = Env.get_home()
+        else:
+            abs_path = os.path.abspath(args.dir)
             if os.path.isdir(abs_path):
                 self.install_dir = abs_path
             else:
                 raise OSError('install directory[{}] does not exist'.format(abs_path))
-        else:
-            pass
+
+    def set_env_name(self, args):
+        self.env_name = args.env.title()
 
     def get_install_dir(self):
         return self.install_dir
+
+    # carry out common settings for all the environments
+    def setup_common_env(self):
+        print(Fore.CYAN + Env.get_welcome_msg(self.env_name))
+        Env.check_for_git_cmd()
+
+    # base class specific setup.
+    # In general derived class should reimplement this method
+    def setup_env(self):
+        pass
+
+    # template method
+    def setup(self):
+        # carry out setup required for all the environments
+        self.setup_common_env()
+        # carry out environment specific setup
+        # derived classes should reimplement this method
+        self.setup_env()
 
 
 class ZshEnv(Env):
     """Zsh environment setup class"""
 
-    def __init__(self):
-        pass
-
-    def setup(self):
-        args = dict(
-                repo='https://github.com/amilaperera/dotfiles',
-                )
-        Env.clone_repo(**args)
+    def __init__(self, args):
+        super(ZshEnv, self).__init__(args)
 
 
 class BashEnv(Env):
     """Bash environment setup class"""
 
-    def __init__(self):
-        pass
+    def __init__(self, args):
+        super(BashEnv, self).__init__(args)
 
 
 class VimEnv(Env):
     """Vim environment setup class"""
 
-    def __init__(self):
-        super(VimEnv, self).__init__()
+    def __init__(self, args):
+        super(VimEnv, self).__init__(args)
 
     @staticmethod
     def get_vimrc_file_name():
@@ -202,7 +236,7 @@ class VimEnv(Env):
 
     def _set_vimrc_files(self):
         home_path = self.get_install_dir()
-        print('copying vimrc files to {}'.format(home_path))
+        print('Copying vimrc files to {}'.format(home_path))
         for f in ('.vimrc', '.gvimrc'):
             if Env.is_windows():
                 # copy .vimrc & .gvimrc files as _vimrc and _gvimrc files respectively
@@ -222,7 +256,7 @@ class VimEnv(Env):
             os.makedirs(plugin_path)
         os.chdir(plugin_path)
 
-        print(Fore.YELLOW + 'installing vim plugins to {}'.format(plugin_path))
+        print('Installing vim plugins to {}'.format(plugin_path))
         p = re.compile('^Plugin +[\'\"](?P<plugin>[^\'\"]*)[\'\"]')
         with open(os.path.join(self.get_install_dir(), VimEnv.get_vimrc_file_name())) as fh:
             for line in fh.readlines():
@@ -230,9 +264,7 @@ class VimEnv(Env):
                 if res:
                     Env.clone_repo(**dict(repo='https://github.com/' + res.group('plugin')))
 
-    def setup(self, args):
-        print(Env.get_setup_welcome_msg('vim'))
-        self.set_install_dir(args.dir)
+    def setup_env(self):
         self._set_vimrc_files()
         self._install_vim_plugins()
 
@@ -240,8 +272,8 @@ class VimEnv(Env):
 class MiscEnv(Env):
     """Misc environment setup class"""
 
-    def __init__(self):
-        pass
+    def __init__(self, args):
+        super(MiscEnv, self).__init__(args)
 
 
 def main():
@@ -253,31 +285,14 @@ def main():
                         help='install directory')
     args = parser.parse_args()
 
-    # search the PATH and check if 'git' command is available
-    git_executable = None
-    split_regex = '[;]' if Env.is_windows() else '[:]'
-    for dir in re.split(split_regex, os.environ['PATH']):
-        git_executable = os.path.join(dir, 'git.exe' if Env.is_windows() else 'git')
-        if os.path.exists(git_executable):
-            break
-        else:
-            git_executable = None
-
-    # if we can't find 'git' in the PATH just raise and exception and terminate the program
-    if git_executable is None:
-        raise OSError('Could not find the git executable in PATH')
-    else:
-        Env.git_cmd = git_executable
-        print(Fore.YELLOW + 'git executable is found at {}'.format(Env.git_cmd))
-
     if args.env == 'zsh':
-        ZshEnv().setup()
+        ZshEnv(args).setup()
     elif args.env == 'bash':
-        BashEnv().setup()
+        BashEnv(args).setup()
     elif args.env == 'vim':
-        VimEnv().setup(args)
+        VimEnv(args).setup()
     elif args.env == 'misc':
-        MiscEnv().setup()
+        MiscEnv(args).setup()
     else:
         pass
 
