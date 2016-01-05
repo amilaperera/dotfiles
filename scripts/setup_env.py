@@ -44,7 +44,7 @@ class Env(object):
 
         # if we can't find 'git' in the PATH just raise and exception and terminate the program
         if git_executable is None:
-            raise OSError('Could not find the git executable in PATH')
+            raise OSError('Can not find the git executable in PATH')
         else:
             Env.git_cmd = git_executable
             print('git executable is found at {}'.format(Env.git_cmd))
@@ -69,7 +69,7 @@ class Env(object):
             return 'Windows'
         else:
             # NOTE: add these as necessary for different environments
-            raise OSError('unknown os detected')
+            raise OSError('Unknown OS detected')
 
     @staticmethod
     def get_welcome_msg(setup_str):
@@ -82,7 +82,7 @@ class Env(object):
         elif Env.is_windows():
             return 'USERPROFILE'
         else:
-            raise OSError('unknown user variable')
+            raise OSError('Unknown HOME variable')
 
     @staticmethod
     def print_with_sleep(str):
@@ -127,7 +127,7 @@ class Env(object):
             dest = os.path.join(os.getcwd(), repo.rstrip('/').split('/')[-1])
 
         if os.path.isdir(dest):
-            print('Destination directory [{}] not empty'.format(dest), file=sys.stderr)
+            print('Destination directory[{}] not empty'.format(dest), file=sys.stderr)
             return False
 
         try:
@@ -139,7 +139,7 @@ class Env(object):
                         stdout=devnull, stderr=subprocess.STDOUT,
                         env=new_env)
         except:
-            print('Repository [{}] is invalid'.format(repo), file=sys.stderr)
+            print('Repository[{}] is invalid'.format(repo), file=sys.stderr)
             return False
 
         return True
@@ -174,7 +174,7 @@ class Env(object):
             if os.path.isdir(abs_path):
                 self.install_dir = abs_path
             else:
-                raise OSError('install directory[{}] does not exist'.format(abs_path))
+                raise OSError('Install directory[{}] does not exist'.format(abs_path))
 
     def set_setup_env_name(self, args):
         self.setup_env_name = args.env.title()
@@ -187,7 +187,8 @@ class Env(object):
 
     def raise_exception_if_windows(self):
         if Env.is_windows():
-            raise OSError('{} environment can not be setup in this OS'.format(self.get_setup_env_name()))
+            raise OSError('{} environment can not be setup on {}'
+                    .format(self.get_setup_env_name(), Env.get_env_name()))
 
     # check if setup can be carried out for the current OS
     # In general derived class should reimplement this method
@@ -243,12 +244,12 @@ class VimEnv(Env):
 
     @staticmethod
     def get_vimrc_file_name():
-        if Env.is_linux():
-            return '.vimrc'
-        elif Env.is_windows():
+        if Env.is_windows():
             return '_vimrc'
+        elif Env.is_linux():
+            return '.vimrc'
         else:
-            return None
+            raise OSError('Unknown OS detected')
 
     def _set_vimrc_files(self):
         home_path = self.get_install_dir()
@@ -264,7 +265,7 @@ class VimEnv(Env):
                 os.symlink(os.path.abspath(os.path.join('../', f)),
                         os.path.join(home_path, f))
             else:
-                raise OSError('unknown os detected')
+                raise OSError('Unknown OS detected')
 
     def _install_vim_plugins(self):
         plugin_path = os.path.join(self.get_install_dir(), os.path.join('.vim', 'bundle'))
