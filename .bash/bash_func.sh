@@ -541,4 +541,10 @@ man()
 	LESS_TERMCAP_us=$'\E[01;04;35m' \
 	man "$@"
 }
+
+svn_revert_modified()
+{
+	local op=$(svn status | grep "^X[ \t] | awk '{print $2}")
+	echo $op
+}
 # }}}

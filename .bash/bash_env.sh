@@ -119,7 +119,7 @@ export MANPAGER="less"
 
 #ulimit -S -c 0 >/dev/null 2>&1    # no core files by default
 case $workinghost in
-CYGWIN*		)	export VISUAL='gvim' ;;
+CYGWIN*		)	export VISUAL='vim' ;;
 *			)	export VISUAL='vim' ;;
 esac
 

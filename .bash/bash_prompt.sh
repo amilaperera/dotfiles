@@ -63,9 +63,9 @@ function __svn_ps1() {
 ## and slightly adjusted
 ##################################################################
 function prompt_command() {
-	GIT_PS1_SHOWDIRTYSTATE=true
-	git_prompt=$(__git_ps1 " (git: %s)")
-	svn_prompt=$(__svn_ps1)
+	# GIT_PS1_SHOWDIRTYSTATE=true
+	# git_prompt=$(__git_ps1 " (git: %s)")
+	# svn_prompt=$(__svn_ps1)
 	curr_dir=$(pwd)
 }
 
