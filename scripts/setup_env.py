@@ -28,7 +28,7 @@ class Env(object):
 
     def __init__(self, args):
         self.set_install_dir(args)
-        self.set_env_name(args)
+        self.set_setup_env_name(args)
 
     @staticmethod
     def check_for_git_cmd():
@@ -176,15 +176,27 @@ class Env(object):
             else:
                 raise OSError('install directory[{}] does not exist'.format(abs_path))
 
-    def set_env_name(self, args):
-        self.env_name = args.env.title()
+    def set_setup_env_name(self, args):
+        self.setup_env_name = args.env.title()
+
+    def get_setup_env_name(self):
+        return self.setup_env_name
 
     def get_install_dir(self):
         return self.install_dir
 
+    def raise_exception_if_windows(self):
+        if Env.is_windows():
+            raise OSError('{} environment can not be setup in this OS'.format(self.get_setup_env_name()))
+
+    # check if setup can be carried out for the current OS
+    # In general derived class should reimplement this method
+    def check_for_os_validity(self):
+        pass
+
     # carry out common settings for all the environments
     def setup_common_env(self):
-        print(Fore.CYAN + Env.get_welcome_msg(self.env_name))
+        print(Fore.CYAN + Env.get_welcome_msg(self.setup_env_name))
         Env.check_for_git_cmd()
 
     # base class specific setup.
@@ -194,6 +206,8 @@ class Env(object):
 
     # template method
     def setup(self):
+        # check if setup can be carried out for the current OS
+        self.check_for_os_validity()
         # carry out setup required for all the environments
         self.setup_common_env()
         # carry out environment specific setup
@@ -207,12 +221,18 @@ class ZshEnv(Env):
     def __init__(self, args):
         super(ZshEnv, self).__init__(args)
 
+    def check_for_os_validity(self):
+        self.raise_exception_if_windows()
+
 
 class BashEnv(Env):
     """Bash environment setup class"""
 
     def __init__(self, args):
         super(BashEnv, self).__init__(args)
+
+    def check_for_os_validity(self):
+        self.raise_exception_if_windows()
 
 
 class VimEnv(Env):
@@ -271,6 +291,8 @@ class MiscEnv(Env):
     def __init__(self, args):
         super(MiscEnv, self).__init__(args)
 
+    def check_for_os_validity(self):
+        self.raise_exception_if_windows()
 
 def main():
     parser = argparse.ArgumentParser(description='Set up the environment')
