@@ -19,10 +19,6 @@ import threading
 import re
 from colorama import Fore, Back, Style, init
 
-# Initialize colorama
-# Automate sending reset sequences after each colored output
-init(autoreset=True)
-
 class Env(object):
     """Environment setup base class"""
 
@@ -298,7 +294,11 @@ def main():
 
 if __name__ == '__main__':
     try:
+        # Initialize colorama
+        # Automate sending reset sequences after each colored output
+        init(autoreset=True)
         main()
+
     except Exception as e:
         print('Error: ', end='')
         print(Fore.RED +'{}'.format(e))
