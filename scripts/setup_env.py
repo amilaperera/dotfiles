@@ -167,6 +167,11 @@ class Env(object):
     @staticmethod
     def create_symlink(src, dest):
         os.symlink(src, dest)
+        print('Creating sym link (', end='')
+        print('{} --> '.format(src), end='')
+        print(Fore.YELLOW + '{}'.format(dest), end='')
+        print(')...', end='')
+        print(Fore.GREEN + '[done]')
 
     def set_install_dir(self, args):
         if args.dir is None:
@@ -250,24 +255,32 @@ class ZshEnv(Env):
             dest=os.path.join(self.get_install_dir(), ZshEnv.local_oh_my_zsh_ref_dir_name)
             ))
 
-    def _create_zshrc_symlink(self):
+    def _create_zshrc_symlinks(self):
         for f in self.get_config_files():
             Env.create_symlink(os.path.join(self.get_install_dir(), ZshEnv.local_zshrc_ref_path),
                     os.path.join(self.get_install_dir(), f))
 
     def setup_env(self):
         self._download_oh_my_zsh()
-        self._create_zshrc_symlink()
+        self._create_zshrc_symlinks()
 
 
 class BashEnv(Env):
     """Bash environment setup class"""
 
     def __init__(self, args):
-        super(BashEnv, self).__init__(args, *())
+        super(BashEnv, self).__init__(args, *('.bash', '.bashrc', '.bash_profile', '.bash_logout', '.inputrc'))
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
+
+    def _create_bash_symlinks(self):
+        for f in self.get_config_files():
+            Env.create_symlink(os.path.abspath(os.path.join('../', f)),
+                    os.path.join(self.get_install_dir(), f))
+
+    def setup_env(self):
+        self._create_bash_symlinks()
 
 
 class VimEnv(Env):
@@ -279,7 +292,7 @@ class VimEnv(Env):
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux_and_windows()
 
-    def get_plugins_file(self):
+    def _get_plugins_file(self):
         # Plugins are in .vimrc file
         plugins_file = self.get_config_files()[0]
         if Env.is_windows():
@@ -307,7 +320,7 @@ class VimEnv(Env):
 
         print('Installing vim plugins to {}'.format(plugin_path))
         p = re.compile('^Plugin +[\'\"](?P<plugin>[^\'\"]*)[\'\"]')
-        with open(os.path.join(self.get_install_dir(), self.get_plugins_file())) as fh:
+        with open(os.path.join(self.get_install_dir(), self._get_plugins_file())) as fh:
             for line in fh.readlines():
                 res = p.match(line)
                 if res:
@@ -322,10 +335,19 @@ class MiscEnv(Env):
     """Misc environment setup class"""
 
     def __init__(self, args):
-        super(MiscEnv, self).__init__(args, *())
+        super(MiscEnv, self).__init__(args, *('.tmux.conf', '.irbrc', '.ackrc', '.agignore', '.colordiffrc', '.gitconfig', '.cgdb'))
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
+
+    def _create_misc_symlinks(self):
+        for f in self.get_config_files():
+            Env.create_symlink(os.path.abspath(os.path.join('../', f)),
+                    os.path.join(self.get_install_dir(), f))
+
+    def setup_env(self):
+        self._create_misc_symlinks()
+
 
 def main():
     parser = argparse.ArgumentParser(description='Set up the environment')
