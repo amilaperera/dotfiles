@@ -164,14 +164,24 @@ class Env(object):
         return home
 
     @staticmethod
-    def create_symlink(src, dest):
-        os.symlink(src, dest)
-        print('Creating sym link (', end='')
+    def src_to_dest_message(str, src, dest):
+        print(str, end='')
+        print(' (', end='')
         print(Style.BRIGHT + '{}'.format(src), end='')
         print(' --> ', end='')
         print(Fore.YELLOW + '{}'.format(dest), end='')
         print(')...', end='')
         print(Fore.GREEN + '[done]')
+
+    @staticmethod
+    def create_symlink(src, dest):
+        os.symlink(src, dest)
+        Env.src_to_dest_message('Creating sym link', src, dest)
+
+    @staticmethod
+    def copy_file(src, dest):
+        shutil.copy(src, dest)
+        Env.src_to_dest_message('Copying file', src, dest)
 
     def set_install_dir(self, args):
         if args.dir is None:
@@ -308,7 +318,7 @@ class VimEnv(Env):
             if Env.is_windows():
                 # copy .vimrc & .gvimrc files as _vimrc and _gvimrc files respectively
                 # to the $HOME folder
-                shutil.copy(os.path.join('../', f), os.path.join(home_path, '_' + f.split('.')[1]))
+                Env.copy_file(os.path.join('../', f), os.path.join(home_path, '_' + f.split('.')[1]))
             else:
                 # create a link to .vimrc & .gvimrc files in the home directory
                 Env.create_symlink(os.path.abspath(os.path.join('../', f)), os.path.join(home_path, f))
