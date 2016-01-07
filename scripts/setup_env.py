@@ -239,7 +239,7 @@ class ZshEnv(Env):
             )
 
     def __init__(self, args):
-        super(ZshEnv, self).__init__(args, *('.zshrc'))
+        super(ZshEnv, self).__init__(args, *('.zshrc',))
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
@@ -251,8 +251,9 @@ class ZshEnv(Env):
             ))
 
     def _create_zshrc_symlink(self):
-        Env.create_symlink(os.path.join(self.get_install_dir(), ZshEnv.local_zshrc_ref_path),
-                os.path.join(self.get_install_dir(), '.zshrc'))
+        for f in self.get_config_files():
+            Env.create_symlink(os.path.join(self.get_install_dir(), ZshEnv.local_zshrc_ref_path),
+                    os.path.join(self.get_install_dir(), f))
 
     def setup_env(self):
         self._download_oh_my_zsh()
