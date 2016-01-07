@@ -26,9 +26,10 @@ class Env(object):
     # git command
     git_cmd = None
 
-    def __init__(self, args):
+    def __init__(self, args, *config_files):
         self.set_install_dir(args)
         self.set_setup_env_name(args)
+        self.set_config_files(*config_files)
 
     @staticmethod
     def check_for_git_cmd():
@@ -68,8 +69,7 @@ class Env(object):
         elif Env.is_windows():
             return 'Windows'
         else:
-            # NOTE: add these as necessary for different environments
-            raise OSError('Unknown OS detected')
+            return 'Unkown OS'
 
     @staticmethod
     def get_welcome_msg(setup_str):
@@ -77,12 +77,10 @@ class Env(object):
 
     @staticmethod
     def get_home_env_var():
-        if Env.is_linux():
-            return 'HOME'
-        elif Env.is_windows():
+        if Env.is_windows():
             return 'USERPROFILE'
         else:
-            raise OSError('Unknown HOME variable')
+            return 'HOME'
 
     @staticmethod
     def print_with_sleep(str):
@@ -166,6 +164,10 @@ class Env(object):
             raise OSError('HOME environment variable is not set')
         return home
 
+    @staticmethod
+    def create_symlink(src, dest):
+        os.symlink(src, dest)
+
     def set_install_dir(self, args):
         if args.dir is None:
             self.install_dir = Env.get_home()
@@ -182,13 +184,23 @@ class Env(object):
     def get_setup_env_name(self):
         return self.setup_env_name
 
+    def set_config_files(self, *cf):
+        self.config_files = cf
+
+    def get_config_files(self):
+        return self.config_files
+
     def get_install_dir(self):
         return self.install_dir
 
-    def raise_exception_if_windows(self):
-        if Env.is_windows():
+    def raise_exception_if_not_linux_and_windows(self):
+        if not Env.is_linux() and not Env.is_windows():
             raise OSError('{} environment can not be setup on {}'
                     .format(self.get_setup_env_name(), Env.get_env_name()))
+
+    def raise_exception_if_not_linux(self):
+        if not Env.is_linux():
+            raise OSError('{} environment can not be setup on {}'.format(self.get_setup_env_name(), Env.get_env_name()))
 
     # check if setup can be carried out for the current OS
     # In general derived class should reimplement this method
@@ -219,53 +231,72 @@ class Env(object):
 class ZshEnv(Env):
     """Zsh environment setup class"""
 
+    local_oh_my_zsh_ref_dir_name = '.oh-my-zsh'
+    local_zshrc_ref_path = os.path.join(local_oh_my_zsh_ref_dir_name,
+            'custom',
+            'template',
+            '.zshrc'
+            )
+
     def __init__(self, args):
-        super(ZshEnv, self).__init__(args)
+        super(ZshEnv, self).__init__(args, *('.zshrc'))
 
     def check_for_os_validity(self):
-        self.raise_exception_if_windows()
+        self.raise_exception_if_not_linux()
+
+    def _download_oh_my_zsh(self):
+        Env.clone_repo(**dict(
+            repo='https://github.com/amilaperera/oh-my-zsh',
+            dest=os.path.join(self.get_install_dir(), ZshEnv.local_oh_my_zsh_ref_dir_name)
+            ))
+
+    def _create_zshrc_symlink(self):
+        Env.create_symlink(os.path.join(self.get_install_dir(), ZshEnv.local_zshrc_ref_path),
+                os.path.join(self.get_install_dir(), '.zshrc'))
+
+    def setup_env(self):
+        self._download_oh_my_zsh()
+        self._create_zshrc_symlink()
 
 
 class BashEnv(Env):
     """Bash environment setup class"""
 
     def __init__(self, args):
-        super(BashEnv, self).__init__(args)
+        super(BashEnv, self).__init__(args, *())
 
     def check_for_os_validity(self):
-        self.raise_exception_if_windows()
+        self.raise_exception_if_not_linux()
 
 
 class VimEnv(Env):
     """Vim environment setup class"""
 
     def __init__(self, args):
-        super(VimEnv, self).__init__(args)
+        super(VimEnv, self).__init__(args, *('.vimrc', '.gvimrc'))
 
-    @staticmethod
-    def get_vimrc_file_name():
+    def check_for_os_validity(self):
+        self.raise_exception_if_not_linux_and_windows()
+
+    def get_plugins_file(self):
+        # Plugins are in .vimrc file
+        plugins_file = self.get_config_files()[0]
         if Env.is_windows():
-            return '_vimrc'
-        elif Env.is_linux():
-            return '.vimrc'
+            return plugins_file.replace('.', '_')
         else:
-            raise OSError('Unknown OS detected')
+            return plugins_file
 
     def _set_vimrc_files(self):
         home_path = self.get_install_dir()
         print('Copying vimrc files to {}'.format(home_path))
-        for f in ('.vimrc', '.gvimrc'):
+        for f in self.get_config_files():
             if Env.is_windows():
                 # copy .vimrc & .gvimrc files as _vimrc and _gvimrc files respectively
                 # to the $HOME folder
-                shutil.copy(os.path.join('../', f),
-                        os.path.join(home_path, '_' + f.split('.')[1]))
-            elif Env.is_linux():
-                # create a link to .vimrc & .gvimrc files in the home directory
-                os.symlink(os.path.abspath(os.path.join('../', f)),
-                        os.path.join(home_path, f))
+                shutil.copy(os.path.join('../', f), os.path.join(home_path, '_' + f.split('.')[1]))
             else:
-                raise OSError('Unknown OS detected')
+                # create a link to .vimrc & .gvimrc files in the home directory
+                Env.create_symlink(os.path.abspath(os.path.join('../', f)), os.path.join(home_path, f))
 
     def _install_vim_plugins(self):
         plugin_path = os.path.join(self.get_install_dir(), os.path.join('.vim', 'bundle'))
@@ -275,7 +306,7 @@ class VimEnv(Env):
 
         print('Installing vim plugins to {}'.format(plugin_path))
         p = re.compile('^Plugin +[\'\"](?P<plugin>[^\'\"]*)[\'\"]')
-        with open(os.path.join(self.get_install_dir(), VimEnv.get_vimrc_file_name())) as fh:
+        with open(os.path.join(self.get_install_dir(), self.get_plugins_file())) as fh:
             for line in fh.readlines():
                 res = p.match(line)
                 if res:
@@ -290,10 +321,10 @@ class MiscEnv(Env):
     """Misc environment setup class"""
 
     def __init__(self, args):
-        super(MiscEnv, self).__init__(args)
+        super(MiscEnv, self).__init__(args, *())
 
     def check_for_os_validity(self):
-        self.raise_exception_if_windows()
+        self.raise_exception_if_not_linux()
 
 def main():
     parser = argparse.ArgumentParser(description='Set up the environment')
