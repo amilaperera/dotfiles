@@ -48,7 +48,6 @@ class Env(object):
             raise OSError('Can not find the git executable in PATH')
         else:
             Env.git_cmd = git_executable
-            print('git executable is found at {}'.format(Env.git_cmd))
 
     @staticmethod
     def get_platform_name():
@@ -168,7 +167,8 @@ class Env(object):
     def create_symlink(src, dest):
         os.symlink(src, dest)
         print('Creating sym link (', end='')
-        print('{} --> '.format(src), end='')
+        print(Style.BRIGHT + '{}'.format(src), end='')
+        print(' --> ', end='')
         print(Fore.YELLOW + '{}'.format(dest), end='')
         print(')...', end='')
         print(Fore.GREEN + '[done]')
@@ -215,7 +215,6 @@ class Env(object):
     # carry out common settings for all the environments
     def setup_common_env(self):
         print(Fore.CYAN + Env.get_welcome_msg(self.setup_env_name))
-        Env.check_for_git_cmd()
 
     # base class specific setup.
     # In general derived class should reimplement this method
@@ -231,6 +230,8 @@ class Env(object):
         # carry out environment specific setup
         # derived classes should reimplement this method
         self.setup_env()
+        # just leave a blank line after the setup method
+        print()
 
 
 class ZshEnv(Env):
@@ -357,6 +358,8 @@ def main():
     parser.add_argument('-d', '--dir',
                         help='install directory')
     args = parser.parse_args()
+
+    Env.check_for_git_cmd()
 
     if args.env == 'zsh':
         ZshEnv(args).setup()
