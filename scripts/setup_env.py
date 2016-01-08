@@ -32,20 +32,28 @@ class Env(object):
         self.set_config_files(*config_files)
 
     @staticmethod
-    def check_for_git_cmd():
-        # search the PATH and check if 'git' command is available
+    def set_git_executable(args):
         git_executable = None
-        split_regex = '[;]' if Env.is_windows() else '[:]'
-        for dir in re.split(split_regex, os.environ['PATH']):
-            git_executable = os.path.join(dir, 'git.exe' if Env.is_windows() else 'git')
-            if os.path.exists(git_executable):
-                break
+
+        if args.path is not None:
+            if not os.path.isfile(args.path):
+                raise OSError('Can not find the specified path - {}'.format(args.path))
             else:
-                git_executable = None
+                git_executable = args.path
+        else:
+            # search the PATH and check if 'git' command is available
+            split_regex = '[;]' if Env.is_windows() else '[:]'
+            for dir in re.split(split_regex, os.environ['PATH']):
+                git_executable = os.path.join(dir, 'git.exe' if Env.is_windows() else 'git')
+                if os.path.exists(git_executable):
+                    break
+                else:
+                    git_executable = None
 
         # if we can't find 'git' in the PATH just raise and exception and terminate the program
         if git_executable is None:
-            raise OSError('Can not find the git executable in PATH')
+            raise OSError('Can not find the git executable in PATH\n' +
+                          'Try using \'-p\' option to set the path of the git executable')
         else:
             Env.git_cmd = git_executable
 
@@ -365,11 +373,13 @@ def main():
     parser.add_argument('-e', '--env',
                         choices=['zsh', 'bash', 'vim', 'misc'],
                         help='sets up the specified environment')
+    parser.add_argument('-p', '--path',
+                        help='path for the git executable')
     parser.add_argument('-d', '--dir',
                         help='install directory')
     args = parser.parse_args()
 
-    Env.check_for_git_cmd()
+    Env.set_git_executable(args)
 
     if args.env == 'zsh':
         ZshEnv(args).setup()
