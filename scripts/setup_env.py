@@ -3,21 +3,21 @@
 
 #
 #  TODO:
-#  1. Currently almost all the exceptions are of OSError type. Consider changing them
+#  1. Currently almost all the exceptions are of OSError type.
+#     Consider changing them
 #     appropriately to other types, if necessary.
 #
 
 from __future__ import print_function
 import argparse
 import os
-import platform
 import shutil
 import subprocess
 import sys
 import time
 import threading
 import re
-from colorama import Fore, Back, Style, init
+from colorama import Fore, Style, init
 
 class Env(object):
     """Environment setup base class"""
@@ -37,23 +37,27 @@ class Env(object):
 
         if args.path is not None:
             if not os.path.isfile(args.path):
-                raise OSError('Can not find the specified path - {}'.format(args.path))
+                raise OSError('Can not find the specified path - {}'
+                              .format(args.path))
             else:
                 git_executable = args.path
         else:
             # search the PATH and check if 'git' command is available
             split_regex = '[;]' if Env.is_windows() else '[:]'
-            for dir in re.split(split_regex, os.environ['PATH']):
-                git_executable = os.path.join(dir, 'git.exe' if Env.is_windows() else 'git')
+            git_cmd_name = 'git.exe' if Env.is_windows() else 'git'
+            for directory in re.split(split_regex, os.environ['PATH']):
+                git_executable = os.path.join(directory, git_cmd_name)
                 if os.path.exists(git_executable):
                     break
                 else:
                     git_executable = None
 
-        # if we can't find 'git' in the PATH just raise and exception and terminate the program
+        # if we can't find 'git' in the PATH
+        # just raise an exception and terminate the program
         if git_executable is None:
-            raise OSError('Can not find the git executable in PATH\n' +
-                          'Try using \'-p\' option to set the path of the git executable')
+            raise OSError('Can not find the git executable in PATH\n'
+                          'Try using \'-p\' option to '
+                          'set the path of the git executable')
         else:
             Env.git_cmd = git_executable
 
@@ -67,7 +71,8 @@ class Env(object):
 
     @staticmethod
     def is_linux():
-        return Env.get_platform_name().startswith('linux') or Env.get_platform_name().startswith('cygwin')
+        return (Env.get_platform_name().startswith('linux')
+                or Env.get_platform_name().startswith('cygwin'))
 
     @staticmethod
     def get_env_name():
@@ -80,7 +85,8 @@ class Env(object):
 
     @staticmethod
     def get_welcome_msg(setup_str):
-        return 'Setting up {} environment on {}...'.format(setup_str, Env.get_env_name())
+        return ('Setting up {} environment on {}...'
+                .format(setup_str, Env.get_env_name()))
 
     @staticmethod
     def get_home_env_var():
@@ -90,8 +96,8 @@ class Env(object):
             return 'HOME'
 
     @staticmethod
-    def print_with_sleep(str):
-        sys.stdout.write(str)
+    def print_with_sleep(msg):
+        sys.stdout.write(msg)
         sys.stdout.flush()
         time.sleep(0.20)
 
@@ -114,7 +120,8 @@ class Env(object):
             git_command_list.append(dest)
 
         with open(os.devnull, 'w') as devnull:
-            subprocess.check_call(git_command_list, stdout=devnull, stderr=subprocess.STDOUT)
+            subprocess.check_call(git_command_list, stdout=devnull,
+                                  stderr=subprocess.STDOUT)
 
     @staticmethod
     def is_cloneable(**kwargs):
@@ -128,11 +135,13 @@ class Env(object):
             return False
 
         if dest is None:
-            # if destination is None we get the default directory suggested by git
+            # if destination is None,
+            # we use the default directory suggested by git
             dest = os.path.join(os.getcwd(), repo.rstrip('/').split('/')[-1])
 
         if os.path.isdir(dest):
-            print('Destination directory[{}] not empty'.format(dest), file=sys.stderr)
+            print('Destination directory[{}] not empty'.format(dest),
+                  file=sys.stderr)
             return False
 
         try:
@@ -141,8 +150,8 @@ class Env(object):
             # causing subprocess.Popen() to throw an exception
             with open(os.devnull, 'w') as devnull:
                 subprocess.Popen([Env.git_cmd, 'ls-remote', repo],
-                        stdout=devnull, stderr=subprocess.STDOUT,
-                        env=new_env)
+                                 stdout=devnull, stderr=subprocess.STDOUT,
+                                 env=new_env)
         except:
             print('Repository[{}] is invalid'.format(repo), file=sys.stderr)
             return False
@@ -155,7 +164,8 @@ class Env(object):
             repo, dest = kwargs.get('repo'), kwargs.get('dest')
             print('Cloning from repository ', end='')
             print(Style.BRIGHT + '{} '.format(repo), end='')
-            repo_clone_thread = threading.Thread(target=Env.clone_thread, args=(repo, dest))
+            repo_clone_thread = threading.Thread(target=Env.clone_thread,
+                                                 args=(repo, dest))
             repo_clone_thread.start()
 
             while repo_clone_thread.is_alive():
@@ -172,8 +182,8 @@ class Env(object):
         return home
 
     @staticmethod
-    def src_to_dest_message(str, src, dest):
-        print(str, end='')
+    def src_to_dest_message(msg, src, dest):
+        print(msg, end='')
         print(' (', end='')
         print(Style.BRIGHT + '{}'.format(src), end='')
         print(' --> ', end='')
@@ -199,7 +209,8 @@ class Env(object):
             if os.path.isdir(abs_path):
                 self.install_dir = abs_path
             else:
-                raise OSError('Install directory[{}] does not exist'.format(abs_path))
+                raise OSError('Install directory[{}] does not exist'
+                              .format(abs_path))
 
     def set_setup_env_name(self, args):
         self.setup_env_name = args.env.title()
@@ -219,11 +230,14 @@ class Env(object):
     def raise_exception_if_not_linux_and_windows(self):
         if not Env.is_linux() and not Env.is_windows():
             raise OSError('{} environment can not be setup on {}'
-                    .format(self.get_setup_env_name(), Env.get_env_name()))
+                          .format(self.get_setup_env_name(),
+                                  Env.get_env_name()))
 
     def raise_exception_if_not_linux(self):
         if not Env.is_linux():
-            raise OSError('{} environment can not be setup on {}'.format(self.get_setup_env_name(), Env.get_env_name()))
+            raise OSError('{} environment can not be setup on {}'
+                          .format(self.get_setup_env_name(),
+                                  Env.get_env_name()))
 
     # check if setup can be carried out for the current OS
     # In general derived class should reimplement this method
@@ -257,27 +271,28 @@ class ZshEnv(Env):
 
     local_oh_my_zsh_ref_dir_name = '.oh-my-zsh'
     local_zshrc_ref_path = os.path.join(local_oh_my_zsh_ref_dir_name,
-            'custom',
-            'template',
-            '.zshrc'
-            )
+                                        'custom',
+                                        'template',
+                                        '.zshrc')
 
     def __init__(self, args):
-        super(ZshEnv, self).__init__(args, *('.zshrc',))
+        config_files = ('.zshrc',)
+        super(ZshEnv, self).__init__(args, *config_files)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
 
     def _download_oh_my_zsh(self):
-        Env.clone_repo(**dict(
-            repo='https://github.com/amilaperera/oh-my-zsh',
-            dest=os.path.join(self.get_install_dir(), ZshEnv.local_oh_my_zsh_ref_dir_name)
-            ))
+        repo_value = 'https://github.com/amilaperera/oh-my-zsh'
+        dest_value = os.path.join(self.get_install_dir(),
+                                  ZshEnv.local_oh_my_zsh_ref_dir_name)
+        Env.clone_repo(**dict(repo=repo_value, dest=dest_value))
 
     def _create_zshrc_symlinks(self):
         for f in self.get_config_files():
-            Env.create_symlink(os.path.join(self.get_install_dir(), ZshEnv.local_zshrc_ref_path),
-                    os.path.join(self.get_install_dir(), f))
+            Env.create_symlink(os.path.join(self.get_install_dir(),
+                                            ZshEnv.local_zshrc_ref_path),
+                               os.path.join(self.get_install_dir(), f))
 
     def setup_env(self):
         self._download_oh_my_zsh()
@@ -288,7 +303,12 @@ class BashEnv(Env):
     """Bash environment setup class"""
 
     def __init__(self, args):
-        super(BashEnv, self).__init__(args, *('.bash', '.bashrc', '.bash_profile', '.bash_logout', '.inputrc'))
+        config_files = ('.bash',
+                        '.bashrc',
+                        '.bash_profile',
+                        '.bash_logout',
+                        '.inputrc')
+        super(BashEnv, self).__init__(args, *config_files)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
@@ -296,7 +316,7 @@ class BashEnv(Env):
     def _create_bash_symlinks(self):
         for f in self.get_config_files():
             Env.create_symlink(os.path.abspath(os.path.join('../', f)),
-                    os.path.join(self.get_install_dir(), f))
+                               os.path.join(self.get_install_dir(), f))
 
     def setup_env(self):
         self._create_bash_symlinks()
@@ -306,7 +326,8 @@ class VimEnv(Env):
     """Vim environment setup class"""
 
     def __init__(self, args):
-        super(VimEnv, self).__init__(args, *('.vimrc', '.gvimrc'))
+        config_files = ('.vimrc', '.gvimrc')
+        super(VimEnv, self).__init__(args, *config_files)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux_and_windows()
@@ -324,26 +345,31 @@ class VimEnv(Env):
         print('Copying vimrc files to {}'.format(home_path))
         for f in self.get_config_files():
             if Env.is_windows():
-                # copy .vimrc & .gvimrc files as _vimrc and _gvimrc files respectively
-                # to the $HOME folder
-                Env.copy_file(os.path.join('../', f), os.path.join(home_path, '_' + f.split('.')[1]))
+                # copy .vimrc & .gvimrc files as
+                # _vimrc and _gvimrc files respectively to the $HOME folder
+                Env.copy_file(os.path.join('../', f),
+                              os.path.join(home_path, '_' + f.split('.')[1]))
             else:
                 # create a link to .vimrc & .gvimrc files in the home directory
-                Env.create_symlink(os.path.abspath(os.path.join('../', f)), os.path.join(home_path, f))
+                Env.create_symlink(os.path.abspath(os.path.join('../', f)),
+                                   os.path.join(home_path, f))
 
     def _install_vim_plugins(self):
-        plugin_path = os.path.join(self.get_install_dir(), os.path.join('.vim', 'bundle'))
+        plugin_path = os.path.join(self.get_install_dir(),
+                                   os.path.join('.vim', 'bundle'))
         if not os.path.isdir(plugin_path):
             os.makedirs(plugin_path)
         os.chdir(plugin_path)
 
         print('Installing vim plugins to {}'.format(plugin_path))
         p = re.compile('^Plugin +[\'\"](?P<plugin>[^\'\"]*)[\'\"]')
-        with open(os.path.join(self.get_install_dir(), self._get_plugins_file())) as fh:
+        with open(os.path.join(self.get_install_dir(),
+                               self._get_plugins_file())) as fh:
             for line in fh.readlines():
                 res = p.match(line)
                 if res:
-                    Env.clone_repo(**dict(repo='https://github.com/' + res.group('plugin')))
+                    repo_value = 'https://github.com/' + res.group('plugin')
+                    Env.clone_repo(**dict(repo=repo_value))
 
     def setup_env(self):
         self._set_vimrc_files()
@@ -354,7 +380,14 @@ class MiscEnv(Env):
     """Misc environment setup class"""
 
     def __init__(self, args):
-        super(MiscEnv, self).__init__(args, *('.tmux.conf', '.irbrc', '.ackrc', '.agignore', '.colordiffrc', '.gitconfig', '.cgdb'))
+        config_files = ('.tmux.conf',
+                        '.irbrc',
+                        '.ackrc',
+                        '.agignore',
+                        '.colordiffrc',
+                        '.gitconfig',
+                        '.cgdb')
+        super(MiscEnv, self).__init__(args, *config_files)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
@@ -362,7 +395,7 @@ class MiscEnv(Env):
     def _create_misc_symlinks(self):
         for f in self.get_config_files():
             Env.create_symlink(os.path.abspath(os.path.join('../', f)),
-                    os.path.join(self.get_install_dir(), f))
+                               os.path.join(self.get_install_dir(), f))
 
     def setup_env(self):
         self._create_misc_symlinks()
@@ -401,5 +434,5 @@ if __name__ == '__main__':
 
     except Exception as e:
         print('Error: ', end='')
-        print(Fore.RED +'{}'.format(e))
+        print(Fore.RED + '{}'.format(e))
 
