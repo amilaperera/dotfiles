@@ -26,10 +26,10 @@ class Env(object):
     # git command
     git_cmd = None
 
-    def __init__(self, args, *config_files):
+    def __init__(self, args, config_files):
         self.set_install_dir(args)
         self.set_setup_env_name(args)
-        self.set_config_files(*config_files)
+        self.set_config_files(config_files)
 
     @staticmethod
     def set_git_executable(args):
@@ -218,7 +218,7 @@ class Env(object):
     def get_setup_env_name(self):
         return self.setup_env_name
 
-    def set_config_files(self, *cf):
+    def set_config_files(self, cf):
         self.config_files = cf
 
     def get_config_files(self):
@@ -277,7 +277,7 @@ class ZshEnv(Env):
 
     def __init__(self, args):
         config_files = ('.zshrc',)
-        super(ZshEnv, self).__init__(args, *config_files)
+        super(ZshEnv, self).__init__(args, config_files)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
@@ -308,7 +308,7 @@ class BashEnv(Env):
                         '.bash_profile',
                         '.bash_logout',
                         '.inputrc')
-        super(BashEnv, self).__init__(args, *config_files)
+        super(BashEnv, self).__init__(args, config_files)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
@@ -327,7 +327,7 @@ class VimEnv(Env):
 
     def __init__(self, args):
         config_files = ('.vimrc', '.gvimrc')
-        super(VimEnv, self).__init__(args, *config_files)
+        super(VimEnv, self).__init__(args, config_files)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux_and_windows()
@@ -387,7 +387,7 @@ class MiscEnv(Env):
                         '.colordiffrc',
                         '.gitconfig',
                         '.cgdb')
-        super(MiscEnv, self).__init__(args, *config_files)
+        super(MiscEnv, self).__init__(args, config_files)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
