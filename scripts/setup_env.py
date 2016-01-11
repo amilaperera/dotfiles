@@ -26,10 +26,10 @@ class Env(object):
     # git command
     git_cmd = None
 
-    def __init__(self, args, config_files):
-        self.set_install_dir(args)
-        self.set_setup_env_name(args)
-        self.set_config_files(config_files)
+    def __init__(self, args, cf):
+        self.install_dir = args.dir
+        self.setup_env_name = args.env.title()
+        self.config_files = cf
 
     @staticmethod
     def set_git_executable(args):
@@ -205,42 +205,48 @@ class Env(object):
         shutil.copy(src, dest)
         Env.src_to_dest_message('Copying file', src, dest)
 
-    def set_install_dir(self, args):
-        if args.dir is None:
-            self.install_dir = Env.get_home()
+    @property
+    def install_dir(self):
+        return self._install_dir
+
+    @install_dir.setter
+    def install_dir(self, value):
+        if value is None:
+            self._install_dir = Env.get_home()
         else:
-            abs_path = os.path.abspath(args.dir)
+            abs_path = os.path.abspath(value)
             if os.path.isdir(abs_path):
-                self.install_dir = abs_path
+                self._install_dir = abs_path
             else:
                 raise OSError('Install directory[{}] does not exist'
                               .format(abs_path))
 
-    def set_setup_env_name(self, args):
-        self.setup_env_name = args.env.title()
+    @property
+    def setup_env_name(self):
+        return self._setup_env_name
 
-    def get_setup_env_name(self):
-        return self.setup_env_name
+    @setup_env_name.setter
+    def setup_env_name(self, value):
+        self._setup_env_name = value
 
-    def set_config_files(self, cf):
-        self.config_files = cf
+    @property
+    def config_files(self):
+        return self._config_files
 
-    def get_config_files(self):
-        return self.config_files
-
-    def get_install_dir(self):
-        return self.install_dir
+    @config_files.setter
+    def config_files(self, value):
+        self._config_files = value
 
     def raise_exception_if_not_linux_and_windows(self):
         if not Env.is_linux() and not Env.is_windows():
             raise OSError('{} environment can not be setup on {}'
-                          .format(self.get_setup_env_name(),
+                          .format(self.setup_env_name,
                                   Env.get_env_name()))
 
     def raise_exception_if_not_linux(self):
         if not Env.is_linux():
             raise OSError('{} environment can not be setup on {}'
-                          .format(self.get_setup_env_name(),
+                          .format(self.setup_env_name,
                                   Env.get_env_name()))
 
     # check if setup can be carried out for the current OS
@@ -280,23 +286,23 @@ class ZshEnv(Env):
                                         '.zshrc')
 
     def __init__(self, args):
-        config_files = ('.zshrc',)
-        super(ZshEnv, self).__init__(args, config_files)
+        cf = ('.zshrc',)
+        super(ZshEnv, self).__init__(args, cf)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
 
     def _download_oh_my_zsh(self):
         repo_value = 'https://github.com/amilaperera/oh-my-zsh'
-        dest_value = os.path.join(self.get_install_dir(),
+        dest_value = os.path.join(self.install_dir,
                                   ZshEnv.local_oh_my_zsh_ref_dir_name)
         Env.clone_repo(**dict(repo=repo_value, dest=dest_value))
 
     def _create_zshrc_symlinks(self):
-        for f in self.get_config_files():
-            Env.create_symlink(os.path.join(self.get_install_dir(),
+        for f in self.config_files:
+            Env.create_symlink(os.path.join(self.install_dir,
                                             ZshEnv.local_zshrc_ref_path),
-                               os.path.join(self.get_install_dir(), f))
+                               os.path.join(self.install_dir, f))
 
     def setup_env(self):
         self._download_oh_my_zsh()
@@ -307,20 +313,20 @@ class BashEnv(Env):
     """Bash environment setup class"""
 
     def __init__(self, args):
-        config_files = ('.bash',
-                        '.bashrc',
-                        '.bash_profile',
-                        '.bash_logout',
-                        '.inputrc')
-        super(BashEnv, self).__init__(args, config_files)
+        cf = ('.bash',
+              '.bashrc',
+              '.bash_profile',
+              '.bash_logout',
+              '.inputrc')
+        super(BashEnv, self).__init__(args, cf)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
 
     def _create_bash_symlinks(self):
-        for f in self.get_config_files():
+        for f in self.config_files:
             Env.create_symlink(os.path.abspath(os.path.join('../', f)),
-                               os.path.join(self.get_install_dir(), f))
+                               os.path.join(self.install_dir, f))
 
     def setup_env(self):
         self._create_bash_symlinks()
@@ -330,24 +336,24 @@ class VimEnv(Env):
     """Vim environment setup class"""
 
     def __init__(self, args):
-        config_files = ('.vimrc', '.gvimrc')
-        super(VimEnv, self).__init__(args, config_files)
+        cf = ('.vimrc', '.gvimrc')
+        super(VimEnv, self).__init__(args, cf)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux_and_windows()
 
     def _get_plugins_file(self):
         # Plugins are in .vimrc file
-        plugins_file = self.get_config_files()[0]
+        plugins_file = self.config_files[0]
         if Env.is_windows():
             return plugins_file.replace('.', '_')
         else:
             return plugins_file
 
     def _set_vimrc_files(self):
-        home_path = self.get_install_dir()
+        home_path = self.install_dir
         print('Copying vimrc files to {}'.format(home_path))
-        for f in self.get_config_files():
+        for f in self.config_files:
             if Env.is_windows():
                 # copy .vimrc & .gvimrc files as
                 # _vimrc and _gvimrc files respectively to the $HOME folder
@@ -359,7 +365,7 @@ class VimEnv(Env):
                                    os.path.join(home_path, f))
 
     def _install_vim_plugins(self):
-        plugin_path = os.path.join(self.get_install_dir(),
+        plugin_path = os.path.join(self.install_dir,
                                    os.path.join('.vim', 'bundle'))
         if not os.path.isdir(plugin_path):
             os.makedirs(plugin_path)
@@ -367,7 +373,7 @@ class VimEnv(Env):
 
         print('Installing vim plugins to {}'.format(plugin_path))
         p = re.compile('^Plugin +[\'\"](?P<plugin>[^\'\"]*)[\'\"]')
-        with open(os.path.join(self.get_install_dir(),
+        with open(os.path.join(self.install_dir,
                                self._get_plugins_file())) as fh:
             for line in fh.readlines():
                 res = p.match(line)
@@ -384,22 +390,22 @@ class MiscEnv(Env):
     """Misc environment setup class"""
 
     def __init__(self, args):
-        config_files = ('.tmux.conf',
-                        '.irbrc',
-                        '.ackrc',
-                        '.agignore',
-                        '.colordiffrc',
-                        '.gitconfig',
-                        '.cgdb')
-        super(MiscEnv, self).__init__(args, config_files)
+        cf = ('.tmux.conf',
+              '.irbrc',
+              '.ackrc',
+              '.agignore',
+              '.colordiffrc',
+              '.gitconfig',
+              '.cgdb')
+        super(MiscEnv, self).__init__(args, cf)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
 
     def _create_misc_symlinks(self):
-        for f in self.get_config_files():
+        for f in self.config_files:
             Env.create_symlink(os.path.abspath(os.path.join('../', f)),
-                               os.path.join(self.get_install_dir(), f))
+                               os.path.join(self.install_dir, f))
 
     def setup_env(self):
         self._create_misc_symlinks()
