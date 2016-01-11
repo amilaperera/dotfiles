@@ -299,10 +299,10 @@ class ZshEnv(Env):
         Env.clone_repo(**dict(repo=repo_value, dest=dest_value))
 
     def _create_zshrc_symlinks(self):
-        for f in self.config_files:
+        for config_file in self.config_files:
             Env.create_symlink(os.path.join(self.install_dir,
                                             ZshEnv.local_zshrc_ref_path),
-                               os.path.join(self.install_dir, f))
+                               os.path.join(self.install_dir, config_file))
 
     def setup_env(self):
         self._download_oh_my_zsh()
@@ -324,9 +324,10 @@ class BashEnv(Env):
         self.raise_exception_if_not_linux()
 
     def _create_bash_symlinks(self):
-        for f in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join('../', f)),
-                               os.path.join(self.install_dir, f))
+        for config_file in self.config_files:
+            Env.create_symlink(os.path.abspath(os.path.join('../',
+                                                            config_file)),
+                               os.path.join(self.install_dir, config_file))
 
     def setup_env(self):
         self._create_bash_symlinks()
@@ -353,16 +354,17 @@ class VimEnv(Env):
     def _set_vimrc_files(self):
         home_path = self.install_dir
         print('Copying vimrc files to {}'.format(home_path))
-        for f in self.config_files:
+        for config_file in self.config_files:
             if Env.is_windows():
                 # copy .vimrc & .gvimrc files as
                 # _vimrc and _gvimrc files respectively to the $HOME folder
-                Env.copy_file(os.path.join('../', f),
-                              os.path.join(home_path, '_' + f.split('.')[1]))
+                Env.copy_file(os.path.join('../', config_file),
+                              os.path.join(home_path,
+                                           '_' + config_file.split('.')[1]))
             else:
                 # create a link to .vimrc & .gvimrc files in the home directory
-                Env.create_symlink(os.path.abspath(os.path.join('../', f)),
-                                   os.path.join(home_path, f))
+                Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
+                                   os.path.join(home_path, config_file))
 
     def _install_vim_plugins(self):
         plugin_path = os.path.join(self.install_dir,
@@ -403,9 +405,10 @@ class MiscEnv(Env):
         self.raise_exception_if_not_linux()
 
     def _create_misc_symlinks(self):
-        for f in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join('../', f)),
-                               os.path.join(self.install_dir, f))
+        for config_file in self.config_files:
+            Env.create_symlink(os.path.abspath(os.path.join('../',
+                                                            config_file)),
+                               os.path.join(self.install_dir, config_file))
 
     def setup_env(self):
         self._create_misc_symlinks()
