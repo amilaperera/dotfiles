@@ -102,16 +102,20 @@ class Env(object):
         time.sleep(0.20)
 
     @staticmethod
+    def back_and_print_with_sleep(msg):
+        Env.print_with_sleep('\b' + msg)
+
+    @staticmethod
     def animate_progress_rotation():
         Env.print_with_sleep('-')
-        Env.print_with_sleep('\b\\')
-        Env.print_with_sleep('\b|')
-        Env.print_with_sleep('\b/')
-        Env.print_with_sleep('\b-')
-        Env.print_with_sleep('\b\\')
-        Env.print_with_sleep('\b|')
-        Env.print_with_sleep('\b/')
-        Env.print_with_sleep('\b.')
+        Env.back_and_print_with_sleep('\\')
+        Env.back_and_print_with_sleep('|')
+        Env.back_and_print_with_sleep('/')
+        Env.back_and_print_with_sleep('-')
+        Env.back_and_print_with_sleep('\\')
+        Env.back_and_print_with_sleep('|')
+        Env.back_and_print_with_sleep('/')
+        Env.back_and_print_with_sleep('.')
 
     @staticmethod
     def clone_thread(repo, dest):
