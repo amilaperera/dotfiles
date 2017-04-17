@@ -18,7 +18,7 @@ Plugin 'gmarik/Vundle'
 " General enhancements
 Plugin 'vim-scripts/AutoComplPop'
 Plugin 'vim-scripts/DrawIt'
-Plugin 'vim-scripts/EasyGrep'
+Plugin 'dkprice/vim-easygrep'
 Plugin 'vim-scripts/FuzzyFinder'
 Plugin 'vim-scripts/VisIncr'
 Plugin 'vim-scripts/ZoomWin'
@@ -338,6 +338,10 @@ nmap <silent> <Leader>fd :FufDir<CR>
 
 " EasyGrep Settings {{{2
 let g:EasyGrepWindowPosition = "botright"
+let g:EasyGrepRoot = "repository"
+let g:EasyGrepHidden = 1
+let g:EasyGrepFilesToExclude = ".svn,.git,*.swp,*~"
+let g:EasyGrepRecursive = 1
 " }}}2
 
 " SuperTab Settings {{{2
