@@ -308,6 +308,7 @@ let g:NERDTreeWinSize       = 32
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeChDirMode     = 2         "CWD is changed whenever the root directory is changed
 let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.so.*$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\.git$', '\~$']
+map <leader>r :NERDTreeFind<CR>
 " }}}2
 
 " Tagbar settings {{{2
@@ -499,6 +500,7 @@ augroup FTOptions
   autocmd BufNewFile,BufRead *.pro setl ft=QT_PROJECT_FILE syn=make
   autocmd BufNewFile,BufRead *.tmpl set ft=jinja
   autocmd BufNewFile,BufRead SCons* set ft=scons
+  autocmd BufNewFile,BufRead Config.in set ft=config
 augroup END
 " }}}
 
