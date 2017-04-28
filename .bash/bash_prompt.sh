@@ -83,7 +83,7 @@ esac
 if (($UID != 0)); then
 	# prompt for normal user
 	PS1="$TITLEBAR\
-${W}┌─(${M}\$un${C}@${M}\$hn${C}:${Y}\$curr_dir${W})\
+${W}┌─(${EMK}${BGW}\$un${C}@${M}\$hn${C}:${Y}\$curr_dir${W})\
 ${W}─(\$(if [[ \$? == 0 ]]; then echo \"${EMG}\342\234\223\"; else echo \"${EMR}\342\234\227\"; fi)${W})\n\
 ${W}└─(${M}\#${W})${NONE} \\$ "
 else

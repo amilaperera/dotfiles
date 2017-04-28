@@ -541,10 +541,33 @@ man()
 	LESS_TERMCAP_us=$'\E[01;04;35m' \
 	man "$@"
 }
+# }}}
 
+# svn_revert_modified() {{{
 svn_revert_modified()
 {
 	local op=$(svn status | grep "^X[ \t] | awk '{print $2}")
 	echo $op
+}
+# }}}
+
+# svn_rm_missing() {{{
+svn_rm_missing()
+{
+	svn status | grep "^!" | awk '{print $2}' | xargs svn rm
+}
+# }}}
+
+# svn_add_new() {{{
+svn_add_new()
+{
+	svn status | grep "^?" | awk '{print $2}' | xargs svn add
+}
+# }}}
+
+# svn_show_ignore_list() {{{
+svn_show_ignore_list()
+{
+	svn pg -R svn:ignore .
 }
 # }}}
