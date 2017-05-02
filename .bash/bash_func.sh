@@ -571,3 +571,32 @@ svn_show_ignore_list()
 	svn pg -R svn:ignore .
 }
 # }}}
+
+# slog_last() {{{
+slog_last()
+{
+	svn log -l ${1}
+}
+# }}}
+
+# svn_revert_last_commit() {{{
+svn_revert_last_commit()
+{
+	svn merge -r HEAD:PREV .
+}
+# }}}
+
+
+# slog_filter() {{{
+slog_filter()
+{
+	if (($# == 1)); then
+		svn log -l ${1}
+	elif (($# == 2)); then
+		svn log -l ${1} | sed -n "/${2}/,/--------$/p"
+	else
+		svn log
+	fi
+}
+# }}}
+
