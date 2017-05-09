@@ -26,9 +26,9 @@ class Env(object):
     # git command
     git_cmd = None
 
-    def __init__(self, args, cf):
+    def __init__(self, args, title, cf):
         self.install_dir = args.dir
-        self.setup_env_name = args.env_title.title()
+        self.setup_env_name = title.title()
         self.config_files = cf
 
     @staticmethod
@@ -287,7 +287,7 @@ class ZshEnv(Env):
 
     def __init__(self, args):
         cf = ('.zshrc',)
-        super(ZshEnv, self).__init__(args, cf)
+        super(ZshEnv, self).__init__(args, 'zsh', cf)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
@@ -312,13 +312,13 @@ class ZshEnv(Env):
 class BashEnv(Env):
     """Bash environment setup class"""
 
-    def __init__(self, args):
+    def __init__(self, args, title):
         cf = ('.bash',
               '.bashrc',
               '.bash_profile',
               '.bash_logout',
               '.inputrc')
-        super(BashEnv, self).__init__(args, cf)
+        super(BashEnv, self).__init__(args, 'bash', cf)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
@@ -336,9 +336,9 @@ class BashEnv(Env):
 class VimEnv(Env):
     """Vim environment setup class"""
 
-    def __init__(self, args):
+    def __init__(self, args, title):
         cf = ('.vimrc', '.gvimrc')
-        super(VimEnv, self).__init__(args, cf)
+        super(VimEnv, self).__init__(args, 'vim', cf)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux_and_windows()
@@ -399,7 +399,7 @@ class MiscEnv(Env):
               '.colordiffrc',
               '.gitconfig',
               '.cgdb')
-        super(MiscEnv, self).__init__(args, cf)
+        super(MiscEnv, self).__init__(args, 'misc', cf)
 
     def check_for_os_validity(self):
         self.raise_exception_if_not_linux()
@@ -435,7 +435,6 @@ def main():
     Env.set_git_executable(args)
 
     for env in args.env:
-        args['env_title'] = env
         if env == 'zsh':
             ZshEnv(args).setup()
         elif env == 'bash':
