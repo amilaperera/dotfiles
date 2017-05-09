@@ -197,7 +197,12 @@ class Env(object):
 
     @staticmethod
     def create_symlink(src, dest):
-        os.symlink(src, dest)
+        try:
+            os.symlink(src, dest)
+        except OSError, e:
+            if e.errno == errno.EEXIST:
+                os.remove(dest)
+                os.symlink(src, dest)
         Env.src_to_dest_message('Creating sym link', src, dest)
 
     @staticmethod
