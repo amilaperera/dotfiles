@@ -28,7 +28,7 @@ class Env(object):
 
     def __init__(self, args, cf):
         self.install_dir = args.dir
-        self.setup_env_name = args.env.title()
+        self.setup_env_name = args.env_title.title()
         self.config_files = cf
 
     @staticmethod
@@ -435,6 +435,7 @@ def main():
     Env.set_git_executable(args)
 
     for env in args.env:
+        args['env_title'] = env
         if env == 'zsh':
             ZshEnv(args).setup()
         elif env == 'bash':
