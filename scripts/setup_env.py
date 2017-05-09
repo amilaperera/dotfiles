@@ -417,26 +417,34 @@ class MiscEnv(Env):
 def main():
     parser = argparse.ArgumentParser(description='Set up the environment')
     parser.add_argument('-e', '--env',
-                        choices=['zsh', 'bash', 'vim', 'misc'],
-                        help='sets up the specified environment')
+                        nargs='+',
+                        help='specifies target environments')
     parser.add_argument('-p', '--path',
                         help='path for the git executable')
     parser.add_argument('-d', '--dir',
                         help='install directory')
     args = parser.parse_args()
 
+    supported_evn_targets = ['bash', 'zsh', 'vim', 'misc']
+    for env in args.env:
+        if not env in supported_evn_targets:
+            print('Unsupported target environment found: ' + env)
+            print('Supported target environments are ' + str(supported_evn_targets))
+            raise ValueError('invalid arguments')
+
     Env.set_git_executable(args)
 
-    if args.env == 'zsh':
-        ZshEnv(args).setup()
-    elif args.env == 'bash':
-        BashEnv(args).setup()
-    elif args.env == 'vim':
-        VimEnv(args).setup()
-    elif args.env == 'misc':
-        MiscEnv(args).setup()
-    else:
-        pass
+    for env in args.env:
+        if env == 'zsh':
+            zshenv(args).setup()
+        elif env == 'bash':
+            bashenv(args).setup()
+        elif env == 'vim':
+            vimenv(args).setup()
+        elif env == 'misc':
+            miscenv(args).setup()
+        else:
+            pass
 
 if __name__ == '__main__':
     try:
