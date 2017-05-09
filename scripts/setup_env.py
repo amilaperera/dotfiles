@@ -436,13 +436,13 @@ def main():
 
     for env in args.env:
         if env == 'zsh':
-            zshenv(args).setup()
+            ZshEnv(args).setup()
         elif env == 'bash':
-            bashenv(args).setup()
+            BashEnv(args).setup()
         elif env == 'vim':
-            vimenv(args).setup()
+            VimEnv(args).setup()
         elif env == 'misc':
-            miscenv(args).setup()
+            MiscEnv(args).setup()
         else:
             pass
 
