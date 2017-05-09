@@ -312,7 +312,7 @@ class ZshEnv(Env):
 class BashEnv(Env):
     """Bash environment setup class"""
 
-    def __init__(self, args, title):
+    def __init__(self, args):
         cf = ('.bash',
               '.bashrc',
               '.bash_profile',
@@ -336,7 +336,7 @@ class BashEnv(Env):
 class VimEnv(Env):
     """Vim environment setup class"""
 
-    def __init__(self, args, title):
+    def __init__(self, args):
         cf = ('.vimrc', '.gvimrc')
         super(VimEnv, self).__init__(args, 'vim', cf)
 
