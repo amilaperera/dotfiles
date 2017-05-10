@@ -27,15 +27,14 @@ _bash_, _zsh_, _vim_ & _misc_. The _misc_ environment sets up configurations suc
 
 * To setup zsh, vim and misc environments in current user's home directory.
 
-    python setup_env.py -e zsh vim misc
+        python setup_env.py -e zsh vim misc
 
 * To setup bash and vim environment in some other directory.
 
-    python setup_env.py -e bash vim -d /home/tester
+        python setup_env.py -e bash vim -d /home/tester
 
 
-**NOTE**
-
+**Note**
 There are some forked repositories that I use (such as oh-my-zsh, vim-snippets etc.).
 
 These repositories can be synchronized with the upstream by executing the
