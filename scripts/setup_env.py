@@ -423,7 +423,8 @@ def main():
     parser = argparse.ArgumentParser(description='Set up the environment')
     parser.add_argument('-e', '--env',
                         nargs='+',
-                        help='specifies target environments')
+                        required=True,
+                        help='specifies target environments - zsh bash vim misc')
     parser.add_argument('-p', '--path',
                         help='path for the git executable')
     parser.add_argument('-d', '--dir',
