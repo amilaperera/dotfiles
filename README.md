@@ -9,7 +9,7 @@ dotfiles.
 
 **Installation**
 
-1. Install python(2.x or 3.x) & git
+1. Install `python`(2.x or 3.x) & `git`
 
 2. Clone the dotfiles in to your local home directory
 
@@ -25,28 +25,14 @@ _bash_, _zsh_, _vim_ & _misc_. The _misc_ environment sets up configurations suc
 
 **Example usages:**
 
-* To setup zsh vim and misc environments in current user's home directory.
+* To setup zsh, vim and misc environments in current user's home directory.
 
-    `python setup_env.py -e zsh vim misc`
+    python setup_env.py -e zsh vim misc
 
 * To setup bash and vim environment in some other directory.
 
-    `python setup_env.py -e bash vim -d /home/tester`
+    python setup_env.py -e bash vim -d /home/tester
 
-
-**Interactive ruby shell settings**
-
-My personal preferences for IRB customizations are stored in [.irbrc](https://github.com/amilaperera/dotfiles/blob/master/.irbrc).
-
-To get the most out of these you should install the following gems.
-
- * wirble
- * awesome\_print
- * hirb
-
-To install the above gems
-
-    gem install wirble awesome_print hirb --no-rdoc --no-ri
 
 **NOTE**
 
