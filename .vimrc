@@ -91,6 +91,12 @@ Plugin 'sirver/ultisnips'
 " This is a fork from https://github.com/honza/vim-snippets
 Plugin 'amilaperera/vim-snippets'
 
+" Jedi plugin
+Plugin 'davidhalter/jedi-vim'
+
+" You Complete Me
+Plugin 'Valloric/YouCompleteMe'
+
 call vundle#end()
 " }}}
 
