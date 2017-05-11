@@ -94,9 +94,6 @@ Plugin 'amilaperera/vim-snippets'
 " Jedi plugin
 Plugin 'davidhalter/jedi-vim'
 
-" You Complete Me
-Plugin 'Valloric/YouCompleteMe'
-
 call vundle#end()
 " }}}
 
