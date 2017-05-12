@@ -199,6 +199,7 @@ class Env(object):
     def create_directory_if_not_exists(dir_name):
         if not os.path.exists(dir_name):
             os.makedirs(dir_name)
+            print('Creating directory: {}'.format(dir_name))
 
     @staticmethod
     def create_symlink(src, dest):
@@ -416,18 +417,34 @@ class MiscEnv(Env):
 
     def _create_misc_symlinks(self):
         for config_file in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join('../',
-                                                            config_file)),
+            Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
                                os.path.join(self.install_dir, config_file))
-
-    def _create_misc_tools_symlinks(self):
-        Env.create_directory_if_not_exists(os.path.join(self.install_dir, 'tools'))
-        Env.create_symlink(os.path.abspath(os.path.join('.', 'svn-color.py')),
-                           os.path.join(self.install_dir, 'tools', 'svn-color.py'))
 
     def setup_env(self):
         self._create_misc_symlinks()
-        self._create_misc_tools_symlinks()
+
+
+class ToolsEnv(Env):
+    """Tools environment setup class"""
+
+    def __init__(self, args):
+        cf = ('setup_env.py',
+              'fork_sync.py',
+              'svn-color.py')
+        super(ToolsEnv, self).__init__(args, 'tools', cf)
+
+    def check_for_os_validity(self):
+        self.raise_exception_if_not_linux()
+
+    def _create_tools_symlinks(self):
+        Env.create_directory_if_not_exists(os.path.join(self.install_dir, 'tools'))
+
+        for config_file in self.config_files:
+            Env.create_symlink(os.path.abspath(os.path.join('.', config_file)),
+                               os.path.join(self.install_dir, 'tools', config_file))
+
+    def setup_env(self):
+        self._create_tools_symlinks()
 
 
 def main():
@@ -442,7 +459,7 @@ def main():
                         help='install directory')
     args = parser.parse_args()
 
-    supported_evn_targets = ['bash', 'zsh', 'vim', 'misc']
+    supported_evn_targets = ['bash', 'zsh', 'vim', 'misc', 'tools']
     for env in args.env:
         if not env in supported_evn_targets:
             print('Unsupported target environment found: ' + env)
@@ -460,6 +477,8 @@ def main():
             VimEnv(args).setup()
         elif env == 'misc':
             MiscEnv(args).setup()
+        elif env == 'tools':
+            ToolsEnv(args).setup()
         else:
             pass
 
