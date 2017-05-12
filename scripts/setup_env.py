@@ -196,6 +196,11 @@ class Env(object):
         print(Fore.GREEN + '[done]')
 
     @staticmethod
+    def create_directory_if_not_exists(dir_name):
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name)
+
+    @staticmethod
     def create_symlink(src, dest):
         try:
             os.symlink(src, dest)
@@ -415,8 +420,14 @@ class MiscEnv(Env):
                                                             config_file)),
                                os.path.join(self.install_dir, config_file))
 
+    def _create_misc_tools_symlinks(self):
+        Env.create_directory_if_not_exists(os.path.join(self.install_dir, 'tools'))
+        Env.create_symlink(os.path.abspath(os.path.join('.', 'svn-color.py')),
+                           os.path.join(self.install_dir, 'tools', 'svn-color.py'))
+
     def setup_env(self):
         self._create_misc_symlinks()
+        self._create_misc_tools_symlinks()
 
 
 def main():

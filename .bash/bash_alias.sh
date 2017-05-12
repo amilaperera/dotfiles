@@ -116,4 +116,8 @@ alias tl='tmux list-sessions'
 ## start irb(interactive ruby shell)
 alias R='irb'
 
+# svn in colors {{{
+alias svn='python ~/tools/svn-color.py'
+# }}}
+
 alias py_win='/cygdrive/c/Python27/python.exe'
