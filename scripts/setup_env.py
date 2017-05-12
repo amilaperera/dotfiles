@@ -199,7 +199,10 @@ class Env(object):
     def create_directory_if_not_exists(dir_name):
         if not os.path.exists(dir_name):
             os.makedirs(dir_name)
-            print('Creating directory: {}'.format(dir_name))
+            print('Creating directory: ', end='')
+            print(Fore.YELLOW + '{}'.format(dir_name), end='')
+            print('...', end='')
+            print(Fore.GREEN + '[done]')
 
     @staticmethod
     def create_symlink(src, dest):
