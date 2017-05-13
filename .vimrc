@@ -403,6 +403,9 @@ let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 " }}}2
 
 " gundo {{{2
+if has('python3')
+  let g:gundo_prefer_python3 = 1   " enable Gundo with python3+ support
+endif
 nnoremap <F5> :GundoToggle<CR>
 " }}}2
 
