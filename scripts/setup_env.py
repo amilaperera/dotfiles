@@ -451,22 +451,23 @@ class ToolsEnv(Env):
 
 
 def main():
+    supported_env_targets = ['bash', 'zsh', 'vim', 'misc', 'tools']
+
     parser = argparse.ArgumentParser(description='Set up the environment')
     parser.add_argument('-e', '--env',
                         nargs='+',
                         required=True,
-                        help='specifies target environments - zsh bash vim misc')
+                        help='specifies target environments - ' + str(supported_env_targets))
     parser.add_argument('-p', '--path',
                         help='path for the git executable')
     parser.add_argument('-d', '--dir',
                         help='install directory')
     args = parser.parse_args()
 
-    supported_evn_targets = ['bash', 'zsh', 'vim', 'misc', 'tools']
     for env in args.env:
-        if not env in supported_evn_targets:
+        if not env in supported_env_targets:
             print('Unsupported target environment found: ' + env)
-            print('Supported target environments are ' + str(supported_evn_targets))
+            print('Supported target environments are ' + str(supported_env_targets))
             raise ValueError('invalid arguments')
 
     Env.set_git_executable(args)
