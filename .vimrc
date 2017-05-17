@@ -119,6 +119,10 @@ set mousemodel=popup           " right mosue button pops up a menu
 let mapleader = "," " set mapleader to ','
 " }}}
 
+" Paste toggling {{{
+set pastetoggle=<F2>
+" }}}
+
 " Miscellaneous {{{
 filetype on               " filetype detection on
 filetype plugin on        " filetype plugin on
