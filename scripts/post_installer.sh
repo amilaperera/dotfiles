@@ -13,6 +13,7 @@ function install_essentials()
 	essential_pkgs="zsh \
 		tmux \
 		tmuxinator \
+		git \
 		exuberant-ctags \
 		ack \
 		silversearcher-ag \

@@ -433,7 +433,8 @@ class ToolsEnv(Env):
     def __init__(self, args):
         cf = ('setup_env.py',
               'fork_sync.py',
-              'svn-color.py')
+              'svn-color.py',
+              'post_installer.sh')
         super(ToolsEnv, self).__init__(args, 'tools', cf)
 
     def check_for_os_validity(self):
