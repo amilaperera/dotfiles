@@ -505,6 +505,7 @@ augroup FTOptions
   autocmd Filetype vim             setl ts=2 sw=2 sts=2 fdm=marker
   autocmd Filetype txt,mail        setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype php             setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype perl            setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype gitcommit       setl spell
 
   autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4
