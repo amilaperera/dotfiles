@@ -42,6 +42,7 @@ class Fork(object):
     """This class handle a single forked repository"""
     def __init__(self, **kwargs):
         self.repo = kwargs
+        self.is_push_needed = False
 
     def sync(self):
         try:
@@ -59,6 +60,8 @@ class Fork(object):
             # takes the git status and prints it with color formatting,
             # so that the user knows whether merged changes should be pushed or not
             print(self._get_status())
+            # push if we are ahead of the master
+            self._push_if_needed()
 
         except Exception as e:
             print('error synchronizing with the fork. {}'.format(e), file=sys.stderr)
@@ -117,8 +120,20 @@ class Fork(object):
 
     def _get_status(self):
         output = subprocess.check_output(['git', 'status']).split('\n')[1]
-        return Colors.Colorize(output, Colors.Red) if re.search('[0-9]+', output) \
-               else Colors.Colorize(output, Colors.Green)
+        if re.search('[0-9]+', output):
+            if re.search('ahead of.*commits', output):
+                self.is_push_needed = True
+            return Colors.Colorize(output, Colors.Red)
+        else:
+            return Colors.Colorize(output, Colors.Green)
+
+    def _push_if_needed(self):
+        if self.is_push_needed:
+            print('pushing to remote...')
+            try:
+                subprocess.check_call(['git', 'push', 'origin', 'master'])
+            except:
+                print(Colors.Colorize('git push unsuccessful...', Colors.Red))
 
 def main():
     """Creates a ForkSync object and execute the sycnchronization of the forks"""
