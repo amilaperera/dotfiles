@@ -17,13 +17,12 @@ Plugin 'gmarik/Vundle'
 
 " General enhancements
 Plugin 'vim-scripts/AutoComplPop'
-Plugin 'vim-scripts/DrawIt'
 Plugin 'dkprice/vim-easygrep'
 Plugin 'vim-scripts/FuzzyFinder'
 Plugin 'vim-scripts/VisIncr'
 Plugin 'vim-scripts/ZoomWin'
-Plugin 'vim-scripts/highlight.vim'
 Plugin 'vim-scripts/mru.vim'
+Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/vcscommand.vim'
 Plugin 'vim-scripts/L9'
 Plugin 'vim-scripts/txt.vim'
@@ -44,8 +43,12 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'rking/ag.vim'
 Plugin 'jimsei/winresizer'
-Plugin 'majutsushi/tagbar'
 Plugin 'sjl/gundo.vim'
+
+" ctags related & dependencies
+Plugin 'majutsushi/tagbar'
+Plugin 'xolox/vim-easytags'
+Plugin 'xolox/vim-misc'
 
 " Using the updated version of bufkill plugin
 " since the original vim-script repository is not yet
@@ -57,17 +60,6 @@ Plugin 'vim-scripts/DoxygenToolkit.vim'
 
 " Vim tmux integration
 Plugin 'tpope/vim-tbone'
-
-" Vim custom text objects
-Plugin 'kana/vim-textobj-user'
-Plugin 'kana/vim-textobj-entire'
-Plugin 'kana/vim-textobj-indent'
-Plugin 'kana/vim-textobj-syntax'
-Plugin 'kana/vim-textobj-line'
-
-" HTML editing
-Plugin 'mattn/emmet-vim'
-Plugin 'othree/html5.vim'
 
 " C/C++ enhancements
 Plugin 'vim-scripts/a.vim'
@@ -91,7 +83,7 @@ Plugin 'sirver/ultisnips'
 " This is a fork from https://github.com/honza/vim-snippets
 Plugin 'amilaperera/vim-snippets'
 
-" Jedi plugin
+" Jedi plugin - python autocompletion
 Plugin 'davidhalter/jedi-vim'
 
 call vundle#end()
@@ -327,6 +319,13 @@ let MRU_Window_Height = 8
 nnoremap <silent> mr   :MRU<CR>
 " }}}2
 
+" CtrlP {{{2
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_follow_symlinks = 1
+nnoremap <Leader>b :CtrlPBuffer<CR>
+nnoremap <Leader>m :CtrlPMRU<CR>
+" }}}2
+
 " AutoCompletionPopup {{{2
 let g:acp_enableAtStartup = 0 " disable acp at startup
 nnoremap <silent> <Leader>ae      :AcpEnable<CR>
@@ -394,10 +393,6 @@ nmap <silent> <Leader>bd :BD<CR>
 " winresizer {{{2
 let g:winresizer_vert_resize = 2
 let g:winresizer_horiz_resize = 1
-" }}}2
-
-" signify {{{2
-nmap <leader>sr :SignifyRefresh<CR>
 " }}}2
 
 " ultisnips {{{2
