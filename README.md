@@ -4,8 +4,7 @@ Personal dotfiles
 This repo contains my personal dotfiles mainly related to _zsh_/_bash_, _vim_, _tmux_, _git_, _cgdb_ etc.
 
 The best way to install the environment is to use the
-[environment setup](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env.py) script which is provided with the
-dotfiles.
+[environment setup](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env.py) script which is provided with the dotfiles.
 
 **Installation**
 
