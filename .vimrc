@@ -47,7 +47,7 @@ Plugin 'sjl/gundo.vim'
 
 " ctags related & dependencies
 Plugin 'majutsushi/tagbar'
-Plugin 'xolox/vim-easytags'
+" Plugin 'xolox/vim-easytags'
 Plugin 'xolox/vim-misc'
 
 " Using the updated version of bufkill plugin
@@ -406,6 +406,10 @@ if has('python3')
   let g:gundo_prefer_python3 = 1   " enable Gundo with python3+ support
 endif
 nnoremap <F5> :GundoToggle<CR>
+" }}}2
+
+" easytags {{{2
+let g:easytags_async = 1 " enable async tags updation
 " }}}2
 
 " Functions {{{
