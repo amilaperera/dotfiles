@@ -14,7 +14,7 @@ function install()
 function install_essentials()
 {
 	echo "Installing essentials..."
-	essential_pkgs=()
+	local essential_pkgs=()
 	essential_pkgs+=(zsh)
 	essential_pkgs+=(tmux)
 	essential_pkgs+=(tmuxinator)
@@ -50,14 +50,44 @@ function install_dictionary()
 		-y"
 }
 
-function install_dev_stuff()
+function install_misc_dev_tools()
 {
-	echo "Installing dev stuff..."
-	dev_stuff+=()
-	dev_stuff+=(cmake)
-	[[ $HAS_YUM -eq 1 ]] && dev_stuff+=(ctags) || dev_stuff+=(exuberant-ctags)
+	echo "Installing dev tools..."
+	local dev_tools+=()
+	dev_tools+=(cmake)
+	[[ $HAS_YUM -eq 1 ]] && dev_tools+=(ctags) || dev_tools+=(exuberant-ctags)
 
-	install ${dev_stuff[*]}
+	install ${dev_tools[*]}
+}
+
+function install_arm_cortex_dev_tools()
+{
+	echo "Installing arm cortex dev tools..."
+	local dev_tools=()
+	[[ $HAS_YUM -eq 1 ]] && dev_tools+=(arm-none-eabi-gcc-cs) || dev_tools+=(arm-none-eabi-gcc)
+	[[ $HAS_YUM -eq 1 ]] && dev_tools+=(arm-none-eabi-gcc-cs-c++) || dev_tools+=(arm-none-eabi-g++)
+	dev_tools+=(arm-none-eabi-gdb)
+	dev_tools+=(openocd)
+
+	install ${dev_tools[*]}
+}
+
+function install_arm_linux_dev_tools()
+{
+	echo "Installing arm arm-linux dev tools..."
+	local dev_tools=()
+	dev_tools+=()
+	if [[ $HAS_YUM -eq 1 ]]; then
+		sudo dnf copr enable lantw44/arm-linux-gnueabihf-toolchain
+		dev_tools+=(arm-linux-gnueabihf-binutils)
+		dev_tools+=(arm-linux-gnueabihf-gcc)
+		dev_tools+=(arm-linux-gnueabihf-glibc)
+	else
+		dev_tools+=(gcc-arm-linux-gnueabihf)
+		dev_tools+=(g++-arm-linux-gnueabih)
+	fi
+
+	install ${dev_tools[*]}
 }
 
 function install_python_stuff()
@@ -84,6 +114,8 @@ fi
 
 install_essentials
 # install_dictionary
-install_dev_stuff
+install_misc_dev_tools
+# install_arm_cortex_dev_tools
+# install_arm_linux_dev_tools
 
 unset install_command
