@@ -1,34 +1,39 @@
 #!/bin/sh
 
 install_command=
+HAS_APT=0
+HAS_YUM=0
 
 function install()
 {
-	sh -c "sudo ${install_command} ${@} -y"
+	echo ${@}
+	echo ${install_command}
+	cmd=`echo "sudo ${install_command} ${@} -y"`
+	echo $cmd
+	sh -c "$cmd"
 }
 
 function install_essentials()
 {
 	echo "Installing essentials..."
-	essential_pkgs="zsh \
-		tmux \
-		tmuxinator \
-		git \
-		exuberant-ctags \
-		ack \
-		silversearcher-ag \
-		tree \
-		mc \
-		lfm \
-		htop \
-		vim \
-		weechat \
-		wget \
-		curl \
-		xclip \
-		"
-	pkgs=$(eval echo $essential_pkgs | tr -s ' ')
-	install $pkgs
+	essential_pkgs+=' zsh'
+	essential_pkgs+=' tmux'
+	essential_pkgs+=' tmuxinator'
+	essential_pkgs+=' git'
+	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=' ctags' || essential_pkgs+=' exuberant-ctags'
+	essential_pkgs+=' ack'
+	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=' the_silver_searcher' || essential_pkgs+=' silversearcher-ag'
+	essential_pkgs+=' tree'
+	essential_pkgs+=' mc'
+	[[ $HAS_APT -eq 1 ]] && essential_pkgs+=' lfm'
+	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=' redhat-lsb'
+	essential_pkgs+=' htop'
+	essential_pkgs+=' vim'
+	essential_pkgs+=' wget'
+	essential_pkgs+=' curl'
+	essential_pkgs+=' xclip'
+
+	install $essential_pkgs
 
 	if [ -z "`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
 		# assuming the shell is not zsh, change it to zsh
@@ -56,11 +61,18 @@ function install_python_stuff()
 # main
 ########################################
 # deduce the installation command
-if [[ -x `which apt-get` ]]; then
-	install_command="apt-get install"
-elif [[ -x `which dnf` ]]; then
-	install_command="dnf install"
+which apt-get &> /dev/null
+if [[ $? -eq 0 ]]; then
+	HAS_APT=1
+	install_command='apt-get install'
+else
+	which yum &> /dev/null
+	if [[ $? -eq 0 ]]; then
+		HAS_YUM=1
+		install_command='dnf install'
+	fi
 fi
+
 
 install_essentials
 # install_dictionary
