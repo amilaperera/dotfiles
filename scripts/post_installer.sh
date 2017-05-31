@@ -6,8 +6,6 @@ HAS_YUM=0
 
 function install()
 {
-	echo ${@}
-	echo ${install_command}
 	cmd=`echo "sudo ${install_command} ${@} -y"`
 	echo $cmd
 	sh -c "$cmd"
@@ -16,24 +14,24 @@ function install()
 function install_essentials()
 {
 	echo "Installing essentials..."
-	essential_pkgs+=' zsh'
-	essential_pkgs+=' tmux'
-	essential_pkgs+=' tmuxinator'
-	essential_pkgs+=' git'
-	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=' ctags' || essential_pkgs+=' exuberant-ctags'
-	essential_pkgs+=' ack'
-	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=' the_silver_searcher' || essential_pkgs+=' silversearcher-ag'
-	essential_pkgs+=' tree'
-	essential_pkgs+=' mc'
-	[[ $HAS_APT -eq 1 ]] && essential_pkgs+=' lfm'
-	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=' redhat-lsb'
-	essential_pkgs+=' htop'
-	essential_pkgs+=' vim'
-	essential_pkgs+=' wget'
-	essential_pkgs+=' curl'
-	essential_pkgs+=' xclip'
+	essential_pkgs=()
+	essential_pkgs+=(zsh)
+	essential_pkgs+=(tmux)
+	essential_pkgs+=(tmuxinator)
+	essential_pkgs+=(git)
+	essential_pkgs+=(ack)
+	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=(the_silver_searcher) || essential_pkgs+=(silversearcher-ag)
+	essential_pkgs+=(tree)
+	essential_pkgs+=(mc)
+	[[ $HAS_APT -eq 1 ]] && essential_pkgs+=(lfm)
+	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=(redhat-lsb)
+	essential_pkgs+=(htop)
+	essential_pkgs+=(vim)
+	essential_pkgs+=(wget)
+	essential_pkgs+=(curl)
+	essential_pkgs+=(xclip)
 
-	install $essential_pkgs
+	install ${essential_pkgs[*]}
 
 	if [ -z "`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
 		# assuming the shell is not zsh, change it to zsh
@@ -50,6 +48,16 @@ function install_dictionary()
 		dict-gcide \
 		dict-moby-thesaurus \
 		-y"
+}
+
+function install_dev_stuff()
+{
+	echo "Installing dev stuff..."
+	dev_stuff+=()
+	dev_stuff+=(cmake)
+	[[ $HAS_YUM -eq 1 ]] && dev_stuff+=(ctags) || dev_stuff+=(exuberant-ctags)
+
+	install ${dev_stuff[*]}
 }
 
 function install_python_stuff()
@@ -76,5 +84,6 @@ fi
 
 install_essentials
 # install_dictionary
+install_dev_stuff
 
 unset install_command
