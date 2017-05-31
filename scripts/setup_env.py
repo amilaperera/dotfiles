@@ -186,6 +186,22 @@ class Env(object):
         return home
 
     @staticmethod
+    def dot_dir():
+       local_dot_dir = os.path.join(Env.get_home(), '.dotfiles')
+       if os.path.isdir(local_dot_dir):
+           return local_dot_dir
+       else:
+           raise OSError('dot directory does not exist in {}'.format(local_dot_dir))
+
+    @staticmethod
+    def scripts_dir():
+       local_scripts_dir = os.path.join(Env.get_home(), '.dotfiles', 'scripts')
+       if os.path.isdir(local_scripts_dir):
+           return local_scripts_dir
+       else:
+           raise OSError('dot directory does not exist in {}'.format(local_scripts_dir))
+
+    @staticmethod
     def src_to_dest_message(msg, src, dest):
         print(msg, end='')
         print(' (', end='')
@@ -234,6 +250,7 @@ class Env(object):
             else:
                 raise OSError('Install directory[{}] does not exist'
                               .format(abs_path))
+        print('Install Dir: {}'.format(self._install_dir))
 
     @property
     def setup_env_name(self):
@@ -420,7 +437,7 @@ class MiscEnv(Env):
 
     def _create_misc_symlinks(self):
         for config_file in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
+            Env.create_symlink(os.path.abspath(os.path.join(Env.dot_dir(), config_file)),
                                os.path.join(self.install_dir, config_file))
 
     def setup_env(self):
@@ -445,7 +462,7 @@ class ToolsEnv(Env):
         Env.create_directory_if_not_exists(os.path.join(self.install_dir, 'tools'))
 
         for config_file in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join('.', config_file)),
+            Env.create_symlink(os.path.abspath(os.path.join(Env.scripts_dir(), config_file)),
                                os.path.join(self.install_dir, 'tools', config_file))
 
     def setup_env(self):

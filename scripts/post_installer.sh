@@ -33,7 +33,7 @@ function install_essentials()
 	if [ -z "`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
 		# assuming the shell is not zsh, change it to zsh
 		echo "Changing to zsh..."
-		sh -c "chsh --shell /bin/zsh"
+		sh -c "sudo lchsh -i ${USER}"
 	fi
 }
 
@@ -49,6 +49,7 @@ function install_dictionary()
 
 function install_python_stuff()
 {
+	:
 }
 
 ########################################
