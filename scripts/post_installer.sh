@@ -35,8 +35,19 @@ function install_essentials()
 
 	if [ -z "`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
 		# assuming the shell is not zsh, change it to zsh
-		echo "Changing to zsh..."
-		sh -c "sudo lchsh -i ${USER}"
+
+		# Fedora doesn't have chsh installed
+		[[ $HAS_YUM -eq 1 ]] && \
+			echo "Changing to zsh..." && \
+			sh -c "sudo lchsh -i ${USER}"
+
+		# For Ubuntu this works, coz it doesn't have lchsh installed
+		[[ $HAS_APT -eq 1 ]] && \
+			echo "Changing to zsh..." && \
+			local zsh_exe=`which zsh` && \
+			sh -c "chsh --shell ${zsh_exe}"
+	else
+		echo "ZSH already selected as the login shell"
 	fi
 }
 
@@ -92,7 +103,11 @@ function install_arm_linux_dev_tools()
 
 function install_python_stuff()
 {
-	:
+	echo "Installing python stuff..."
+	local python_stuff=()
+	python_stuff+=(python)
+
+	install ${python_stuff[*]}
 }
 
 ########################################
@@ -117,5 +132,6 @@ install_essentials
 install_misc_dev_tools
 # install_arm_cortex_dev_tools
 # install_arm_linux_dev_tools
+install_python_stuff
 
 unset install_command
