@@ -321,8 +321,11 @@ nnoremap <silent> mr   :MRU<CR>
 " }}}2
 
 " CtrlP {{{2
+let g:ctrl_map =''
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_follow_symlinks = 1
+let g:ctrlp_root_markers = ['']
+nnoremap <Leader>p :CtrlP<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>m :CtrlPMRU<CR>
 " }}}2
