@@ -54,11 +54,9 @@ function install_essentials()
 function install_dictionary()
 {
 	echo "Installing dictionary..."
-	sh -c "sudo apt-get install \
-		dictd \
-		dict-gcide \
-		dict-moby-thesaurus \
-		-y"
+	dict_pkgs=(dictd dict-gcide dict-moby-thesaurus)
+
+	install ${dict_pkgs[*]}
 }
 
 function install_misc_dev_tools()
