@@ -3,6 +3,7 @@
 " Author: Amila Perera
 " File Name: .vimrc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Vundle setup {{{
 set nocompatible               " gets out of vi compatible mode
 filetype off                   " required to set this off before sourcing the plugins
@@ -122,7 +123,7 @@ filetype indent on        " filetype indent on
 syntax on                 " always syntax on
 
 runtime! macros/matchit.vim " autoload the matchit plugin on startup
-runtime! ftplugin/man.vim  " load the man page file type plugin on startup
+runtime! ftplugin/man.vim   " load the man page file type plugin on startup
 
 set autoindent            " auto-indent on
 set foldenable            " enable fold functionality
@@ -234,6 +235,7 @@ if ! has('gui_running')
   endif
 endif
 " }}}2
+
 " }}}
 
 " StatusLine Settings {{{
@@ -519,7 +521,9 @@ augroup FTOptions
 augroup END
 " }}}
 
+"
 " Personal Mappings {{{
+"
 " When .vimrc is edited, reload it {{{2
 if has('win32') || has('win64')
   autocmd! BufWritePost _vimrc source $MYVIMRC
@@ -531,6 +535,7 @@ else
   autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
 endif
 " }}}2
+
 " Fast editing of the vim, tmux configuration files {{{2
 map <Leader>v :e! $MYVIMRC<CR>
 if has('win32') || has('win64')
@@ -539,29 +544,36 @@ else
   map <Leader>gv :e! $HOME/.gvimrc<CR>
 endif
 " }}}2
+
 " nohlsearch, after a search {{{2
 nnoremap <silent> <C-L> :nohlsearch<CR>
 " }}}2
+
 " retain visual selection after indentation {{{2
 vnoremap > >gv
 vnoremap < <gv
 " }}}2
+
 " vimgrep {{{2
 " Displays a vimgrep command template
 map <Leader>g :vimgrep // ../**/*.<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 " Search the current file for the word under the cursor and display matches
 nmap <silent> <Leader>gw :vimgrep /<C-r><C-w>/ %<CR>:cclose<CR>:cwindow<CR><C-W>J:nohlsearch<CR>
 " }}}2
+
 " force encoding conversion {{{2
 map <silent> <Leader>e :e! ++enc=euc-jp<CR>
 map <silent> <Leader>u :e! ++enc=utf-8<CR>
 " }}}2
+
 " changes directory to the directory of the current buffer {{{2
 nmap <silent> <Leader>cd :lcd %:h<CR>:pwd<CR>
 " }}}2
+
 " get the full path of the file in the buffer {{{2
 nmap <Leader> <Space> :echo expand('%:p')<CR>
 " }}}2
+
 " Heading {{{2
 noremap <silent> <Leader>h1 yyp^v$r=
 noremap <silent> <Leader>h2 yyp^v$r-
@@ -569,6 +581,7 @@ noremap <silent> <Leader>he <ESC>070i=<ESC>
 noremap <silent> <Leader>hh <ESC>070i-<ESC>
 noremap <silent> <Leader>hs <ESC>070i*<ESC>
 " }}}2
+
 " Window closing commands {{{2
 " Close this window
 noremap <silent> <Leader>clw :close<CR>
@@ -590,4 +603,5 @@ nmap <silent> <Leader>q <ESC>:QFix<CR>
 nmap <silent> <Leader>ta <ESC>:Space2Tab<CR>
 nmap <silent> <Leader>sp <ESC>:Tab2Space<CR>
 " }}}2
+
 " }}}
