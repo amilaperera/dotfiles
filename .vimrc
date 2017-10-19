@@ -522,9 +522,8 @@ augroup FTOptions
 augroup END
 " }}}
 
-"
 " Personal Mappings {{{
-"
+
 " When .vimrc is edited, reload it {{{2
 if has('win32') || has('win64')
   autocmd! BufWritePost _vimrc source $MYVIMRC
