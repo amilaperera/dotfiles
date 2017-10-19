@@ -323,13 +323,14 @@ nnoremap <silent> mr   :MRU<CR>
 " }}}2
 
 " CtrlP {{{2
-let g:ctrl_map =''
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_follow_symlinks = 1
-let g:ctrlp_root_markers = ['']
+" disable the key mapping
 nnoremap <Leader>p :CtrlP<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>m :CtrlPMRU<CR>
+let g:ctrlp_map =''
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_follow_symlinks = 1
+let g:ctrlp_root_markers = ['']
 " }}}2
 
 " AutoCompletionPopup {{{2
