@@ -18,11 +18,8 @@ Plugin 'gmarik/Vundle'
 
 " General enhancements
 Plugin 'vim-scripts/AutoComplPop'
-Plugin 'dkprice/vim-easygrep'
-Plugin 'vim-scripts/FuzzyFinder'
 Plugin 'vim-scripts/VisIncr'
 Plugin 'vim-scripts/ZoomWin'
-Plugin 'vim-scripts/mru.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/vcscommand.vim'
 Plugin 'vim-scripts/L9'
@@ -42,13 +39,11 @@ Plugin 'nelstrom/vim-visual-star-search'
 Plugin 'godlygeek/tabular'
 Plugin 'Raimondi/delimitMate'
 Plugin 'maxbrunsfeld/vim-yankstack'
-Plugin 'rking/ag.vim'
 Plugin 'jimsei/winresizer'
 Plugin 'sjl/gundo.vim'
 
 " ctags related & dependencies
 Plugin 'majutsushi/tagbar'
-" Plugin 'xolox/vim-easytags'
 Plugin 'xolox/vim-misc'
 
 " Using the updated version of bufkill plugin
@@ -86,6 +81,9 @@ Plugin 'amilaperera/vim-snippets'
 
 " Jedi plugin - python autocompletion
 Plugin 'davidhalter/jedi-vim'
+
+" Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
+Plugin 'mhinz/vim-grepper'
 
 call vundle#end()
 " }}}
@@ -317,11 +315,6 @@ map <leader>r :NERDTreeFind<CR>
 map <silent> <right> :TagbarToggle<CR>
 " }}}2
 
-" MRU {{{2
-let MRU_Window_Height = 8
-nnoremap <silent> mr   :MRU<CR>
-" }}}2
-
 " CtrlP {{{2
 " disable the key mapping
 nnoremap <Leader>p :CtrlP<CR>
@@ -337,25 +330,6 @@ let g:ctrlp_root_markers = ['']
 let g:acp_enableAtStartup = 0 " disable acp at startup
 nnoremap <silent> <Leader>ae      :AcpEnable<CR>
 nnoremap <silent> <Leader>ad      :AcpDisable<CR>
-" }}}2
-
-" FuzzyFinder Settings {{{2
-let g:fuf_file_exclude      = '\v\~$|\.(o|exe|dll|obj|d|swp)$|/test/data\.|(^|[/\\])\.(svn|hg|git|bzr)($|[/\\])'
-let g:fuf_splitPathMatching = 0
-let g:fuf_maxMenuWidth      = 120
-let g:fuf_timeFormat        = ''
-nmap <silent> <Leader>f  :FufFile<CR>
-nmap <silent> <Leader>fv :FufFile ~/.vim/**/<CR>
-nmap <silent> <Leader>fb :FufBuffer<CR>
-nmap <silent> <Leader>fd :FufDir<CR>
-" }}}2
-
-" EasyGrep Settings {{{2
-let g:EasyGrepWindowPosition = "botright"
-let g:EasyGrepRoot = "repository"
-let g:EasyGrepHidden = 1
-let g:EasyGrepFilesToExclude = ".svn,.git,*.swp,*~"
-let g:EasyGrepRecursive = 1
 " }}}2
 
 " SuperTab Settings {{{2
@@ -415,8 +389,19 @@ endif
 nnoremap <F5> :GundoToggle<CR>
 " }}}2
 
-" easytags {{{2
-let g:easytags_async = 1 " enable async tags updation
+" Grepper {{{2
+nnoremap <leader>gg :Grepper -tool git -highlight<cr>
+nnoremap <leader>ga :Grepper -tool ag -highlight<cr>
+nnoremap <leader>*  :Grepper -tool ag -cword -noprompt -highlight<cr>
+
+let g:grepper           = {}
+let g:grepper.dir       = 'repo,cwd' " current working directory if repo fails
+let g:grepper.tools     = ['git', 'ag', 'grep']
+let g:grepper.next_tool = '<leader>g'
+
+let g:grepper.git = {
+  \ 'grepprg': 'git grep -nI --no-color'
+  \ }
 " }}}2
 
 " Functions {{{
