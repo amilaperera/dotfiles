@@ -85,6 +85,9 @@ Plugin 'davidhalter/jedi-vim'
 " Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
 Plugin 'mhinz/vim-grepper'
 
+" git diff shower
+Plugin 'airblade/vim-gitgutter'
+
 call vundle#end()
 " }}}
 
@@ -104,6 +107,7 @@ set noswapfile                 " no swap files
 set helpheight=35              " height of the help window
 set mouse=nvi                  " use mouse in normal, visual & insert modes
 set mousemodel=popup           " right mosue button pops up a menu
+set updatetime=500             " vim update time - affects the behaviour of certain plugins(git-gutter)
 " }}}
 
 " Changing map leader {{{
