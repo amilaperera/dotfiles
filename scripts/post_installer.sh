@@ -62,9 +62,9 @@ function install_dictionary()
 function install_misc_dev_tools()
 {
 	echo "Installing dev tools..."
-	local dev_tools+=()
+	local dev_tools=()
 	dev_tools+=(cmake)
-	dev_tools+=(build-essential)
+	[[ $HAS_APT -eq 1 ]] && dev_tools+=(build-essential)
 	[[ $HAS_YUM -eq 1 ]] && dev_tools+=(ctags) || dev_tools+=(exuberant-ctags)
 
 	install ${dev_tools[*]}
@@ -86,7 +86,6 @@ function install_arm_linux_dev_tools()
 {
 	echo "Installing arm arm-linux dev tools..."
 	local dev_tools=()
-	dev_tools+=()
 	if [[ $HAS_YUM -eq 1 ]]; then
 		sudo dnf copr enable lantw44/arm-linux-gnueabihf-toolchain
 		dev_tools+=(arm-linux-gnueabihf-binutils)
