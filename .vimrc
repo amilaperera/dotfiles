@@ -24,12 +24,10 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'vim-scripts/vcscommand.vim'
 Plugin 'vim-scripts/L9'
 Plugin 'vim-scripts/txt.vim'
-Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-eunuch'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
@@ -56,6 +54,7 @@ Plugin 'vim-scripts/DoxygenToolkit.vim'
 
 " Vim tmux integration
 Plugin 'tpope/vim-tbone'
+Plugin 'benmills/vimux'
 
 " C/C++ enhancements
 Plugin 'vim-scripts/a.vim'
@@ -63,9 +62,6 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 
 " Vim-Jinja2 syntax hightlighting
 Plugin 'Glench/Vim-Jinja2-Syntax'
-
-" SCons syntax highlighting
-Plugin 'vim-scripts/scons.vim'
 
 " Colorschemes
 " Using my own colorschemes
@@ -87,9 +83,6 @@ Plugin 'mhinz/vim-grepper'
 
 " git diff shower
 Plugin 'airblade/vim-gitgutter'
-
-" vimux - vim-tmux integration
-Plugin 'benmills/vimux'
 
 call vundle#end()
 " }}}
