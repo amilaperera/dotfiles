@@ -65,6 +65,7 @@ function install_misc_dev_tools()
 	local dev_tools=()
 	dev_tools+=(cmake)
 	dev_tools+=(libboost-all-dev)
+	dev_tools+=(clang)
 	[[ $HAS_APT -eq 1 ]] && dev_tools+=(build-essential)
 	[[ $HAS_YUM -eq 1 ]] && dev_tools+=(ctags) || dev_tools+=(exuberant-ctags)
 

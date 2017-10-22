@@ -107,7 +107,7 @@ set noswapfile                 " no swap files
 set helpheight=35              " height of the help window
 set mouse=nvi                  " use mouse in normal, visual & insert modes
 set mousemodel=popup           " right mosue button pops up a menu
-set updatetime=500             " vim update time - affects the behaviour of certain plugins(git-gutter)
+set updatetime=250             " vim update time - affects the behaviour of certain plugins(git-gutter)
 " }}}
 
 " Changing map leader {{{
