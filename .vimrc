@@ -88,6 +88,9 @@ Plugin 'mhinz/vim-grepper'
 " git diff shower
 Plugin 'airblade/vim-gitgutter'
 
+" vimux - vim-tmux integration
+Plugin 'benmills/vimux'
+
 call vundle#end()
 " }}}
 
@@ -474,16 +477,13 @@ command! -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-arg
 command! -nargs=? -range=% RetabIndent call IndentConvert(<line1>,<line2>,&et,<q-args>)
 " }}}2
 
-" Show syntax highlighting groups for word under cursor {{{2
-" This is helpful when creating colorschemes
-function! <SID>SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
-nmap <Leader>sgr :call <SID>SynStack()<CR>
-" }}}2
+" vimux settings{{{2
+ " Prompt for a command to run
+ map <Leader>vp :VimuxPromptCommand<CR>
+ " Run last command executed by VimuxRunCommand
+ map <Leader>vl :VimuxRunLastCommand<CR>
+ "}}}2
+
 " }}}
 
 " File type specific settings {{{
