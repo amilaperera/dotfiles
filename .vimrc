@@ -142,26 +142,11 @@ set ttimeoutlen=50  " makes Esc to work faster
 " }}}2
 
 " Moving cursor to prev/next lines {{{2
-set whichwrap=b,s         " <BS>, <Space>
-set whichwrap+=<,>        " <Left, Right> Normal & Visual
-set whichwrap+=~          " ~
-set whichwrap+=[,]        " <Left, Right> Insert & Replace
+set whichwrap=b,s,<,>,~,[,]
 " }}}2
 
 " Ignore below when file name completion {{{2
-set wildignore=*.o
-set wildignore+=*.obj
-set wildignore+=*.a
-set wildignore+=*.so
-set wildignore+=*.jpg
-set wildignore+=*.png
-set wildignore+=*.gif
-set wildignore+=*.dll
-set wildignore+=*.exe
-set wildignore+=*.dpkg
-set wildignore+=*.rpm
-set wildignore+=*.pdf
-set wildignore+=*.chm
+set wildignore=*.o,*.obj,*.a,*.so,*.jpg,*.png,*.gif,*.dll,*.exe,*.dpkg,*.rpm,*.pdf,*.chm
 " }}}2
 
 " History settings {{{2
@@ -584,9 +569,6 @@ map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
 " Mappings for functions {{{2
 " QuickFixWindow Toggle
 nmap <silent> <Leader>q <ESC>:QFix<CR>
-" Space-Tab conversion
-nmap <silent> <Leader>ta <ESC>:Space2Tab<CR>
-nmap <silent> <Leader>sp <ESC>:Tab2Space<CR>
 " }}}2
 
 " }}}
