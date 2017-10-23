@@ -84,6 +84,9 @@ Plugin 'mhinz/vim-grepper'
 " git diff shower
 Plugin 'airblade/vim-gitgutter'
 
+" asynchronous command runner
+Plugin 'skywind3000/asyncrun.vim'
+
 call vundle#end()
 " }}}
 
