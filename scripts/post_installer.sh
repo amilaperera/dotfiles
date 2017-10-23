@@ -11,6 +11,13 @@ function install()
 	sh -c "$cmd"
 }
 
+function pip_install()
+{
+	cmd=`echo "pip install ${@}"`
+	echo $cmd
+	sh -c "$cmd"
+}
+
 function install_essentials()
 {
 	echo "Installing essentials..."
@@ -106,8 +113,16 @@ function install_python_stuff()
 	echo "Installing python stuff..."
 	local python_stuff=()
 	python_stuff+=(python)
+	python_stuff+=(python-pip)
 
 	install ${python_stuff[*]}
+
+	pip install --upgrade pip
+	local pip_stuff=()
+	pip_stuff+=(IPython==5.0)
+	pip_stuff+=(jedi)
+
+	pip_install ${pip_stuff[*]}
 }
 
 ########################################
