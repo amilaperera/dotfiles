@@ -114,15 +114,10 @@ function install_python_stuff()
 	local python_stuff=()
 	python_stuff+=(python)
 	python_stuff+=(python-pip)
+	python_stuff+=(ipython)
+	python_stuff+=(python-jedi)
 
 	install ${python_stuff[*]}
-
-	pip install --upgrade pip
-	local pip_stuff=()
-	pip_stuff+=(IPython==5.0)
-	pip_stuff+=(jedi)
-
-	pip_install ${pip_stuff[*]}
 }
 
 ########################################
