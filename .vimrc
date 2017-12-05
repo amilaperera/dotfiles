@@ -171,9 +171,9 @@ set tags+=../../../../../../../../../tags
 set list                      " strings to be used in list mode
 set listchars=tab:\|.,trail:- " strings to be used in list mode
 
-set tabstop=4                 " number of spaces that a tab counts for
-set shiftwidth=4              " number of spaces to be used in each step of indent
-set softtabstop=4             " number of spaces that a tab counts for while editing
+set tabstop=2                 " number of spaces that a tab counts for
+set shiftwidth=2              " number of spaces to be used in each step of indent
+set softtabstop=2             " number of spaces that a tab counts for while editing
 set expandtab                 " use spaces to insert a tab
 
 set cino=:0
@@ -475,7 +475,7 @@ augroup END
 
 augroup FTOptions
   autocmd!
-  autocmd Filetype sh,zsh,csh,tcsh setl ts=4 noet fdm=marker
+  autocmd Filetype sh,zsh,csh,tcsh setl ts=2 noet fdm=marker
   autocmd Filetype yaml            setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype html,css        setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype vim             setl ts=2 sw=2 sts=2 fdm=marker
@@ -484,7 +484,7 @@ augroup FTOptions
   autocmd Filetype perl            setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype gitcommit       setl spell
 
-  autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4
+  autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=2 sw=2 sts=2
   autocmd BufNewFile,BufRead *.pro setl ft=QT_PROJECT_FILE syn=make
   autocmd BufNewFile,BufRead *.tmpl set ft=jinja
   autocmd BufNewFile,BufRead SCons* set ft=scons
