@@ -90,6 +90,11 @@ Plugin 'skywind3000/asyncrun.vim'
 call vundle#end()
 " }}}
 
+" python path recognition for Jedi
+" TODO: This is actually a bug that will probably be resolved in futre.
+" https://github.com/davidhalter/jedi-vim/issues/870
+py import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
+
 " General settings {{{
 set exrc                       " use a local version of .(g)vimrc
 set secure                     " disable unsafe commands in local .vimrc files
