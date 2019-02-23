@@ -224,7 +224,7 @@ class Env(object):
     def create_symlink(src, dest):
         try:
             os.symlink(src, dest)
-        except OSError, e:
+        except OSError as e:
             if e.errno == errno.EEXIST:
                 os.remove(dest)
                 os.symlink(src, dest)

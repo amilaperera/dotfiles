@@ -95,7 +95,9 @@ call vundle#end()
 " python path recognition for Jedi
 " TODO: This is actually a bug that will probably be resolved in futre.
 " https://github.com/davidhalter/jedi-vim/issues/870
-py import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
+if has('win32') || has('win64')
+  py import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
+endif
 
 set exrc                       " use a local version of .(g)vimrc
 set secure                     " disable unsafe commands in local .vimrc files
