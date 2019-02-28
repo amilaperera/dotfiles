@@ -87,6 +87,9 @@ Plugin 'airblade/vim-gitgutter'
 " asynchronous command runner
 Plugin 'skywind3000/asyncrun.vim'
 
+" YCM
+Plugin 'Valloric/YouCompleteMe'
+
 call vundle#end()
 " }}}
 
