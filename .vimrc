@@ -10,7 +10,6 @@ call plug#begin('~/.vim/plugged')
 " General enhancements
 Plug 'vim-scripts/VisIncr'
 Plug 'kien/ctrlp.vim'
-Plug 'vim-scripts/L9'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -18,9 +17,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'ervandew/supertab'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'nelstrom/vim-visual-star-search'
 Plug 'godlygeek/tabular'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
@@ -222,40 +219,6 @@ endif
 
 " }}}
 
-" StatusLine Settings {{{
-set laststatus=2 " set status line visible even in single window mode
-
-set statusline=\ [%n]\ %<%F   " buffer number and file name
-set statusline+=\ %m\ %r%h%w  " modified flag, readonly flag, help buffer flag, preview window flag
-set statusline+=\ %{'['.&ff.':'.(&fenc!=''?&fenc:&enc).(&bomb?':BOM':'').']'} " file type:file encoding
-set statusline+=\ [%Y]                           " file type
-set statusline+=\ %{fugitive#statusline()}       " fugitive prompt
-
-set statusline+=%= " right align
-
-if has('iconv')
-  set statusline+=\ (0x%{FencB()}) " value under cursor
-else
-  set statusline+=\ (0x%B)         " value under cursor
-endif
-set statusline+=\ (%v,\ %l/%L) " virtual column number, line/total number of lines
-set statusline+=\ --%3P--\     " percentage
-
-function! FencB()
-  let c = matchstr(getline('.'), '.', col('.') - 1)
-  let c = iconv(c, &enc, &fenc)
-  return s:Byte2hex(s:Str2byte(c))
-endfunction
-
-function! s:Str2byte(str)
-  return map(range(len(a:str)), 'char2nr(a:str[v:val])')
-endfunction
-
-function! s:Byte2hex(bytes)
-  return join(map(copy(a:bytes), 'printf("%02X", v:val)'), '')
-endfunction
-" }}}
-
 " Set encoding & fileformat settings {{{
 set encoding=utf-8
 set fileencoding=utf-8
@@ -310,12 +273,6 @@ let g:ctrlp_map =''
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_root_markers = ['']
-" }}}2
-
-" SuperTab Settings {{{2
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabNoCompleteBefore      = []
-let g:SuperTabNoCompleteAfter       = ['^', ',', ';', ':', '{', '}', '(', ')', '[', ']', '<', '>', '\s']
 " }}}2
 
 " Tabularize {{{2
