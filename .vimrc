@@ -4,93 +4,80 @@
 " File Name: .vimrc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Vundle setup {{{
-set nocompatible               " gets out of vi compatible mode
-filetype off                   " required to set this off before sourcing the plugins
-
-" source plugins
-" Vundle setup
-set rtp+=~/.vim/bundle/Vundle
-call vundle#begin()
-
-" let Vundle manage the plugins
-Plugin 'gmarik/Vundle'
+" Plugin manager setup {{{
+call plug#begin('~/.vim/plugged')
 
 " General enhancements
-Plugin 'vim-scripts/AutoComplPop'
-Plugin 'vim-scripts/VisIncr'
-Plugin 'vim-scripts/ZoomWin'
-Plugin 'kien/ctrlp.vim'
-Plugin 'vim-scripts/vcscommand.vim'
-Plugin 'vim-scripts/L9'
-Plugin 'vim-scripts/txt.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'ervandew/supertab'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'nelstrom/vim-visual-star-search'
-Plugin 'godlygeek/tabular'
-Plugin 'Raimondi/delimitMate'
-Plugin 'maxbrunsfeld/vim-yankstack'
-Plugin 'jimsei/winresizer'
-Plugin 'sjl/gundo.vim'
+Plug 'vim-scripts/VisIncr'
+Plug 'kien/ctrlp.vim'
+Plug 'vim-scripts/L9'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'ervandew/supertab'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'nelstrom/vim-visual-star-search'
+Plug 'godlygeek/tabular'
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'jimsei/winresizer'
+Plug 'sjl/gundo.vim'
 
 " ctags related & dependencies
-Plugin 'majutsushi/tagbar'
-Plugin 'xolox/vim-misc'
+Plug 'majutsushi/tagbar'
+Plug 'xolox/vim-misc'
 
 " Using the updated version of bufkill plugin
 " since the original vim-script repository is not yet
 " updated, get the fork it and updated it
-Plugin 'amilaperera/bufkill.vim'
+Plug 'amilaperera/bufkill.vim'
 
 " General development related
-Plugin 'vim-scripts/DoxygenToolkit.vim'
+Plug 'vim-scripts/DoxygenToolkit.vim'
 
 " Vim tmux integration
-Plugin 'tpope/vim-tbone'
-Plugin 'benmills/vimux'
+Plug 'tpope/vim-tbone'
+Plug 'benmills/vimux'
 
 " C/C++ enhancements
-Plugin 'vim-scripts/a.vim'
-Plugin 'octol/vim-cpp-enhanced-highlight'
+Plug 'vim-scripts/a.vim'
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 " Vim-Jinja2 syntax hightlighting
-Plugin 'Glench/Vim-Jinja2-Syntax'
+Plug 'Glench/Vim-Jinja2-Syntax'
 
 " Colorschemes
 " Using my own colorschemes
 " This is a fork from https://github.com/flazz/vim-colorschemes
-Plugin 'amilaperera/vim-colorschemes'
+Plug 'amilaperera/vim-colorschemes'
 
 " Snipmate plugin, related dependencies & snippets
-Plugin 'sirver/ultisnips'
+" Plugin 'sirver/ultisnips'
 
 " Using my own snippets
 " This is a fork from https://github.com/honza/vim-snippets
-Plugin 'amilaperera/vim-snippets'
+Plug 'amilaperera/vim-snippets'
 
 " Jedi plugin - python autocompletion
-Plugin 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim'
 
 " Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
-Plugin 'mhinz/vim-grepper'
+Plug 'mhinz/vim-grepper'
 
 " git diff shower
-Plugin 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 
 " asynchronous command runner
-Plugin 'skywind3000/asyncrun.vim'
+Plug 'skywind3000/asyncrun.vim'
 
-" YCM
-Plugin 'Valloric/YouCompleteMe'
+" vim-airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-call vundle#end()
+call plug#end()
 " }}}
 
 " General settings {{{
@@ -325,30 +312,10 @@ let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_root_markers = ['']
 " }}}2
 
-" AutoCompletionPopup {{{2
-let g:acp_enableAtStartup = 0 " disable acp at startup
-nnoremap <silent> <Leader>ae      :AcpEnable<CR>
-nnoremap <silent> <Leader>ad      :AcpDisable<CR>
-" }}}2
-
 " SuperTab Settings {{{2
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabNoCompleteBefore      = []
 let g:SuperTabNoCompleteAfter       = ['^', ',', ';', ':', '{', '}', '(', ')', '[', ']', '<', '>', '\s']
-" }}}2
-
-" OmniCppComplete {{{2
-let OmniCpp_NamespaceSearch     = 1
-let OmniCpp_GlobalScopeSearch   = 1
-let OmniCpp_ShowAccess          = 1
-let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
-let OmniCpp_MayCompleteDot      = 1 " autocomplete after .
-let OmniCpp_MayCompleteArrow    = 1 " autocomplete after ->
-let OmniCpp_MayCompleteScope    = 1 " autocomplete after ::
-let OmniCpp_DefaultNamespaces   = ["std", "_GLIBCXX_STD"]
-" automatically open and close the popup menu / preview window
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menuone,menu,longest,preview
 " }}}2
 
 " Tabularize {{{2
