@@ -74,6 +74,9 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" auto-closing
+Plug 'cohama/lexima.vim'
+
 call plug#end()
 " }}}
 
