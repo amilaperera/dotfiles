@@ -55,7 +55,7 @@ Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'amilaperera/vim-colorschemes'
 
 " Snipmate plugin, related dependencies & snippets
-" Plugin 'sirver/ultisnips'
+Plug 'sirver/ultisnips'
 
 " Using my own snippets
 " This is a fork from https://github.com/honza/vim-snippets

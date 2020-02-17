@@ -416,7 +416,7 @@ class VimEnv(Env):
 
     def setup_env(self):
         self._set_vimrc_files()
-        self._install_vim_plugins()
+        # self._install_vim_plugins()
 
 
 class MiscEnv(Env):
