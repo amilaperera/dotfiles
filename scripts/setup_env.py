@@ -8,7 +8,6 @@
 #     appropriately to other types, if necessary.
 #
 
-from __future__ import print_function
 import argparse
 import os, errno
 import shutil
@@ -18,6 +17,7 @@ import time
 import threading
 import re
 from colorama import Fore, Style, init
+import requests
 
 class Env(object):
     """Environment setup base class"""
@@ -397,26 +397,33 @@ class VimEnv(Env):
                 Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
                                    os.path.join(home_path, config_file))
 
-    def _install_vim_plugins(self):
-        plugin_path = os.path.join(self.install_dir,
-                                   os.path.join('.vim', 'bundle'))
-        if not os.path.isdir(plugin_path):
-            os.makedirs(plugin_path)
-        os.chdir(plugin_path)
+    def _install_plugin_manager(self):
+        target_file = os.path.expanduser('~/.vim/autoload/plug.vim')
+        url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-        print('Installing vim plugins to {}'.format(plugin_path))
-        p = re.compile('^Plugin +[\'\"](?P<plugin>[^\'\"]*)[\'\"]')
-        with open(os.path.join(self.install_dir,
-                               self._get_plugins_file())) as fh:
-            for line in fh.readlines():
-                res = p.match(line)
-                if res:
-                    repo_value = 'https://github.com/' + res.group('plugin')
-                    Env.clone_repo(**dict(repo=repo_value))
+        if Env.is_windows():
+            target_file = os.path.expanduser('~/vimfiles/autoload/plug.vim')
+
+        # create parent directory if not exists
+        if not os.path.exists(os.path.dirname(target_file)):
+            os.makedirs(os.path.dirname(target_file))
+
+        resp = requests.get(url)
+        with open(target_file, 'wb') as f:
+            f.write(resp.content)
+
+    def _install_plugins(self):
+        if Env.is_windows():
+            # TODO: ??
+            pass
+        else:
+            with open(os.devnull, 'w') as devnull:
+                subprocess.check_call(['vim', '+PlugInstall', '+qall'])
 
     def setup_env(self):
         self._set_vimrc_files()
-        # self._install_vim_plugins()
+        self._install_plugin_manager()
+        self._install_plugins()
 
 
 class MiscEnv(Env):
