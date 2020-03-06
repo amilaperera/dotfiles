@@ -85,7 +85,7 @@ class Fork(object):
 
     def _pull_from_remote(self):
         print('pulling from origin/master')
-        subprocess.check_call(['git', 'pull'],
+        subprocess.check_call(['git', 'pull', '--allow-unrelated-histories'],
                 stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True)
 
     def _add_upstream_if_required(self):

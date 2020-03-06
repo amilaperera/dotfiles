@@ -6,12 +6,12 @@
     },
     {
         "repo_name": "vim-colorschemes",
-        "dir": "~/.vim/bundle/vim-colorschemes",
+        "dir": "~/.vim/plugged/vim-colorschemes",
         "upstream_repo": "flazz/vim-colorschemes"
     },
     {
         "repo_name": "vim-snippets",
-        "dir": "~/.vim/bundle/vim-snippets",
+        "dir": "~/.vim/plugged/vim-snippets",
         "upstream_repo": "honza/vim-snippets"
     }
 ]
