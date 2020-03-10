@@ -105,6 +105,8 @@ set helpheight=35              " height of the help window
 set mouse=nvi                  " use mouse in normal, visual & insert modes
 set mousemodel=popup           " right mosue button pops up a menu
 set updatetime=250             " vim update time - affects the behaviour of certain plugins(git-gutter)
+set laststatus=2               " status line always
+set t_Co=256                   " letting vim know that we're using 256 color terminal
 " }}}
 
 " Changing map leader {{{
