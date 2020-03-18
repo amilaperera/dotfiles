@@ -77,6 +77,9 @@ Plug 'vim-airline/vim-airline-themes'
 " auto-closing
 Plug 'cohama/lexima.vim'
 
+" scratch pad
+Plug 'konfekt/vim-scratchpad'
+
 call plug#end()
 " }}}
 
@@ -330,6 +333,10 @@ let g:grepper.next_tool = '<leader>g'
 let g:grepper.git = {
   \ 'grepprg': 'git grep -nI --no-color'
   \ }
+" }}}2
+
+" ScrachPad {{{2
+let g:scratchpad_ftype = 'markdown'
 " }}}2
 
 " Functions {{{
