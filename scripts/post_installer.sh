@@ -26,7 +26,6 @@ function install_essentials()
 	essential_pkgs+=(tmux)
 	essential_pkgs+=(tmuxinator)
 	essential_pkgs+=(git)
-	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=(ack) || essential_pkgs+=(ack-grep)
 	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=(the_silver_searcher) || essential_pkgs+=(silversearcher-ag)
 	essential_pkgs+=(tree)
 	essential_pkgs+=(mc)
@@ -121,6 +120,32 @@ function install_python_stuff()
 	install ${python_stuff[*]}
 }
 
+# install latest nvim from source code
+function install_nvim()
+{
+	echo "Installing latest nvim from sources..."
+	echo "  - Installing pre-requisites..."
+	local pre_requisites=()
+	if [[ $HAS_APT -eq 1 ]]; then
+		pre_requisites=(ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip)
+	fi
+	install ${pre_requisites[*]}
+
+	echo "  - Cloning neovim..."
+	# create tmp directory if not exists
+	mkdir -p ~/tmp/neovim
+	git clone https://github.com/neovim/neovim.git ~/tmp/neovim
+	# switch to stable branch
+	echo "  - Switching to stable..."
+	cd ~/tmp/neovim && git checkout stable
+	echo "  - Building neovim..."
+	# install
+	cd ~/tmp/neovim && make CMAKE_BUILD_TYPE=Release
+	echo "  - Installing neovim..."
+	cd ~/tmp/neovim && sudo make CMAKE_INSTALL_PREFIX=/usr/local/nvim install
+}
+
+
 ########################################
 # main
 ########################################
@@ -144,5 +169,6 @@ install_misc_dev_tools
 # install_arm_cortex_dev_tools
 # install_arm_linux_dev_tools
 install_python_stuff
+# install_nvim
 
 unset install_command
