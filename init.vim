@@ -5,7 +5,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Plugin manager setup {{{
-call plug#begin('~/.vim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 
 " General enhancements
 Plug 'vim-scripts/VisIncr'
@@ -47,19 +47,17 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Glench/Vim-Jinja2-Syntax'
 
 " Colorschemes
-" Using my own colorschemes
-" This is a fork from https://github.com/flazz/vim-colorschemes
-Plug 'amilaperera/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
 
 " Snipmate plugin, related dependencies & snippets
-Plug 'sirver/ultisnips'
+" Plug 'sirver/ultisnips'
 
 " Using my own snippets
 " This is a fork from https://github.com/honza/vim-snippets
 Plug 'amilaperera/vim-snippets'
 
 " Jedi plugin - python autocompletion
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 
 " Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
 Plug 'mhinz/vim-grepper'
@@ -109,7 +107,6 @@ set mouse=nvi                  " use mouse in normal, visual & insert modes
 set mousemodel=popup           " right mosue button pops up a menu
 set updatetime=250             " vim update time - affects the behaviour of certain plugins(git-gutter)
 set laststatus=2               " status line always
-set t_Co=256                   " letting vim know that we're using 256 color terminal
 " }}}
 
 " Changing map leader {{{
@@ -208,21 +205,10 @@ set title                     " display title
 set display=lastline          " show as much as possible of the last line
 
 " ColorScheme {{{2
-let s:myFavourite256ColorScheme  = "lucid"
-" let s:myFavourite256ColorScheme  = "wombat256_amila"
-" let s:myFavourite256ColorScheme  = "xoria256"
-let s:myFavouriteTermColorScheme = "default"
-
-" set the colorscheme only for terminal vim
-" for gui vim use the colorscheme in the .gvimrc
-if ! has('gui_running')
-  set background=dark
-  if (&term == "xterm-256color" || &term == "screen-256color")
-    execute "colorscheme " . s:myFavourite256ColorScheme
-  else
-    execute "colorscheme " . s:myFavouriteTermColorScheme
-  endif
-endif
+set termguicolors
+set background=dark
+colorscheme lucid
+set t_Co=256                   " letting vim know that we're using 256 color terminal
 " }}}2
 
 " }}}

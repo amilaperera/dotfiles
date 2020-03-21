@@ -446,10 +446,8 @@ class NeoVimEnv(Env):
                 dest_dir = os.path.join(home_path, '.config', 'nvim/')
                 if not os.path.exists(dest_dir):
                     os.makedirs(dest_dir)
-                #  Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
-                                   #  os.path.join(dest_dir, 'init.vim'))
-                Env.copy_file(os.path.join('../', config_file),
-                              os.path.join(dest_dir + config_file))
+                Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
+                                   os.path.join(dest_dir, 'init.vim'))
 
     def _install_plugin_manager(self):
         target_file = os.path.expanduser('~/.local/share/nvim/site/autoload/plug.vim')
