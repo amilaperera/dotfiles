@@ -268,13 +268,13 @@ class Env(object):
     def config_files(self, value):
         self._config_files = value
 
-    def raise_exception_if_not_linux_and_windows(self):
+    def raise_if_not_linux_or_win(self):
         if not Env.is_linux() and not Env.is_windows():
             raise OSError('{} environment can not be setup on {}'
                           .format(self.setup_env_name,
                                   Env.get_env_name()))
 
-    def raise_exception_if_not_linux(self):
+    def raise_if_not_linux(self):
         if not Env.is_linux():
             raise OSError('{} environment can not be setup on {}'
                           .format(self.setup_env_name,
@@ -321,7 +321,7 @@ class ZshEnv(Env):
         super(ZshEnv, self).__init__(args, 'zsh', cf)
 
     def check_for_os_validity(self):
-        self.raise_exception_if_not_linux()
+        self.raise_if_not_linux()
 
     def _download_oh_my_zsh(self):
         repo_value = 'https://github.com/amilaperera/oh-my-zsh'
@@ -352,7 +352,7 @@ class BashEnv(Env):
         super(BashEnv, self).__init__(args, 'bash', cf)
 
     def check_for_os_validity(self):
-        self.raise_exception_if_not_linux()
+        self.raise_if_not_linux()
 
     def _create_bash_symlinks(self):
         for config_file in self.config_files:
@@ -372,17 +372,9 @@ class VimEnv(Env):
         super(VimEnv, self).__init__(args, 'vim', cf)
 
     def check_for_os_validity(self):
-        self.raise_exception_if_not_linux_and_windows()
+        self.raise_if_not_linux_or_win()
 
-    def _get_plugins_file(self):
-        # Plugins are in .vimrc file
-        plugins_file = self.config_files[0]
-        if Env.is_windows():
-            return plugins_file.replace('.', '_')
-        else:
-            return plugins_file
-
-    def _set_vimrc_files(self):
+    def _set_config_files(self):
         home_path = self.install_dir
         print('Copying vimrc files to {}'.format(home_path))
         for config_file in self.config_files:
@@ -421,7 +413,69 @@ class VimEnv(Env):
                 subprocess.check_call(['vim', '+PlugInstall', '+qall'])
 
     def setup_env(self):
-        self._set_vimrc_files()
+        self._set_config_files()
+        self._install_plugin_manager()
+        self._install_plugins()
+
+
+class NeoVimEnv(Env):
+    """NeoVim environment setup class"""
+
+    def __init__(self, args):
+        # alias .vimrc to ~/.config/nvim/init.vim
+        cf = ('init.vim',)
+        super(NeoVimEnv, self).__init__(args, 'vim', cf)
+
+    def check_for_os_validity(self):
+        self.raise_if_not_linux_or_win()
+
+    def _set_config_files(self):
+        home_path = self.install_dir
+        print('Setting up config file')
+        for config_file in self.config_files:
+            if Env.is_windows():
+                # TODO ????
+                #  # copy .vimrc & .gvimrc files as
+                #  # _vimrc and _gvimrc files respectively to the $HOME folder
+                #  Env.copy_file(os.path.join('../', config_file),
+                              #  os.path.join(home_path,
+                                           #  '_' + config_file.split('.')[1]))
+                pass
+            else:
+                # create a link to .vimrc & .gvimrc files in the home directory
+                dest_dir = os.path.join(home_path, '.config', 'nvim/')
+                if not os.path.exists(dest_dir):
+                    os.makedirs(dest_dir)
+                #  Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
+                                   #  os.path.join(dest_dir, 'init.vim'))
+                Env.copy_file(os.path.join('../', config_file),
+                              os.path.join(dest_dir + config_file))
+
+    def _install_plugin_manager(self):
+        target_file = os.path.expanduser('~/.local/share/nvim/site/autoload/plug.vim')
+        url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+        if Env.is_windows():
+            target_file = os.path.expanduser('~/vimfiles/autoload/plug.vim')
+
+        # create parent directory if not exists
+        if not os.path.exists(os.path.dirname(target_file)):
+            os.makedirs(os.path.dirname(target_file))
+
+        resp = requests.get(url)
+        with open(target_file, 'wb') as f:
+            f.write(resp.content)
+
+    def _install_plugins(self):
+        if Env.is_windows():
+            # TODO: ??
+            pass
+        else:
+            with open(os.devnull, 'w') as devnull:
+                subprocess.check_call(['nvim', '+PlugInstall', '+qall'])
+
+    def setup_env(self):
+        self._set_config_files()
         self._install_plugin_manager()
         self._install_plugins()
 
@@ -431,8 +485,6 @@ class MiscEnv(Env):
 
     def __init__(self, args):
         cf = ('.tmux.conf',
-              '.irbrc',
-              '.ackrc',
               '.agignore',
               '.colordiffrc',
               '.gitconfig',
@@ -440,7 +492,7 @@ class MiscEnv(Env):
         super(MiscEnv, self).__init__(args, 'misc', cf)
 
     def check_for_os_validity(self):
-        self.raise_exception_if_not_linux()
+        self.raise_if_not_linux()
 
     def _create_misc_symlinks(self):
         for config_file in self.config_files:
@@ -463,7 +515,7 @@ class ToolsEnv(Env):
         super(ToolsEnv, self).__init__(args, 'tools', cf)
 
     def check_for_os_validity(self):
-        self.raise_exception_if_not_linux()
+        self.raise_if_not_linux()
 
     def _create_tools_symlinks(self):
         Env.create_directory_if_not_exists(os.path.join(self.install_dir, 'tools'))
@@ -477,7 +529,7 @@ class ToolsEnv(Env):
 
 
 def main():
-    supported_env_targets = ['bash', 'zsh', 'vim', 'misc', 'tools']
+    supported_env_targets = ['bash', 'zsh', 'vim', 'nvim', 'misc', 'tools']
 
     parser = argparse.ArgumentParser(description='Set up the environment')
     parser.add_argument('-e', '--env',
@@ -505,6 +557,8 @@ def main():
             BashEnv(args).setup()
         elif env == 'vim':
             VimEnv(args).setup()
+        elif env == 'nvim':
+            NeoVimEnv(args).setup()
         elif env == 'misc':
             MiscEnv(args).setup()
         elif env == 'tools':
