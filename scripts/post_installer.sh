@@ -138,11 +138,8 @@ function install_nvim()
 	# switch to stable branch
 	echo "  - Switching to stable..."
 	cd ~/tmp/neovim && git checkout stable
-	echo "  - Building neovim..."
-	# install
-	cd ~/tmp/neovim && make CMAKE_BUILD_TYPE=Release
-	echo "  - Installing neovim..."
-	cd ~/tmp/neovim && sudo make CMAKE_INSTALL_PREFIX=/usr/local/nvim install
+	echo "  - Building and installing neovim..."
+	cd ~/tmp/neovim && sudo make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=/usr/local/nvim install
 }
 
 
@@ -169,6 +166,6 @@ install_misc_dev_tools
 # install_arm_cortex_dev_tools
 # install_arm_linux_dev_tools
 install_python_stuff
-# install_nvim
+install_nvim
 
 unset install_command
