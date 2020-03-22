@@ -56,9 +56,6 @@ Plug 'sirver/ultisnips'
 " This is a fork from https://github.com/honza/vim-snippets
 Plug 'amilaperera/vim-snippets'
 
-" Jedi plugin - python autocompletion
-Plug 'davidhalter/jedi-vim'
-
 " Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
 Plug 'mhinz/vim-grepper'
 
@@ -78,18 +75,14 @@ Plug 'cohama/lexima.vim'
 " scratch pad
 Plug 'konfekt/vim-scratchpad'
 
+" colde complete
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
 call plug#end()
 " }}}
 
 " General settings {{{
 "
-" python path recognition for Jedi
-" TODO: This is actually a bug that will probably be resolved in futre.
-" https://github.com/davidhalter/jedi-vim/issues/870
-if has('win32') || has('win64')
-  py import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
-endif
-
 set exrc                       " use a local version of .(g)vimrc
 set secure                     " disable unsafe commands in local .vimrc files
 
@@ -233,6 +226,10 @@ set dictionary+=/usr/share/dict/words " set the dictionary file
 " }}}
 
 " Settings related to external plugins {{{
+" Deoplete {{{2
+let g:deoplete#enable_at_startup = 1
+" }}}
+
 " BufferExplorer mappings {{{2
 nnoremap <silent> <F12> :BufExplorer<CR>
 " }}}2
