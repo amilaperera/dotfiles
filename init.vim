@@ -50,14 +50,14 @@ Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'flazz/vim-colorschemes'
 
 " Snipmate plugin, related dependencies & snippets
-" Plug 'sirver/ultisnips'
+Plug 'sirver/ultisnips'
 
 " Using my own snippets
 " This is a fork from https://github.com/honza/vim-snippets
 Plug 'amilaperera/vim-snippets'
 
 " Jedi plugin - python autocompletion
-" Plug 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim'
 
 " Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
 Plug 'mhinz/vim-grepper'
@@ -207,7 +207,7 @@ set display=lastline          " show as much as possible of the last line
 " ColorScheme {{{2
 set termguicolors
 set background=dark
-colorscheme lucid
+colorscheme molokai
 set t_Co=256                   " letting vim know that we're using 256 color terminal
 " }}}2
 
