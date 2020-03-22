@@ -465,6 +465,13 @@ class NeoVimEnv(Env):
             f.write(resp.content)
 
     def _install_plugins(self):
+        nvim_found = False
+        try:
+            subprocess.call(["nvim", "--version"])
+        except OSError as e:
+            if e.errno == errno.ENOENT:
+                raise OSError("NeoVim not found. Please install neovim before running this")
+
         if Env.is_windows():
             # TODO: ??
             pass
