@@ -204,7 +204,7 @@ set display=lastline          " show as much as possible of the last line
 " for gui vim use the colorscheme in the .gvimrc
 if ! has('gui_running')
   set background=dark
-  if (&term == "xterm-256color" || &term == "screen-256color")
+  if (&term == "xterm-256color" || &term == "screen-256color" || &term == "tmux-256color")
     colorscheme lucius
   else
     colorscheme default
