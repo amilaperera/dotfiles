@@ -27,11 +27,6 @@ Plug 'sjl/gundo.vim'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-misc'
 
-" Using the updated version of bufkill plugin
-" since the original vim-script repository is not yet
-" updated, get the fork it and updated it
-Plug 'amilaperera/bufkill.vim'
-
 " General development related
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
@@ -47,9 +42,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Glench/Vim-Jinja2-Syntax'
 
 " Colorschemes
-" Using my own colorschemes
-" This is a fork from https://github.com/flazz/vim-colorschemes
-Plug 'amilaperera/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
 
 " Snipmate plugin, related dependencies & snippets
 Plug 'sirver/ultisnips'
@@ -208,19 +201,14 @@ set title                     " display title
 set display=lastline          " show as much as possible of the last line
 
 " ColorScheme {{{2
-let s:myFavourite256ColorScheme  = "lucid"
-" let s:myFavourite256ColorScheme  = "wombat256_amila"
-" let s:myFavourite256ColorScheme  = "xoria256"
-let s:myFavouriteTermColorScheme = "default"
-
 " set the colorscheme only for terminal vim
 " for gui vim use the colorscheme in the .gvimrc
 if ! has('gui_running')
   set background=dark
   if (&term == "xterm-256color" || &term == "screen-256color")
-    execute "colorscheme " . s:myFavourite256ColorScheme
+    colorscheme lucius
   else
-    execute "colorscheme " . s:myFavouriteTermColorScheme
+    colorscheme default
   endif
 endif
 " }}}2
@@ -296,10 +284,6 @@ vmap <silent> <Leader>a: :Tabularize /:\zs<CR>
 call yankstack#setup()
 nmap <C-p> <Plug>yankstack_substitute_older_paste
 nmap <C-n> <Plug>yankstack_substitute_newer_paste
-" }}}2
-
-" bufkill {{{2
-nmap <silent> <Leader>bd :BD<CR>
 " }}}2
 
 " winresizer {{{2

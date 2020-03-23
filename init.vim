@@ -27,11 +27,6 @@ Plug 'sjl/gundo.vim'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-misc'
 
-" Using the updated version of bufkill plugin
-" since the original vim-script repository is not yet
-" updated, get the fork it and updated it
-Plug 'amilaperera/bufkill.vim'
-
 " General development related
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
@@ -279,10 +274,6 @@ vmap <silent> <Leader>a: :Tabularize /:\zs<CR>
 call yankstack#setup()
 nmap <C-p> <Plug>yankstack_substitute_older_paste
 nmap <C-n> <Plug>yankstack_substitute_newer_paste
-" }}}2
-
-" bufkill {{{2
-nmap <silent> <Leader>bd :BD<CR>
 " }}}2
 
 " winresizer {{{2
