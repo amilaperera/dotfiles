@@ -44,12 +44,11 @@ Plug 'Glench/Vim-Jinja2-Syntax'
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
 
-" Snipmate plugin, related dependencies & snippets
+" Snippets plugin, related dependencies & snippets
 Plug 'sirver/ultisnips'
 
-" Using my own snippets
-" This is a fork from https://github.com/honza/vim-snippets
-Plug 'amilaperera/vim-snippets'
+" Vim-snippets to be used along with UltiSnips & SnipMate
+Plug 'honza/vim-snippets'
 
 " Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
 Plug 'mhinz/vim-grepper'
