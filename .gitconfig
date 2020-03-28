@@ -9,10 +9,10 @@
 [color]
 	ui = always
 [diff]
-	tool = meld
+	tool = bc
 [difftool]
 	prompt = false
 [merge]
-	tool = meld
+	tool = bc
 [mergetool]
 	prompt = false
