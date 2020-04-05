@@ -221,6 +221,11 @@ set dictionary+=/usr/share/dict/words " set the dictionary file
 " }}}
 
 " Settings related to external plugins {{{
+" vim-airline {{{2
+let g:airline_powerline_fonts = 1
+let g:airline_theme='molokai'
+" }}}
+
 " Deoplete {{{2
 let g:deoplete#enable_at_startup = 1
 " }}}
