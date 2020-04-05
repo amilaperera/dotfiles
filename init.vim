@@ -59,9 +59,8 @@ Plug 'airblade/vim-gitgutter'
 " asynchronous command runner
 Plug 'skywind3000/asyncrun.vim'
 
-" vim-airline
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" vim-lightline
+Plug 'itchyny/lightline.vim'
 
 " auto-closing
 Plug 'cohama/lexima.vim'
@@ -69,7 +68,7 @@ Plug 'cohama/lexima.vim'
 " scratch pad
 Plug 'konfekt/vim-scratchpad'
 
-" colde complete
+" code completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
@@ -94,6 +93,7 @@ set mouse=nvi                  " use mouse in normal, visual & insert modes
 set mousemodel=popup           " right mosue button pops up a menu
 set updatetime=250             " vim update time - affects the behaviour of certain plugins(git-gutter)
 set laststatus=2               " status line always
+set noshowmode                 " mode is evident via statusline plugin
 " }}}
 
 " Changing map leader {{{
@@ -220,9 +220,30 @@ set dictionary+=/usr/share/dict/words " set the dictionary file
 " }}}
 
 " Settings related to external plugins {{{
-" Airline related settings {{{2
-let g:airline_powerline_fonts = 1
-let g:airline_theme='molokai'
+" Lightline related settings {{{2
+let g:lightline = {
+      \ 'colorscheme': 'powerline',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead',
+      \   'filename': 'LightlineFilename'
+      \ },
+      \ }
+
+" File path relative to git project root or absolute path otherwise.
+" An adaptation from the following.
+" https://github.com/itchyny/lightline.vim/issues/293
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%:p')
+endfunction
 " }}}
 
 " Deoplete {{{2
@@ -430,11 +451,13 @@ augroup END
 " When .vimrc is edited, reload it {{{2
 if has('win32') || has('win64')
   autocmd! BufWritePost _vimrc source $MYVIMRC
+  autocmd! BufWritePost init.vim source $MYVIMRC
   autocmd! BufWritePost vimrc source $MYVIMRC
   autocmd! BufWritePost _gvimrc source $HOME/_gvimrc
   autocmd! BufWritePost gvimrc source $HOME/gvimrc
 else
   autocmd! BufWritePost .vimrc source $MYVIMRC
+  autocmd! BufWritePost init.vim source $MYVIMRC
   autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
 endif
 " }}}2
