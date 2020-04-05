@@ -59,8 +59,9 @@ Plug 'airblade/vim-gitgutter'
 " asynchronous command runner
 Plug 'skywind3000/asyncrun.vim'
 
-" vim-lightline
-Plug 'itchyny/lightline.vim'
+" vim-airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " auto-closing
 Plug 'cohama/lexima.vim'
@@ -220,32 +221,6 @@ set dictionary+=/usr/share/dict/words " set the dictionary file
 " }}}
 
 " Settings related to external plugins {{{
-" Lightline related settings {{{2
-let g:lightline = {
-      \ 'colorscheme': 'powerline',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead',
-      \   'filename': 'LightlineFilename'
-      \ },
-      \ }
-
-" File path relative to git project root or absolute path otherwise.
-" An adaptation from the following.
-" https://github.com/itchyny/lightline.vim/issues/293
-function! LightlineFilename()
-  let root = fnamemodify(get(b:, 'git_dir'), ':h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:]
-  endif
-  return expand('%:p')
-endfunction
-" }}}
-
 " Deoplete {{{2
 let g:deoplete#enable_at_startup = 1
 " }}}
