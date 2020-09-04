@@ -170,7 +170,7 @@ set cino=l1
 set cursorline                " display cursor line(This might make the window redraw a little slow)
 set nocursorcolumn            " display nocursorcolumn - window redraw is slow
 
-set nonumber                  " show line numbers
+set number                    " show line numbers
 set numberwidth=6             " safe upto 999999
 
 set hlsearch                  " highlight searched phrases

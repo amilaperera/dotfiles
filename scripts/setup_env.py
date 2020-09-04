@@ -434,13 +434,10 @@ class NeoVimEnv(Env):
         print('Setting up config file')
         for config_file in self.config_files:
             if Env.is_windows():
-                # TODO ????
-                #  # copy .vimrc & .gvimrc files as
-                #  # _vimrc and _gvimrc files respectively to the $HOME folder
-                #  Env.copy_file(os.path.join('../', config_file),
-                              #  os.path.join(home_path,
-                                           #  '_' + config_file.split('.')[1]))
-                pass
+                dest_dir = os.path.join(home_path, 'AppData', 'Local', 'nvim/')
+                if not os.path.exists(dest_dir):
+                    os.makedirs(dest_dir)
+                Env.copy_file(os.path.join('../', config_file), os.path.join(dest_dir, 'init.vim'))
             else:
                 # create a link to .vimrc & .gvimrc files in the home directory
                 dest_dir = os.path.join(home_path, '.config', 'nvim/')
@@ -454,7 +451,7 @@ class NeoVimEnv(Env):
         url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
         if Env.is_windows():
-            target_file = os.path.expanduser('~/vimfiles/autoload/plug.vim')
+            target_file = os.path.join(self.install_dir, 'AppData', 'Local', 'nvim-data', 'site', 'autoload', 'plug.vim')
 
         # create parent directory if not exists
         if not os.path.exists(os.path.dirname(target_file)):
@@ -468,16 +465,11 @@ class NeoVimEnv(Env):
         nvim_found = False
         try:
             subprocess.call(["nvim", "--version"])
+            with open(os.devnull, 'w') as devnull:
+                subprocess.check_call(['nvim', '+PlugInstall', '+qall'])
         except OSError as e:
             if e.errno == errno.ENOENT:
                 raise OSError("NeoVim not found. Please install neovim before running this")
-
-        if Env.is_windows():
-            # TODO: ??
-            pass
-        else:
-            with open(os.devnull, 'w') as devnull:
-                subprocess.check_call(['nvim', '+PlugInstall', '+qall'])
 
     def setup_env(self):
         self._set_config_files()
