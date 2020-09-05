@@ -423,7 +423,7 @@ class NeoVimEnv(Env):
 
     def __init__(self, args):
         # alias .vimrc to ~/.config/nvim/init.vim
-        cf = ('init.vim',)
+        cf = ('init.vim', 'ginit.vim')
         super(NeoVimEnv, self).__init__(args, 'vim', cf)
 
     def check_for_os_validity(self):
@@ -437,14 +437,14 @@ class NeoVimEnv(Env):
                 dest_dir = os.path.join(home_path, 'AppData', 'Local', 'nvim/')
                 if not os.path.exists(dest_dir):
                     os.makedirs(dest_dir)
-                Env.copy_file(os.path.join('../', config_file), os.path.join(dest_dir, 'init.vim'))
+                Env.copy_file(os.path.join('../', config_file), os.path.join(dest_dir, config_file))
             else:
                 # create a link to .vimrc & .gvimrc files in the home directory
                 dest_dir = os.path.join(home_path, '.config', 'nvim/')
                 if not os.path.exists(dest_dir):
                     os.makedirs(dest_dir)
                 Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
-                                   os.path.join(dest_dir, 'init.vim'))
+                                   os.path.join(dest_dir, config_file))
 
     def _install_plugin_manager(self):
         target_file = os.path.expanduser('~/.local/share/nvim/site/autoload/plug.vim')
