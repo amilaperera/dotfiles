@@ -3,17 +3,19 @@
 install_command=
 HAS_APT=0
 HAS_YUM=0
+HAS_PACMAN=0
 
 function install()
 {
-	cmd=`echo "sudo ${install_command} ${@} -y"`
+	cmd=
+	[[ $HAS_PACMAN -eq 1 ]] && cmd=`echo "sudo ${install_command} ${@} -y"` || cmd=`echo "sudo ${install_command} ${@} -y"`
 	echo $cmd
 	sh -c "$cmd"
 }
 
 function pip_install()
 {
-	cmd=`echo "pip install ${@}"`
+	cmd=`echo "pip3 install ${@}"`
 	echo $cmd
 	sh -c "$cmd"
 }
@@ -24,16 +26,12 @@ function install_essentials()
 	local essential_pkgs=()
 	essential_pkgs+=(zsh)
 	essential_pkgs+=(tmux)
-	essential_pkgs+=(tmuxinator)
+	essential_pkgs+=(tmuxp)
 	essential_pkgs+=(git)
-	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=(the_silver_searcher) || essential_pkgs+=(silversearcher-ag)
+	[[ $HAS_APT -eq 1 ]] && essential_pkgs+=(silversearcher-ag) || essential_pkgs+=(the_silver_searcher)
 	essential_pkgs+=(tree)
-	essential_pkgs+=(mc)
-	[[ $HAS_APT -eq 1 ]] && essential_pkgs+=(lfm)
 	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=(redhat-lsb)
 	essential_pkgs+=(htop)
-	essential_pkgs+=(vim-nox)
-	essential_pkgs+=(vim)
 	essential_pkgs+=(wget)
 	essential_pkgs+=(curl)
 	essential_pkgs+=(xclip)
@@ -49,32 +47,24 @@ function install_essentials()
 			sh -c "sudo lchsh -i ${USER}"
 
 		# For Ubuntu this works, coz it doesn't have lchsh installed
-		[[ $HAS_APT -eq 1 ]] && \
+		[[ $HAS_APT -eq 1 || $HAS_PACMAN -eq 1 ]] && \
 			echo "Changing to zsh..." && \
-			local zsh_exe=`which zsh` && \
-			sh -c "chsh --shell ${zsh_exe}"
+			local zsh_prg=`which zsh` && \
+			sh -c "chsh --shell ${zsh_prg}"
 	else
 		echo "ZSH already selected as the login shell"
 	fi
 }
 
-function install_dictionary()
-{
-	echo "Installing dictionary..."
-	dict_pkgs=(dictd dict-gcide dict-moby-thesaurus)
-
-	install ${dict_pkgs[*]}
-}
-
-function install_misc_dev_tools()
+function install_dev_tools()
 {
 	echo "Installing dev tools..."
 	local dev_tools=()
 	dev_tools+=(cmake)
-	dev_tools+=(libboost-all-dev)
+	[[ $HAS_PACMAN -eq 1 ]] && dev_tools+=(boost-libs) || dev_tools+=(libboost-all-dev)
 	dev_tools+=(clang)
-	[[ $HAS_APT -eq 1 ]] && dev_tools+=(build-essential)
-	[[ $HAS_YUM -eq 1 ]] && dev_tools+=(ctags) || dev_tools+=(exuberant-ctags)
+	[[ $HAS_APT -eq 1 ]] && dev_tools+=(build-essential) || dev_tools+=(base-devel)
+	[[ $HAS_APT -eq 1 ]] && dev_tools+=(exuberant-ctags) || dev_tools+=(ctags)
 
 	install ${dev_tools[*]}
 }
@@ -118,6 +108,9 @@ function install_python_stuff()
 	python_stuff+=(python-jedi)
 
 	install ${python_stuff[*]}
+	local pips=()
+	pips+=(pynvim)
+	pip_install ${pips[*]}
 }
 
 # install latest nvim from source code
@@ -156,16 +149,22 @@ else
 	if [[ $? -eq 0 ]]; then
 		HAS_YUM=1
 		install_command='dnf install'
+	else
+		which pacman &> /dev/null
+		if [[ $? -eq 0 ]]; then
+			HAS_PACMAN=1
+			install_command='pacman -S'
+		fi
 	fi
 fi
 
 
 install_essentials
-# install_dictionary
-install_misc_dev_tools
+install_dev_tools
+install_python_stuff
 # install_arm_cortex_dev_tools
 # install_arm_linux_dev_tools
-install_python_stuff
-install_nvim
+# install_nvim
 
 unset install_command
+
