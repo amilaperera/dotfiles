@@ -158,12 +158,16 @@ function install_snap()
 	sh -c "sudo ln -s /var/lib/snapd/snap /snap"
 
 	# Now install the most essential snaps
+	echo " - Install snap core"
+	snap_core=(core)
+	snap_install ${snap_core[*]}
+
 	echo " - Installing snap-store"
 	snaps=(snap-store)
 	snap_install ${snaps[*]}
 
 	# Now classics
-	snaps_classic=(clion pycharm-community)
+	snaps_classic=(chromium)
 	# One per --classic command
 	for snap in "${snaps_classic[@]}"; do
 		snap_install_classic ${snap}
@@ -194,13 +198,16 @@ else
 fi
 
 
-install_essentials
-install_dev_tools
-install_python_stuff
-install_snap
+#
+# Uncomment the necessary installations
+#
+# install_essentials
+# install_dev_tools
+# install_python_stuff
 # install_arm_cortex_dev_tools
 # install_arm_linux_dev_tools
 # install_nvim
+# install_snap
 
 unset install_command
 
