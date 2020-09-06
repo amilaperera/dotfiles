@@ -20,6 +20,20 @@ function pip_install()
 	sh -c "$cmd"
 }
 
+function snap_install()
+{
+	cmd=`echo "sudo snap install ${@}"`
+	echo $cmd
+	sh -c "$cmd"
+}
+
+function snap_install_classic()
+{
+	cmd=`echo "sudo snap install ${@} --classic"`
+	echo $cmd
+	sh -c "$cmd"
+}
+
 function install_essentials()
 {
 	echo "Installing essentials..."
@@ -61,7 +75,7 @@ function install_dev_tools()
 	echo "Installing dev tools..."
 	local dev_tools=()
 	dev_tools+=(cmake)
-	[[ $HAS_PACMAN -eq 1 ]] && dev_tools+=(boost-libs) || dev_tools+=(libboost-all-dev)
+	[[ $HAS_PACMAN -eq 1 ]] && dev_tools+=(boost boost-libs) || dev_tools+=(libboost-all-dev)
 	dev_tools+=(clang)
 	[[ $HAS_APT -eq 1 ]] && dev_tools+=(build-essential) || dev_tools+=(base-devel)
 	[[ $HAS_APT -eq 1 ]] && dev_tools+=(exuberant-ctags) || dev_tools+=(ctags)
@@ -135,6 +149,27 @@ function install_nvim()
 	cd ~/tmp/neovim && sudo make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=/usr/local/nvim install
 }
 
+# TODO: Only tested in Arch
+function install_snap()
+{
+	snap_pkgs=(snapd)
+	install ${snap_pkgs[*]}
+	sh -c "sudo systemctl enable --now snapd.socket"
+	sh -c "sudo ln -s /var/lib/snapd/snap /snap"
+
+	# Now install the most essential snaps
+	echo " - Installing snap-store"
+	snaps=(snap-store)
+	snap_install ${snaps[*]}
+
+	# Now classics
+	snaps_classic=(clion pycharm-community)
+	# One per --classic command
+	for snap in "${snaps_classic[@]}"; do
+		snap_install_classic ${snap}
+	done
+}
+
 
 ########################################
 # main
@@ -162,6 +197,7 @@ fi
 install_essentials
 install_dev_tools
 install_python_stuff
+install_snap
 # install_arm_cortex_dev_tools
 # install_arm_linux_dev_tools
 # install_nvim
