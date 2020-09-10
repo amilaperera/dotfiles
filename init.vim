@@ -498,6 +498,10 @@ noremap <silent> <Leader>clh :wincmd h<CR>:close<CR>
 noremap <silent> <Leader>cll :wincmd l<CR>:close<CR>
 " }}}2
 
+" Shift-Insert {{{2
+map! <S-Insert> <C-R>+
+" }}}2
+
 " merge consecutive empty lines and clean up trailing spaces(from tpope's .vimrc file) {{{2
 map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
 " }}}2
