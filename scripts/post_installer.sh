@@ -5,6 +5,17 @@ HAS_APT=0
 HAS_YUM=0
 HAS_PACMAN=0
 
+IS_CENTOS=0
+
+function set_os()
+{
+	local os_name=`awk -F= '/^NAME/{print $2}' /etc/os-release`
+	echo "OS: ${os_name}"
+	if [[ ${os_name} = *"CentOS"* ]]; then
+		IS_CENTOS=1
+	fi
+}
+
 function install()
 {
 	cmd=
@@ -40,9 +51,11 @@ function install_essentials()
 	local essential_pkgs=()
 	essential_pkgs+=(zsh)
 	essential_pkgs+=(tmux)
-	essential_pkgs+=(tmuxp)
+	[[ $IS_CENTOS -eq 0 ]] && essential_pkgs+=(tmuxp)
 	essential_pkgs+=(git)
-	[[ $HAS_APT -eq 1 ]] && essential_pkgs+=(silversearcher-ag) || essential_pkgs+=(the_silver_searcher)
+	if [[ $IS_CENTOS -eq 0 ]]; then
+		[[ $HAS_APT -eq 1 ]] && essential_pkgs+=(silversearcher-ag) || essential_pkgs+=(the_silver_searcher)
+	fi
 	essential_pkgs+=(tree)
 	[[ $HAS_YUM -eq 1 ]] && essential_pkgs+=(redhat-lsb)
 	essential_pkgs+=(htop)
@@ -75,9 +88,11 @@ function install_dev_tools()
 	echo "Installing dev tools..."
 	local dev_tools=()
 	dev_tools+=(cmake)
-	[[ $HAS_PACMAN -eq 1 ]] && dev_tools+=(boost boost-libs) || dev_tools+=(libboost-all-dev)
-	dev_tools+=(clang)
-	[[ $HAS_APT -eq 1 ]] && dev_tools+=(build-essential) || dev_tools+=(base-devel)
+	if [[ $IS_CENTOS -eq 0 ]]; then
+		[[ $HAS_PACMAN -eq 1 ]] && dev_tools+=(boost boost-libs) || dev_tools+=(libboost-all-dev)
+		dev_tools+=(clang)
+		[[ $HAS_APT -eq 1 ]] && dev_tools+=(build-essential) || dev_tools+=(base-devel)
+	fi
 	[[ $HAS_APT -eq 1 ]] && dev_tools+=(exuberant-ctags) || dev_tools+=(ctags)
 
 	install ${dev_tools[*]}
@@ -201,6 +216,7 @@ fi
 #
 # Uncomment the necessary installations
 #
+set_os
 # install_essentials
 # install_dev_tools
 # install_python_stuff
