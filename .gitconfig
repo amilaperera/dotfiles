@@ -16,3 +16,5 @@
 	tool = bc
 [mergetool]
 	prompt = false
+[pull]
+	rebase = false
