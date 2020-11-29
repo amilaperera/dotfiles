@@ -182,11 +182,11 @@ function install_snap()
 	snap_install ${snaps[*]}
 
 	# Now classics
-	snaps_classic=(chromium)
-	# One per --classic command
-	for snap in "${snaps_classic[@]}"; do
-		snap_install_classic ${snap}
-	done
+	# snaps_classic=(chromium)
+	# # One per --classic command
+	# for snap in "${snaps_classic[@]}"; do
+		# snap_install_classic ${snap}
+	# done
 }
 
 
