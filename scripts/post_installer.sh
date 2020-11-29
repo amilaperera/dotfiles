@@ -143,7 +143,7 @@ function install_python_stuff()
 }
 
 # install latest nvim from source code
-function install_nvim()
+function install_nvim_from_sources()
 {
 	echo "Installing latest nvim from sources..."
 	echo "  - Installing pre-requisites..."
@@ -164,7 +164,7 @@ function install_nvim()
 	cd ~/tmp/neovim && sudo make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=/usr/local/nvim install
 }
 
-# TODO: Only tested in Arch
+# TODO: Tested in Arch & Fedora
 function install_snap()
 {
 	snap_pkgs=(snapd)
@@ -222,7 +222,7 @@ set_os
 # install_python_stuff
 # install_arm_cortex_dev_tools
 # install_arm_linux_dev_tools
-# install_nvim
+# install_nvim_from_sources
 # install_snap
 
 unset install_command
