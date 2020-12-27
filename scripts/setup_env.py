@@ -43,10 +43,10 @@ class Env(object):
                 git_executable = args.path
         else:
             # search the PATH and check if 'git' command is available
-            split_regex = '[;]' if Env.is_windows() else '[:]'
-            git_cmd_name = 'git.exe' if Env.is_windows() else 'git'
+            split_regex = path_split_regex()
+            git_exe = git_cmd_name()
             for directory in re.split(split_regex, os.environ['PATH']):
-                git_executable = os.path.join(directory, git_cmd_name)
+                git_executable = os.path.join(directory, git_exe)
                 if os.path.exists(git_executable):
                     break
                 else:
@@ -73,6 +73,17 @@ class Env(object):
     def is_linux():
         return (Env.get_platform_name().startswith('linux')
                 or Env.get_platform_name().startswith('cygwin'))
+
+    @staticmethod
+    def path_split_regex():
+        return '[;]' if Env.is_windows() else '[:]'
+
+    @staticmethod
+    def git_cmd_name():
+        name = 'git'
+        if Env.is_windows():
+            name += '.exe'
+        return name
 
     @staticmethod
     def get_env_name():
