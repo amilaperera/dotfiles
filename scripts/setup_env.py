@@ -43,8 +43,8 @@ class Env(object):
                 git_executable = args.path
         else:
             # search the PATH and check if 'git' command is available
-            split_regex = path_split_regex()
-            git_exe = git_cmd_name()
+            split_regex = Env.path_split_regex()
+            git_exe = Env.git_cmd_name()
             for directory in re.split(split_regex, os.environ['PATH']):
                 git_executable = os.path.join(directory, git_exe)
                 if os.path.exists(git_executable):
@@ -324,7 +324,7 @@ class ZshEnv(Env):
     local_oh_my_zsh_ref_dir_name = '.oh-my-zsh'
     local_zshrc_ref_path = os.path.join(local_oh_my_zsh_ref_dir_name,
                                         'custom',
-                                        'template',
+                                        'templates',
                                         '.zshrc')
 
     def __init__(self, args):
@@ -335,7 +335,7 @@ class ZshEnv(Env):
         self.raise_if_not_linux()
 
     def _download_oh_my_zsh(self):
-        repo_value = 'https://github.com/amilaperera/oh-my-zsh'
+        repo_value = 'https://github.com/amilaperera/ohmyzsh'
         dest_value = os.path.join(self.install_dir,
                                   ZshEnv.local_oh_my_zsh_ref_dir_name)
         Env.clone_repo(**dict(repo=repo_value, dest=dest_value))

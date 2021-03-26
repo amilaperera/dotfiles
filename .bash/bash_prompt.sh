@@ -50,22 +50,13 @@ un=$(whoami)
 git_prompt_file=/usr/share/git-core/contrib/completion/git-prompt.sh
 [ -f $git_prompt_file ] && source $git_prompt_file
 
-function __svn_ps1() {
-	local s=
-	if [[ -d ".svn" ]] ; then
-		rev_num=$(svn info | sed -n -e '/^Revision: \([0-9]*\).*$/s//\1/p')
-		echo " (svn: $rev_num)"
-	fi
-}
 ##################################################################
 ## prompt command function
 ## basically extracted from http://tldp.org/HOWTO/Bash-Prompt-HOWTO/x869.html
 ## and slightly adjusted
 ##################################################################
 function prompt_command() {
-	# GIT_PS1_SHOWDIRTYSTATE=true
-	# git_prompt=$(__git_ps1 " (git: %s)")
-	# svn_prompt=$(__svn_ps1)
+	git_prompt=$(__git_ps1 " (%s)")
 	curr_dir=$(pwd)
 }
 

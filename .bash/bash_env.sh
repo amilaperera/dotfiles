@@ -73,8 +73,6 @@ function _set_path()
 	# If you want to add a path permenantly add it to mypathstring
 	# priority of the path is increased as the paths are added to the bottom of the mypathstring
 	local mypatharray=(
-					"/cygdrive/c/Windows/System32"
-					"/cygdrive/c/Vim/vim73"
 					"/user/games"
 					"/sbin"
 					"/bin"
@@ -119,8 +117,8 @@ export MANPAGER="less"
 
 #ulimit -S -c 0 >/dev/null 2>&1    # no core files by default
 case $workinghost in
-CYGWIN*		)	export VISUAL='vim' ;;
-*			)	export VISUAL='vim' ;;
+CYGWIN*		)	export VISUAL='nvim' ;;
+*			)	export VISUAL='nvim' ;;
 esac
 
 export EDITOR="$VISUAL"
@@ -131,16 +129,6 @@ export FCEDIT="$VISUAL"
 export LS_OPTIONS="--color=auto -F -h"
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-
-# loads rvm functions
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-# the default ruby/rails version did not work properly when
-# switching to tmux
-# the following fixed it
-if _check_if_command_exists rvm; then
-	[[ $TERM = "screen-256color" ]] && rvm use default > /dev/null
-fi
 
 ################################################################################
 ## shell behaviour adjustment with shopt options and set options

@@ -46,18 +46,6 @@ alias _='sudo'
 alias du='du -kh'
 alias df='df -kTh'
 
-if [[ $workinghost == CYGWIN* ]]; then
-	alias ifconfig='ipconfig'
-	alias vim='$VISUAL'
-	alias C='cygstart.exe'
-elif [[ $workinghost == Linux* ]]; then
-	if [[ $DESKTOP_SESSION == "xfce" ]]; then
-		alias C='thunar'
-	else
-		alias C='nautilus' # by default it is assumed to be nautilus
-	fi
-fi
-
 alias more='less'
 alias e='$VISUAL'       # edit in VISUAL, E is a function to edit in gvim in background
 alias view='$VISUAL -R' # opens the file in readonly mode
@@ -107,17 +95,9 @@ fi
 ## build & compiling related
 alias mk='make clean && make'
 
-## start tmux
-alias t='tmux'
-alias ta='tmux attach-session -t'
-alias tk='tmux kill-session -t'
-alias tl='tmux list-sessions'
-
-## start irb(interactive ruby shell)
-alias R='irb'
-
-# svn in colors {{{
-alias svn='python ~/tools/svn-color.py'
+alias t='tmux -2'
+alias ta='tmux -2 attach-session -t'
+alias tk='tmux -2 kill-session -t'
+alias tl='tmux -2 list-sessions'
 # }}}
 
-alias py_win='/cygdrive/c/Python27/python.exe'
