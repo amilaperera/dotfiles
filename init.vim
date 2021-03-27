@@ -409,7 +409,7 @@ augroup END
 
 augroup FTOptions
   autocmd!
-  autocmd Filetype sh,zsh,csh,tcsh setl ts=2 noet fdm=marker
+  autocmd Filetype sh,zsh,csh,tcsh setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype yaml            setl ts=4 sw=4 sts=4 fdm=indent
   autocmd Filetype html,css        setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype vim             setl ts=2 sw=2 sts=2 fdm=marker
