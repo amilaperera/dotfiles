@@ -64,12 +64,12 @@ class Fork(object):
             self._push_if_needed()
 
         except Exception as e:
-            print('error synchronizing with the fork. {}'.format(e), file=sys.stderr)
+            print('error synchronizing with the fork: {}'.format(e), file=sys.stderr)
 
     def _get_repo_start_msg(self):
         try:
             msg = ' working on ' + Colors.Colorize(self.repo['repo_name'], Colors.Yellow) + ' '
-            terminal_width = int(subprocess.check_output(['stty', 'size']).split()[1])
+            terminal_width = int(subprocess.check_output(['stty', 'size']).decode('utf-8').split()[1])
             format_spec = '{:-^'+ str(terminal_width - 10) + '}'
         except:
             raise
@@ -119,13 +119,14 @@ class Fork(object):
                 stdout=get_dev_null(), stderr=subprocess.STDOUT, close_fds=True)
 
     def _get_status(self):
-        output = subprocess.check_output(['git', 'status']).split('\n')[1]
-        if re.search('[0-9]+', output):
-            if re.search('ahead of.*commits', output):
+        output = subprocess.check_output(['git', 'status'])
+        output_str = output.decode('utf-8').split('\n')[1]
+        if re.search('[0-9]+', output_str):
+            if re.search('ahead of.*commits', output_str):
                 self.is_push_needed = True
-            return Colors.Colorize(output, Colors.Red)
+            return Colors.Colorize(output_str, Colors.Red)
         else:
-            return Colors.Colorize(output, Colors.Green)
+            return Colors.Colorize(output_str, Colors.Green)
 
     def _push_if_needed(self):
         if self.is_push_needed:
