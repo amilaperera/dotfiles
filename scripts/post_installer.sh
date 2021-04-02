@@ -1,8 +1,31 @@
 #!/bin/bash
 
+# some colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m'
+
+function yellow() {
+  printf "${YELLOW}$@${NC}\n"
+}
+
+function red() {
+  printf "${RED}$@${NC}\n"
+}
+
+function green() {
+  printf "${GREEN}$@${NC}\n"
+}
+
 function show_os_info() {
   local os_name=`awk -F= '/^NAME/{print $2}' /etc/os-release 2> /dev/null`
-  echo "Operating System: ${os_name:-"Unknown"}"
+  if [[ -n $os_name ]]; then
+    echo -e "Operating System: ${GREEN}${os_name}${NC}"
+  else
+    echo -e "Operating System: ${RED}"Unknown"${NC}"
+    exit 1
+  fi
 }
 
 function export_install_command() {
@@ -16,12 +39,19 @@ function export_install_command() {
     HAS_PACMAN=1
     install_command="pacman -S"
   fi
-  echo "Install Command: ${install_command:?"Unknown install command"}"
+  if [[ -n $install_command ]]; then
+    echo -e "Install Command: ${GREEN}${install_command}${NC}"
+  else
+    echo -e "Install Command: ${RED}"Unknown"${NC}"
+    exit 1
+  fi
 }
 
 function probe_os_info() {
+  yellow "Probing OS information"
   show_os_info
   export_install_command
+  echo
 }
 
 function install() {
@@ -49,8 +79,7 @@ function snap_install_classic() {
   sh -c "$cmd"
 }
 
-function install_essentials() {
-  echo "Installing essentials..."
+function essentials() {
   local essential_pkgs=()
   essential_pkgs+=(zsh)
   essential_pkgs+=(tmux)
@@ -85,19 +114,26 @@ function install_essentials() {
   fi
 }
 
-function install_dev_tools() {
-  echo "Installing dev tools..."
+function dev_tools() {
   local dev_tools=()
+  # more selective ones
+  if [[ $HAS_DNF -eq 1 ]]; then
+    dev_tools+=(@development-tools)
+    dev_tools+=(boost-devel)
+  elif [[ $HAS_APT -eq 1 ]]; then
+    dev_tools+=(build-essential)
+    dev_tools+=(libboost-all-dev)
+  else
+    dev_tools+=(base-devel)
+    dev_tools+=(boost boost-libs)
+  fi
   dev_tools+=(clang)
   dev_tools+=(cmake)
-  [[ $HAS_PACMAN -eq 1 ]] && dev_tools+=(boost boost-libs) || dev_tools+=(libboost-all-dev)
-  [[ $HAS_APT -eq 1 ]] && dev_tools+=(build-essential) || dev_tools+=(base-devel)
   [[ $HAS_APT -eq 1 ]] && dev_tools+=(exuberant-ctags) || dev_tools+=(ctags)
   install ${dev_tools[*]}
 }
 
-function install_arm_cortex_dev_tools() {
-  echo "Installing arm cortex dev tools..."
+function arm_cortex_dev_tools() {
   local dev_tools=()
   [[ $HAS_DNF -eq 1 ]] && dev_tools+=(arm-none-eabi-gcc-cs) || dev_tools+=(arm-none-eabi-gcc)
   [[ $HAS_DNF -eq 1 ]] && dev_tools+=(arm-none-eabi-gcc-cs-c++) || dev_tools+=(arm-none-eabi-g++)
@@ -107,8 +143,7 @@ function install_arm_cortex_dev_tools() {
   install ${dev_tools[*]}
 }
 
-function install_arm_linux_dev_tools() {
-  echo "Installing arm arm-linux dev tools..."
+function arm_linux_dev_tools() {
   local dev_tools=()
   if [[ $HAS_DNF -eq 1 ]]; then
     sudo dnf copr enable lantw44/arm-linux-gnueabihf-toolchain
@@ -123,8 +158,7 @@ function install_arm_linux_dev_tools() {
   install ${dev_tools[*]}
 }
 
-function install_python_stuff() {
-  echo "Installing python stuff..."
+function python_stuff() {
   local python_stuff=()
   python_stuff+=(python)
   python_stuff+=(python-pip)
@@ -138,8 +172,7 @@ function install_python_stuff() {
 }
 
 # install latest nvim from source code
-function install_nvim_from_sources() {
-  echo "Installing latest nvim from sources..."
+function nvim_from_sources() {
   echo "  - Installing pre-requisites..."
   local pre_requisites=()
   if [[ $HAS_APT -eq 1 ]]; then
@@ -158,8 +191,7 @@ function install_nvim_from_sources() {
   cd ~/tmp/neovim && sudo make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=/usr/local/nvim install
 }
 
-# TODO: Tested in Arch & Fedora
-function install_snap() {
+function snaps() {
   snap_pkgs=(snapd)
   install ${snap_pkgs[*]}
   sh -c "sudo systemctl enable --now snapd.socket"
@@ -173,31 +205,30 @@ function install_snap() {
   echo " - Installing snap-store"
   snaps=(snap-store)
   snap_install ${snaps[*]}
-
-  # Now classics
-  # snaps_classic=(chromium)
-  # # One per --classic command
-  # for snap in "${snaps_classic[@]}"; do
-  # snap_install_classic ${snap}
-  # done
 }
 
+# Function wrapper to install packages
+function install_packages() {
+  yellow "Installing ${@}..."
+  ${@}
+  echo
+}
 
 ########################################
 # main
 ########################################
 
-#
 # Uncomment the necessary installations
-#
 probe_os_info
-install_essentials
-# install_dev_tools
-# install_python_stuff
-# install_arm_cortex_dev_tools
-# install_arm_linux_dev_tools
-# install_nvim_from_sources
-install_snap
+install_packages essentials
+install_packages snaps
+install_packages dev_tools
+# install_packages python_stuff
+# install_packages arm_cortex_dev_tools
+# install_packages arm_linux_dev_tools
+# install_packages nvim_from_sources
 
-unset HAS_DNF HAS_APT HAS_PACMAN install_command
+unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
+unset -f yellow red green
+unset -f install
 
