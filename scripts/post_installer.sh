@@ -207,6 +207,13 @@ function snaps() {
   snap_install ${snaps[*]}
 }
 
+function setup_github_personal_ssh() {
+  if [[ ! -f ~/.ssh/id_github_personal ]]; then
+    yellow "Setting up ssh to access personal github"
+    ssh-keygen -t ed25519 -C "github, personal, perera.amila@gmail.com" -f ~/.ssh/id_github_personal
+  fi
+}
+
 # Function wrapper to install packages
 function install_packages() {
   yellow "Installing ${@}..."
@@ -227,6 +234,8 @@ install_packages dev_tools
 # install_packages arm_cortex_dev_tools
 # install_packages arm_linux_dev_tools
 # install_packages nvim_from_sources
+
+setup_github_personal_ssh
 
 unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
 unset -f yellow red green
