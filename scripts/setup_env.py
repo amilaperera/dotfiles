@@ -4,8 +4,7 @@
 #
 #  TODO:
 #  1. Currently almost all the exceptions are of OSError type.
-#     Consider changing them
-#     appropriately to other types, if necessary.
+#     Probably we need some custom error types.
 #
 
 import argparse
@@ -509,33 +508,8 @@ class MiscEnv(Env):
         self._create_misc_symlinks()
 
 
-class ToolsEnv(Env):
-    """Tools environment setup class"""
-
-    def __init__(self, args):
-        cf = ('setup_env.py',
-              'fork_sync.py',
-              '.fork_sync.json',
-              'svn-color.py',
-              'post_installer.sh')
-        super(ToolsEnv, self).__init__(args, 'tools', cf)
-
-    def check_for_os_validity(self):
-        self.raise_if_not_linux()
-
-    def _create_tools_symlinks(self):
-        Env.create_directory_if_not_exists(os.path.join(self.install_dir, 'tools'))
-
-        for config_file in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join(Env.scripts_dir(), config_file)),
-                               os.path.join(self.install_dir, 'tools', config_file))
-
-    def setup_env(self):
-        self._create_tools_symlinks()
-
-
 def main():
-    supported_env_targets = ['bash', 'zsh', 'vim', 'nvim', 'misc', 'tools']
+    supported_env_targets = ['bash', 'zsh', 'vim', 'nvim', 'misc']
 
     parser = argparse.ArgumentParser(description='Set up the environment')
     parser.add_argument('-e', '--env',
@@ -567,8 +541,6 @@ def main():
             NeoVimEnv(args).setup()
         elif env == 'misc':
             MiscEnv(args).setup()
-        elif env == 'tools':
-            ToolsEnv(args).setup()
         else:
             pass
 
