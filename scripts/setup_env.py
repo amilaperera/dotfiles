@@ -335,7 +335,7 @@ class ZshEnv(Env):
         self.raise_if_not_linux()
 
     def _download_oh_my_zsh(self):
-        repo_value = 'https://github.com/amilaperera/ohmyzsh'
+        repo_value = 'git@github.com:amilaperera/ohmyzsh'
         dest_value = os.path.join(self.install_dir,
                                   ZshEnv.local_oh_my_zsh_ref_dir_name)
         Env.clone_repo(**dict(repo=repo_value, dest=dest_value))
