@@ -84,7 +84,7 @@ function essentials() {
   essential_pkgs+=(zsh)
   essential_pkgs+=(tmux)
   [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(python3-tmuxp) || essential_pkgs+=(tmuxp)
-  essential_pkgs+=(git)
+  essential_pkgs+=(git gitk)
   [[ $HAS_APT -eq 1 ]] && essential_pkgs+=(silversearcher-ag) || essential_pkgs+=(the_silver_searcher)
   essential_pkgs+=(tree)
   [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(redhat-lsb)
