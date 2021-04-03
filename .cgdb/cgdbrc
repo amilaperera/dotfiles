@@ -1,9 +1,0 @@
-:set as=highlight
-:set ts=4
-:set winsplit=top_big
-
-:map r :run<CR>
-:map c :continue<CR>
-:map f :finish<CR>
-:map n :next<CR>
-:map s :step<CR>

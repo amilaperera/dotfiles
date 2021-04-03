@@ -367,8 +367,7 @@ class BashEnv(Env):
 
     def _create_bash_symlinks(self):
         for config_file in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join('../',
-                                                            config_file)),
+            Env.create_symlink(os.path.abspath(os.path.join('..', 'bash', config_file)),
                                os.path.join(self.install_dir, config_file))
 
     def setup_env(self):
@@ -392,12 +391,12 @@ class VimEnv(Env):
             if Env.is_windows():
                 # copy .vimrc & .gvimrc files as
                 # _vimrc and _gvimrc files respectively to the $HOME folder
-                Env.copy_file(os.path.join('../', config_file),
+                Env.copy_file(os.path.join('..','vim', config_file),
                               os.path.join(home_path,
                                            '_' + config_file.split('.')[1]))
             else:
                 # create a link to .vimrc & .gvimrc files in the home directory
-                Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
+                Env.create_symlink(os.path.abspath(os.path.join('..', 'vim', config_file)),
                                    os.path.join(home_path, config_file))
 
     def _install_plugin_manager(self):
@@ -448,13 +447,13 @@ class NeoVimEnv(Env):
                 dest_dir = os.path.join(home_path, 'AppData', 'Local', 'nvim/')
                 if not os.path.exists(dest_dir):
                     os.makedirs(dest_dir)
-                Env.copy_file(os.path.join('../', config_file), os.path.join(dest_dir, config_file))
+                Env.copy_file(os.path.join('..', 'nvim', config_file), os.path.join(dest_dir, config_file))
             else:
                 # create a link to .vimrc & .gvimrc files in the home directory
                 dest_dir = os.path.join(home_path, '.config', 'nvim/')
                 if not os.path.exists(dest_dir):
                     os.makedirs(dest_dir)
-                Env.create_symlink(os.path.abspath(os.path.join('../', config_file)),
+                Env.create_symlink(os.path.abspath(os.path.join('..', 'nvim', config_file)),
                                    os.path.join(dest_dir, config_file))
 
     def _install_plugin_manager(self):
@@ -495,8 +494,7 @@ class MiscEnv(Env):
         cf = ('.tmux.conf',
               '.agignore',
               '.colordiffrc',
-              '.gitconfig',
-              '.cgdb')
+              '.gitconfig')
         super(MiscEnv, self).__init__(args, 'misc', cf)
 
     def check_for_os_validity(self):
@@ -504,7 +502,7 @@ class MiscEnv(Env):
 
     def _create_misc_symlinks(self):
         for config_file in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join(Env.dot_dir(), config_file)),
+            Env.create_symlink(os.path.abspath(os.path.join(Env.dot_dir(), 'misc', config_file)),
                                os.path.join(self.install_dir, config_file))
 
     def setup_env(self):

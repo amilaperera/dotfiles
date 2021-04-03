@@ -139,7 +139,7 @@ class Fork(object):
 def main():
     """Creates a ForkSync object and execute the sycnchronization of the forks"""
     try:
-        ForkSync('.fork_sync.json').run()
+        ForkSync('forks.json').run()
     except Exception as e:
         print('error: {}'.format(e), file=sys.stderr)
 
