@@ -80,9 +80,7 @@ class Env(object):
     @staticmethod
     def git_cmd_name():
         name = 'git'
-        if Env.is_windows():
-            name += '.exe'
-        return name
+        return name + '.exe' if Env.is_windows() else name
 
     @staticmethod
     def get_env_name():
@@ -100,10 +98,7 @@ class Env(object):
 
     @staticmethod
     def get_home_env_var():
-        if Env.is_windows():
-            return 'USERPROFILE'
-        else:
-            return 'HOME'
+        return 'USERPROFILE' if Env.is_windows() else 'HOME'
 
     @staticmethod
     def print_with_sleep(msg):
