@@ -40,6 +40,6 @@ _zsh_ configurations depends on a personal fork of [ohmyzsh](https://github.com/
 The personal repository can be synchronized with the upstream by executing the
 [fork_sync.py](https://github.com/amilaperera/dotfiles/blob/master/scripts/fork_sync.py) script which is also provided with the dotfiles.
 This script reads details about the forked repositories from the
-[.fork_sync.json](https://github.com/amilaperera/dotfiles/blob/master/scripts/.fork_sync.json) file.
+[forks.json](https://github.com/amilaperera/dotfiles/blob/master/scripts/forks.json) file.
 If syncing with the forks result in a need to push changes to the origin, the script will let you know.
 
