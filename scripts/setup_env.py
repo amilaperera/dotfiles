@@ -249,12 +249,11 @@ class Env(object):
         if value is None:
             self._install_dir = Env.get_home()
         else:
-            abs_path = os.path.abspath(value)
-            if os.path.isdir(abs_path):
-                self._install_dir = abs_path
+            if os.path.isdir(value):
+                self._install_dir = value
             else:
-                raise OSError('Install directory[{}] does not exist'
-                              .format(abs_path))
+                Env.create_directory_if_not_exists(value)
+                self._install_dir = value
         print('Install Dir: {}'.format(self._install_dir))
 
     @property
@@ -503,8 +502,28 @@ class MiscEnv(Env):
         self._create_misc_symlinks()
 
 
+class TmuxSessions(Env):
+    """Tmuxinator projects setup class"""
+
+    def __init__(self, args):
+        cf = ('dots.yml',)
+        args.dir = os.path.join(Env.get_home(), '.config', 'tmuxinator')
+        super(TmuxSessions, self).__init__(args, 'misc', cf)
+
+    def check_for_os_validity(self):
+        self.raise_if_not_linux()
+
+    def _create_misc_symlinks(self):
+        for config_file in self.config_files:
+            Env.create_symlink(os.path.join(Env.dot_dir(), 'misc', config_file),
+                               os.path.join(self.install_dir, config_file))
+
+    def setup_env(self):
+        self._create_misc_symlinks()
+
+
 def main():
-    supported_env_targets = ['bash', 'zsh', 'vim', 'nvim', 'misc']
+    supported_env_targets = ['bash', 'zsh', 'vim', 'nvim', 'misc', 'tmux_sessions']
 
     parser = argparse.ArgumentParser(description='Set up the environment')
     parser.add_argument('-e', '--env',
@@ -536,6 +555,8 @@ def main():
             NeoVimEnv(args).setup()
         elif env == 'misc':
             MiscEnv(args).setup()
+        elif env == 'tmux_sessions':
+            TmuxSessions(args).setup()
         else:
             pass
 

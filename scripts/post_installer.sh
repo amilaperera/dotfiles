@@ -82,8 +82,6 @@ function snap_install_classic() {
 function essentials() {
   local essential_pkgs=()
   essential_pkgs+=(zsh)
-  essential_pkgs+=(tmux)
-  [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(python3-tmuxp) || essential_pkgs+=(tmuxp)
   essential_pkgs+=(git gitk)
   [[ $HAS_APT -eq 1 ]] && essential_pkgs+=(silversearcher-ag) || essential_pkgs+=(the_silver_searcher)
   essential_pkgs+=(tree)
@@ -112,6 +110,17 @@ function essentials() {
     else
       echo "ZSH already selected as the login shell"
   fi
+}
+
+# The reason for this to be out of essential_pkgs is that
+# for some installations installing ruby may be deemed redundant
+function tmux() {
+  local essential_pkgs=(tmux)
+  essential_pkgs+=(ruby) # for tmuxinator
+  install ${essential_pkgs[*]}
+
+  # now tmuxinator
+  sh -c "sudo gem install tmuxinator"
 }
 
 function dev_tools() {
@@ -230,6 +239,7 @@ probe_os_info
 install_packages essentials
 install_packages snaps
 install_packages dev_tools
+install_packages tmux
 # install_packages python_stuff
 # install_packages arm_cortex_dev_tools
 # install_packages arm_linux_dev_tools
