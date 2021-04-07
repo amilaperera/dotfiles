@@ -242,7 +242,7 @@ function check_if_auth_ok() {
 function setup_zsh_nvim_env() {
   if [[ ! -d "$HOME/.dotfiles" ]]; then
     green "Cloning dotfiles"
-    git git@github.com:amilaperera/dotfiles ~/.dotfiles
+    git clone git@github.com:amilaperera/dotfiles ~/.dotfiles
     echo
     cd ~/.dotfiles/scripts && python setup_env.py -e zsh nvim
   else
