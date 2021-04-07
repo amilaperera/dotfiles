@@ -7,8 +7,9 @@ The best way to install the environment is to use the
 [environment setup](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env.py) script which is provided with the dotfiles.
 
 **Installation**
+1. Execute the following command to bootstrap the new Linux machine.
 
-1. Install `python 3.x` & `git`
+        curl -s https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh | bash
 
 2. Clone the dotfiles in to your local home directory
 
