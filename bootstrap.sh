@@ -237,8 +237,8 @@ function install_packages() {
 # Uncomment the necessary installations
 probe_os_info
 install_packages essentials
-install_packages snaps
 install_packages dev_tools
+install_packages snaps
 install_packages tmux
 # install_packages python_stuff
 # install_packages arm_cortex_dev_tools
