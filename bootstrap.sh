@@ -219,7 +219,7 @@ function snaps() {
 function setup_github_personal_ssh() {
   ssh_key_file="${HOME}/.ssh/id_github_personal"
   if [[ ! -f ${ssh_key_file} ]]; then
-    yellow "Setting up ssh to access personal github"
+    yellow "Setting up ssh keys ${ssh_key_file}"
     green "Generatig ed25519 key with no passphrase"
     cmd="ssh-keygen -N '' -t ed25519 -C \"github, personal, perera.amila@gmail.com\" -f ${ssh_key_file}"
     eval ${cmd}
@@ -229,6 +229,24 @@ function setup_github_personal_ssh() {
       return 1
     eval cat ${ssh_key_file}.pub
     echo
+  else
+    yellow "Not setting up ssh keys since ${ssh_key_file} already exists..."
+  fi
+}
+
+function check_if_auth_ok() {
+  ssh -T git@github.com 2>&1 | grep -q "successfully authenticated"
+  return $?
+}
+
+function setup_zsh_nvim_env() {
+  if [[ ! -d "$HOME/.dotfiles" ]]; then
+    green "Cloning dotfiles"
+    git git@github.com:amilaperera/dotfiles ~/.dotfiles
+    echo
+    cd ~/.dotfiles/scripts && python setup_env.py -e zsh nvim
+  else
+    yellow "$HOME/.dotfiles directory already exists"
   fi
 }
 
@@ -254,7 +272,15 @@ install_packages tmux
 # install_packages arm_linux_dev_tools
 # install_packages nvim_from_sources
 
-setup_github_personal_ssh
+if [[ ${SSH_KEY_SETUP} -eq 1 ]]; then
+  setup_github_personal_ssh
+  # TODO: Now wait for user input to continue
+  # So that we know the user has already added the keys to GitHub page
+  if check_if_auth_ok; then
+    green "Authentication successful with GitHub"
+    setup_zsh_nvim_env
+  fi
+fi
 
 unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
 unset -f yellow red green
