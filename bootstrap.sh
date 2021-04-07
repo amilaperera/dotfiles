@@ -217,9 +217,18 @@ function snaps() {
 }
 
 function setup_github_personal_ssh() {
-  if [[ ! -f ~/.ssh/id_github_personal ]]; then
+  ssh_key_file="${HOME}/.ssh/id_github_personal"
+  if [[ ! -f ${ssh_key_file} ]]; then
     yellow "Setting up ssh to access personal github"
-    ssh-keygen -t ed25519 -C "github, personal, perera.amila@gmail.com" -f ~/.ssh/id_github_personal
+    green "Generatig ed25519 key with no passphrase"
+    cmd="ssh-keygen -N '' -t ed25519 -C \"github, personal, perera.amila@gmail.com\" -f ${ssh_key_file}"
+    eval ${cmd}
+    eval "$(ssh-agent -s)" && green "ssh agent started" || return 1
+    eval ssh-add ${ssh_key_file} && \
+      green "ssh keys added\nCopy & paste the following key to Github\n\n" || \
+      return 1
+    eval cat ${ssh_key_file}.pub
+    echo
   fi
 }
 
