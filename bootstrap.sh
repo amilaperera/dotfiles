@@ -231,7 +231,9 @@ function setup_github_personal_ssh() {
     echo
   else
     yellow "Not setting up ssh keys since ${ssh_key_file} already exists..."
+    return 1
   fi
+  return 0
 }
 
 function check_if_auth_ok() {
@@ -244,7 +246,7 @@ function setup_zsh_nvim_env() {
     green "Cloning dotfiles"
     git clone git@github.com:amilaperera/dotfiles ~/.dotfiles
     echo
-    cd ~/.dotfiles/scripts && python setup_env.py -e zsh nvim
+    cd ~/.dotfiles/scripts && python setup_env.py -e zsh nvim misc tmux_sessions
   else
     yellow "$HOME/.dotfiles directory already exists"
   fi
@@ -273,14 +275,21 @@ install_packages tmux
 # install_packages nvim_from_sources
 
 if [[ ${SSH_KEY_SETUP} -eq 1 ]]; then
-  setup_github_personal_ssh
-  # TODO: Now wait for user input to continue
-  # So that we know the user has already added the keys to GitHub page
-  if check_if_auth_ok; then
-    green "Authentication successful with GitHub"
-    setup_zsh_nvim_env
+  if setup_github_personal_ssh; then
+    # Wait until the user wishes to continue
+    read  -n 1 -p "Continue with setup [c] or anyother key to abort:" input
+    if [[ "$input" = "c" ]]; then
+      echo
+      yellow "Check if the user can be validated with the ssh keys..."
+      if check_if_auth_ok; then
+        green "Authentication successful with GitHub"
+        setup_zsh_nvim_env
+      fi
+    fi
   fi
 fi
+
+green "\nBye...."
 
 unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
 unset -f yellow red green
