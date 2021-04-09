@@ -223,10 +223,10 @@ function setup_github_personal_ssh() {
     green "Generatig ed25519 key with no passphrase"
     cmd="ssh-keygen -N '' -t ed25519 -C \"github, personal, perera.amila@gmail.com\" -f ${ssh_key_file}"
     eval ${cmd}
-    eval "$(ssh-agent -s)" && green "ssh agent started" || return 1
+    eval "$(ssh-agent -s)" && green "ssh agent started" || return 2
     eval ssh-add ${ssh_key_file} && \
       green "ssh keys added\nCopy & paste the following key to Github\n\n" || \
-      return 1
+      return 2
     eval cat ${ssh_key_file}.pub
     echo
   else
@@ -245,10 +245,18 @@ function setup_configs() {
   if [[ ! -d "$HOME/.dotfiles" ]]; then
     green "Cloning dotfiles"
     git clone git@github.com:amilaperera/dotfiles ~/.dotfiles
-    echo
-    cd ~/.dotfiles/scripts && python setup_env.py -e zsh nvim misc tmux_sessions
   else
     yellow "$HOME/.dotfiles directory already exists"
+  fi
+  echo
+  cd ~/.dotfiles/scripts && python setup_env.py -e zsh nvim misc tmux_sessions
+}
+
+function setup_configs_if_auth_ok() {
+  yellow "Check if the user can be validated with the ssh keys..."
+  if check_if_auth_ok; then
+    green "Authentication successful with GitHub"
+    setup_configs
   fi
 }
 
@@ -284,22 +292,19 @@ fi
 
 if [[ ${CONFIG_SETUP} -eq 1 ]]; then
   # First setup github ssh keys
-  if setup_github_personal_ssh; then
+  if setup_github_personal_ssh; then # new ssh keys created
     # Wait until the user wishes to continue
     read  -n 1 -p "Continue with setup [c] or anyother key to abort:" input
 
     if [[ "$input" = "c" ]]; then
       echo
-      yellow "Check if the user can be validated with the ssh keys..."
-      if check_if_auth_ok; then
-        green "Authentication successful with GitHub"
-        setup_configs
-      fi
+      setup_configs_if_auth_ok
     fi
+  elif [[ $? -eq 1 ]]; then # ssh keys already exists
+    setup_configs_if_auth_ok
   fi
 fi
-
-green "\nBye...."
+green "Bye...."
 
 unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
 unset -f yellow red green
