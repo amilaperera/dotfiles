@@ -241,7 +241,7 @@ function check_if_auth_ok() {
   return $?
 }
 
-function setup_zsh_nvim_env() {
+function setup_configs() {
   if [[ ! -d "$HOME/.dotfiles" ]]; then
     green "Cloning dotfiles"
     git clone git@github.com:amilaperera/dotfiles ~/.dotfiles
@@ -263,27 +263,37 @@ function install_packages() {
 # main
 ########################################
 
-# Uncomment the necessary installations
-probe_os_info
-install_packages essentials
-install_packages dev_tools
-install_packages snaps
-install_packages tmux
-# install_packages python_stuff
-# install_packages arm_cortex_dev_tools
-# install_packages arm_linux_dev_tools
-# install_packages nvim_from_sources
+if [[ ${ALL} -eq 1 ]]; then
+  PKG_INSTALL=1
+  CONFIG_SETUP=1
+fi
 
-if [[ ${SSH_KEY_SETUP} -eq 1 ]]; then
+probe_os_info
+
+# Uncomment the necessary installations
+if [[ ${PKG_INSTALL} -eq 1 ]]; then
+  install_packages essentials
+  install_packages dev_tools
+  install_packages snaps
+  install_packages tmux
+  # install_packages python_stuff
+  # install_packages arm_cortex_dev_tools
+  # install_packages arm_linux_dev_tools
+  # install_packages nvim_from_sources
+fi
+
+if [[ ${CONFIG_SETUP} -eq 1 ]]; then
+  # First setup github ssh keys
   if setup_github_personal_ssh; then
     # Wait until the user wishes to continue
     read  -n 1 -p "Continue with setup [c] or anyother key to abort:" input
+
     if [[ "$input" = "c" ]]; then
       echo
       yellow "Check if the user can be validated with the ssh keys..."
       if check_if_auth_ok; then
         green "Authentication successful with GitHub"
-        setup_zsh_nvim_env
+        setup_configs
       fi
     fi
   fi
