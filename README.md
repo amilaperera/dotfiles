@@ -1,14 +1,12 @@
 Personal dotfiles
 =================
 
-This repo contains my personal dotfiles mainly related to _zsh_/_bash_, _vim_, _tmux_, _git_ etc.
+This repo contains my personal dotfiles mainly related to _zsh_, _bash_, _vim_, _tmux_, _git_ etc.
 
-The best way to install the environment is to use the
-[environment setup](https://github.com/amilaperera/dotfiles/blob/master/scripts/setup_env.py) script which is provided with the dotfiles.
 
 **Installation**
 
-Execute the following command to bootstrap the new Linux machine (package install + configuration setup).
+Execute the following command to bootstrap the new Linux machine (installing essential packages + configuration setup).
 
         curl -s https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh | ALL=1 bash
 
