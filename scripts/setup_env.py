@@ -93,7 +93,7 @@ class Env(object):
 
     @staticmethod
     def get_welcome_msg(setup_str):
-        return ('Setting up {} environment on {}...'
+        return ('Setting up {} configuration on {}...'
                 .format(setup_str, Env.get_env_name()))
 
     @staticmethod
@@ -200,7 +200,7 @@ class Env(object):
 
     @staticmethod
     def scripts_dir():
-       local_scripts_dir = os.path.join(Env.get_home(), '.dotfiles', 'scripts')
+       local_scripts_dir = os.path.join(Env.dot_dir(), 'scripts')
        if os.path.isdir(local_scripts_dir):
            return local_scripts_dir
        else:
@@ -425,9 +425,8 @@ class NeoVimEnv(Env):
     """NeoVim environment setup class"""
 
     def __init__(self, args):
-        # alias .vimrc to ~/.config/nvim/init.vim
         cf = ('init.vim', 'ginit.vim')
-        super(NeoVimEnv, self).__init__(args, 'vim', cf)
+        super(NeoVimEnv, self).__init__(args, 'nvim', cf)
 
     def check_for_os_validity(self):
         self.raise_if_not_linux_or_win()
@@ -508,7 +507,7 @@ class TmuxSessions(Env):
     def __init__(self, args):
         cf = ('dots.yml',)
         args.dir = os.path.join(Env.get_home(), '.config', 'tmuxinator')
-        super(TmuxSessions, self).__init__(args, 'misc', cf)
+        super(TmuxSessions, self).__init__(args, 'tmux sessions', cf)
 
     def check_for_os_validity(self):
         self.raise_if_not_linux()
