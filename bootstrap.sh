@@ -114,6 +114,7 @@ function essentials() {
   essential_pkgs+=(curl)
   essential_pkgs+=(xclip)
   essential_pkgs+=(dictd)
+  [[ $HAS_DNF -eq 1 -o $HAS_PACMAN -eq 1 ]] && essential_pkgs+=(neovim)
 
   install ${essential_pkgs[*]}
 }
@@ -188,6 +189,7 @@ function python_stuff() {
 
 # install latest nvim from source code
 function nvim_from_sources() {
+  [[ $HAS_APT -ne 1 ]] && yellow "Not installing neovim from sources for non Debian based distros...."
   echo "  - Installing pre-requisites..."
   local pre_requisites=()
   if [[ $HAS_APT -eq 1 ]]; then
@@ -295,7 +297,7 @@ if [[ ${PKG_INSTALL} -eq 1 ]]; then
   # install_packages python_stuff
   # install_packages arm_cortex_dev_tools
   # install_packages arm_linux_dev_tools
-  # install_packages nvim_from_sources
+  install_packages nvim_from_sources
   change_to_zsh
 fi
 
