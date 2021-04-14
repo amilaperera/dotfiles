@@ -237,6 +237,8 @@ function setup_github_personal_ssh() {
     echo
   else
     yellow "Not setting up ssh keys since ${ssh_key_file} already exists..."
+    eval "$(ssh-agent -s)" && green "ssh agent started" || return 2
+    eval ssh-add ${ssh_key_file}
     return 1
   fi
   return 0
