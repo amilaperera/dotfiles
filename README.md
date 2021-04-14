@@ -8,15 +8,15 @@ This repo contains my personal dotfiles mainly related to _zsh_, _bash_, _vim_, 
 
 Execute the following command to bootstrap the new Linux machine (installing essential packages + configuration setup).
 
-        curl -s https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh | ALL=1 bash
+        ALL=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
 
 If you need to install packages without setting up the configuration,
 
-        curl -s https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh | PKG_INSTALL=1 bash
+        PKG_INSTALL=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
 
 If you need to setup configuration without installing packages
 
-        curl -s https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh | CONFIG_SETUP=1 bash
+        CONFIG_SETUP=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
 
 **Note**
 

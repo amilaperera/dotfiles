@@ -255,7 +255,7 @@ function setup_configs() {
     yellow "$HOME/.dotfiles directory already exists"
   fi
   echo
-  cd ~/.dotfiles/scripts && python setup_env.py -e zsh nvim misc tmux_sessions
+  cd ~/.dotfiles/scripts && python3 setup_env.py -e zsh nvim misc tmux_sessions
 }
 
 function setup_configs_if_auth_ok() {
