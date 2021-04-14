@@ -114,7 +114,8 @@ function essentials() {
   essential_pkgs+=(curl)
   essential_pkgs+=(xclip)
   essential_pkgs+=(dictd)
-  [[ $HAS_DNF -eq 1 -o $HAS_PACMAN -eq 1 ]] && essential_pkgs+=(neovim)
+  # latest neovim in the case of Fedore/Arch
+  [[ $HAS_DNF -eq 1 || $HAS_PACMAN -eq 1 ]] && essential_pkgs+=(neovim)
 
   install ${essential_pkgs[*]}
 }
