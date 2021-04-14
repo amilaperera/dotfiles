@@ -79,6 +79,26 @@ function snap_install_classic() {
   sh -c "$cmd"
 }
 
+function change_to_zsh() {
+  local result=`$SHELL -c 'echo $ZSH_VERSION'`
+  if [[ -z $result ]]; then
+    # assuming the shell is not zsh, change it to zsh
+    echo "Changing to zsh..."
+
+    if [[ $HAS_DNF -eq 1 ]]; then
+      # Fedora doesn't have chsh installed
+      local cmd=`echo "sudo lchsh -i ${USER}"`
+      sh -c "${cmd}"
+    else
+      local zsh_prg=`which zsh`
+      local cmd=`echo "chsh --shell ${zsh_prg}"`
+      sh -c "$cmd"
+    fi
+  else
+    echo "ZSH already selected as the login shell"
+  fi
+}
+
 function essentials() {
   local essential_pkgs=()
   essential_pkgs+=(zsh)
@@ -93,23 +113,6 @@ function essentials() {
   essential_pkgs+=(dictd)
 
   install ${essential_pkgs[*]}
-
-  if [ -z "`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
-    # assuming the shell is not zsh, change it to zsh
-
-    # Fedora doesn't have chsh installed
-    [[ $HAS_DNF -eq 1 ]] && \
-      echo "Changing to zsh..." && \
-      sh -c "sudo lchsh -i ${USER}"
-
-    # For Ubuntu this works, coz it doesn't have lchsh installed
-    [[ $HAS_APT -eq 1 || $HAS_PACMAN -eq 1 ]] && \
-      echo "Changing to zsh..." && \
-      local zsh_prg=`which zsh` && \
-      sh -c "chsh --shell ${zsh_prg}"
-    else
-      echo "ZSH already selected as the login shell"
-  fi
 }
 
 # The reason for this to be out of essential_pkgs is that
@@ -288,6 +291,7 @@ if [[ ${PKG_INSTALL} -eq 1 ]]; then
   # install_packages arm_cortex_dev_tools
   # install_packages arm_linux_dev_tools
   # install_packages nvim_from_sources
+  change_to_zsh
 fi
 
 if [[ ${CONFIG_SETUP} -eq 1 ]]; then
