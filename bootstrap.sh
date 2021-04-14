@@ -84,15 +84,18 @@ function change_to_zsh() {
   if [[ -z $result ]]; then
     # assuming the shell is not zsh, change it to zsh
     echo "Changing to zsh..."
-
-    if [[ $HAS_DNF -eq 1 ]]; then
-      # Fedora doesn't have chsh installed
-      local cmd=`echo "sudo lchsh -i ${USER}"`
-      sh -c "${cmd}"
+    if ! grep -q "zsh" /etc/shells; then
+      red "Error: zsh not it /etc/shells"
     else
-      local zsh_prg=`which zsh`
-      local cmd=`echo "chsh --shell ${zsh_prg}"`
-      sh -c "$cmd"
+      if [[ $HAS_DNF -eq 1 ]]; then
+        # Fedora doesn't have chsh installed
+        local cmd=`echo "sudo lchsh -i ${USER}"`
+        sh -c "${cmd}"
+      else
+        local zsh_prg=`which zsh`
+        local cmd="chsh --shell ${zsh_prg}"
+        eval $cmd
+      fi
     fi
   else
     echo "ZSH already selected as the login shell"
