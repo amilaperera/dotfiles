@@ -222,7 +222,19 @@ function snaps() {
 
   echo " - Installing snap-store"
   snaps=(snap-store)
-  snap_install ${snaps[*]}
+  if [[ ${#snaps[@]} -ne 0 ]]; then
+    snap_install ${snaps[*]}
+  fi
+
+  snaps_classic=()
+  if [[ $HAS_APT -eq 1 ]]; then
+    snaps_classic+=(nvim)
+  fi
+  snaps_classic+=(clion)
+  snaps_classic+=(code)
+  for snap_classic in "${snaps_classic[@]}"; do
+    snap_install_classic ${snap_classic}
+  done
 }
 
 function setup_github_personal_ssh() {
@@ -298,7 +310,7 @@ if [[ ${PKG_INSTALL} -eq 1 ]]; then
   # install_packages python_stuff
   # install_packages arm_cortex_dev_tools
   # install_packages arm_linux_dev_tools
-  install_packages nvim_from_sources
+  # install_packages nvim_from_sources
   change_to_zsh
 fi
 
