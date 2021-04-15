@@ -222,9 +222,12 @@ function snaps() {
 
   echo " - Installing snap-store"
   snaps=(snap-store)
-  if [[ ${#snaps[@]} -ne 0 ]]; then
-    snap_install ${snaps[*]}
+  if [[ $HAS_APT -eq 1 ]]; then
+    snaps+=(firefox)
   fi
+  for s in "${snaps[@]}"; do
+    snap_install ${s}
+  done
 
   snaps_classic=()
   if [[ $HAS_APT -eq 1 ]]; then
@@ -232,8 +235,8 @@ function snaps() {
   fi
   snaps_classic+=(clion)
   snaps_classic+=(code)
-  for snap_classic in "${snaps_classic[@]}"; do
-    snap_install_classic ${snap_classic}
+  for s in "${snaps_classic[@]}"; do
+    snap_install_classic ${s}
   done
 }
 
