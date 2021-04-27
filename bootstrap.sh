@@ -310,7 +310,7 @@ if [[ ${PKG_INSTALL} -eq 1 ]]; then
   install_packages dev_tools
   install_packages snaps
   install_packages tmux
-  # install_packages python_stuff
+  install_packages python_stuff
   # install_packages arm_cortex_dev_tools
   # install_packages arm_linux_dev_tools
   # install_packages nvim_from_sources
