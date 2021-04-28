@@ -20,24 +20,36 @@ function green() {
 
 function show_os_info() {
   local os_name=`awk -F= '/^NAME/{print $2}' /etc/os-release 2> /dev/null`
+  local version=`awk -F= '/^\<VERSION\>/{print $2}' /etc/os-release 2> /dev/null`
+  local sanitized_version=`echo "$version" | tr -d '"'`
   if [[ -n $os_name ]]; then
-    echo -e "Operating System: ${GREEN}${os_name}${NC}"
+    echo -e "Operating System: ${GREEN}${os_name} ${sanitized_version}${NC}"
   else
     echo -e "Operating System: ${RED}"Unknown"${NC}"
     exit 1
   fi
 }
 
+function update_os() {
+  yellow "Updating packages"
+  local cmd=`echo sudo ${update_os_command}`
+  echo $cmd
+  sh -c "$cmd"
+}
+
 function export_install_command() {
   if which dnf &> /dev/null; then
     HAS_DNF=1
     install_command="dnf install"
+    update_os_command="dnf update -y"
   elif which apt-get &> /dev/null; then
     HAS_APT=1
     install_command="apt-get install"
+    update_os_command="apt-get update -y"
   elif which pacman &> /dev/null; then
     HAS_PACMAN=1
-    install_command="pacman -S"
+    install_command="pacman --noconfirm -S"
+    update_os_command="pacman --noconfirm -Syu"
   fi
   if [[ -n $install_command ]]; then
     echo -e "Install Command: ${GREEN}${install_command}${NC}"
@@ -303,6 +315,7 @@ if [[ ${ALL} -eq 1 ]]; then
 fi
 
 probe_os_info
+update_os
 
 # Uncomment the necessary installations
 if [[ ${PKG_INSTALL} -eq 1 ]]; then
