@@ -136,7 +136,10 @@ function essentials() {
 # for some installations installing ruby may be deemed redundant
 function tmux() {
   local essential_pkgs=(tmux)
-  essential_pkgs+=(ruby) # for tmuxinator
+  if [[ $HAS_APT -ne 1 ]]; then
+    # use snaps to get the latest
+    essential_pkgs+=(ruby) # for tmuxinator
+  fi
   install ${essential_pkgs[*]}
 
   # now tmuxinator
@@ -189,8 +192,14 @@ function arm_linux_dev_tools() {
 
 function python_stuff() {
   local python_stuff=()
-  python_stuff+=(python)
-  python_stuff+=(python-pip)
+  if [[ $HAS_APT -eq 1 ]]; then
+    # force python3
+    python_stuff+=(python3)
+    python_stuff+=(python3-pip)
+  else
+    python_stuff+=(python)
+    python_stuff+=(python-pip)
+  fi
   python_stuff+=(ipython)
   python_stuff+=(python-jedi)
 
@@ -234,9 +243,6 @@ function snaps() {
 
   echo " - Installing snap-store"
   snaps=(snap-store)
-  if [[ $HAS_APT -eq 1 ]]; then
-    snaps+=(firefox)
-  fi
   for s in "${snaps[@]}"; do
     snap_install ${s}
   done
@@ -244,6 +250,7 @@ function snaps() {
   snaps_classic=()
   if [[ $HAS_APT -eq 1 ]]; then
     snaps_classic+=(nvim)
+    snaps_classic+=(ruby)
   fi
   snaps_classic+=(clion)
   snaps_classic+=(code)
@@ -287,7 +294,12 @@ function setup_configs() {
     yellow "$HOME/.dotfiles directory already exists"
   fi
   echo
-  cd ~/.dotfiles/scripts && python3 setup_env.py -e zsh nvim misc tmux_sessions
+  if [[ $HAS_APT -eq 1 ]]; then
+    # Doesn't seem to get snap bin directory by default
+    cd ~/.dotfiles/scripts && PATH=$PATH:/snap/bin python3 setup_env.py -e zsh nvim misc tmux_sessions
+  else
+    cd ~/.dotfiles/scripts && python3 setup_env.py -e zsh nvim misc tmux_sessions
+  fi
 }
 
 function setup_configs_if_auth_ok() {
