@@ -209,6 +209,23 @@ function python_stuff() {
   pip_install ${pips[*]}
 }
 
+function extra_repos() {
+  local repos=()
+  # more selective ones
+  if [[ $HAS_DNF -eq 1 ]]; then
+    repos+=(https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$\(rpm -E %fedora\).noarch.rpm)
+    repos+=(https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$\(rpm -E %fedora\).noarch.rpm)
+    repos+=(fedora-workstation-repositories)
+
+    install ${repos[*]}
+    sh -c "sudo dnf config-manager --set-enabled google-chrome"
+
+    pkgs=(google-chrome-stable)
+
+    install ${pkgs[*]}
+  fi
+}
+
 # install latest nvim from source code
 function nvim_from_sources() {
   [[ $HAS_APT -ne 1 ]] && yellow "Not installing neovim from sources for non Debian based distros...."
@@ -336,6 +353,7 @@ if [[ ${PKG_INSTALL} -eq 1 ]]; then
   install_packages snaps
   install_packages tmux
   install_packages python_stuff
+  install_packages extra_repos
   # install_packages arm_cortex_dev_tools
   # install_packages arm_linux_dev_tools
   # install_packages nvim_from_sources
