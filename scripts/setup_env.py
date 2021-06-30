@@ -537,7 +537,7 @@ def main():
                         help='path for the git executable')
     parser.add_argument('-d', '--dir',
                         help='install directory')
-    parser.add_option('--nossh', action='store_true', default=False,
+    parser.add_argument('--nossh', action='store_true', default=False,
                         help='do not use ssh with git clone')
     args = parser.parse_args()
 
