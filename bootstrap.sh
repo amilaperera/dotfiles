@@ -303,9 +303,13 @@ function check_if_auth_ok() {
 }
 
 function setup_configs() {
+  url='git@github.com:amilaperera/dotfiles'
+  if [[ ${BYPASS_SSH} -eq 1 ]]; then
+    url='https://github.com/amilaperera/dotfiles'
+  fi
   if [[ ! -d "$HOME/.dotfiles" ]]; then
     green "Cloning dotfiles"
-    git clone git@github.com:amilaperera/dotfiles ~/.dotfiles
+    git clone ${url} ~/.dotfiles
   else
     yellow "$HOME/.dotfiles directory already exists"
   fi
@@ -340,6 +344,7 @@ function install_packages() {
 if [[ ${ALL} -eq 1 ]]; then
   PKG_INSTALL=1
   CONFIG_SETUP=1
+  BYPASS_SSH=0
 fi
 
 probe_os_info
@@ -360,17 +365,21 @@ if [[ ${PKG_INSTALL} -eq 1 ]]; then
 fi
 
 if [[ ${CONFIG_SETUP} -eq 1 ]]; then
-  # First setup github ssh keys
-  if setup_github_personal_ssh; then # new ssh keys created
-    # Wait until the user wishes to continue
-    read  -n 1 -p "Continue with setup [c] or anyother key to abort:" input
+  if [[ ${BYPASS_SSH} -eq 1 ]]; then
+    setup_configs
+  else
+    # First setup github ssh keys
+    if setup_github_personal_ssh; then # new ssh keys created
+      # Wait until the user wishes to continue
+      read  -n 1 -p "Continue with setup [c] or anyother key to abort:" input
 
-    if [[ "$input" = "c" ]]; then
-      echo
+      if [[ "$input" = "c" ]]; then
+        echo
+        setup_configs_if_auth_ok
+      fi
+    elif [[ $? -eq 1 ]]; then # ssh keys already exists
       setup_configs_if_auth_ok
     fi
-  elif [[ $? -eq 1 ]]; then # ssh keys already exists
-    setup_configs_if_auth_ok
   fi
 fi
 green "Bye...."
