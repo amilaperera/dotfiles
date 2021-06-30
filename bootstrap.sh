@@ -26,7 +26,6 @@ function show_os_info() {
     echo -e "Operating System: ${GREEN}${os_name} ${sanitized_version}${NC}"
   else
     echo -e "Operating System: ${RED}"Unknown"${NC}"
-    exit 1
   fi
 }
 
@@ -220,7 +219,7 @@ function extra_repos() {
     install ${repos[*]}
     sh -c "sudo dnf config-manager --set-enabled google-chrome"
 
-    pkgs=(google-chrome-stable)
+    pkgs+=(google-chrome-stable)
 
     install ${pkgs[*]}
   fi
