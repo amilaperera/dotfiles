@@ -29,6 +29,7 @@ class Env(object):
         self.install_dir = args.dir
         self.setup_env_name = title.title()
         self.config_files = cf
+        self.nossh = args.nossh
 
     @staticmethod
     def set_git_executable(args):
@@ -329,6 +330,9 @@ class ZshEnv(Env):
 
     def _download_oh_my_zsh(self):
         repo_value = 'git@github.com:amilaperera/ohmyzsh'
+        if self.nossh:
+            repo_value = 'https://github.com/amilaperera/ohmyzsh'
+        else
         dest_value = os.path.join(self.install_dir,
                                   ZshEnv.local_oh_my_zsh_ref_dir_name)
         Env.clone_repo(**dict(repo=repo_value, dest=dest_value))
@@ -533,6 +537,8 @@ def main():
                         help='path for the git executable')
     parser.add_argument('-d', '--dir',
                         help='install directory')
+    parser.add_option('--nossh', action='store_true', default=False,
+                        help='do not use ssh with git clone')
     args = parser.parse_args()
 
     for env in args.env:

@@ -318,7 +318,11 @@ function setup_configs() {
     # Doesn't seem to get snap bin directory by default
     cd ~/.dotfiles/scripts && PATH=$PATH:/snap/bin python3 setup_env.py -e zsh nvim misc tmux_sessions
   else
-    cd ~/.dotfiles/scripts && python3 setup_env.py -e zsh nvim misc tmux_sessions
+    if [[ ${BYPASS_SSH} -eq 1 ]]; then
+      cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env zsh nvim misc tmux_sessions
+    else
+      cd ~/.dotfiles/scripts && python3 setup_env.py -e zsh nvim misc tmux_sessions
+    fi
   fi
 }
 
