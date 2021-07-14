@@ -17,7 +17,7 @@ def process(args):
     download(url, file_name)
 
     # extract boost to 'temp_dir'
-    extract_directory = extract(file_name, temp_dir)
+    extract_directory = extract(temp_dir, file_name)
 
     # install
     # run bootstrap
@@ -43,7 +43,6 @@ def metainfo(args):
     url = 'https://boostorg.jfrog.io/artifactory/main/release/' + \
             version_with_dots + '/source/' + archive_name
 
-
     return temp_dir, url, file_name
 
 
@@ -58,25 +57,34 @@ def download(url, dest):
         out_file.write(data)
 
 
-def extract(file_name, path):
+def extract(temp_dir, file_name):
     print(Fore.GREEN + 'Extracting: ', end='')
     dir_name = file_name.split('.')[0]
-    print(format(dir_name))
+    print(dir_name)
     with tarfile.open(file_name) as tar:
-        tar.extractall(path)
-    return os.path.join(path, dir_name)
+        tar.extractall(temp_dir)
+    return os.path.join(temp_dir, dir_name)
 
 
 def bootstrap(path, extract_directory):
-    cmd = ['./bootstrap.sh']
+    if os.name == 'nt':
+        cmd = ['bootstrap.bat']
+    else:
+        cmd = ['./bootstrap.sh']
+
     if path:
-        cmd.append('--prefix=' + path)
-    subprocess.run(cmd, check=True, cwd=extract_directory)
+        cmd.append('--prefix=' + os.path.normpath(path))
+
+    subprocess.run(cmd, shell=True, cwd=extract_directory)
 
 
 def b2(extract_directory):
-    cmd = ['sudo', './b2', 'install']
-    subprocess.run(cmd, check=True, cwd=extract_directory)
+    if os.name == 'nt':
+        cmd = ['b2.exe', '-j 8', 'install']
+    else:
+        cmd = ['sudo', './b2', '-j 8', 'install']
+
+    subprocess.run(cmd, shell=True, cwd=extract_directory)
 
 
 def main():
