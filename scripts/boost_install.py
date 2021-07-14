@@ -11,7 +11,7 @@ from colorama import Fore, Style, init
 
 def process(args):
     # retrive meta information from the provided arguments
-    temp_dir, url, file_name = metainfo(args);
+    version, temp_dir, url, file_name = metainfo(args);
 
     # download boost from 'url' and store it in 'file_name'
     download(url, file_name)
@@ -21,7 +21,7 @@ def process(args):
 
     # install
     # run bootstrap
-    bootstrap(args.path, extract_directory)
+    bootstrap(args.path, extract_directory, version)
     # run b2
     b2(extract_directory)
 
@@ -43,7 +43,7 @@ def metainfo(args):
     url = 'https://boostorg.jfrog.io/artifactory/main/release/' + \
             version_with_dots + '/source/' + archive_name
 
-    return temp_dir, url, file_name
+    return version_with_dots, temp_dir, url, file_name
 
 
 def download(url, dest):
@@ -66,14 +66,24 @@ def extract(temp_dir, file_name):
     return os.path.join(temp_dir, dir_name)
 
 
-def bootstrap(path, extract_directory):
+def bootstrap(path, extract_directory, version):
     if os.name == 'nt':
         cmd = ['bootstrap.bat']
     else:
         cmd = ['./bootstrap.sh']
 
+    # Even though, the default path for Linux is /usr/local,
+    # it doesn't place the headers in separate directories per version.
+    # However, in Windows this is done under C:\boost\boost_x_x folder.
+    # Therefore, if the path isn't specified for Linux, let's put this
+    # nicely in version specific directories
+    if not path and os.name != 'nt':
+        path = '/usr/local/boost_' + version
+
     if path:
-        cmd.append('--prefix=' + os.path.normpath(path))
+        prefix_path = os.path.normpath(path)
+        cmd.append('--prefix=' + prefix_path)
+        print('Install path: {}'.format(prefix_path))
 
     subprocess.run(cmd, shell=True, cwd=extract_directory)
 
