@@ -199,6 +199,7 @@ function python_stuff() {
     python_stuff+=(python)
     python_stuff+=(python-pip)
   fi
+  python_stuff+=(python3-devel) # for building boost
   python_stuff+=(ipython)
   python_stuff+=(python-jedi)
 
