@@ -81,10 +81,10 @@ def bootstrap(path, extract_directory):
 def b2(extract_directory):
     if os.name == 'nt':
         cmd = ['b2.exe', '-j 8', 'install']
+        subprocess.run(cmd, shell=True, cwd=extract_directory)
     else:
         cmd = ['sudo', './b2', '-j 8', 'install']
-
-    subprocess.run(cmd, shell=True, cwd=extract_directory)
+        subprocess.run(cmd, check=True, cwd=extract_directory)
 
 
 def main():
