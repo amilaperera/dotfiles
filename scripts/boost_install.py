@@ -5,26 +5,46 @@ import os, errno
 import tempfile
 import urllib.request
 import tarfile
+import subprocess
 from colorama import Fore, Style, init
 
 
 def process(args):
+    # retrive meta information from the provided arguments
+    temp_dir, url, file_name = metainfo(args);
+
+    # download boost from 'url' and store it in 'file_name'
+    download(url, file_name)
+
+    # extract boost to 'temp_dir'
+    extract_directory = extract(file_name, temp_dir)
+
+    # install
+    # run bootstrap
+    bootstrap(args.path, extract_directory)
+    # run b2
+    b2(extract_directory)
+
+
+def metainfo(args):
     version_with_dots = args.version + '.0'
     version_with_underscore = version_with_dots.replace('.', '_')
 
     temp_dir = tempfile.gettempdir();
-    print(Style.BRIGHT + 'Temporary Directory: {}'.format(temp_dir))
+    print('temp directory used: {}'.format(temp_dir))
 
     # name of the boost archive
     archive_name = 'boost_' + version_with_underscore + '.tar.gz'
+
     # destination file name
     file_name = os.path.join(temp_dir, archive_name)
+
     # url to retrieve
     url = 'https://boostorg.jfrog.io/artifactory/main/release/' + \
             version_with_dots + '/source/' + archive_name
 
-    download(url, file_name)
-    extract(file_name, temp_dir)
+
+    return temp_dir, url, file_name
 
 
 def download(url, dest):
@@ -40,9 +60,23 @@ def download(url, dest):
 
 def extract(file_name, path):
     print(Fore.GREEN + 'Extracting: ', end='')
-    print(format(file_name.split('.')[0]))
+    dir_name = file_name.split('.')[0]
+    print(format(dir_name))
     with tarfile.open(file_name) as tar:
         tar.extractall(path)
+    return os.path.join(path, dir_name)
+
+
+def bootstrap(path, extract_directory):
+    cmd = ['./bootstrap.sh']
+    if path:
+        cmd.append('--prefix=' + path)
+    subprocess.run(cmd, check=True, cwd=extract_directory)
+
+
+def b2(extract_directory):
+    cmd = ['sudo', './b2', 'install']
+    subprocess.run(cmd, check=True, cwd=extract_directory)
 
 
 def main():
