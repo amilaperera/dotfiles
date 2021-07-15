@@ -14,6 +14,7 @@ the boost root directory to link against the required library version.
 TODO:
     * Toolchain specification on command line.
     * Any other flags to bootstrap or b2 to tweak the build
+    * Option to remove the files from the temp directories after installation
 """
 
 import argparse
@@ -138,7 +139,14 @@ def b2(prefix_arg, extract_directory):
     print(Fore.GREEN + 'Build command: ', end='')
     print('{}'.format(' '.join(cmd)))
 
-    subprocess.run(cmd, check=True, cwd=extract_directory)
+    args = {'cwd': extract_directory}
+    # Windows needs shell=True for some reason even though b2.exe is not a shell builtin
+    if os.name == 'nt':
+        args.update({'shell': True})
+    else:
+        args.update({'check': True})
+
+    subprocess.run(cmd, **args)
 
 
 def main():
