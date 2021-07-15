@@ -1,5 +1,21 @@
 #!/usr/bin/env python
 
+"""
+This script is used to install boost libraries on Windows & Linux systems.
+Currently tested on,
+    * Windows 10
+    * Fedora 34
+
+Usage: python3 boost_install.py -v 1.76 -p [PATH]
+
+Once the boost libraries are installed, use -DBOOST_ROOT=<PATH> to change
+the boost root directory to link against the required library version.
+
+TODO:
+    * Toolchain specification on command line.
+    * Any other flags to bootstrap or b2 to tweak the build
+"""
+
 import argparse
 import os, errno
 import tempfile
@@ -20,10 +36,12 @@ def process(args):
     extract_directory = extract(temp_dir, file_name)
 
     # install
+    prefix_arg = get_prefix(args.path, version)
+
     # run bootstrap
-    bootstrap(args.path, extract_directory, version)
+    bootstrap(prefix_arg, extract_directory)
     # run b2
-    b2(extract_directory)
+    b2(prefix_arg, extract_directory)
 
 
 def metainfo(args):
@@ -31,7 +49,8 @@ def metainfo(args):
     version_with_underscore = version_with_dots.replace('.', '_')
 
     temp_dir = tempfile.gettempdir();
-    print('temp directory used: {}'.format(temp_dir))
+    print(Fore.GREEN + 'Temp directory: '.format(temp_dir), end='')
+    print('{}'.format(temp_dir))
 
     # name of the boost archive
     archive_name = 'boost_' + version_with_underscore + '.tar.gz'
@@ -66,42 +85,67 @@ def extract(temp_dir, file_name):
     return os.path.join(temp_dir, dir_name)
 
 
-def bootstrap(path, extract_directory, version):
+def get_prefix(path, version):
+    # If --prefix is not not given we default to sane paths.
+    # If --prefix is not sane, Windows & Linux use C:\Boost & /usr/local
+    # respectively.
+    # But this doesn't *often* create version directory nicely under the BOOST_ROOT
+    # directory. Therefore we need to do the following manipulation if the path
+    # is not set.
+
+    # Either way, when building with CMake provide -DBOOST_ROOT=<path> to change
+    # the boost version aginst with the project is linked.
+    if not path:
+        if os.name == 'nt':
+            path = r'C:\boost\boost_' + version
+        else:
+            path = '/usr/local/boost_' + version
+
+    # Normalize path name by collapsing redundant seprators.
+    prefix_path = os.path.normpath(path)
+
+    # Print install path information.
+    print(Fore.GREEN + 'Install path: ', end='')
+    print('{}'.format(prefix_path))
+
+    # Set up the whole prefix argument.
+    # This is needed both in bootstrap and build procedure.
+    return '--prefix=' + prefix_path
+
+
+def bootstrap(prefix_arg, extract_directory):
     if os.name == 'nt':
         cmd = ['bootstrap.bat']
     else:
         cmd = ['./bootstrap.sh']
 
-    # Even though, the default path for Linux is /usr/local,
-    # it doesn't place the headers in separate directories per version.
-    # However, in Windows this is done under C:\boost\boost_x_x folder.
-    # Therefore, if the path isn't specified for Linux, let's put this
-    # nicely in version specific directories
-    if not path and os.name != 'nt':
-        path = '/usr/local/boost_' + version
+    cmd.append(prefix_arg)
 
-    if path:
-        prefix_path = os.path.normpath(path)
-        cmd.append('--prefix=' + prefix_path)
-        print('Install path: {}'.format(prefix_path))
+    # Print bootstrap command
+    print(Fore.GREEN + 'Bootstrap command: ', end='')
+    print('{}'.format(' '.join(cmd)))
 
     subprocess.run(cmd, shell=True, cwd=extract_directory)
 
 
-def b2(extract_directory):
+def b2(prefix_arg, extract_directory):
     if os.name == 'nt':
-        cmd = ['b2.exe', '-j 8', 'install']
-        subprocess.run(cmd, shell=True, cwd=extract_directory)
+        cmd = ['b2.exe', 'install', prefix_arg, '-j 8']
     else:
-        cmd = ['sudo', './b2', '-j 8', 'install']
-        subprocess.run(cmd, check=True, cwd=extract_directory)
+        cmd = ['sudo', './b2', 'install', prefix_arg, '-j 8']
+
+    # Print build command
+    print(Fore.GREEN + 'Build command: ', end='')
+    print('{}'.format(' '.join(cmd)))
+
+    subprocess.run(cmd, check=True, cwd=extract_directory)
 
 
 def main():
     parser = argparse.ArgumentParser(description='Install boost from source code')
     parser.add_argument('-v', '--version', required=True,
-                        help='boost version to be installed')
-    parser.add_argument('-p', '--path', help='installation path')
+                        help='Boost version to be installed')
+    parser.add_argument('-p', '--path', help='Installation path [C:\\boost\\boost_<ver> | /usr/local/boost_<ver>]')
 
     args = parser.parse_args()
     process(args)
@@ -109,8 +153,8 @@ def main():
 
 if __name__ == '__main__':
     try:
-        # Initialize colorama
-        # Automate sending reset sequences after each colored output
+        # Initialize colorama.
+        # Automate sending reset sequences after each colored output.
         init(autoreset=True)
         main()
 
