@@ -15,6 +15,12 @@ TODO:
     * Toolchain specification on command line.
     * Any other flags to bootstrap or b2 to tweak the build
     * Option to remove the files from the temp directories after installation
+
+NOTE:
+    * On Windows for version 1.69 below the script doesn't work. This is discussed below.
+      https://stackoverflow.com/questions/42793958/building-boost-build-engine-cl-is-not-recognized-as-an-internal-or-external-co
+
+      You need to use VS command line and manually execute bootstrap & build commands
 """
 
 import argparse
