@@ -6,15 +6,12 @@ Currently tested on,
     * Windows 10
     * Fedora 34
 
-Usage: python3 boost_install.py -v 1.76 -p [PATH]
-
 Once the boost libraries are installed, use -DBOOST_ROOT=<PATH> to change
 the boost root directory to link against the required library version.
 
 TODO:
     * Toolchain specification on command line.
     * Any other flags to bootstrap or b2 to tweak the build
-    * Option to remove the files from the temp directories after installation
 
 NOTE:
     * On Windows for version 1.69 below the script doesn't work. This is discussed below.
@@ -29,6 +26,7 @@ import tempfile
 import urllib.request
 import tarfile
 import subprocess
+import shutil
 from colorama import Fore, Style, init
 
 
@@ -42,13 +40,18 @@ def process(args):
     # extract boost to 'temp_dir'
     extract_directory = extract(temp_dir, file_name)
 
-    # install
-    prefix_arg = get_prefix(args.path, version)
+    if not args.download_only:
+        # install
+        prefix_arg = get_prefix(args.path, version)
 
-    # run bootstrap
-    bootstrap(prefix_arg, extract_directory)
-    # run b2
-    b2(prefix_arg, extract_directory)
+        # run bootstrap
+        bootstrap(prefix_arg, extract_directory)
+        # run b2
+        b2(prefix_arg, extract_directory)
+
+        if not args.keep_download:
+            remove_archive(file_name)
+            remove_extract(extract_directory)
 
 
 def metainfo(args):
@@ -155,11 +158,39 @@ def b2(prefix_arg, extract_directory):
     subprocess.run(cmd, **args)
 
 
+def remove_archive(file_name):
+    if os.path.exists(file_name):
+        os.remove(file_name)
+
+
+def remove_extract(extract_directory):
+    if os.path.exists(extract_directory):
+        try:
+            if os.name == 'nt':
+                # no issues of user permissions on Windows (I suppose)
+                shutil.rmtree(extract_directory)
+            else:
+                cmd = ['sudo', 'rm', '-rf', extract_directory]
+                print(Fore.GREEN + 'Extract directory remove command: ', end='')
+                print('{}'.format(' '.join(cmd)))
+                # don't change cwd, just execute the command from where we run the script
+                subprocess.run(cmd)
+        except:
+            print(Fore.RED + 'Error happened while trying to remove the extract directory.')
+            print(Fore.YELLOW + 'Please remove the extract directory manually: ', end='')
+            print(extract_directory)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Install boost from source code')
     parser.add_argument('-v', '--version', required=True,
-                        help='Boost version to be installed')
-    parser.add_argument('-p', '--path', help='Installation path [C:\\boost\\boost_<ver> | /usr/local/boost_<ver>]')
+            help='Boost version to be installed')
+    parser.add_argument('-p', '--path',
+            help='Installation path [C:\\boost\\boost_<ver> | /usr/local/boost_<ver>]')
+    parser.add_argument('--keep-download', action='store_true',
+            help='Keeps download archive after installing. Ignored if --keep-downloads is specified')
+    parser.add_argument('--download-only', action='store_true',
+            help='Downloads and extracts the archive witout installing')
 
     args = parser.parse_args()
     process(args)
