@@ -195,11 +195,12 @@ function python_stuff() {
     # force python3
     python_stuff+=(python3)
     python_stuff+=(python3-pip)
+    python_stuff+=(python3-dev)
   else
     python_stuff+=(python)
     python_stuff+=(python-pip)
+    python_stuff+=(python3-devel) # for building boost
   fi
-  python_stuff+=(python3-devel) # for building boost
   python_stuff+=(ipython)
   python_stuff+=(python-jedi)
 
