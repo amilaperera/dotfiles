@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# gcc installation manual very clearly says that it relies on a POSIX
+# compliant shell to do the building and installtion. It very specifically
+# mentions that zsh is won't work with the installation.
+# Therefore this particular script is run using bash (look at the shebang!!!)
+
+
 # some colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -63,45 +69,6 @@ function install() {
   sh -c "$cmd"
 }
 
-function essentials() {
-  local essential_pkgs=()
-  essential_pkgs+=(zsh)
-  essential_pkgs+=(git gitk)
-  [[ $HAS_APT -eq 1 ]] && essential_pkgs+=(silversearcher-ag) || essential_pkgs+=(the_silver_searcher)
-  essential_pkgs+=(tree)
-  [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(redhat-lsb)
-  essential_pkgs+=(htop)
-  essential_pkgs+=(wget)
-  essential_pkgs+=(curl)
-  essential_pkgs+=(xclip)
-  essential_pkgs+=(dictd)
-  # latest neovim in the case of Fedore/Arch
-  [[ $HAS_DNF -eq 1 || $HAS_PACMAN -eq 1 ]] && essential_pkgs+=(neovim)
-
-  install ${essential_pkgs[*]}
-}
-
-# install latest nvim from source code
-function nvim_from_sources() {
-  [[ $HAS_APT -ne 1 ]] && yellow "Not installing neovim from sources for non Debian based distros...."
-  echo "  - Installing pre-requisites..."
-  local pre_requisites=()
-  if [[ $HAS_APT -eq 1 ]]; then
-    pre_requisites=(ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip)
-  fi
-  install ${pre_requisites[*]}
-
-  echo "  - Cloning neovim..."
-  # create tmp directory if not exists
-  mkdir -p ~/tmp/neovim
-  git clone https://github.com/neovim/neovim.git ~/tmp/neovim
-  # switch to stable branch
-  echo "  - Switching to stable..."
-  cd ~/tmp/neovim && git checkout stable
-  echo "  - Building and installing neovim..."
-  cd ~/tmp/neovim && sudo make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=/usr/local/nvim install
-}
-
 function pre_requisites() {
   local pkgs=()
   if [[ $HAS_APT -eq 1 ]]; then
@@ -115,7 +82,6 @@ function pre_requisites() {
   install ${pkgs[*]}
 }
 
-
 # Function wrapper to install packages
 function install_packages() {
   yellow "Installing ${@}..."
@@ -123,33 +89,54 @@ function install_packages() {
   echo
 }
 
+function die() {
+  red "Error: ${@}..."
+  exit
+}
+
+function die_if_error {
+  if [[ $1 -ne 0 ]]; then
+    shift
+    die "$@"
+  fi
+}
+
 ########################################
 # main
 ########################################
 
+# Parse gcc version
+if [[ -z ${1} ]]; then
+  echo "install_gcc.sh <VERSION>"
+  die "No gcc version supplied"
+fi
+
+version=${1}
+
+# OS infomation probing
 probe_os_info
 
-# Uncomment the necessary installations
+# Install pre-requisites
 install_packages pre_requisites
 
-# downloading gcc source archive
+# Downloading gcc source archive from the following site.
 # https://mirrorservice.org/sites/sourceware.org/pub/gcc/releases/
-
-ver_major_minor=11.1
-ver=${ver_major_minor}.0
-archive_dir=/tmp/gcc-${ver}
+archive_dir=/tmp/gcc-${version}
 archive=${archive_dir}.tar.gz
-curl "https://mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-${ver}/gcc-${ver}.tar.gz" --output ${archive}
+curl "https://mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-${version}/gcc-${version}.tar.gz" --output ${archive}
+die_if_error $? "Downloading the source tarball failed"
 
-# extract
+# Extract
 cd /tmp && tar -zxvf ${archive}
+die_if_error $? "Extracting the source tarball failed"
 
-# prepare build directory
+# Prepare build directory
 build_dir=${archive_dir}/build
 mkdir -p ${build_dir}
+die_if_error $? "Creating the build directory failed"
 
 # configure
-cd ${build_dir} && ../configure -v --prefix=/usr/local/gcc-${ver} \
+cd ${build_dir} && ../configure -v --prefix=/usr/local/gcc-${version} \
                                    --host=x86_64-pc-linux-gnu \
                                    --enable-bootstrap \
                                    --enable-shared \
@@ -160,11 +147,32 @@ cd ${build_dir} && ../configure -v --prefix=/usr/local/gcc-${ver} \
                                    --enable-threads=posix \
                                    --enable-vtable-verify \
                                    --disable-multilib \
-                                   --program-suffix=-${ver_major_minor}
+                                   --program-suffix=-${version}
+
+die_if_error $? "Configuration failed"
 
 # make
-cd ${build_dir} && make -j 8 && sudo make install -j 8
+cd ${build_dir} && make -j 8
+die_if_error $? "make failed"
 
+# make install
+cd ${build_dir} && sudo make install -j 8
+die_if_error $? "make install failed"
+
+# epilogue
+echo
+priority=`echo ${version} | cut -d'.' -f 1`
+green "gcc-${version} installation successful"
+echo
+echo  "Make sure you do the following before start using the latest gcc version"
+echo
+echo   " - Add the installed version as an alternative to the system (Assuming you assign priority of ${priority})"
+yellow "   \$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/local/gcc-${version}/bin/gcc-${version} ${priority}"
+yellow "   \$ sudo update-alternatives --install /usr/bin/g++ g++ /usr/local/gcc-${version}/bin/g++-${version} ${priority}"
+echo   " - Configure the alternative"
+yellow "   \$ sudo update-alternatives --config g++"
+echo
+echo   "Bye..."
 
 unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
 unset -f yellow red green
