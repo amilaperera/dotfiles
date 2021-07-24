@@ -2,7 +2,7 @@
 
 # gcc installation manual very clearly says that it relies on a POSIX
 # compliant shell to do the building and installtion. It very specifically
-# mentions that zsh is won't work with the installation.
+# mentions that zsh will not work with the installation.
 # Therefore this particular script is run using bash (look at the shebang!!!)
 
 
