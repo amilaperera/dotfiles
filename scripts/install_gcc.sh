@@ -6,100 +6,8 @@
 # Therefore this particular script is run using bash (look at the shebang!!!)
 
 
-# some colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-NC='\033[0m'
-
-function yellow() {
-  printf "${YELLOW}$@${NC}\n"
-}
-
-function red() {
-  printf "${RED}$@${NC}\n"
-}
-
-function green() {
-  printf "${GREEN}$@${NC}\n"
-}
-
-function show_os_info() {
-  local os_name=`awk -F= '/^NAME/{print $2}' /etc/os-release 2> /dev/null`
-  local version=`awk -F= '/^\<VERSION\>/{print $2}' /etc/os-release 2> /dev/null`
-  local sanitized_version=`echo "$version" | tr -d '"'`
-  if [[ -n $os_name ]]; then
-    echo -e "Operating System: ${GREEN}${os_name} ${sanitized_version}${NC}"
-  else
-    echo -e "Operating System: ${RED}"Unknown"${NC}"
-  fi
-}
-
-function export_install_command() {
-  if which dnf &> /dev/null; then
-    HAS_DNF=1
-    install_command="dnf install"
-  elif which apt-get &> /dev/null; then
-    HAS_APT=1
-    install_command="apt-get install"
-  elif which pacman &> /dev/null; then
-    HAS_PACMAN=1
-    install_command="pacman --noconfirm -S"
-  fi
-
-  if [[ -n $install_command ]]; then
-    echo -e "Install Command: ${GREEN}${install_command}${NC}"
-  else
-    echo -e "Install Command: ${RED}"Unknown"${NC}"
-    exit 1
-  fi
-}
-
-function probe_os_info() {
-  yellow "Probing OS information"
-  show_os_info
-  export_install_command
-  echo
-}
-
-function install() {
-  local cmd=
-  [[ $HAS_PACMAN -eq 1 ]] && cmd=`echo "sudo ${install_command} ${@}"` || cmd=`echo "sudo ${install_command} ${@} -y"`
-  echo $cmd
-  sh -c "$cmd"
-}
-
-function pre_requisites() {
-  local pkgs=()
-  if [[ $HAS_APT -eq 1 ]]; then
-    pkgs+=(build-essential)
-    pkgs+=(libgmp-dev)
-    pkgs+=(libmpfr-dev)
-    pkgs+=(libmpc-dev)
-    pkgs+=(libisl-dev)
-    pkgs+=(libzstd-dev)
-  fi
-  install ${pkgs[*]}
-}
-
-# Function wrapper to install packages
-function install_packages() {
-  yellow "Installing ${@}..."
-  ${@}
-  echo
-}
-
-function die() {
-  red "Error: ${@}..."
-  exit
-}
-
-function die_if_error {
-  if [[ $1 -ne 0 ]]; then
-    shift
-    die "$@"
-  fi
-}
+# utilities
+source .common.sh
 
 ########################################
 # main
@@ -160,8 +68,11 @@ cd ${build_dir} && sudo make install -j 8
 die_if_error $? "make install failed"
 
 # epilogue
-echo
+
+# work out priority
 priority=`echo ${version} | cut -d'.' -f 1`
+
+echo
 green "gcc-${version} installation successful"
 echo
 echo  "Make sure you do the following before start using the latest gcc version"
@@ -177,8 +88,4 @@ echo   " - Update libstdc++"
 yellow "   \$ sudo ln -sf /usr/local/gcc-${version}/lib64/libstdc++.so.6 libstdc++.so.6"
 echo
 echo   "Bye..."
-
-unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
-unset -f yellow red green
-unset -f install
 
