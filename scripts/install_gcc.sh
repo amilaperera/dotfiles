@@ -169,8 +169,12 @@ echo
 echo   " - Add the installed version as an alternative to the system (Assuming you assign priority of ${priority})"
 yellow "   \$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/local/gcc-${version}/bin/gcc-${version} ${priority}"
 yellow "   \$ sudo update-alternatives --install /usr/bin/g++ g++ /usr/local/gcc-${version}/bin/g++-${version} ${priority}"
+echo
 echo   " - Configure the alternative"
 yellow "   \$ sudo update-alternatives --config g++"
+echo
+echo   " - Update libstdc++"
+yellow "   \$ sudo ln -sf /usr/local/gcc-${version}/lib64/libstdc++.so.6 libstdc++.so.6"
 echo
 echo   "Bye..."
 
