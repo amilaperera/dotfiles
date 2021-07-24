@@ -155,6 +155,10 @@ function dev_tools() {
     dev_tools+=(build-essential)
     dev_tools+=(libboost-all-dev)
     dev_tools+=(ninja-build)
+    dev_tools+=(pkg-config)
+    dev_tools+=(libevent)
+    dev_tools+=(bison)
+    dev_tools+=(byacc)
   else
     dev_tools+=(base-devel)
     dev_tools+=(boost boost-libs)
