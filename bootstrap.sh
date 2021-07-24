@@ -154,6 +154,7 @@ function dev_tools() {
   elif [[ $HAS_APT -eq 1 ]]; then
     dev_tools+=(build-essential)
     dev_tools+=(libboost-all-dev)
+    dev_tools+=(ninja-build)
   else
     dev_tools+=(base-devel)
     dev_tools+=(boost boost-libs)
