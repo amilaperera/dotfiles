@@ -76,8 +76,10 @@ die_if_error $? "ninja install failed"
 
 # work out priority
 priority=`echo ${version} | cut -d'.' -f 1`
+major_version=${priority}
 if [[ "$version" == "main" ]]; then
   priority=100 # some high number if this is the main branch
+  major_version='main'
 fi
 
 echo
@@ -86,8 +88,8 @@ echo
 echo  "Make sure you do the following before start using the latest gcc version"
 echo
 echo   " - Add the installed version as an alternative to the system (Assuming you assign priority of ${priority})"
-yellow "   \$ sudo update-alternatives --install /usr/bin/clang clang /usr/local/clang-${version}/bin/clang-${version} ${priority}"
-yellow "   \$ sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/local/clang-${version}/bin/clang++-${version} ${priority}"
+yellow "   \$ sudo update-alternatives --install /usr/bin/clang clang /usr/local/clang-${version}/bin/clang-${major_version} ${priority}"
+yellow "   \$ sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/local/clang-${version}/bin/clang++ ${priority}"
 echo
 echo   " - Configure the alternative"
 yellow "   \$ sudo update-alternatives --config clang++"
