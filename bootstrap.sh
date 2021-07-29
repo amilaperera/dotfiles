@@ -371,7 +371,9 @@ if [[ ${PKG_INSTALL} -eq 1 ]]; then
   install_packages extra_repos
   # install_packages arm_cortex_dev_tools
   # install_packages arm_linux_dev_tools
-  # install_packages nvim_from_sources
+  if [[ $HAS_APT -eq 1 ]]; then
+    install_packages nvim_from_sources
+  fi
   change_to_zsh
 fi
 
