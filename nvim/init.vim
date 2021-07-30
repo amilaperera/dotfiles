@@ -61,7 +61,6 @@ Plug 'skywind3000/asyncrun.vim'
 
 " vim-airline
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 
 " auto-closing
 Plug 'cohama/lexima.vim'
@@ -218,12 +217,6 @@ set diffopt+=context:3
 set spelllang=en                      " set spell language to English
 set nospell                           " no spell checking by default
 set dictionary+=/usr/share/dict/words " set the dictionary file
-" }}}
-
-" Settings related to external plugins {{{
-" vim-airline {{{2
-let g:airline_powerline_fonts = 1
-let g:airline_theme='molokai'
 " }}}
 
 " Deoplete {{{2
