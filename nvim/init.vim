@@ -21,7 +21,6 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'godlygeek/tabular'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
-Plug 'sjl/gundo.vim'
 
 " ctags related & dependencies
 Plug 'majutsushi/tagbar'
@@ -62,11 +61,8 @@ Plug 'skywind3000/asyncrun.vim'
 " vim-airline
 Plug 'vim-airline/vim-airline'
 
-" auto-closing
-Plug 'cohama/lexima.vim'
-
-" scratch pad
-Plug 'konfekt/vim-scratchpad'
+" auto-pairs
+Plug 'jiangmiao/auto-pairs'
 
 " code completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -285,13 +281,6 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 " }}}2
 
-" gundo {{{2
-if has('python3')
-  let g:gundo_prefer_python3 = 1   " enable Gundo with python3+ support
-endif
-nnoremap <F5> :GundoToggle<CR>
-" }}}2
-
 " Grepper {{{2
 nnoremap <leader>gg :Grepper -tool git -highlight<cr>
 nnoremap <leader>ga :Grepper -tool ag -highlight<cr>
@@ -305,10 +294,6 @@ let g:grepper.next_tool = '<leader>g'
 let g:grepper.git = {
   \ 'grepprg': 'git grep -nI --no-color'
   \ }
-" }}}2
-
-" ScrachPad {{{2
-let g:scratchpad_ftype = 'markdown'
 " }}}2
 
 " Functions {{{
