@@ -60,6 +60,7 @@ Plug 'skywind3000/asyncrun.vim'
 
 " vim-airline
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " auto-pairs
 Plug 'jiangmiao/auto-pairs'
@@ -228,6 +229,29 @@ let g:NERDSpaceDelims       = 1
 let g:NERDRemoveExtraSpaces = 1
 imap <C-c> <plug>NERDCommenterInsert
 " }}}2
+
+" Airline {{{2
+let g:airline_powerline_fonts = 0
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_symbols.colnr = ' ㏇:'
+let g:airline_symbols.colnr = ' ℅:'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = '㏑'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
+" }}}
 
 " Nerdtree settings {{{2
 map <silent> <left> :NERDTreeToggle<CR>
