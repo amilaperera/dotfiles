@@ -21,7 +21,6 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'godlygeek/tabular'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
-Plug 'sjl/gundo.vim'
 
 " ctags related & dependencies
 Plug 'majutsushi/tagbar'
@@ -61,12 +60,10 @@ Plug 'skywind3000/asyncrun.vim'
 
 " vim-airline
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-" auto-closing
-Plug 'cohama/lexima.vim'
-
-" scratch pad
-Plug 'konfekt/vim-scratchpad'
+" auto-pairs
+Plug 'jiangmiao/auto-pairs'
 
 " code completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -233,6 +230,29 @@ let g:NERDRemoveExtraSpaces = 1
 imap <C-c> <plug>NERDCommenterInsert
 " }}}2
 
+" Airline {{{2
+let g:airline_powerline_fonts = 0
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_symbols.colnr = ' ㏇:'
+let g:airline_symbols.colnr = ' ℅:'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = '㏑'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
+" }}}
+
 " Nerdtree settings {{{2
 map <silent> <left> :NERDTreeToggle<CR>
 let g:NERDTreeDirArrows     = 1
@@ -285,13 +305,6 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 " }}}2
 
-" gundo {{{2
-if has('python3')
-  let g:gundo_prefer_python3 = 1   " enable Gundo with python3+ support
-endif
-nnoremap <F5> :GundoToggle<CR>
-" }}}2
-
 " Grepper {{{2
 nnoremap <leader>gg :Grepper -tool git -highlight<cr>
 nnoremap <leader>ga :Grepper -tool ag -highlight<cr>
@@ -305,10 +318,6 @@ let g:grepper.next_tool = '<leader>g'
 let g:grepper.git = {
   \ 'grepprg': 'git grep -nI --no-color'
   \ }
-" }}}2
-
-" ScrachPad {{{2
-let g:scratchpad_ftype = 'markdown'
 " }}}2
 
 " Functions {{{
