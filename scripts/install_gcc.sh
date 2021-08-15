@@ -85,7 +85,7 @@ echo   " - Configure the alternative"
 yellow "   \$ sudo update-alternatives --config g++"
 echo
 echo   " - Update libstdc++"
-yellow "   \$ sudo ln -sf /usr/local/gcc-${version}/lib64/libstdc++.so.6 libstdc++.so.6"
+yellow "   \$ sudo ln -sf /usr/local/gcc-${version}/lib64/libstdc++.so.6 /lib/x86_64-linux-gnu/libstdc++.so.6"
 echo
 echo   "Bye..."
 
