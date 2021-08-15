@@ -156,7 +156,7 @@ function dev_tools() {
     dev_tools+=(libboost-all-dev)
     dev_tools+=(ninja-build)
     dev_tools+=(pkg-config)
-    dev_tools+=(libevent)
+    dev_tools+=(libevent-dev)
     dev_tools+=(bison)
     dev_tools+=(byacc)
   else
@@ -201,13 +201,15 @@ function python_stuff() {
     python_stuff+=(python3)
     python_stuff+=(python3-pip)
     python_stuff+=(python3-dev)
+    python_stuff+=(ipython3)
+    python_stuff+=(python3-jedi)
   else
     python_stuff+=(python)
     python_stuff+=(python-pip)
     python_stuff+=(python3-devel) # for building boost
+    python_stuff+=(ipython)
+    python_stuff+=(python-jedi)
   fi
-  python_stuff+=(ipython)
-  python_stuff+=(python-jedi)
 
   install ${python_stuff[*]}
   local pips=()
