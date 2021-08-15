@@ -6,6 +6,13 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
 
+# resource files used by bootstraping
+INFO_FILE=$HOME/.config/.bootstrap_info
+
+# constants
+OS_UPDATE_INTERVAL_DAYS=5
+OS_UPDATE_INTERVAL_SECONDS=$(( ${OS_UPDATE_INTERVAL_DAYS}*24*60*60 ))
+
 function yellow() {
   printf "${YELLOW}$@${NC}\n"
 }
@@ -30,10 +37,51 @@ function show_os_info() {
 }
 
 function update_os() {
-  yellow "Updating packages"
-  local cmd=`echo sudo ${update_os_command}`
-  echo $cmd
-  sh -c "$cmd"
+  if should_update_os; then
+    yellow "Updating packages"
+    local cmd=`echo sudo ${update_os_command}`
+    echo $cmd
+    sh -c "$cmd"
+    [[ $? -eq 0 ]] && update_last_update_timestamp
+  fi
+}
+
+function should_update_os() {
+  if [[ ! -f ${INFO_FILE} ]]; then
+    # File doesn't exist. Probably the first time doing bootstraping
+    cat << EOF > ${INFO_FILE}
+last_update: 
+repo_site: 
+email: 
+EOF
+    return 0
+  fi
+
+  # if the file exists, let's check if we have gone beyond the interval
+
+  # read last_update timestamp
+
+  last_update_timestamp=$(sed -n -E "s/^last_update: (.*)/\1/p" ${INFO_FILE})
+  current_timestamp=$(date +%s)
+
+  difference=$((current_timestamp - last_update_timestamp))
+  if (( difference > OS_UPDATE_INTERVAL_SECONDS )); then
+    # Now get the confirmation
+    yellow "You haven't updated the packages in $(( difference / 86400 )) days."
+    read -n 1 -p "Continue to update packages [y]: " input
+    if [ "${input}" = "y" ] || [ -z ${input} ]; then
+      echo
+      return 0
+    else
+      return 1
+    fi
+  else
+    return 1
+  fi
+}
+
+function update_last_update_timestamp() {
+  sed -i -E "s/(^last_update: )(.*)$/\1$(date +%s)/" ${INFO_FILE}
 }
 
 function export_install_command() {
@@ -72,6 +120,15 @@ function install() {
   sh -c "$cmd"
 }
 
+function check_dependencies() {
+  # We rely on dialog, if this doesn't exist install it first
+  yellow "Checking dependencies for bootstraping"
+  which dialog &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    install dialog
+  fi
+}
+
 function pip_install() {
   local cmd=`echo "pip3 install ${@}"`
   echo $cmd
@@ -96,7 +153,7 @@ function change_to_zsh() {
     # assuming the shell is not zsh, change it to zsh
     echo "Changing to zsh..."
     if ! grep -q "zsh" /etc/shells; then
-      red "Error: zsh not it /etc/shells"
+      red "Error: zsh not in /etc/shells"
     else
       if [[ $HAS_DNF -eq 1 ]]; then
         # Fedora doesn't have chsh installed
@@ -125,20 +182,12 @@ function essentials() {
   essential_pkgs+=(curl)
   essential_pkgs+=(xclip)
   essential_pkgs+=(dictd)
+  essential_pkgs+=(tmux)
+  essential_pkgs+=(ruby)
+  essential_pkgs+=(rubygems)
   # latest neovim in the case of Fedore/Arch
   [[ $HAS_DNF -eq 1 || $HAS_PACMAN -eq 1 ]] && essential_pkgs+=(neovim)
 
-  install ${essential_pkgs[*]}
-}
-
-# The reason for this to be out of essential_pkgs is that
-# for some installations installing ruby may be deemed redundant
-function tmux() {
-  local essential_pkgs=(tmux)
-  if [[ $HAS_APT -ne 1 ]]; then
-    # use snaps to get the latest
-    essential_pkgs+=(ruby) # for tmuxinator
-  fi
   install ${essential_pkgs[*]}
 
   # now tmuxinator
@@ -273,10 +322,6 @@ function snaps() {
   done
 
   snaps_classic=()
-  if [[ $HAS_APT -eq 1 ]]; then
-    snaps_classic+=(nvim)
-    snaps_classic+=(ruby)
-  fi
   snaps_classic+=(clion)
   snaps_classic+=(code)
   for s in "${snaps_classic[@]}"; do
@@ -289,7 +334,7 @@ function setup_github_personal_ssh() {
   if [[ ! -f ${ssh_key_file} ]]; then
     yellow "Setting up ssh keys ${ssh_key_file}"
     green "Generatig ed25519 key with no passphrase"
-    cmd="ssh-keygen -N '' -t ed25519 -C \"github, personal, perera.amila@gmail.com\" -f ${ssh_key_file}"
+    cmd="ssh-keygen -N '' -t ed25519 -C \"github, personal(${USER})\" -f ${ssh_key_file}"
     eval ${cmd}
     eval "$(ssh-agent -s)" && green "ssh agent started" || return 2
     eval ssh-add ${ssh_key_file} && \
@@ -353,53 +398,62 @@ function install_packages() {
 ########################################
 # main
 ########################################
-
-if [[ ${ALL} -eq 1 ]]; then
-  PKG_INSTALL=1
-  CONFIG_SETUP=1
-  BYPASS_SSH=0
-fi
-
 probe_os_info
+check_dependencies
 update_os
 
-# Uncomment the necessary installations
-if [[ ${PKG_INSTALL} -eq 1 ]]; then
-  install_packages essentials
-  install_packages dev_tools
-  install_packages snaps
-  install_packages tmux
-  install_packages python_stuff
-  install_packages extra_repos
-  # install_packages arm_cortex_dev_tools
-  # install_packages arm_linux_dev_tools
-  if [[ $HAS_APT -eq 1 ]]; then
-    install_packages nvim_from_sources
-  fi
-  change_to_zsh
-fi
+cmd=(dialog --separate-output --checklist "Select Options:" 22 76 16)
+options=(
+  1 "Essential packages (zsh, tmux, git, curl etc.)"           on
+  2 "Development tools"                                        off
+  3 "Snaps"                                                    off
+  4 "Python stuff"                                             off
+  5 "Extra repositories"                                       off
+  6 "Install Neovim latest from sources"                       off
+  7 "Setup github SSH"                                         off
+  8 "Setup personal configs(zsh,tmux,neovim etc.)"             off
+)
 
-if [[ ${CONFIG_SETUP} -eq 1 ]]; then
-  if [[ ${BYPASS_SSH} -eq 1 ]]; then
-    setup_configs
-  else
-    # First setup github ssh keys
-    if setup_github_personal_ssh; then # new ssh keys created
-      # Wait until the user wishes to continue
-      read  -n 1 -p "Continue with setup [c] or anyother key to abort:" input
+choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+clear
 
-      if [[ "$input" = "c" ]]; then
-        echo
-        setup_configs_if_auth_ok
+for choice in $choices; do
+  case $choice in
+    1)
+      install_packages essentials
+      ;;
+    2)
+      install_packages dev_tools
+      ;;
+    3)
+      install_packages snaps
+      ;;
+    4)
+      install_packages python_stuff
+      ;;
+    5)
+      install_packages extra_repos
+      ;;
+    6)
+      install_packages nvim_from_sources
+      ;;
+    7)
+      if setup_github_personal_ssh; then
+        # wait until the user wishes to continue
+        read -n 1 -p "Press [c] to continue with setup or any other key to abort: " input
+        [[ "$input" != "c" ]] && break
       fi
-    elif [[ $? -eq 1 ]]; then # ssh keys already exists
+      ;;
+    8)
       setup_configs_if_auth_ok
-    fi
-  fi
-fi
+      ;;
+  esac
+done
+
 green "Bye...."
 
 unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
+unset INFO_FILE OS_UPDATE_INTERVAL_DAYS OS_UPDATE_INTERVAL_SECONDS
 unset -f yellow red green
 unset -f install
 
