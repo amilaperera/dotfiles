@@ -72,6 +72,15 @@ function install() {
   sh -c "$cmd"
 }
 
+function check_dependencies() {
+  # We rely on dialog, if this doesn't exist install it first
+  yellow "Checking dependencies for bootstraping"
+  which dialog &> /dev/null
+  if [[ $? -ne 0 ]]; then
+    install dialog
+  fi
+}
+
 function pip_install() {
   local cmd=`echo "pip3 install ${@}"`
   echo $cmd
@@ -353,50 +362,58 @@ function install_packages() {
 ########################################
 # main
 ########################################
-
-if [[ ${ALL} -eq 1 ]]; then
-  PKG_INSTALL=1
-  CONFIG_SETUP=1
-  BYPASS_SSH=0
-fi
-
 probe_os_info
+check_dependencies
 update_os
 
-# Uncomment the necessary installations
-if [[ ${PKG_INSTALL} -eq 1 ]]; then
-  install_packages essentials
-  install_packages dev_tools
-  install_packages snaps
-  install_packages tmux
-  install_packages python_stuff
-  install_packages extra_repos
-  # install_packages arm_cortex_dev_tools
-  # install_packages arm_linux_dev_tools
-  if [[ $HAS_APT -eq 1 ]]; then
-    install_packages nvim_from_sources
-  fi
-  change_to_zsh
-fi
+cmd=(dialog --separate-output --checklist "Select Options:" 22 76 16)
+options=(
+  1 "Essential packages (blah, blah, blah etc.)"               on
+  2 "Development tools"                                        off
+  3 "Snaps"                                                    off
+  4 "Python stuff"                                             off
+  5 "Extra repositories"                                       off
+  6 "Tmux related stuff"                                       off
+  7 "Install Neovim latest from sources"                       off
+  8 "Setup github SSH"                                         off
+  9 "Setup personal configs(zsh,tmux,neovim etc.)"             off
+)
 
-if [[ ${CONFIG_SETUP} -eq 1 ]]; then
-  if [[ ${BYPASS_SSH} -eq 1 ]]; then
-    setup_configs
-  else
-    # First setup github ssh keys
-    if setup_github_personal_ssh; then # new ssh keys created
-      # Wait until the user wishes to continue
-      read  -n 1 -p "Continue with setup [c] or anyother key to abort:" input
+choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+clear
 
-      if [[ "$input" = "c" ]]; then
-        echo
-        setup_configs_if_auth_ok
-      fi
-    elif [[ $? -eq 1 ]]; then # ssh keys already exists
+for choice in $choices; do
+  case $choice in
+    1)
+      install_packages essential
+      ;;
+    2)
+      install_packages dev_tools
+      ;;
+    3)
+      install_packages snaps
+      ;;
+    4)
+      install_packages python_stuff
+      ;;
+    5)
+      install_packages extra_repos
+      ;;
+    6)
+      install_packages tmux
+      ;;
+    7)
+      install_packages nvim_from_sources
+      ;;
+    8)
+      setup_github_personal_ssh
+      ;;
+    9)
       setup_configs_if_auth_ok
-    fi
-  fi
-fi
+      ;;
+  esac
+done
+
 green "Bye...."
 
 unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
