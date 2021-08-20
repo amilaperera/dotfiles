@@ -368,7 +368,7 @@ update_os
 
 cmd=(dialog --separate-output --checklist "Select Options:" 22 76 16)
 options=(
-  1 "Essential packages (blah, blah, blah etc.)"               on
+  1 "Essential packages (zsh, git, curl etc.)"                 on
   2 "Development tools"                                        off
   3 "Snaps"                                                    off
   4 "Python stuff"                                             off

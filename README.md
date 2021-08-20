@@ -3,20 +3,11 @@ Personal dotfiles
 
 This repo contains my personal dotfiles mainly related to _zsh_, _bash_, _vim_, _tmux_, _git_ etc.
 
-
 **Installation**
 
 Execute the following command to bootstrap the new Linux machine (installing essential packages + configuration setup).
 
-        ALL=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
-
-If you need to install packages without setting up the configuration,
-
-        PKG_INSTALL=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
-
-If you need to setup configuration without installing packages
-
-        CONFIG_SETUP=1 bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
 
 **Note**
 
