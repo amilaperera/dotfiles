@@ -182,20 +182,12 @@ function essentials() {
   essential_pkgs+=(curl)
   essential_pkgs+=(xclip)
   essential_pkgs+=(dictd)
+  essential_pkgs+=(tmux)
+  essential_pkgs+=(ruby)
+  essential_pkgs+=(rubygems)
   # latest neovim in the case of Fedore/Arch
   [[ $HAS_DNF -eq 1 || $HAS_PACMAN -eq 1 ]] && essential_pkgs+=(neovim)
 
-  install ${essential_pkgs[*]}
-}
-
-# The reason for this to be out of essential_pkgs is that
-# for some installations installing ruby may be deemed redundant
-function tmux() {
-  local essential_pkgs=(tmux)
-  if [[ $HAS_APT -ne 1 ]]; then
-    # use snaps to get the latest
-    essential_pkgs+=(ruby) # for tmuxinator
-  fi
   install ${essential_pkgs[*]}
 
   # now tmuxinator
@@ -330,10 +322,6 @@ function snaps() {
   done
 
   snaps_classic=()
-  if [[ $HAS_APT -eq 1 ]]; then
-    snaps_classic+=(nvim)
-    snaps_classic+=(ruby)
-  fi
   snaps_classic+=(clion)
   snaps_classic+=(code)
   for s in "${snaps_classic[@]}"; do
@@ -346,7 +334,7 @@ function setup_github_personal_ssh() {
   if [[ ! -f ${ssh_key_file} ]]; then
     yellow "Setting up ssh keys ${ssh_key_file}"
     green "Generatig ed25519 key with no passphrase"
-    cmd="ssh-keygen -N '' -t ed25519 -C \"github, personal, perera.amila@gmail.com\" -f ${ssh_key_file}"
+    cmd="ssh-keygen -N '' -t ed25519 -C \"github, personal(${USER})\" -f ${ssh_key_file}"
     eval ${cmd}
     eval "$(ssh-agent -s)" && green "ssh agent started" || return 2
     eval ssh-add ${ssh_key_file} && \
@@ -416,15 +404,14 @@ update_os
 
 cmd=(dialog --separate-output --checklist "Select Options:" 22 76 16)
 options=(
-  1 "Essential packages (zsh, git, curl etc.)"                 on
+  1 "Essential packages (zsh, tmux, git, curl etc.)"           on
   2 "Development tools"                                        off
   3 "Snaps"                                                    off
   4 "Python stuff"                                             off
   5 "Extra repositories"                                       off
-  6 "Tmux related stuff"                                       off
-  7 "Install Neovim latest from sources"                       off
-  8 "Setup github SSH"                                         off
-  9 "Setup personal configs(zsh,tmux,neovim etc.)"             off
+  6 "Install Neovim latest from sources"                       off
+  7 "Setup github SSH"                                         off
+  8 "Setup personal configs(zsh,tmux,neovim etc.)"             off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -433,7 +420,7 @@ clear
 for choice in $choices; do
   case $choice in
     1)
-      install_packages essential
+      install_packages essentials
       ;;
     2)
       install_packages dev_tools
@@ -448,19 +435,16 @@ for choice in $choices; do
       install_packages extra_repos
       ;;
     6)
-      install_packages tmux
-      ;;
-    7)
       install_packages nvim_from_sources
       ;;
-    8)
+    7)
       if setup_github_personal_ssh; then
         # wait until the user wishes to continue
         read -n 1 -p "Press [c] to continue with setup or any other key to abort: " input
         [[ "$input" != "c" ]] && break
       fi
       ;;
-    9)
+    8)
       setup_configs_if_auth_ok
       ;;
   esac
