@@ -6,6 +6,13 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m'
 
+# resource files used by bootstraping
+INFO_FILE=$HOME/.config/.bootstrap_info
+
+# constants
+OS_UPDATE_INTERVAL_DAYS=5
+OS_UPDATE_INTERVAL_SECONDS=$(( ${OS_UPDATE_INTERVAL_DAYS}*24*60*60 ))
+
 function yellow() {
   printf "${YELLOW}$@${NC}\n"
 }
@@ -30,10 +37,51 @@ function show_os_info() {
 }
 
 function update_os() {
-  yellow "Updating packages"
-  local cmd=`echo sudo ${update_os_command}`
-  echo $cmd
-  sh -c "$cmd"
+  if should_update_os; then
+    yellow "Updating packages"
+    local cmd=`echo sudo ${update_os_command}`
+    echo $cmd
+    sh -c "$cmd"
+    [[ $? -eq 0 ]] && update_last_update_timestamp
+  fi
+}
+
+function should_update_os() {
+  if [[ ! -f ${INFO_FILE} ]]; then
+    # File doesn't exist. Probably the first time doing bootstraping
+    cat << EOF > ${INFO_FILE}
+last_update: 
+repo_site: 
+email: 
+EOF
+    return 0
+  fi
+
+  # if the file exists, let's check if we have gone beyond the interval
+
+  # read last_update timestamp
+
+  last_update_timestamp=$(sed -n -E "s/^last_update: (.*)/\1/p" ${INFO_FILE})
+  current_timestamp=$(date +%s)
+
+  difference=$((current_timestamp - last_update_timestamp))
+  if (( difference > OS_UPDATE_INTERVAL_SECONDS )); then
+    # Now get the confirmation
+    yellow "You haven't updated the packages in $(( difference / 86400 )) days."
+    read -n 1 -p "Continue to update packages [y]: " input
+    if [ "${input}" = "y" ] || [ -z ${input} ]; then
+      echo
+      return 0
+    else
+      return 1
+    fi
+  else
+    return 1
+  fi
+}
+
+function update_last_update_timestamp() {
+  sed -i -E "s/(^last_update: )(.*)$/\1$(date +%s)/" ${INFO_FILE}
 }
 
 function export_install_command() {
@@ -105,7 +153,7 @@ function change_to_zsh() {
     # assuming the shell is not zsh, change it to zsh
     echo "Changing to zsh..."
     if ! grep -q "zsh" /etc/shells; then
-      red "Error: zsh not it /etc/shells"
+      red "Error: zsh not in /etc/shells"
     else
       if [[ $HAS_DNF -eq 1 ]]; then
         # Fedora doesn't have chsh installed
@@ -406,7 +454,11 @@ for choice in $choices; do
       install_packages nvim_from_sources
       ;;
     8)
-      setup_github_personal_ssh
+      if setup_github_personal_ssh; then
+        # wait until the user wishes to continue
+        read -n 1 -p "Press [c] to continue with setup or any other key to abort: " input
+        [[ "$input" != "c" ]] && break
+      fi
       ;;
     9)
       setup_configs_if_auth_ok
@@ -417,6 +469,7 @@ done
 green "Bye...."
 
 unset HAS_DNF HAS_APT HAS_PACMAN RED YELLOW GREEN NC install_command
+unset INFO_FILE OS_UPDATE_INTERVAL_DAYS OS_UPDATE_INTERVAL_SECONDS
 unset -f yellow red green
 unset -f install
 
