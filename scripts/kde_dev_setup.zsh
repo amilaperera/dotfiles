@@ -55,6 +55,13 @@ kdesrc_build_initial_setup
 
 # build dolphin with
 echo
+green  " Tweak the ~/.kdesrc-buildrc file before configuring/building"
+echo
+green  " To build Qt libraries from sources make sure to uncomment the following lines in ~/.kdesrc-buildrc file"
+echo   "  qtdir ${HOME}/kde/qt5"
+echo   "  include ${HOME}/kde/src/kdesrc-build/qt5-build-include"
+echo   "  include ${HOME}/kde/src/kdesrc-build/custom-qt5-libs-build-include"
+echo
 green  " Build a project by invoking the following command"
 echo   "  kdesrc-build dolphin --include-dependencies"
 echo   "  kdesrc-build konsole --include-dependencies"
