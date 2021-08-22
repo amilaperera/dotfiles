@@ -35,6 +35,7 @@ function kdesrc_build_initial_setup() {
 
 function other_deps() {
   local pkgs=(libXScrnSaver-devel)
+  pkgs+=("qt5-*")
   install ${pkgs[*]}
 }
 
