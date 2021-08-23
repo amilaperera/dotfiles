@@ -34,10 +34,15 @@ function kdesrc_build_initial_setup() {
 }
 
 function other_deps() {
-  local pkgs=(libXScrnSaver-devel)
-  pkgs+=("qt5-*")                     # install qt5 libraries
-  pkgs+=(libdrm-devel)                # for kwin
-  pkgs+=(libnl3-devel libpcap-devel)  # for libksysguard
+  local pkgs=("qt5-*")
+  pkgs+=(libdrm-devel libXScrnSaver-devel) # TODO: check if these are really needed even after plasm desp
+
+  install ${pkgs[*]}
+}
+
+function plasma_deps() {
+  local pkgs=(libpcap-devel libnl3-devel libsecret-devel)
+  pkgs+=(builddep bluedevil breeze-gtk kde-gtk-config kgamma kscreen kwin plasma-breeze plasma-desktop plasma-discover plasma-disks plasma-drkonqi plasma-firewall plasma-integration plasma-milou plasma-nm plasma-pa plasma-systemmonitor plasma-systemsettings plasma-thunderbolt plasma-vault plasma-wayland-protocols plasma-workspace plasma-workspace-geolocation plasma-workspace-wallpapers plymouth-kcm powerdevil sddm-kcm)
 
   install ${pkgs[*]}
 }
@@ -53,6 +58,7 @@ fi
 install_packages basic_tools
 install_packages framework_deps
 install_packages other_deps
+install_packages plasma_deps
 
 clone_kde_src
 kdesrc_build_initial_setup
