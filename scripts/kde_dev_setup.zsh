@@ -42,9 +42,12 @@ function other_deps() {
 
 function plasma_deps() {
   local pkgs=(libpcap-devel libnl3-devel libsecret-devel)
-  pkgs+=(builddep bluedevil breeze-gtk kde-gtk-config kgamma kscreen kwin plasma-breeze plasma-desktop plasma-discover plasma-disks plasma-drkonqi plasma-firewall plasma-integration plasma-milou plasma-nm plasma-pa plasma-systemmonitor plasma-systemsettings plasma-thunderbolt plasma-vault plasma-wayland-protocols plasma-workspace plasma-workspace-geolocation plasma-workspace-wallpapers plymouth-kcm powerdevil sddm-kcm)
-
   install ${pkgs[*]}
+
+  # install the build dependencies
+  if [[ $HAS_DNF -eq 1 ]]; then
+    sudo dnf -y builddep bluedevil breeze-gtk kde-gtk-config kgamma kscreen kwin plasma-breeze plasma-desktop plasma-discover plasma-disks plasma-drkonqi plasma-firewall plasma-integration plasma-milou plasma-nm plasma-pa plasma-systemmonitor plasma-systemsettings plasma-thunderbolt plasma-vault plasma-wayland-protocols plasma-workspace plasma-workspace-geolocation plasma-workspace-wallpapers plymouth-kcm powerdevil sddm-kcm
+  fi
 }
 
 
