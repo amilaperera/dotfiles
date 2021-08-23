@@ -35,7 +35,10 @@ function kdesrc_build_initial_setup() {
 
 function other_deps() {
   local pkgs=(libXScrnSaver-devel)
-  pkgs+=("qt5-*")
+  pkgs+=("qt5-*")                     # install qt5 libraries
+  pkgs+=(libdrm-devel)                # for kwin
+  pkgs+=(libnl3-devel libpcap-devel)  # for libksysguard
+
   install ${pkgs[*]}
 }
 
