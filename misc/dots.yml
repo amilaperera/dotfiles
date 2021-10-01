@@ -46,11 +46,13 @@ root: ~/
 
 windows:
   - shell:
-  - editor: nvim
+  # sleep a while to avoid NVIM geometric issue when started along with the terminal startup
+  # https://github.com/neovim/neovim/issues/11330
+  - editor: sleep 0.5 && $EDITOR
   - dotfiles:
       layout: even-horizontal
       panes:
-        - cd ~/.dotfiles && nvim
+        - cd ~/.dotfiles && sleep 0.5 && nvim
         - cd ~/.dotfiles
   - ohmyzsh:
       layout: even-horizontal
@@ -58,7 +60,7 @@ windows:
       # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
       # synchronize: after
       panes:
-        - cd ~/.oh-my-zsh && nvim
+        - cd ~/.oh-my-zsh && sleep 0.5 && nvim
         - cd ~/.oh-my-zsh
   - htop: htop
 
