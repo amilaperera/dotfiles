@@ -71,6 +71,10 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 'markdown' }
 
+" telescope
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 call plug#end()
 " }}}
 
@@ -390,19 +394,26 @@ command! -nargs=? -range=% RetabIndent call IndentConvert(<line1>,<line2>,&et,<q
 " }}}2
 
 " vimux settings{{{2
- " Prompt for a command to run
- map <Leader>vp :VimuxPromptCommand<CR>
- " Run last command executed by VimuxRunCommand
- map <Leader>vl :VimuxRunLastCommand<CR>
- " Inspect runner pane
- map <Leader>vi :VimuxInspectRunner<CR>
- " Close vim tmux runner opened by VimuxRunCommand
- map <Leader>vq :VimuxCloseRunner<CR>
- " Interrupt any command running in the runner pane
- map <Leader>vx :VimuxInterruptRunner<CR>
- " Zoom the runner pane (use <bind-key> z to restore runner pane)
- map <Leader>vz :call VimuxZoomRunner()<CR>
- "}}}2
+" Prompt for a command to run
+map <Leader>vp :VimuxPromptCommand<CR>
+" Run last command executed by VimuxRunCommand
+map <Leader>vl :VimuxRunLastCommand<CR>
+" Inspect runner pane
+map <Leader>vi :VimuxInspectRunner<CR>
+" Close vim tmux runner opened by VimuxRunCommand
+map <Leader>vq :VimuxCloseRunner<CR>
+" Interrupt any command running in the runner pane
+map <Leader>vx :VimuxInterruptRunner<CR>
+" Zoom the runner pane (use <bind-key> z to restore runner pane)
+map <Leader>vz :call VimuxZoomRunner()<CR>
+"}}}2
+
+" telescope settings {{{2
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+" }}}2
 
 " }}}
 
