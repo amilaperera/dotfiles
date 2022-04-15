@@ -147,32 +147,8 @@ function snap_install_classic() {
   sh -c "$cmd"
 }
 
-function change_to_zsh() {
-  local result=`$SHELL -c 'echo $ZSH_VERSION'`
-  if [[ -z $result ]]; then
-    # assuming the shell is not zsh, change it to zsh
-    echo "Changing to zsh..."
-    if ! grep -q "zsh" /etc/shells; then
-      red "Error: zsh not in /etc/shells"
-    else
-      if [[ $HAS_DNF -eq 1 ]]; then
-        # Fedora doesn't have chsh installed
-        local cmd=`echo "sudo lchsh -i ${USER}"`
-        sh -c "${cmd}"
-      else
-        local zsh_prg=`which zsh`
-        local cmd="chsh --shell ${zsh_prg}"
-        eval $cmd
-      fi
-    fi
-  else
-    echo "ZSH already selected as the login shell"
-  fi
-}
-
 function essentials() {
   local essential_pkgs=()
-  essential_pkgs+=(zsh)
   essential_pkgs+=(git gitk)
   [[ $HAS_APT -eq 1 ]] && essential_pkgs+=(silversearcher-ag) || essential_pkgs+=(the_silver_searcher)
   essential_pkgs+=(ripgrep)
@@ -371,12 +347,12 @@ function setup_configs() {
   echo
   if [[ $HAS_APT -eq 1 ]]; then
     # Doesn't seem to get snap bin directory by default
-    cd ~/.dotfiles/scripts && PATH=$PATH:/snap/bin python3 setup_env.py -e zsh nvim misc tmux_sessions
+    cd ~/.dotfiles/scripts && PATH=$PATH:/snap/bin python3 setup_env.py -e bash nvim misc tmux_sessions
   else
     if [[ ${BYPASS_SSH} -eq 1 ]]; then
-      cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env zsh nvim misc tmux_sessions
+      cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash nvim misc tmux_sessions
     else
-      cd ~/.dotfiles/scripts && python3 setup_env.py -e zsh nvim misc tmux_sessions
+      cd ~/.dotfiles/scripts && python3 setup_env.py -e bash nvim misc tmux_sessions
     fi
   fi
 }
@@ -405,14 +381,14 @@ update_os
 
 cmd=(dialog --separate-output --checklist "Select Options:" 22 76 16)
 options=(
-  1 "Essential packages (zsh, tmux, git, curl etc.)"           on
+  1 "Essential packages (bash, tmux, git, curl etc.)"          on
   2 "Development tools"                                        off
   3 "Snaps"                                                    off
   4 "Python stuff"                                             off
   5 "Extra repositories"                                       off
   6 "Install Neovim latest from sources"                       off
   7 "Setup github SSH"                                         off
-  8 "Setup personal configs(zsh,tmux,neovim etc.)"             off
+  8 "Setup personal configs(bash,tmux,neovim etc.)"            off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
