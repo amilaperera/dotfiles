@@ -4,7 +4,7 @@
 # File Name: bash_alias.sh
 #############################################################
 
-##ls family aliases
+#ls family aliases
 alias ls="ls $LS_OPTIONS"            # add colors for filetype recognition
 alias la="ls $LS_OPTIONS -Al"        # long list with hidden files
 alias ll="ls $LS_OPTIONS -l"         # long listing
@@ -58,7 +58,7 @@ alias ct='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q  $(find . \( -name "*
 
 alias rmtmp='find . -name "*~" -type f | xargs -I {} rm -rf {}'
 
-## alias alternative to up() function
+# alias alternative to up() function
 alias ,='cd -'
 alias ..='cd ../'
 alias ...='cd ../../'
@@ -66,33 +66,14 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-## ack aliases
-for path in ${PATH//:/ }; do
-	if [ -f "$path/ack-grep" ]; then
-		alias ack='ack-grep'
-		alias ackc='ack-grep --cc --cpp'
-		break
-	else
-		alias ack='ack'
-		alias ackc='ack --cc --cpp'
-	fi
-done
-
-## encoding conversion
-alias nkfeuc='nkf -Lu -e --overwrite' # converts to EUC and overwrites the file
-alias nkfutf='nkf -Lu -w --overwrite' # converts to UTF-8 and overwrites the file
-
-## linking cunit and gcov when compiling
-alias cunit='gcc -lcunit -lcurses -fprofile-arcs -ftest-coverage'
-
-## this distro identification may not work for some systems
+# this distro identification may not work for some systems
 if [[ $distroname == "Ubuntu" ]]; then
 	alias U='sudo apt-get update && sudo apt-get upgrade -y'
 else
-	alias U='sudo yum update -y'
+	alias U='sudo dnf update -y'
 fi
 
-## build & compiling related
+# build & compiling related
 alias mk='make clean && make'
 
 alias t='tmux -2'

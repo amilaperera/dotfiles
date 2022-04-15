@@ -76,10 +76,7 @@ function _bm_checkvar()
 	echo $result
 }
 
-##################################################################
-##bm()
-##folder bookmark function
-##################################################################
+# folder bookmark function
 function bm()
 {
 	local bm= dir= file="${HOME}/.bmarks"

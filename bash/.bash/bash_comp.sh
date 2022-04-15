@@ -10,23 +10,11 @@
 bash_comp_file=/usr/share/bash-completion/bash_completion
 [ -f $bash_comp_file ] && source $bash_comp_file
 
-# rvm completions
-[ -r $rvm_path/scripts/completion ] && . $rvm_path/scripts/completion
-
-# tmuxinator completions
-[ -f $HOME/bin/tmuxinator_completion ] && source $HOME/bin/tmuxinator_completion
-
-# rails completion
-[ -f $HOME/bin/rails.bash ] && source $HOME/bin/rails.bash
-
-# rails completion
-[ -f $HOME/bin/rails.bash ] && source $HOME/bin/rails.bash
+complete -o dirnames -f -X '!*.@(?([xX]|[sS])[hH][tT][mM]?([lL]))' ff cb
+complete -o dirnames -f -X '!*.[pf]df' pdf
 
 # folder bookmark completions
 complete -F _bm_comp bm B
-
-complete -o dirnames -f -X '!*.@(?([xX]|[sS])[hH][tT][mM]?([lL]))' ff cb
-complete -o dirnames -f -X '!*.[pf]df' pdf
 
 function _bm_comp()
 {
@@ -48,3 +36,4 @@ function _bm_comp()
 		_filedir -d
 	fi
 }
+

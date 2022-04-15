@@ -50,11 +50,9 @@ un=$(whoami)
 git_prompt_file=/usr/share/git-core/contrib/completion/git-prompt.sh
 [ -f $git_prompt_file ] && source $git_prompt_file
 
-##################################################################
-## prompt command function
-## basically extracted from http://tldp.org/HOWTO/Bash-Prompt-HOWTO/x869.html
-## and slightly adjusted
-##################################################################
+# prompt command function
+# basically extracted from http://tldp.org/HOWTO/Bash-Prompt-HOWTO/x869.html
+# and slightly adjusted
 function prompt_command() {
 	git_prompt=$(__git_ps1 " (%s)")
 	curr_dir=$(pwd)

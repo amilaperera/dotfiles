@@ -22,12 +22,5 @@ for config_file in ${config_file_list}; do
 	[ -f ${file} ] && source ${file}
 done
 
-# DR specific - BEGIN
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-unset LC_COLLATE
-unset LD_LIBRARY_PATH
-export TERM=xterm
-
 unset BASH_PATH config_file_list
 

@@ -7,11 +7,7 @@
 # set workinghost
 export workinghost=$(uname)
 
-################################################################################
-## getting the Linux Distrubution Version
-## this works on Ubuntu
-## FIXME: lsb_release might not work on distrubutions other than Ubuntu
-################################################################################
+# getting the Linux Distrubution Version
 if [[ $workinghost == "Linux" ]]; then
 	for path in ${PATH//:/ }; do
 		if [ -f ${path}/lsb_release ]; then
@@ -28,10 +24,7 @@ fi
 UMASK=022
 umask $UMASK
 
-#####################################################################
-## _contains_path()
-## returns 1 if a path contains a given directory
-#####################################################################
+# returns 1 if a path contains a given directory
 function _contains_path()
 {
 	local path=":${1}:" dir="${2}"
@@ -41,10 +34,7 @@ function _contains_path()
 	esac
 }
 
-#####################################################################
-## _clean_path()
-## remove duplicate path entries and cleans PATH variable
-#####################################################################
+# remove duplicate path entries and cleans PATH variable
 function _clean_path()
 {
 	local path="${1}"
@@ -64,16 +54,12 @@ function _clean_path()
 	echo $newpath
 }
 
-#####################################################################
-## _set_path()
-## sets path from the mypathstring selecting existing directories
-#####################################################################
+# sets path from the mypathstring selecting existing directories
 function _set_path()
 {
 	# If you want to add a path permenantly add it to mypathstring
 	# priority of the path is increased as the paths are added to the bottom of the mypathstring
 	local mypatharray=(
-					"/user/games"
 					"/sbin"
 					"/bin"
 					"/usr/bin"
@@ -91,7 +77,6 @@ function _set_path()
 	done
 
 	PATH=$(_clean_path $PATH)
-	[ -d "/cygdrive/c/Program Files/Vim/vim73" ] && PATH=$PATH:"/cygdrive/c/Program Files/Vim/vim73"
 }
 
 # sets and export PATH
@@ -130,9 +115,7 @@ export LS_OPTIONS="--color=auto -F -h"
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
-################################################################################
-## shell behaviour adjustment with shopt options and set options
-################################################################################
+# shell behaviour adjustment with shopt options and set options
 shopt -s histappend   # appends rather than overwrite history on exit
 shopt -s cdspell      # correct minor spelling mistakes with cd command
 shopt -s checkwinsize # update COLUMNS and LINES variables according to window size
@@ -148,3 +131,4 @@ unset MAILCHECK
 set -o ignoreeof    # Dont let Ctrl+D exit the shell
 set -o noclobber    # prevents overwriting existing files
 set -o vi           # specifies vi editing mode for command-line editing
+
