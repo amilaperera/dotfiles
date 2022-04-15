@@ -58,6 +58,8 @@ alias ct='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q  $(find . \( -name "*
 
 alias rmtmp='find . -name "*~" -type f | xargs -I {} rm -rf {}'
 
+alias ag="ag --pager='less -R'"
+
 # alias alternative to up() function
 alias ,='cd -'
 alias ..='cd ../'
