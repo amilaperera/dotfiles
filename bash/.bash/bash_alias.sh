@@ -80,5 +80,35 @@ alias t='tmux -2'
 alias ta='tmux -2 attach-session -t'
 alias tk='tmux -2 kill-session -t'
 alias tl='tmux -2 list-sessions'
-# }}}
+
+function current_git_branch()
+{
+  git branch --no-color | grep -E '^\*' | awk '{print $2}' \
+    || echo "default_value"
+}
+
+# git aliases
+alias ga='git add'
+alias gb='git branch'
+alias gca='git commit -v -a'
+alias gst='git status'
+alias gd='git diff'
+alias gdca='git diff --cached'
+alias gl='git pull'
+alias ggpull='git pull origin "$(current_git_branch)"'
+alias ggpush='git push origin "$(current_git_branch)"'
+alias gpsup='git push --set-upstream origin "$(current_git_branch)"'
+alias glg='git log --stat'
+alias glgp='git log --stat -p'
+alias glgg='git log --graph'
+alias glgga='git log --graph --decorate --all'
+alias glgm='git log --graph --max-count=10'
+alias glo='git log --oneline --decorate'
+alias glol='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset"'
+alias glols='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --stat'
+alias glod='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset"'
+alias glods='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset" --date=short'
+alias glola='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --all'
+alias glog='git log --oneline --decorate --graph'
+alias gloga='git log --oneline --decorate --graph --all'
 
