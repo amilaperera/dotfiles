@@ -48,9 +48,9 @@ fi
 function _prompt_command()
 {
   if (($UID != 0)); then
-    echo "__git_ps1 \"${C}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" \" \\$ \""
+    echo "__git_ps1 \"[${C}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" ]\" \\$ \""
   else
-    echo "__git_ps1 \"${EMR}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" \" \\$ \""
+    echo "__git_ps1 \"[${EMR}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" ]\" \\$ \""
   fi
 }
 PROMPT_COMMAND=$(_prompt_command)
@@ -58,8 +58,5 @@ PROMPT_COMMAND=$(_prompt_command)
 PS2="${EMK}-${EMB}-${EMK}Continue${EMB}:${NONE} "
 PS3=$(echo -e -n "\033[1;34m-\033[1;30m-Enter Your Option\033[1;34m:\033[0m ")
 PS4="+xtrace $0[$LINENO]: "
-
-# setting MYSql prompt
-export MYSQL_PS1="\u@\h [\d] > "
 
 unset NONE K R G Y B M C W EMK EMR EMG EMY EMB EMM EMC EMW BGK BGR BGG BGY BGB BGM BGC BGW
