@@ -36,52 +36,24 @@ BGM="\[\033[45m\]"
 BGC="\[\033[46m\]"
 BGW="\[\033[47m\]"
 
-hn=
-case $workinghost in
-CYGWIN*		)	hn=$(hostname) ;;
-*			)	hn=$(hostname -s);;
-esac
-
-# get user name
-un=$(whoami)
-# for root user we just capitalize the user name, so that it becomes "ROOT"
-(($UID == 0)) && un=$(echo $un | tr 'a-z' 'A-Z')
-
 git_prompt_file=/usr/share/git-core/contrib/completion/git-prompt.sh
-[ -f $git_prompt_file ] && source $git_prompt_file
-
-# prompt command function
-# basically extracted from http://tldp.org/HOWTO/Bash-Prompt-HOWTO/x869.html
-# and slightly adjusted
-function prompt_command() {
-	git_prompt=$(__git_ps1 " (%s)")
-	curr_dir=$(pwd)
-}
-
-PROMPT_COMMAND=prompt_command
-
-case $TERM in
-xterm*|rxvt*	)	TITLEBAR='\[\033]0;\u@\h:\w\007\]' ;;
-*				)	TITLEBAR="" ;;
-esac
-
-# setting PS1
-# PS1 is set separately for non-root users and root users
-# "\342\234\223" sequence displays a 'right' symbol if the last command executed succeeded
-# "\342\234\227" sequence displays a 'wrong' symbol if the last command executed failed
-if (($UID != 0)); then
-	# prompt for normal user
-	PS1="$TITLEBAR\
-${W}┌─(${EMK}${BGW}\$un${C}@${M}\$hn${C}:${Y}\$curr_dir${W})\
-${W}─(\$(if [[ \$? == 0 ]]; then echo \"${EMG}\342\234\223\"; else echo \"${EMR}\342\234\227\"; fi)${W})\n\
-${W}└─(${M}\#${W})${NONE} \\$ "
-else
-	# prompt for root
-	PS1="$TITLEBAR\
-${W}┌─(${R}\$un${C}@${M}\$hn${C}:${Y}\$curr_dir${W})\
-${W}─(\$(if [[ \$? == 0 ]]; then echo \"${EMG}\342\234\223\"; else echo \"${EMR}\342\234\227\"; fi)${W})\n\
-${W}└─(${M}\#${W})${NONE} \\$ "
+if [[ -f $git_prompt_file ]]; then
+  source $git_prompt_file
+  export GIT_PS1_SHOWCOLORHINTS=true
+  export GIT_PS1_SHOWDIRTYSTATE=true
+  export GIT_PS1_SHOWUNTRACKEDFILES=true
+  export GIT_PS1_SHOWUPSTREAM="auto"
 fi
+
+function _prompt_command()
+{
+  if (($UID != 0)); then
+    echo "__git_ps1 \"${C}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" \" \\$ \""
+  else
+    echo "__git_ps1 \"${EMR}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" \" \\$ \""
+  fi
+}
+PROMPT_COMMAND=$(_prompt_command)
 
 PS2="${EMK}-${EMB}-${EMK}Continue${EMB}:${NONE} "
 PS3=$(echo -e -n "\033[1;34m-\033[1;30m-Enter Your Option\033[1;34m:\033[0m ")
