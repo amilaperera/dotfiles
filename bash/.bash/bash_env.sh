@@ -9,14 +9,14 @@ export workinghost=$(uname)
 
 # getting the Linux Distrubution Version
 if [[ $workinghost == "Linux" ]]; then
-	for path in ${PATH//:/ }; do
-		if [ -f ${path}/lsb_release ]; then
-			export distroname=$(lsb_release -si) # distro name
-			export distrover=$(lsb_release -sr)  # distibution version
-			export arch=$(uname -m)              # architecture
-			break;
-		fi
-	done
+    for path in ${PATH//:/ }; do
+        if [ -f ${path}/lsb_release ]; then
+            export distroname=$(lsb_release -si) # distro name
+            export distrover=$(lsb_release -sr)  # distibution version
+            export arch=$(uname -m)              # architecture
+            break;
+        fi
+    done
 fi
 
 # set umask to 644 permission(files when touch) and 755(directories when mkdir)
@@ -27,56 +27,56 @@ umask $UMASK
 # returns 1 if a path contains a given directory
 function _contains_path()
 {
-	local path=":${1}:" dir="${2}"
-	case $path in
-	*:$dir:*)	return 1;;
-	*		)	return 0;;
-	esac
+    local path=":${1}:" dir="${2}"
+    case $path in
+        *:$dir:*)	return 1;;
+        *		)	return 0;;
+    esac
 }
 
 # remove duplicate path entries and cleans PATH variable
 function _clean_path()
 {
-	local path="${1}"
-	local newpath= directory=
-	[ -z $path ] && return 1
+    local path="${1}"
+    local newpath= directory=
+    [ -z $path ] && return 1
 
-	# remove duplicate entries from the path
-	for directory in ${path//:/ }; do
-		[ -d $directory ] \
-			&& _contains_path "${newpath}" "${directory}" \
-			&& newpath="${newpath}":"${directory}"
-	done
+    # remove duplicate entries from the path
+    for directory in ${path//:/ }; do
+        [ -d $directory ] \
+            && _contains_path "${newpath}" "${directory}" \
+            && newpath="${newpath}":"${directory}"
+        done
 
-	# removes unnecessary : marks
-	newpath=$(echo $newpath | sed -e 's/^:*//' -e 's/:*$//' -e 's/::*/:/g')
-	# returns newpath
-	echo $newpath
+    # removes unnecessary : marks
+    newpath=$(echo $newpath | sed -e 's/^:*//' -e 's/:*$//' -e 's/::*/:/g')
+    # returns newpath
+    echo $newpath
 }
 
 # sets path from the mypathstring selecting existing directories
 function _set_path()
 {
-	# If you want to add a path permenantly add it to mypathstring
-	# priority of the path is increased as the paths are added to the bottom of the mypathstring
-	local mypatharray=(
-					"/sbin"
-					"/bin"
-					"/usr/bin"
-					"/usr/sbin"
-					"/usr/local/bin"
-					"/usr/local/sbin"
-					"$HOME/bin"
-					)
+    # If you want to add a path permenantly add it to mypathstring
+    # priority of the path is increased as the paths are added to the bottom of the mypathstring
+    local mypatharray=(
+    "/sbin"
+    "/bin"
+    "/usr/bin"
+    "/usr/sbin"
+    "/usr/local/bin"
+    "/usr/local/sbin"
+    "$HOME/bin"
+)
 
-	local path=
-	for path in "${mypatharray[@]}"; do
-		if [ -d "$path" ]; then
-			_contains_path "$PATH" "$path" && PATH=$path:$PATH
-		fi
-	done
+local path=
+for path in "${mypatharray[@]}"; do
+    if [ -d "$path" ]; then
+        _contains_path "$PATH" "$path" && PATH=$path:$PATH
+    fi
+done
 
-	PATH=$(_clean_path $PATH)
+PATH=$(_clean_path $PATH)
 }
 
 # sets and export PATH
@@ -85,7 +85,7 @@ export PATH
 
 # setting term colors
 [ -z $TMUX ] && TERM=xterm-256color               # let tmux decide TERM to use,
-                                                  # otherwise set it to xterm-256color
+# otherwise set it to xterm-256color
 
 export HISTSIZE=5000                              # No of commands in history stack in memory
 export HISTFILESIZE=5000                          # No of commands in history file
@@ -102,8 +102,8 @@ export MANPAGER="less"
 
 #ulimit -S -c 0 >/dev/null 2>&1    # no core files by default
 case $workinghost in
-CYGWIN*		)	export VISUAL='nvim' ;;
-*			)	export VISUAL='nvim' ;;
+    CYGWIN*		)	export VISUAL='nvim' ;;
+    *			)	export VISUAL='nvim' ;;
 esac
 
 export EDITOR="$VISUAL"
@@ -139,25 +139,25 @@ GITHUB_ID="${HOME}/.ssh/id_github_personal"
 SSH_ENV="$HOME/.ssh/environment"
 
 function run_ssh_env {
-  . "${SSH_ENV}" > /dev/null
+    . "${SSH_ENV}" > /dev/null
 }
 
 function start_ssh_agent {
-  echo "Initializing new SSH agent..."
-  ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-  echo "succeeded"
-  chmod 600 "${SSH_ENV}"
+    echo "Initializing new SSH agent..."
+    ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    echo "succeeded"
+    chmod 600 "${SSH_ENV}"
 
-  run_ssh_env
+    run_ssh_env
 
-  ssh-add "${GITHUB_ID}"
+    ssh-add "${GITHUB_ID}"
 }
 
 if [ -f "${SSH_ENV}" ]; then
-  run_ssh_env
-  ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-    start_ssh_agent
-  }
+    run_ssh_env
+    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_ssh_agent
+    }
 else
-  start_ssh_agent
+    start_ssh_agent
 fi

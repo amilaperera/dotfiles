@@ -70,9 +70,9 @@ alias ......='cd ../../../../../'
 
 # this distro identification may not work for some systems
 if [[ $distroname == "Ubuntu" ]]; then
-	alias U='sudo apt-get update && sudo apt-get upgrade -y'
+    alias U='sudo apt-get update && sudo apt-get upgrade -y'
 else
-	alias U='sudo dnf update -y'
+    alias U='sudo dnf update -y'
 fi
 
 # build & compiling related
@@ -85,9 +85,9 @@ alias tl='tmux -2 list-sessions'
 
 function current_git_branch()
 {
-  git branch --no-color | grep -E '^\*' | awk '{print $2}' \
-    || echo "default_value"
-}
+    git branch --no-color | grep -E '^\*' | awk '{print $2}' \
+        || echo "default_value"
+    }
 
 # git aliases
 alias ga='git add'

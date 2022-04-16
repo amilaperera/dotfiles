@@ -38,20 +38,20 @@ BGW="\[\033[47m\]"
 
 git_prompt_file=/usr/share/git-core/contrib/completion/git-prompt.sh
 if [[ -f $git_prompt_file ]]; then
-  source $git_prompt_file
-  export GIT_PS1_SHOWCOLORHINTS=true
-  export GIT_PS1_SHOWDIRTYSTATE=true
-  export GIT_PS1_SHOWUNTRACKEDFILES=true
-  export GIT_PS1_SHOWUPSTREAM="auto"
+    source $git_prompt_file
+    export GIT_PS1_SHOWCOLORHINTS=true
+    export GIT_PS1_SHOWDIRTYSTATE=true
+    export GIT_PS1_SHOWUNTRACKEDFILES=true
+    export GIT_PS1_SHOWUPSTREAM="auto"
 fi
 
 function _prompt_command()
 {
-  if (($UID != 0)); then
-    echo "__git_ps1 \"[${C}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" ]\" \\$ \""
-  else
-    echo "__git_ps1 \"[${EMR}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" ]\" \\$ \""
-  fi
+    if (($UID != 0)); then
+        echo "__git_ps1 \"[${C}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" ]\" \\$ \""
+    else
+        echo "__git_ps1 \"[${EMR}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" ]\" \\$ \""
+    fi
 }
 PROMPT_COMMAND=$(_prompt_command)
 

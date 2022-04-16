@@ -18,8 +18,8 @@ BASH_PATH=${HOME}/.bash
 config_file_list="bash_env bash_colors bash_prompt bash_alias bash_func bash_bm bash_comp"
 
 for config_file in ${config_file_list}; do
-	file=${BASH_PATH}/${config_file}.sh
-	[ -f ${file} ] && source ${file}
+    file=${BASH_PATH}/${config_file}.sh
+    [ -f ${file} ] && source ${file}
 done
 
 unset BASH_PATH config_file_list

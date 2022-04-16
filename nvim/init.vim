@@ -425,13 +425,13 @@ augroup END
 
 augroup FTOptions
   autocmd!
-  autocmd Filetype sh,zsh,csh,tcsh setl ts=2 sw=2 sts=2 fdm=indent
-  autocmd Filetype yaml            setl ts=4 sw=4 sts=4 fdm=indent
-  autocmd Filetype html,css        setl ts=2 sw=2 sts=2 fdm=indent
-  autocmd Filetype vim             setl ts=2 sw=2 sts=2 fdm=marker
-  autocmd Filetype txt,mail        setl ts=2 sw=2 sts=2 fdm=indent
-  autocmd Filetype php             setl ts=2 sw=2 sts=2 fdm=indent
-  autocmd Filetype perl            setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype sh,zsh,csh,tcsh,bash  setl ts=4 sw=4 sts=4 fdm=indent
+  autocmd Filetype yaml                  setl ts=4 sw=4 sts=4 fdm=indent
+  autocmd Filetype html,css              setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype vim                   setl ts=2 sw=2 sts=2 fdm=marker
+  autocmd Filetype txt,mail              setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype php                   setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype perl                  setl ts=2 sw=2 sts=2 fdm=indent
   autocmd Filetype gitcommit,markdown    setl spell
 
   autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4

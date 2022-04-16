@@ -23,64 +23,64 @@ bash_reset_color="\033[0m"
 
 function _echo_red()
 {
-	echo -e $bash_red_color"$@"$bash_reset_color
+    echo -e $bash_red_color"$@"$bash_reset_color
 }
 
 function _echo_green()
 {
-	echo -e $bash_green_color"$@"$bash_reset_color
+    echo -e $bash_green_color"$@"$bash_reset_color
 }
 
 function _echo_yellow()
 {
-	echo -e $bash_yellow_color"$@"$bash_reset_color
+    echo -e $bash_yellow_color"$@"$bash_reset_color
 }
 
 function _echo_blue()
 {
-	echo -e $bash_blue_color"$@"$bash_reset_color
+    echo -e $bash_blue_color"$@"$bash_reset_color
 }
 
 function _console_log()
 {
-	echo '['$(date +'%a %Y-%m-%d %H:%M:%S %z')']' $1
+    echo '['$(date +'%a %Y-%m-%d %H:%M:%S %z')']' $1
 }
 
 function _confirm()
 {
-	local answer=''
-	local choice=''
+    local answer=''
+    local choice=''
 
-	local prompt="confirm [y/n] > "
+    local prompt="confirm [y/n] > "
 
-	until [[ "$choice" = "y" || "$choice" = "n" ]]; do
+    until [[ "$choice" = "y" || "$choice" = "n" ]]; do
 
-		read -p "$prompt" answer
-		case "$answer" in
-			[yY] ) choice='y';;
-			[nN] ) choice='n';;
-			* ) ;;
-		esac
-	done
+        read -p "$prompt" answer
+        case "$answer" in
+            [yY] ) choice='y';;
+            [nN] ) choice='n';;
+            * ) ;;
+        esac
+    done
 
-	[ "$choice" = "y" ] && return $bash_true || return $bash_false
+    [ "$choice" = "y" ] && return $bash_true || return $bash_false
 }
 
 function _check_for_shell_interactivity()
 {
-	case "$-" in
-		*i* ) return $bash_true;;
-		* ) return $bash_false;;
-	esac
+    case "$-" in
+        *i* ) return $bash_true;;
+        * ) return $bash_false;;
+    esac
 }
 
 function _check_if_command_exists()
 {
-	if [ $# -ne 1 ]; then
-		echo "_check_if_command_exists function should take exactly one argument"
-		return $bash_false
-	fi
+    if [ $# -ne 1 ]; then
+        echo "_check_if_command_exists function should take exactly one argument"
+        return $bash_false
+    fi
 
-	type -P $1 >/dev/null
+    type -P $1 >/dev/null
 }
 
