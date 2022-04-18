@@ -153,11 +153,14 @@ function start_ssh_agent {
     ssh-add "${GITHUB_ID}"
 }
 
-if [ -f "${SSH_ENV}" ]; then
-    run_ssh_env
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+if [ -f "${GITHUB_ID}" ]; then
+    if [ -f "${SSH_ENV}" ]; then
+        run_ssh_env
+        ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+            start_ssh_agent
+        }
+    else
         start_ssh_agent
-    }
-else
-    start_ssh_agent
+    fi
 fi
+
