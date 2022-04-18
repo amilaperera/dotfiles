@@ -124,6 +124,8 @@ shopt -s extglob      # extended globbing
 shopt -s globstar     # ** globbing operator matches file names and directories recursively
 shopt -s sourcepath   # The source builtin uses $PATH to find the file to be sourced
 shopt -s autocd       # a name of a dir is executed as if it were the argument to cd
+shopt -s histverify   # resulting history line is loaded to the readline editing buffer
+                      # before being executed
 
 shopt -u mailwarn     # disable mail warning
 unset MAILCHECK
