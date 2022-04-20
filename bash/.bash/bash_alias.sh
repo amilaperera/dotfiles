@@ -83,11 +83,11 @@ alias ta='tmux -2 attach-session -t'
 alias tk='tmux -2 kill-session -t'
 alias tl='tmux -2 list-sessions'
 
-function current_git_branch()
+function __git_current_branch()
 {
     git branch --no-color | grep -E '^\*' | awk '{print $2}' \
         || echo "default_value"
-    }
+}
 
 # git aliases
 alias ga='git add'
@@ -97,9 +97,9 @@ alias gst='git status'
 alias gd='git diff'
 alias gdca='git diff --cached'
 alias gl='git pull'
-alias ggpull='git pull origin "$(current_git_branch)"'
-alias ggpush='git push origin "$(current_git_branch)"'
-alias gpsup='git push --set-upstream origin "$(current_git_branch)"'
+alias ggpull='git pull origin "$(__git_current_branch)"'
+alias ggpush='git push origin "$(__git_current_branch)"'
+alias gpsup='git push --set-upstream origin "$(__git_current_branch)"'
 alias glg='git log --stat'
 alias glgp='git log --stat -p'
 alias glgg='git log --graph'
@@ -113,4 +113,6 @@ alias glods='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgr
 alias glola='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --all'
 alias glog='git log --oneline --decorate --graph'
 alias gloga='git log --oneline --decorate --graph --all'
+alias gco='git checkout'
+alias gcb='git checkout -b'
 
