@@ -113,7 +113,7 @@ runtime! macros/matchit.vim " autoload the matchit plugin on startup
 runtime! ftplugin/man.vim   " load the man page file type plugin on startup
 
 set autoindent            " auto-indent on
-set foldenable            " enable fold functionality
+set nofoldenable          " disable fold functionality
 set foldmethod=syntax     " foldmethod to syntax
 set foldtext=NeatFoldText()
 
@@ -212,7 +212,9 @@ let g:snipMate = { 'snippet_version' : 1 }
 
 " Fugitive {{{
 " Git grep with qiuck-fix window
-nmap <Leader>gg :Ggrep -q<Space>
+nmap <Leader>gq :Ggrep -q<Space>
+" Git grep the current word under the cursor
+nmap <Leader>gw :Ggrep -q <C-R><C-W><Space>
 " Logging the last 10000 commits (helpful in big projects)
 nmap <Leader>gl :Gclog -10000<CR>
 " }}}
@@ -292,7 +294,6 @@ let g:winresizer_horiz_resize = 1
 " }}}2
 
 " Grepper {{{2
-nnoremap <leader>gg :Grepper -tool git -highlight<cr>
 nnoremap <leader>ga :Grepper -tool ag -highlight<cr>
 nnoremap <leader>*  :Grepper -tool ag -cword -noprompt -highlight<cr>
 
@@ -483,8 +484,6 @@ vnoremap < <gv
 " vimgrep {{{2
 " Displays a vimgrep command template
 map <Leader>g :vimgrep // ../**/*.<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
-" Search the current file for the word under the cursor and display matches
-nmap <silent> <Leader>gw :vimgrep /<C-r><C-w>/ %<CR>:cclose<CR>:cwindow<CR><C-W>J:nohlsearch<CR>
 " }}}2
 
 " force encoding conversion {{{2
