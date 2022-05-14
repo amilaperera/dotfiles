@@ -163,7 +163,6 @@ function essentials() {
   essential_pkgs+=(tmux)
   essential_pkgs+=(ruby)
   essential_pkgs+=(rubygems)
-  essential_pkgs+=(fzf)
   # latest neovim in the case of Fedore/Arch
   [[ $HAS_DNF -eq 1 || $HAS_PACMAN -eq 1 ]] && essential_pkgs+=(neovim)
 
@@ -193,6 +192,8 @@ function dev_tools() {
   fi
   dev_tools+=(clang)
   dev_tools+=(cmake)
+  dev_tools+=(fzf)
+  dev_tools+=(kdiff3)
   [[ $HAS_APT -eq 1 ]] && dev_tools+=(exuberant-ctags) || dev_tools+=(ctags)
   install ${dev_tools[*]}
 }
