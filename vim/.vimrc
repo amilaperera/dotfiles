@@ -261,6 +261,7 @@ map <silent> <right> :TagbarToggle<CR>
 " fzf {{{2
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>fg :GFiles<CR>
+nnoremap <Leader>m :History<CR>
 " }}}
 
 " yankstack {{{2
