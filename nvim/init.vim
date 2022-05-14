@@ -22,10 +22,6 @@ Plug 'godlygeek/tabular'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
 
-" ctags related & dependencies
-Plug 'majutsushi/tagbar'
-Plug 'xolox/vim-misc'
-
 " General development related
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
@@ -144,18 +140,6 @@ set wildignore=*.o,*.obj,*.a,*.so,*.jpg,*.png,*.gif,*.dll,*.exe,*.dpkg,*.rpm,*.p
 set history=1000
 " }}}2
 
-" Set possible locations for the tags file {{{2
-set tags=./tags
-set tags+=../tags
-set tags+=../../tags
-set tags+=../../../tags
-set tags+=../../../../tags
-set tags+=../../../../../tags
-set tags+=../../../../../../tags
-set tags+=../../../../../../../tags
-set tags+=../../../../../../../../tags
-set tags+=../../../../../../../../../tags
-" }}}2
 " }}}
 
 " UI Settings {{{
