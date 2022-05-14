@@ -21,6 +21,12 @@ Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
 Plug 'sjl/gundo.vim'
 
+" Snipmate and its dependencies
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
+
 " General development related
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
@@ -34,12 +40,6 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
-
-" Snippets plugin, related dependencies & snippets
-Plug 'sirver/ultisnips'
-
-" Vim-snippets to be used along with UltiSnips & SnipMate
-Plug 'honza/vim-snippets'
 
 " Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
 Plug 'mhinz/vim-grepper'
@@ -203,6 +203,17 @@ set diffopt+=vertical
 set diffopt+=context:3
 " }}}
 
+" SnipMate {{{
+let g:snipMate = { 'snippet_version' : 1 }
+" }}}
+
+" Fugitive {{{
+" Git grep with qiuck-fix window
+nmap <Leader>gg :Ggrep -q<Space>
+" Logging the last 10000 commits (helpful in big projects)
+nmap <Leader>gl :Gclog -10000<CR>
+" }}}
+
 " Dictionary & Spell Checking {{{
 set spelllang=en                      " set spell language to English
 set nospell                           " no spell checking by default
@@ -275,12 +286,6 @@ nmap <C-n> <Plug>yankstack_substitute_newer_paste
 " winresizer {{{2
 let g:winresizer_vert_resize = 2
 let g:winresizer_horiz_resize = 1
-" }}}2
-
-" ultisnips {{{2
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 " }}}2
 
 " gundo {{{2
