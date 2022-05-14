@@ -9,7 +9,6 @@ call plug#begin('~/.vim/plugged')
 
 " General enhancements
 Plug 'vim-scripts/VisIncr'
-Plug 'kien/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -263,17 +262,6 @@ map <silent> <right> :TagbarToggle<CR>
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>fg :GFiles<CR>
 " }}}
-
-" CtrlP {{{2
-" disable the key mapping
-nnoremap <Leader>p :CtrlP<CR>
-nnoremap <Leader>b :CtrlPBuffer<CR>
-nnoremap <Leader>m :CtrlPMRU<CR>
-let g:ctrlp_map =''
-let g:ctrlp_show_hidden = 1
-let g:ctrlp_follow_symlinks = 1
-let g:ctrlp_root_markers = ['']
-" }}}2
 
 " yankstack {{{2
 " load the yankstack plugin immediately
