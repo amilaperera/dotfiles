@@ -18,14 +18,9 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'godlygeek/tabular'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
 Plug 'sjl/gundo.vim'
-
-" ctags related & dependencies
-Plug 'majutsushi/tagbar'
-Plug 'xolox/vim-misc'
 
 " General development related
 Plug 'vim-scripts/DoxygenToolkit.vim'
@@ -38,9 +33,6 @@ Plug 'benmills/vimux'
 Plug 'vim-scripts/a.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 
-" Vim-Jinja2 syntax hightlighting
-Plug 'Glench/Vim-Jinja2-Syntax'
-
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
 
@@ -49,9 +41,6 @@ Plug 'sirver/ultisnips'
 
 " Vim-snippets to be used along with UltiSnips & SnipMate
 Plug 'honza/vim-snippets'
-
-" Jedi plugin - python autocompletion
-Plug 'davidhalter/jedi-vim'
 
 " Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
 Plug 'mhinz/vim-grepper'
@@ -77,13 +66,6 @@ call plug#end()
 
 " General settings {{{
 "
-" python path recognition for Jedi
-" TODO: This is actually a bug that will probably be resolved in futre.
-" https://github.com/davidhalter/jedi-vim/issues/870
-if has('win32') || has('win64')
-  py import os; sys.executable=os.path.join(sys.prefix, 'python.exe')
-endif
-
 set exrc                       " use a local version of .(g)vimrc
 set secure                     " disable unsafe commands in local .vimrc files
 
@@ -148,27 +130,15 @@ set wildignore=*.o,*.obj,*.a,*.so,*.jpg,*.png,*.gif,*.dll,*.exe,*.dpkg,*.rpm,*.p
 set history=1000
 " }}}2
 
-" Set possible locations for the tags file {{{2
-set tags=./tags
-set tags+=../tags
-set tags+=../../tags
-set tags+=../../../tags
-set tags+=../../../../tags
-set tags+=../../../../../tags
-set tags+=../../../../../../tags
-set tags+=../../../../../../../tags
-set tags+=../../../../../../../../tags
-set tags+=../../../../../../../../../tags
-" }}}2
 " }}}
 
 " UI Settings {{{
 set list                      " strings to be used in list mode
 set listchars=tab:\|.,trail:- " strings to be used in list mode
 
-set tabstop=2                 " number of spaces that a tab counts for
-set shiftwidth=2              " number of spaces to be used in each step of indent
-set softtabstop=2             " number of spaces that a tab counts for while editing
+set tabstop=4                 " number of spaces that a tab counts for
+set shiftwidth=4              " number of spaces to be used in each step of indent
+set softtabstop=4             " number of spaces that a tab counts for while editing
 set expandtab                 " use spaces to insert a tab
 
 set cino=:0
@@ -238,6 +208,29 @@ set dictionary+=/usr/share/dict/words " set the dictionary file
 nnoremap <silent> <F12> :BufExplorer<CR>
 " }}}2
 
+" Airline {{{2
+let g:airline_powerline_fonts = 0
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_symbols.colnr = ' ㏇:'
+let g:airline_symbols.colnr = ' ℅:'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = '㏑'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
+" }}}
+
 " NerdCommenter Settings {{{2
 let g:NERDSpaceDelims       = 1
 let g:NERDRemoveExtraSpaces = 1
@@ -268,13 +261,6 @@ let g:ctrlp_map =''
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_follow_symlinks = 1
 let g:ctrlp_root_markers = ['']
-" }}}2
-
-" Tabularize {{{2
-nmap <silent> <Leader>a= :Tabularize /=<CR>
-vmap <silent> <Leader>a= :Tabularize /=<CR>
-nmap <silent> <Leader>a: :Tabularize /:\zs<CR>
-vmap <silent> <Leader>a: :Tabularize /:\zs<CR>
 " }}}2
 
 " yankstack {{{2
@@ -413,18 +399,17 @@ augroup END
 
 augroup FTOptions
   autocmd!
-  autocmd Filetype sh,zsh,csh,tcsh setl ts=2 noet fdm=marker
-  autocmd Filetype yaml            setl ts=2 sw=2 sts=2 fdm=indent
-  autocmd Filetype html,css        setl ts=2 sw=2 sts=2 fdm=indent
-  autocmd Filetype vim             setl ts=2 sw=2 sts=2 fdm=marker
-  autocmd Filetype txt,mail        setl ts=2 sw=2 sts=2 fdm=indent
-  autocmd Filetype php             setl ts=2 sw=2 sts=2 fdm=indent
-  autocmd Filetype perl            setl ts=2 sw=2 sts=2 fdm=indent
+  autocmd Filetype sh,zsh,csh,tcsh setl ts=4 noet fdm=marker
+  autocmd Filetype yaml            setl ts=4 sw=4 sts=4 fdm=indent
+  autocmd Filetype html,css        setl ts=4 sw=4 sts=4 fdm=indent
+  autocmd Filetype vim             setl ts=4 sw=4 sts=4 fdm=marker
+  autocmd Filetype txt,mail        setl ts=4 sw=4 sts=4 fdm=indent
+  autocmd Filetype php             setl ts=4 sw=4 sts=4 fdm=indent
+  autocmd Filetype perl            setl ts=4 sw=4 sts=4 fdm=indent
   autocmd Filetype gitcommit       setl spell
 
-  autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=2 sw=2 sts=2
+  autocmd BufNewFile,BufRead *.c,*.cpp,*.c++,*.cxx,*.h,*hpp setl ts=4 sw=4 sts=4
   autocmd BufNewFile,BufRead *.pro setl ft=QT_PROJECT_FILE syn=make
-  autocmd BufNewFile,BufRead *.tmpl set ft=jinja
   autocmd BufNewFile,BufRead SCons* set ft=scons
   autocmd BufNewFile,BufRead Config.in set ft=config
 augroup END

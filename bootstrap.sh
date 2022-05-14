@@ -154,6 +154,7 @@ function essentials() {
   essential_pkgs+=(ripgrep)
   essential_pkgs+=(tree)
   [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(redhat-lsb)
+  essential_pkgs+=(vim)
   essential_pkgs+=(htop)
   essential_pkgs+=(wget)
   essential_pkgs+=(curl)
@@ -162,6 +163,7 @@ function essentials() {
   essential_pkgs+=(tmux)
   essential_pkgs+=(ruby)
   essential_pkgs+=(rubygems)
+  essential_pkgs+=(fzf)
   # latest neovim in the case of Fedore/Arch
   [[ $HAS_DNF -eq 1 || $HAS_PACMAN -eq 1 ]] && essential_pkgs+=(neovim)
 
