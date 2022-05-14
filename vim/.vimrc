@@ -61,6 +61,13 @@ Plug 'cohama/lexima.vim'
 " scratch pad
 Plug 'konfekt/vim-scratchpad'
 
+" augment the behaviour of star search
+Plug 'thinca/vim-visualstar'
+
+" fzf
+Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
+Plug 'junegunn/fzf.vim'
+
 call plug#end()
 " }}}
 
@@ -251,6 +258,11 @@ map <leader>r :NERDTreeFind<CR>
 " Tagbar settings {{{2
 map <silent> <right> :TagbarToggle<CR>
 " }}}2
+
+" fzf {{{2
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>fg :GFiles<CR>
+" }}}
 
 " CtrlP {{{2
 " disable the key mapping
