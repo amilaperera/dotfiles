@@ -89,6 +89,9 @@ function __git_current_branch()
         || echo "default_value"
 }
 
+# fzf
+alias f='"$EDITOR" $(fzf --preview "less {}")'
+
 # git aliases
 alias ga='git add'
 alias gb='git branch'
