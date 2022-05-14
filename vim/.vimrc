@@ -214,7 +214,7 @@ let g:snipMate = { 'snippet_version' : 1 }
 " Git grep with qiuck-fix window
 nmap <Leader>gq :Ggrep -q<Space>
 " Git grep the current word under the cursor
-nmap <Leader>gw :Ggrep -q <C-R><C-W><Space>
+nmap <Leader>gw :Ggrep -q -w <C-R><C-W><Space>
 " Logging the last 10000 commits (helpful in big projects)
 nmap <Leader>gl :Gclog -10000<CR>
 " }}}
