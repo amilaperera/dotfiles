@@ -22,6 +22,7 @@ alias tree='tree -C'                 # nice alternative to recursive ls
 alias treel='tree -C | less -R'      # nice alternative to recursive ls
 
 alias h='history'
+alias hg='history | grep --color=always'
 alias r='fc -s --'
 alias j='jobs -l'
 
