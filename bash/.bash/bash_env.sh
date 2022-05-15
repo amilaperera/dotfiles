@@ -140,13 +140,15 @@ set -o vi           # specifies vi editing mode for command-line editing
 GITHUB_ID="${HOME}/.ssh/id_github_personal"
 SSH_ENV="$HOME/.ssh/environment"
 
-function run_ssh_env {
+function run_ssh_env
+{
     . "${SSH_ENV}" > /dev/null
 }
 
-function start_ssh_agent {
+function start_ssh_agent
+{
     echo "Initializing new SSH agent..."
-    ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    ssh-agent | sed 's/^echo/#echo/' >| "${SSH_ENV}"
     echo "succeeded"
     chmod 600 "${SSH_ENV}"
 

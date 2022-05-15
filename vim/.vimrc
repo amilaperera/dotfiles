@@ -184,7 +184,7 @@ set display=lastline          " show as much as possible of the last line
 if ! has('gui_running')
   set background=dark
   if (&term == "xterm-256color" || &term == "screen-256color" || &term == "tmux-256color")
-    colorscheme lucius
+    colorscheme molokai
   else
     colorscheme default
   endif
