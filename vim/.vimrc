@@ -19,12 +19,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
-
-" Snipmate and its dependencies
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
-Plug 'honza/vim-snippets'
+Plug 'qpkorr/vim-bufkill'
 
 " General development related
 Plug 'vim-scripts/DoxygenToolkit.vim'
@@ -40,9 +35,6 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
 
-" Vim Grepper - fully async grep plugin that works with ag, ack, git grep etc.
-Plug 'mhinz/vim-grepper'
-
 " git diff shower
 Plug 'airblade/vim-gitgutter'
 
@@ -55,9 +47,6 @@ Plug 'vim-airline/vim-airline-themes'
 
 " auto-closing
 Plug 'cohama/lexima.vim'
-
-" scratch pad
-Plug 'konfekt/vim-scratchpad'
 
 " augment the behaviour of star search
 Plug 'thinca/vim-visualstar'
@@ -208,10 +197,6 @@ set diffopt+=vertical
 set diffopt+=context:3
 " }}}
 
-" SnipMate {{{
-let g:snipMate = { 'snippet_version' : 1 }
-" }}}
-
 " Fugitive {{{
 " Git grep with qiuck-fix window
 nmap <Leader>gq :Ggrep -q<Space>
@@ -234,6 +219,7 @@ nnoremap <silent> <F12> :BufExplorer<CR>
 
 " Airline {{{2
 let g:airline_powerline_fonts = 0
+let g:airline_theme = 'lucius'
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
@@ -295,20 +281,6 @@ let g:winresizer_vert_resize = 2
 let g:winresizer_horiz_resize = 1
 " }}}2
 
-" Grepper {{{2
-nnoremap <leader>ga :Grepper -tool ag -highlight<cr>
-nnoremap <leader>*  :Grepper -tool ag -cword -noprompt -highlight<cr>
-
-let g:grepper           = {}
-let g:grepper.dir       = 'repo,cwd' " current working directory if repo fails
-let g:grepper.tools     = ['git', 'ag', 'grep']
-let g:grepper.next_tool = '<leader>g'
-
-let g:grepper.git = {
-  \ 'grepprg': 'git grep -nI --no-color'
-  \ }
-" }}}2
-
 " lsp {{{2
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
@@ -328,6 +300,8 @@ function! s:on_lsp_buffer_enabled() abort
     let g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
     let g:lsp_diagnostics_enabled = 0
+    let g:lsp_diagnostics_highlights_enabled = 0
+    let g:lsp_diagnostics_signs_enabled = 0
 
     " refer to doc to add more commands
 endfunction
@@ -338,14 +312,6 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup()"
-
-" }}}2
-
-" ScrachPad {{{2
-let g:scratchpad_ftype = 'markdown'
 " }}}2
 
 " Functions {{{

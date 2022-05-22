@@ -24,3 +24,6 @@ done
 
 unset BASH_PATH config_file_list
 
+# fzf install
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
