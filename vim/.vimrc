@@ -219,7 +219,7 @@ nnoremap <silent> <F12> :BufExplorer<CR>
 
 " Airline {{{2
 let g:airline_powerline_fonts = 0
-let g:airline_theme = 'lucius'
+let g:airline_theme = 'dark'
 
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
