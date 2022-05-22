@@ -255,10 +255,6 @@ let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.so.*$', '\.dpkg$', '\
 map <leader>r :NERDTreeFind<CR>
 " }}}2
 
-" Tagbar settings {{{2
-map <silent> <right> :TagbarToggle<CR>
-" }}}2
-
 " fzf {{{2
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>fg :GFiles<CR>
