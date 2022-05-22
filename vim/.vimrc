@@ -8,7 +8,6 @@
 call plug#begin('~/.vim/plugged')
 
 " General enhancements
-Plug 'vim-scripts/VisIncr'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -20,9 +19,7 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
 Plug 'qpkorr/vim-bufkill'
-
-" General development related
-Plug 'vim-scripts/DoxygenToolkit.vim'
+Plug 'vim-scripts/VisIncr'
 
 " Vim tmux integration
 Plug 'tpope/vim-tbone'
@@ -30,7 +27,7 @@ Plug 'benmills/vimux'
 
 " C/C++ enhancements
 Plug 'vim-scripts/a.vim'
-Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'bfrg/vim-cpp-modern'
 
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
