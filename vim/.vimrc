@@ -291,11 +291,9 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> K <plug>(lsp-hover)
 
     let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
     let g:lsp_diagnostics_enabled = 0
     let g:lsp_diagnostics_highlights_enabled = 0
     let g:lsp_diagnostics_signs_enabled = 0
-
     " refer to doc to add more commands
 endfunction
 
