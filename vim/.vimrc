@@ -63,9 +63,8 @@ call plug#end()
 
 " General settings {{{
 "
-set exrc                       " use a local version of .(g)vimrc
+set nocompatible               " Be improved
 set secure                     " disable unsafe commands in local .vimrc files
-
 set hidden                     " hide unsaved buffers
 set autochdir                  " changes to the directory containing the file which was opened or selected
 set autowriteall               " writes the contents of the file when moving to another file
@@ -141,8 +140,7 @@ set expandtab                 " use spaces to insert a tab
 set cino=:0
 set cino=l1
 
-set cursorline                " display cursor line(This might make the window redraw a little slow)
-set nocursorcolumn            " display nocursorcolumn - window redraw is slow
+set cursorline              " display cursor line(This might make the window redraw a little slow)
 
 set nonumber                  " show line numbers
 set numberwidth=6             " safe upto 999999
@@ -158,8 +156,6 @@ set lazyredraw                " don't redraw screen while typing macros
 set nostartofline             " leave my cursor where it was
 set showcmd                   " show the command being typed
 set cmdheight=2               " set command height to 2
-set report=0                  " always report the number of lines changed
-set ruler                     " always shows the current position bottom the screen
 
 set textwidth=100             " maximum width of the text that is being inserted
 
