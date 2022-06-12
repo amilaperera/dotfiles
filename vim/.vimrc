@@ -50,8 +50,9 @@ Plug 'thinca/vim-visualstar'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
 
-" YCM
-Plug 'ycm-core/YouCompleteMe'
+" lsp
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 
 call plug#end()
 
@@ -212,6 +213,8 @@ map <leader>r :NERDTreeFind<CR>
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>fg :GFiles<CR>
 nnoremap <Leader>m :History<CR>
+nnoremap <Leader>fb :Buffers<CR>
+let g:fzf_preview_window=[]
 
 " yankstack
 " load the yankstack plugin immediately
@@ -238,46 +241,33 @@ map <Leader>vx :VimuxInterruptRunner<CR>
 " Zoom the runner pane (use <bind-key> z to restore runner pane)
 map <Leader>vz :call VimuxZoomRunner()<CR>
 
-" YCM
-let g:ycm_use_clangd = 1
-let g:ycm_clangd_binary_path = 'clangd'
-let g:ycm_clangd_args = ['-j=4']
-" make YCM compatible with UltiSnips (using <Ctrl-N>, <Ctrl-P>)
-let g:ycm_key_list_select_completion = []
-let g:ycm_key_list_previous_completion = []
+" lsp
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> <leader>gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
 
-nnoremap yd :YcmCompleter GoToDefinition<CR>
-nnoremap yr :YcmCompleter GoToReferences<CR>
-nnoremap yt :YcmCompleter GetType<CR>
+    let g:lsp_format_sync_timeout = 1000
+    let g:lsp_diagnostics_enabled = 0
+    let g:lsp_diagnostics_highlights_enabled = 0
+    let g:lsp_diagnostics_signs_enabled = 0
+endfunction
 
-" " lsp
-" function! s:on_lsp_buffer_enabled() abort
-    " setlocal omnifunc=lsp#complete
-    " setlocal signcolumn=yes
-    " if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    " nmap <buffer> gd <plug>(lsp-definition)
-    " nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    " nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    " nmap <buffer> gr <plug>(lsp-references)
-    " nmap <buffer> gi <plug>(lsp-implementation)
-    " nmap <buffer> <leader>gt <plug>(lsp-type-definition)
-    " nmap <buffer> <leader>rn <plug>(lsp-rename)
-    " nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    " nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-    " nmap <buffer> K <plug>(lsp-hover)
-
-    " let g:lsp_format_sync_timeout = 1000
-    " let g:lsp_diagnostics_enabled = 0
-    " let g:lsp_diagnostics_highlights_enabled = 0
-    " let g:lsp_diagnostics_signs_enabled = 0
-    " " refer to doc to add more commands
-" endfunction
-
-" augroup lsp_install
-    " au!
+augroup lsp_install
+    au!
     " " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    " autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-" augroup END
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 
 " Functions
 
@@ -421,7 +411,11 @@ map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
 " QuickFixWindow Toggle
 nmap <silent> <Leader>q <ESC>:QFix<CR>
 
-" source environment specific vimrc
-if filereadable("${HOME}/.local_vimrc")
-    source ${HOME}/.local_vimrc
-endif
+" source a file if it exists
+function! SourceIfExists(file)
+    if filereadable(expand(a:file))
+        execute 'source' a:file
+    endif
+endfunction
+
+call SourceIfExists("~/.local.vim")
