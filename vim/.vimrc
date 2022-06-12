@@ -4,7 +4,7 @@
 " File Name: .vimrc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Plugin manager setup {{{
+" Plugin manager setup
 call plug#begin('~/.vim/plugged')
 
 " General enhancements
@@ -57,10 +57,9 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 call plug#end()
-" }}}
 
-" General settings {{{
-"
+
+" General settings
 set nocompatible               " Be improved
 set secure                     " disable unsafe commands in local .vimrc files
 set hidden                     " hide unsaved buffers
@@ -78,22 +77,16 @@ set mousemodel=popup           " right mosue button pops up a menu
 set updatetime=250             " vim update time - affects the behaviour of certain plugins(git-gutter)
 set laststatus=2               " status line always
 set t_Co=256                   " letting vim know that we're using 256 color terminal
-" }}}
-
-" Changing map leader {{{
-let mapleader = "," " set mapleader to ','
-" }}}
-
-" Paste toggling {{{
+let mapleader = ","            " set mapleader to ','
 set pastetoggle=<F2>
-" }}}
 
-" Miscellaneous {{{
+" Miscellaneous
 filetype on               " filetype detection on
 filetype plugin on        " filetype plugin on
 filetype indent on        " filetype indent on
 syntax on                 " always syntax on
 
+" more plugins
 runtime! macros/matchit.vim " autoload the matchit plugin on startup
 runtime! ftplugin/man.vim   " load the man page file type plugin on startup
 
@@ -102,31 +95,24 @@ set nofoldenable          " disable fold functionality
 set foldmethod=syntax     " foldmethod to syntax
 set foldtext=NeatFoldText()
 
-" Wildmenu settings {{{2
+" Wildmenu settings
 set wildmenu              " command line completion wildmenu
 set wildmode=full         " completes till longest common string
-" }}}2
 
-" Timeout settings {{{2
+" Timeout settings
 set timeoutlen=1200 " more time for macros
 set ttimeoutlen=50  " makes Esc to work faster
-" }}}2
 
-" Moving cursor to prev/next lines {{{2
+" Moving cursor to prev/next lines
 set whichwrap=b,s,<,>,~,[,]
-" }}}2
 
-" Ignore below when file name completion {{{2
+" Ignore below when file name completion
 set wildignore=*.o,*.obj,*.a,*.so,*.jpg,*.png,*.gif,*.dll,*.exe,*.dpkg,*.rpm,*.pdf,*.chm
-" }}}2
 
-" History settings {{{2
+" History settings
 set history=1000
-" }}}2
 
-" }}}
-
-" UI Settings {{{
+" UI Settings
 set list                      " strings to be used in list mode
 set listchars=tab:\|.,trail:- " strings to be used in list mode
 
@@ -154,13 +140,11 @@ set lazyredraw                " don't redraw screen while typing macros
 set nostartofline             " leave my cursor where it was
 set showcmd                   " show the command being typed
 set cmdheight=2               " set command height to 2
-
 set textwidth=100             " maximum width of the text that is being inserted
-
 set title                     " display title
 set display=lastline          " show as much as possible of the last line
 
-" ColorScheme {{{2
+" ColorScheme
 " set the colorscheme only for terminal vim
 " for gui vim use the colorscheme in the .gvimrc
 if ! has('gui_running')
@@ -171,44 +155,36 @@ if ! has('gui_running')
     colorscheme default
   endif
 endif
-" }}}2
 
-" }}}
-
-" Set encoding & fileformat settings {{{
+" Set encoding & fileformat settings
 set encoding=utf-8
 set fileencoding=utf-8
 set fileformats=unix,dos,mac
 set fileencodings=ucs-bom,utf-8,euc-jp,cp932,iso-2022-jp,ucs-2le,ucs-2
-" }}}
 
-" Diff Settings {{{
+" Diff Settings
 set diffopt=filler
 set diffopt+=vertical
 set diffopt+=context:3
-" }}}
 
-" Fugitive {{{
+" Dictionary & Spell Checking
+set spelllang=en                      " set spell language to English
+set nospell                           " no spell checking by default
+set dictionary+=/usr/share/dict/words " set the dictionary file
+
+" Settings related to external plugins {{{
+" BufferExplorer mappings
+nnoremap <silent> <F12> :BufExplorer<CR>
+
+" Fugitive
 " Git grep with qiuck-fix window
 nmap <Leader>gq :Ggrep -q<Space>
 " Git grep the current word under the cursor
 nmap <Leader>gw :Ggrep -q -w <C-R><C-W><Space>
 " Logging the last 10000 commits (helpful in big projects)
 nmap <Leader>gl :Gclog -10000<CR>
-" }}}
 
-" Dictionary & Spell Checking {{{
-set spelllang=en                      " set spell language to English
-set nospell                           " no spell checking by default
-set dictionary+=/usr/share/dict/words " set the dictionary file
-" }}}
-
-" Settings related to external plugins {{{
-" BufferExplorer mappings {{{2
-nnoremap <silent> <F12> :BufExplorer<CR>
-" }}}2
-
-" Lightline {{{2
+" Lightline
 let g:lightline = {
       \ 'colorscheme': 'default',
       \ 'active': {
@@ -219,15 +195,13 @@ let g:lightline = {
       \   'gitbranch': 'FugitiveHead'
       \ },
       \ }
-" }}}
 
-" NerdCommenter Settings {{{2
+" NerdCommenter Settings
 let g:NERDSpaceDelims       = 1
 let g:NERDRemoveExtraSpaces = 1
 imap <C-c> <plug>NERDCommenterInsert
-" }}}2
 
-" Nerdtree settings {{{2
+" Nerdtree settings
 map <silent> <left> :NERDTreeToggle<CR>
 let g:NERDTreeDirArrows     = 1
 let g:NERDTreeShowHidden    = 0
@@ -236,28 +210,38 @@ let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeChDirMode     = 2         "CWD is changed whenever the root directory is changed
 let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.so.*$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\.git$', '\~$']
 map <leader>r :NERDTreeFind<CR>
-" }}}2
 
-" fzf {{{2
+" fzf
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>fg :GFiles<CR>
 nnoremap <Leader>m :History<CR>
-" }}}
 
-" yankstack {{{2
+" yankstack
 " load the yankstack plugin immediately
 " otherwise the vS mapping of the vim-surround gets clobbered
 call yankstack#setup()
 nmap <C-p> <Plug>yankstack_substitute_older_paste
 nmap <C-n> <Plug>yankstack_substitute_newer_paste
-" }}}2
 
-" winresizer {{{2
+" winresizer
 let g:winresizer_vert_resize = 2
 let g:winresizer_horiz_resize = 1
-" }}}2
 
-" lsp {{{2
+" vimux settings
+" Prompt for a command to run
+map <Leader>vp :VimuxPromptCommand<CR>
+" Run last command executed by VimuxRunCommand
+map <Leader>vl :VimuxRunLastCommand<CR>
+" Inspect runner pane
+map <Leader>vi :VimuxInspectRunner<CR>
+" Close vim tmux runner opened by VimuxRunCommand
+map <Leader>vq :VimuxCloseRunner<CR>
+" Interrupt any command running in the runner pane
+map <Leader>vx :VimuxInterruptRunner<CR>
+" Zoom the runner pane (use <bind-key> z to restore runner pane)
+map <Leader>vz :call VimuxZoomRunner()<CR>
+
+" lsp
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
@@ -286,10 +270,9 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-" }}}2
+" Functions
 
-" Functions {{{
-" Custom fold text {{{2
+" Custom fold text
 " taken from http://dhruvasagar.com/2013/03/28/vim-better-foldtext
 function! NeatFoldText()
   let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
@@ -301,9 +284,8 @@ function! NeatFoldText()
   let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
   return foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
 endfunction
-" }}}2
 
-" QuickFix window toggling function {{{2
+" QuickFix window toggling function
 command! -bang -nargs=? QFix call QFixToggle(<bang>0)
 function! QFixToggle(forced)
   if exists("g:qfix_win") && a:forced == 0
@@ -321,7 +303,6 @@ augroup QFixToggle
 augroup END
 
 let g:jah_Quickfix_Win_Height = 10 " setting qfix window height
-" }}}2
 
 " tabs to spaces & spaces to tabs conversion {{{2
 " Return indent (all whitespace at start of a line), converted from
@@ -352,26 +333,8 @@ endfunction
 command! -nargs=? -range=% Space2Tab call IndentConvert(<line1>,<line2>,0,<q-args>)
 command! -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-args>)
 command! -nargs=? -range=% RetabIndent call IndentConvert(<line1>,<line2>,&et,<q-args>)
-" }}}2
 
-" vimux settings{{{2
- " Prompt for a command to run
- map <Leader>vp :VimuxPromptCommand<CR>
- " Run last command executed by VimuxRunCommand
- map <Leader>vl :VimuxRunLastCommand<CR>
- " Inspect runner pane
- map <Leader>vi :VimuxInspectRunner<CR>
- " Close vim tmux runner opened by VimuxRunCommand
- map <Leader>vq :VimuxCloseRunner<CR>
- " Interrupt any command running in the runner pane
- map <Leader>vx :VimuxInterruptRunner<CR>
- " Zoom the runner pane (use <bind-key> z to restore runner pane)
- map <Leader>vz :call VimuxZoomRunner()<CR>
- "}}}2
-
-" }}}
-
-" File type specific settings {{{
+" File type specific settings
 augroup FTCheck
   autocmd!
   autocmd BufNewFile,BufRead *.text,*.notes,*.memo setl ft=txt
@@ -393,14 +356,13 @@ augroup FTOptions
   autocmd BufNewFile,BufRead SCons* set ft=scons
   autocmd BufNewFile,BufRead Config.in set ft=config
 augroup END
-" }}}
+
 
 " Personal Mappings
 
 " When .vimrc is edited, reload it
 autocmd BufWritePost init.vim ++nested so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 autocmd BufWritePost plugins.vim ++nested so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
-"
 
 " Fast editing of the vim, tmux configuration files
 map <Leader>v :e! $MYVIMRC<CR>
@@ -409,29 +371,23 @@ if has('win32') || has('win64')
 else
   map <Leader>gv :e! $HOME/.gvimrc<CR>
 endif
-"
 
 " nohlsearch, after a search
 nnoremap <silent> <C-L> :nohlsearch<CR>
-"
 
 " retain visual selection after indentation
 vnoremap > >gv
 vnoremap < <gv
-"
 
 " vimgrep
 " Displays a vimgrep command template
 map <Leader>g :vimgrep // ../**/*.<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
-"
 
 " changes directory to the directory of the current buffer
 nmap <silent> <Leader>cd :lcd %:h<CR>:pwd<CR>
-"
 
 " get the full path of the file in the buffer
 nmap <Leader> <Space> :echo expand('%:p')<CR>
-"
 
 " Heading
 noremap <silent> <Leader>h1 yyp^v$r=
@@ -439,7 +395,6 @@ noremap <silent> <Leader>h2 yyp^v$r-
 noremap <silent> <Leader>he <ESC>070i=<ESC>
 noremap <silent> <Leader>hh <ESC>070i-<ESC>
 noremap <silent> <Leader>hs <ESC>070i*<ESC>
-"
 
 " Window closing commands
 " Close this window
@@ -449,13 +404,10 @@ noremap <silent> <Leader>clj :wincmd j<CR>:close<CR>
 noremap <silent> <Leader>clk :wincmd k<CR>:close<CR>
 noremap <silent> <Leader>clh :wincmd h<CR>:close<CR>
 noremap <silent> <Leader>cll :wincmd l<CR>:close<CR>
-"
 
 " merge consecutive empty lines and clean up trailing spaces(from tpope's .vimrc file)
 map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
-"
 
 " Mappings for functions
 " QuickFixWindow Toggle
 nmap <silent> <Leader>q <ESC>:QFix<CR>
-"
