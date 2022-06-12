@@ -19,7 +19,6 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
 Plug 'qpkorr/vim-bufkill'
-Plug 'vim-scripts/VisIncr'
 
 " Vim tmux integration
 Plug 'tpope/vim-tbone'
@@ -38,9 +37,8 @@ Plug 'airblade/vim-gitgutter'
 " asynchronous command runner
 Plug 'skywind3000/asyncrun.vim'
 
-" vim-airline
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" statusline plugin
+Plug 'itchyny/lightline.vim'
 
 " auto-closing
 Plug 'cohama/lexima.vim'
@@ -210,28 +208,17 @@ set dictionary+=/usr/share/dict/words " set the dictionary file
 nnoremap <silent> <F12> :BufExplorer<CR>
 " }}}2
 
-" Airline {{{2
-let g:airline_powerline_fonts = 0
-let g:airline_theme = 'dark'
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_symbols.colnr = ' ㏇:'
-let g:airline_symbols.colnr = ' ℅:'
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.maxlinenr = '㏑'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = 'Ɇ'
-let g:airline_symbols.whitespace = 'Ξ'
+" Lightline {{{2
+let g:lightline = {
+      \ 'colorscheme': 'default',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ }
 " }}}
 
 " NerdCommenter Settings {{{2
@@ -408,65 +395,53 @@ augroup FTOptions
 augroup END
 " }}}
 
-" Personal Mappings {{{
+" Personal Mappings
 
-" When .vimrc is edited, reload it {{{2
-if has('win32') || has('win64')
-  autocmd! BufWritePost _vimrc source $MYVIMRC
-  autocmd! BufWritePost vimrc source $MYVIMRC
-  autocmd! BufWritePost _gvimrc source $HOME/_gvimrc
-  autocmd! BufWritePost gvimrc source $HOME/gvimrc
-else
-  autocmd! BufWritePost .vimrc source $MYVIMRC
-  autocmd! BufWritePost .gvimrc source $HOME/.gvimrc
-endif
-" }}}2
+" When .vimrc is edited, reload it
+autocmd BufWritePost init.vim ++nested so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+autocmd BufWritePost plugins.vim ++nested so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+"
 
-" Fast editing of the vim, tmux configuration files {{{2
+" Fast editing of the vim, tmux configuration files
 map <Leader>v :e! $MYVIMRC<CR>
 if has('win32') || has('win64')
   map <Leader>gv :e! $HOME/_gvimrc<CR>
 else
   map <Leader>gv :e! $HOME/.gvimrc<CR>
 endif
-" }}}2
+"
 
-" nohlsearch, after a search {{{2
+" nohlsearch, after a search
 nnoremap <silent> <C-L> :nohlsearch<CR>
-" }}}2
+"
 
-" retain visual selection after indentation {{{2
+" retain visual selection after indentation
 vnoremap > >gv
 vnoremap < <gv
-" }}}2
+"
 
-" vimgrep {{{2
+" vimgrep
 " Displays a vimgrep command template
 map <Leader>g :vimgrep // ../**/*.<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
-" }}}2
+"
 
-" force encoding conversion {{{2
-map <silent> <Leader>e :e! ++enc=euc-jp<CR>
-map <silent> <Leader>u :e! ++enc=utf-8<CR>
-" }}}2
-
-" changes directory to the directory of the current buffer {{{2
+" changes directory to the directory of the current buffer
 nmap <silent> <Leader>cd :lcd %:h<CR>:pwd<CR>
-" }}}2
+"
 
-" get the full path of the file in the buffer {{{2
+" get the full path of the file in the buffer
 nmap <Leader> <Space> :echo expand('%:p')<CR>
-" }}}2
+"
 
-" Heading {{{2
+" Heading
 noremap <silent> <Leader>h1 yyp^v$r=
 noremap <silent> <Leader>h2 yyp^v$r-
 noremap <silent> <Leader>he <ESC>070i=<ESC>
 noremap <silent> <Leader>hh <ESC>070i-<ESC>
 noremap <silent> <Leader>hs <ESC>070i*<ESC>
-" }}}2
+"
 
-" Window closing commands {{{2
+" Window closing commands
 " Close this window
 noremap <silent> <Leader>clw :close<CR>
 " Close the other window
@@ -474,15 +449,13 @@ noremap <silent> <Leader>clj :wincmd j<CR>:close<CR>
 noremap <silent> <Leader>clk :wincmd k<CR>:close<CR>
 noremap <silent> <Leader>clh :wincmd h<CR>:close<CR>
 noremap <silent> <Leader>cll :wincmd l<CR>:close<CR>
-" }}}2
+"
 
-" merge consecutive empty lines and clean up trailing spaces(from tpope's .vimrc file) {{{2
+" merge consecutive empty lines and clean up trailing spaces(from tpope's .vimrc file)
 map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
-" }}}2
+"
 
-" Mappings for functions {{{2
+" Mappings for functions
 " QuickFixWindow Toggle
 nmap <silent> <Leader>q <ESC>:QFix<CR>
-" }}}2
-
-" }}}
+"
