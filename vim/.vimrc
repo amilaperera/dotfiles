@@ -54,6 +54,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
+" auto complete
+Plug 'lifepillar/vim-mucomplete'
+
 call plug#end()
 
 
@@ -268,6 +271,22 @@ augroup lsp_install
     " " call s:on_lsp_buffer_enabled only for languages that has the server registered.
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
+
+" mu-complete
+" Mandatory options for plugin to work
+set completeopt+=menuone
+set completeopt+=noselect
+" Shut off completion messages
+set shortmess+=c
+" prevent a condition where vim lags due to searching include files.
+set complete-=i
+let g:mucomplete#enable_auto_at_startup = 1
+" :help mucomplete#chains for more details
+let g:mucomplete#chains = {}
+let g:mucomplete#chains.default  = ['path', 'omni', 'keyn', 'dict', 'uspl', 'ulti']
+let g:mucomplete#chains.markdown = ['path', 'keyn', 'dict', 'uspl']
+let g:mucomplete#chains.vim      = ['path', 'keyn', 'dict', 'uspl']
+
 
 " Functions
 
