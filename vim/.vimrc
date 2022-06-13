@@ -8,43 +8,30 @@
 call plug#begin('~/.vim/plugged')
 
 " General enhancements
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'Lokaltog/vim-easymotion'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jimsei/winresizer'
 Plug 'qpkorr/vim-bufkill'
+Plug 'thinca/vim-visualstar'
+Plug 'cohama/lexima.vim'
+
+" statusline plugin
+Plug 'itchyny/lightline.vim'
+
+" Git stuff
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Vim tmux integration
 Plug 'tpope/vim-tbone'
 Plug 'benmills/vimux'
 
-" C/C++ enhancements
-Plug 'vim-scripts/a.vim'
-Plug 'bfrg/vim-cpp-modern'
-
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
-
-" git diff shower
-Plug 'airblade/vim-gitgutter'
-
-" asynchronous command runner
-Plug 'skywind3000/asyncrun.vim'
-
-" statusline plugin
-Plug 'itchyny/lightline.vim'
-
-" auto-closing
-Plug 'cohama/lexima.vim'
-
-" augment the behaviour of star search
-Plug 'thinca/vim-visualstar'
 
 " fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
@@ -145,6 +132,13 @@ set textwidth=100             " maximum width of the text that is being inserted
 set title                     " display title
 set display=lastline          " show as much as possible of the last line
 
+" source a file if it exists
+function! SourceIfExists(file)
+    if filereadable(expand(a:file))
+        execute 'source' a:file
+    endif
+endfunction
+
 " ColorScheme
 " set the colorscheme only for terminal vim
 " for gui vim use the colorscheme in the .gvimrc
@@ -173,18 +167,6 @@ set spelllang=en                      " set spell language to English
 set nospell                           " no spell checking by default
 set dictionary+=/usr/share/dict/words " set the dictionary file
 
-" Settings related to external plugins {{{
-" BufferExplorer mappings
-nnoremap <silent> <F12> :BufExplorer<CR>
-
-" Fugitive
-" Git grep with qiuck-fix window
-nmap <Leader>gq :Ggrep -q<Space>
-" Git grep the current word under the cursor
-nmap <Leader>gw :Ggrep -q -w <C-R><C-W><Space>
-" Logging the last 10000 commits (helpful in big projects)
-nmap <Leader>gl :Gclog -10000<CR>
-
 " Lightline
 let g:lightline = {
       \ 'colorscheme': 'default',
@@ -196,6 +178,14 @@ let g:lightline = {
       \   'gitbranch': 'FugitiveHead'
       \ },
       \ }
+
+" Fugitive
+" Git grep with qiuck-fix window
+nmap <Leader>gq :Ggrep -q<Space>
+" Git grep the current word under the cursor
+nmap <Leader>gw :Ggrep -q -w <C-R><C-W><Space>
+" Logging the last 10000 commits (helpful in big projects)
+nmap <Leader>gl :Gclog -10000<CR>
 
 " NerdCommenter Settings
 let g:NERDSpaceDelims       = 1
@@ -245,6 +235,8 @@ map <Leader>vx :VimuxInterruptRunner<CR>
 map <Leader>vz :call VimuxZoomRunner()<CR>
 
 " lsp
+call SourceIfExists("~/.local/.lsp-server-settings.vim")
+
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
@@ -268,7 +260,6 @@ endfunction
 
 augroup lsp_install
     au!
-    " " call s:on_lsp_buffer_enabled only for languages that has the server registered.
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
@@ -397,10 +388,6 @@ nnoremap <silent> <C-L> :nohlsearch<CR>
 vnoremap > >gv
 vnoremap < <gv
 
-" vimgrep
-" Displays a vimgrep command template
-map <Leader>g :vimgrep // ../**/*.<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
-
 " changes directory to the directory of the current buffer
 nmap <silent> <Leader>cd :lcd %:h<CR>:pwd<CR>
 
@@ -410,18 +397,6 @@ nmap <Leader> <Space> :echo expand('%:p')<CR>
 " Heading
 noremap <silent> <Leader>h1 yyp^v$r=
 noremap <silent> <Leader>h2 yyp^v$r-
-noremap <silent> <Leader>he <ESC>070i=<ESC>
-noremap <silent> <Leader>hh <ESC>070i-<ESC>
-noremap <silent> <Leader>hs <ESC>070i*<ESC>
-
-" Window closing commands
-" Close this window
-noremap <silent> <Leader>clw :close<CR>
-" Close the other window
-noremap <silent> <Leader>clj :wincmd j<CR>:close<CR>
-noremap <silent> <Leader>clk :wincmd k<CR>:close<CR>
-noremap <silent> <Leader>clh :wincmd h<CR>:close<CR>
-noremap <silent> <Leader>cll :wincmd l<CR>:close<CR>
 
 " merge consecutive empty lines and clean up trailing spaces(from tpope's .vimrc file)
 map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
@@ -451,11 +426,5 @@ map <Leader>ds :call TermDebugSendCommand('s')<CR>
 map <Leader>df :call TermDebugSendCommand('finish')<CR>
 map <Leader>dc :call TermDebugSendCommand('continue')<CR>
 
-" source a file if it exists
-function! SourceIfExists(file)
-    if filereadable(expand(a:file))
-        execute 'source' a:file
-    endif
-endfunction
-
-call SourceIfExists("~/.local.vim")
+" Source particular environment related vim settings
+call SourceIfExists("~/.local/.env-settings.vim")
