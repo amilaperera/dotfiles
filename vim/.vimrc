@@ -14,7 +14,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'jimsei/winresizer'
 Plug 'qpkorr/vim-bufkill'
 Plug 'thinca/vim-visualstar'
 Plug 'cohama/lexima.vim'
@@ -196,7 +195,7 @@ let g:NERDRemoveExtraSpaces = 1
 imap <C-c> <plug>NERDCommenterInsert
 
 " Nerdtree settings
-map <silent> <left> :NERDTreeToggle<CR>
+map <silent> <C-e> :NERDTreeToggle<CR>
 let g:NERDTreeDirArrows     = 1
 let g:NERDTreeShowHidden    = 0
 let g:NERDTreeWinSize       = 32
@@ -227,10 +226,6 @@ let g:fzf_preview_window=[]
 call yankstack#setup()
 nmap <C-p> <Plug>yankstack_substitute_older_paste
 nmap <C-n> <Plug>yankstack_substitute_newer_paste
-
-" winresizer
-let g:winresizer_vert_resize = 2
-let g:winresizer_horiz_resize = 1
 
 " vimux settings
 " Prompt for a command to run
@@ -399,6 +394,12 @@ nnoremap <silent> <C-L> :nohlsearch<CR>
 " retain visual selection after indentation
 vnoremap > >gv
 vnoremap < <gv
+
+" window resizing
+map <Up> :resize -1<CR>
+map <Down> :resize +1<CR>
+map <Left> :vertical resize -1<CR>
+map <Right> :vertical resize +1<CR>
 
 " changes directory to the directory of the current buffer
 nmap <silent> <Leader>cd :lcd %:h<CR>:pwd<CR>
