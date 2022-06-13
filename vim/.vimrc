@@ -430,6 +430,27 @@ map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
 " QuickFixWindow Toggle
 nmap <silent> <Leader>q <ESC>:QFix<CR>
 
+" Invoke termdebug
+function! StartGdb(bin)
+    packadd termdebug
+    execute 'Termdebug ' . a:bin
+endfunction
+
+function! StartGdbW(bin)
+    packadd termdebug
+    let g:termdebug_wide=1
+    execute 'Termdebug ' . a:bin
+endfunction
+
+command! -nargs=1 -complete=file StartGdb call StartGdb(<q-args>)
+command! -nargs=1 -complete=file StartGdbW call StartGdbW(<q-args>)
+
+" Sending commands to gdb
+map <Leader>dn :call TermDebugSendCommand('n')<CR>
+map <Leader>ds :call TermDebugSendCommand('s')<CR>
+map <Leader>df :call TermDebugSendCommand('finish')<CR>
+map <Leader>dc :call TermDebugSendCommand('continue')<CR>
+
 " source a file if it exists
 function! SourceIfExists(file)
     if filereadable(expand(a:file))
