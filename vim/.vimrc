@@ -396,8 +396,8 @@ vnoremap > >gv
 vnoremap < <gv
 
 " window resizing
-map <Up> :resize -1<CR>
-map <Down> :resize +1<CR>
+map <Up> :resize +1<CR>
+map <Down> :resize -1<CR>
 map <Left> :vertical resize -1<CR>
 map <Right> :vertical resize +1<CR>
 
