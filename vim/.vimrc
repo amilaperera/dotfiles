@@ -19,29 +19,32 @@ Plug 'qpkorr/vim-bufkill'
 Plug 'thinca/vim-visualstar'
 Plug 'cohama/lexima.vim'
 
-" statusline plugin
+" Statusline plugin
 Plug 'itchyny/lightline.vim'
 
 " Git stuff
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-" Vim tmux integration
+" Vim-Tmux integration
 Plug 'tpope/vim-tbone'
 Plug 'benmills/vimux'
 
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
 
-" fzf
+" Enhanced cpp syntax highlighting
+Plug 'octol/vim-cpp-enhanced-highlight'
+
+" FZF
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
 
-" lsp
+" Language Server Protocol
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
-" auto complete
+" Auto Completion
 Plug 'lifepillar/vim-mucomplete'
 
 call plug#end()
@@ -201,6 +204,15 @@ let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeChDirMode     = 2         "CWD is changed whenever the root directory is changed
 let g:NERDTreeIgnore        = ['\.o$', '\.a$', '\.so$', '\.so.*$', '\.dpkg$', '\.rpm$', '\.obj$', '\.exe$', '\.d$','\.swp$', '\.git$', '\~$']
 map <leader>r :NERDTreeFind<CR>
+
+" Enhanced cpp highlighting
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+let c_no_curly_error = 1
 
 " fzf
 nnoremap <Leader>f :Files<CR>
