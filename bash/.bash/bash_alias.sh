@@ -60,6 +60,8 @@ alias ct='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q  $(find . \( -name "*
 alias rmtmp='find . -name "*~" -type f | xargs -I {} rm -rf {}'
 
 alias ag="ag --pager='less -R'"
+alias agcpp="ag -G '\.(cpp|cc|cxx|hpp|hh|hxx|h|ipp)$'"
+alias agcm="ag -G '(cmake|CMakeLists.txt)$'"
 
 # alias alternative to up() function
 alias ,='cd -'
@@ -69,8 +71,8 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-# this distro identification may not work for some systems
-if [[ $distroname == "Ubuntu" ]]; then
+# NOTE: Supports just Debian & Fedora
+if [[ $distroname == "Debian" ]]; then
     alias U='sudo apt-get update && sudo apt-get upgrade -y'
 else
     alias U='sudo dnf update -y'
@@ -119,4 +121,6 @@ alias glog='git log --oneline --decorate --graph'
 alias gloga='git log --oneline --decorate --graph --all'
 alias gco='git checkout'
 alias gcb='git checkout -b'
+alias gw='git worktree'
+alias gwl='git worktree list'
 

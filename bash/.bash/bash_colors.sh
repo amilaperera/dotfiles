@@ -42,7 +42,7 @@ LS_COLORS="${LS_COLORS}":'*.xml=01;37;46:*.yaml=01;37;46:*.yml=01;37;46:*.conf=0
 
 LS_COLORS="${LS_COLORS}":'*.bak=07:*.orig=07:*.swp=07'
 
-LS_COLORS="${LS_COLORS}":'*.txt=00;04;91:*.notes=00;04;91'
+LS_COLORS="${LS_COLORS}":'*.txt=00;04;91:*.notes=00;04;91:*.log=00;04;91'
 LS_COLORS="${LS_COLORS}":'*.pdf=01;04;32'
 LS_COLORS="${LS_COLORS}":'*.html=00;04;94:*.htm=00;04;94'
 
