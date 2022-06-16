@@ -48,9 +48,9 @@ fi
 function _prompt_command()
 {
     if (($UID != 0)); then
-        echo "__git_ps1 \"[${C}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" ]\" \\$ \""
+        echo "__git_ps1 \"${C}\u${NONE}@${C}\h${NONE}:${EMY}\w${NONE}\" \" \\$ \""
     else
-        echo "__git_ps1 \"[${EMR}\u${NONE}@${C}\h${NONE}:${Y}\w${NONE}\" ]\" \\$ \""
+        echo "__git_ps1 \"${EMR}\u${NONE}@${C}\h${NONE}:${EMY}\w${NONE}\" \" \\$ \""
     fi
 }
 PROMPT_COMMAND=$(_prompt_command)
