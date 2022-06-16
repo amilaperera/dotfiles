@@ -178,6 +178,7 @@ function dev_tools() {
   if [[ $HAS_DNF -eq 1 ]]; then
     dev_tools+=(@development-tools)
     dev_tools+=(boost-devel)
+    dev_tools+=(ninja-build)
   elif [[ $HAS_APT -eq 1 ]]; then
     dev_tools+=(build-essential)
     dev_tools+=(libboost-all-dev)
