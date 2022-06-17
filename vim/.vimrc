@@ -389,6 +389,9 @@ else
     map <Leader>gv :e! $HOME/.gvimrc<CR>
 endif
 
+" encoding conversion
+map <silent> <Leader>u :e! ++enc=utf-8<CR>
+
 " nohlsearch, after a search
 nnoremap <silent> <C-L> :nohlsearch<CR>
 
