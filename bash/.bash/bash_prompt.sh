@@ -37,6 +37,10 @@ BGC="\[\033[46m\]"
 BGW="\[\033[47m\]"
 
 git_prompt_file=/usr/share/git-core/contrib/completion/git-prompt.sh
+if [[ ! -f $git_prompt_file ]]; then
+    git_prompt_file=$HOME/.local/git-prompt.sh
+fi
+
 if [[ -f $git_prompt_file ]]; then
     source $git_prompt_file
     export GIT_PS1_SHOWCOLORHINTS=true

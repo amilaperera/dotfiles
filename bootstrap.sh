@@ -163,8 +163,6 @@ function essentials() {
   essential_pkgs+=(tmux)
   essential_pkgs+=(ruby)
   essential_pkgs+=(rubygems)
-  # latest neovim in the case of Fedore/Arch
-  [[ $HAS_DNF -eq 1 || $HAS_PACMAN -eq 1 ]] && essential_pkgs+=(neovim)
 
   install ${essential_pkgs[*]}
 
@@ -196,6 +194,11 @@ function dev_tools() {
   dev_tools+=(fzf)
   dev_tools+=(kdiff3)
   [[ $HAS_APT -eq 1 ]] && dev_tools+=(exuberant-ctags) || dev_tools+=(ctags)
+
+  # Latest git-prompt.sh
+  echo " - Downloading git-prompt.sh"
+  curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh > ~/.local/git-prompt.sh
+
   install ${dev_tools[*]}
 }
 
@@ -285,6 +288,24 @@ function nvim_from_sources() {
   cd ~/tmp/neovim && sudo make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=/usr/local/nvim install
 }
 
+function vim_from_sources() {
+    echo "  - Cloning vim..."
+    if [[ -d ~/tmp/vim ]]; then
+        rm -rf ~/tmp/vim
+    fi
+    mkdir -p ~/tmp/vim
+    git clone https://github.com/vim/vim.git ~/tmp/vim
+
+    echo "  - Building and installing vim..."
+    cd ~/tmp/vim && ./configure --with-features=huge \
+        --enable-terminal \
+        --enable-multibyte \
+        --enable-python3interp=yes \
+        --with-python3-config-dir=$(python3-config --configdir) \
+        --prefix=${HOME}/.local
+    cd ~/tmp/vim && make && make install
+}
+
 function snaps() {
   snap_pkgs=(snapd)
   install ${snap_pkgs[*]}
@@ -351,12 +372,12 @@ function setup_configs() {
   echo
   if [[ $HAS_APT -eq 1 ]]; then
     # Doesn't seem to get snap bin directory by default
-    cd ~/.dotfiles/scripts && PATH=$PATH:/snap/bin python3 setup_env.py -e bash nvim misc tmux_sessions
+    cd ~/.dotfiles/scripts && PATH=$PATH:/snap/bin python3 setup_env.py -e bash vim misc tmux_sessions
   else
     if [[ ${BYPASS_SSH} -eq 1 ]]; then
-      cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash nvim misc tmux_sessions
+      cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash vim misc tmux_sessions
     else
-      cd ~/.dotfiles/scripts && python3 setup_env.py -e bash nvim misc tmux_sessions
+      cd ~/.dotfiles/scripts && python3 setup_env.py -e bash vim misc tmux_sessions
     fi
   fi
 }
@@ -389,10 +410,10 @@ options=(
   2 "Development tools"                                        off
   3 "Snaps"                                                    off
   4 "Python stuff"                                             off
-  5 "Extra repositories"                                       off
-  6 "Install Neovim latest from sources"                       off
+  5 "Extra repositories (Fedor Only)"                          off
+  6 "Install vim latest from sources (Recommended for Debian)" off
   7 "Setup github SSH"                                         off
-  8 "Setup personal configs(bash,tmux,neovim etc.)"            off
+  8 "Setup personal configs(bash,tmux,vim etc.)"               off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -416,7 +437,7 @@ for choice in $choices; do
       install_packages extra_repos
       ;;
     6)
-      install_packages nvim_from_sources
+      install_packages vim_from_sources
       ;;
     7)
       if setup_github_personal_ssh; then

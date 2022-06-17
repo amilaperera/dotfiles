@@ -29,8 +29,8 @@ function _contains_path()
 {
     local path=":${1}:" dir="${2}"
     case $path in
-        *:$dir:*)	return 1;;
-        *		)	return 0;;
+        *:$dir:*) return 1;;
+        *)        return 0;;
     esac
 }
 
@@ -66,7 +66,7 @@ function _set_path()
     "/usr/sbin"
     "/usr/local/bin"
     "/usr/local/sbin"
-    "$HOME/bin"
+    "$HOME/.local/bin"
 )
 
 local path=
@@ -136,9 +136,9 @@ set -o vi           # specifies vi editing mode for command-line editing
 
 # Start SSH Agent
 # Reference: https://gist.github.com/bsara/5c4d90db3016814a3d2fe38d314f9c23
-# TODO: ~/.ssh/config should be setup in the bootstrap.sh
 GITHUB_ID="${HOME}/.ssh/id_github_personal"
 SSH_ENV="$HOME/.ssh/environment"
+SSH_CONFIG="$HOME/.ssh/config"
 
 function run_ssh_env
 {
@@ -158,6 +158,12 @@ function start_ssh_agent
 }
 
 if [ -f "${GITHUB_ID}" ]; then
+    if [ ! -f "${SSH_CONFIG}" ]; then
+        echo "Host github.com
+ Hostname github.com
+ identityFile ~/.ssh/id_github_personal" >> ${SSH_CONFIG}
+    fi
+
     if [ -f "${SSH_ENV}" ]; then
         run_ssh_env
         ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
