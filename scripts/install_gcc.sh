@@ -44,7 +44,7 @@ mkdir -p ${build_dir}
 die_if_error $? "Creating the build directory failed"
 
 # configure
-cd ${build_dir} && ../configure -v --prefix=/usr/local/gcc-${version} \
+cd ${build_dir} && ../configure -v --prefix=$HOME/.local/gcc-${version} \
                                    --host=x86_64-pc-linux-gnu \
                                    --enable-bootstrap \
                                    --enable-shared \
@@ -60,11 +60,11 @@ cd ${build_dir} && ../configure -v --prefix=/usr/local/gcc-${version} \
 die_if_error $? "Configuration failed"
 
 # make
-cd ${build_dir} && make -j 8
+cd ${build_dir} && make -j8
 die_if_error $? "make failed"
 
 # make install
-cd ${build_dir} && sudo make install -j 8
+cd ${build_dir} && make install -j8
 die_if_error $? "make install failed"
 
 # epilogue

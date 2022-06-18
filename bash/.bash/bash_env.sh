@@ -113,8 +113,6 @@ export FCEDIT="$VISUAL"
 
 export LS_OPTIONS="--color=auto -F -h"
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-
 # shell behaviour adjustment with shopt options and set options
 shopt -s histappend   # appends rather than overwrite history on exit
 shopt -s cdspell      # correct minor spelling mistakes with cd command

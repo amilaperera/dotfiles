@@ -42,7 +42,7 @@ if [[ "$version" != "main" ]]; then
   branch="release/${version}"
 fi
 
-cd ${project_directory} && git pull origin ${branch}
+cd ${project_directory} && git pull
 die_if_error $? "Pulling failed"
 
 cd ${project_directory} && git checkout ${branch}
@@ -51,25 +51,28 @@ die_if_error $? "Checking out ${branch} failed"
 # Prepare build directory
 build_dir=${project_directory}/build
 # Fresh build each time!!!!
-[[ -e ${build_dir} ]] && rm -rf ${build_dir}
+if [[ -d "${build_dir}" ]]; then
+    rm -rf "${build_dir}"
+fi
 die_if_error $? "Removing the existing build directory failed"
-mkdir -p ${build_dir}
+mkdir -p "${build_dir}"
 die_if_error $? "Creating the build directory failed"
 
 # Configure CMake
 cd ${build_dir} && cmake -G "Ninja" \
-                            -DLLVM_ENABLE_PROJECTS=clang \
-                            -DCMAKE_INSTALL_PREFIX=/usr/local/clang-${version} \
+                            -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;lldb" \
+                            -DLLVM_TARGETS_TO_BUILD=X86 \
+                            -DCMAKE_INSTALL_PREFIX=${HOME}/.local/clang-${version} \
                             -DCMAKE_BUILD_TYPE=Release \
                             ../llvm
 die_if_error $? "CMake configuration failed"
 
 # make
-cd ${build_dir} && ninja
+cd ${build_dir} && ninja -j8
 die_if_error $? "ninja build failed"
 
 # make install
-cd ${build_dir} && sudo ninja install
+cd ${build_dir} && ninja install -j8
 die_if_error $? "ninja install failed"
 
 # epilogue
