@@ -69,23 +69,8 @@ die_if_error $? "make install failed"
 
 # epilogue
 
-# work out priority
-priority=`echo ${version} | cut -d'.' -f 1`
-
 echo
 green "gcc-${version} installation successful"
-echo
-echo  "Make sure you do the following before start using the latest gcc version"
-echo
-echo   " - Add the installed version as an alternative to the system (Assuming you assign priority of ${priority})"
-yellow "   \$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/local/gcc-${version}/bin/gcc-${version} ${priority}"
-yellow "   \$ sudo update-alternatives --install /usr/bin/g++ g++ /usr/local/gcc-${version}/bin/g++-${version} ${priority}"
-echo
-echo   " - Configure the alternative"
-yellow "   \$ sudo update-alternatives --config g++"
-echo
-echo   " - Update libstdc++"
-yellow "   \$ sudo ln -sf /usr/local/gcc-${version}/lib64/libstdc++.so.6 /lib/x86_64-linux-gnu/libstdc++.so.6"
 echo
 echo   "Bye..."
 

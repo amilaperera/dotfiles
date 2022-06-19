@@ -88,14 +88,5 @@ fi
 echo
 green "clang-${version} installation successful"
 echo
-echo  "Make sure you do the following before start using the latest gcc version"
-echo
-echo   " - Add the installed version as an alternative to the system (Assuming you assign priority of ${priority})"
-yellow "   \$ sudo update-alternatives --install /usr/bin/clang clang /usr/local/clang-${version}/bin/clang-${major_version} ${priority}"
-yellow "   \$ sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/local/clang-${version}/bin/clang++ ${priority}"
-echo
-echo   " - Configure the alternative"
-yellow "   \$ sudo update-alternatives --config clang++"
-echo
 echo   "Bye..."
 
