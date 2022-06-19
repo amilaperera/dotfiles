@@ -4,6 +4,12 @@
 # File Name: bash_func.sh
 #############################################################
 
+# path in a more readable manner
+function path()
+{
+    echo $PATH | tr ':' '\n'
+}
+
 # keeps the csh users happy
 function setenv()
 {
@@ -25,7 +31,7 @@ function cdf()
 # goes up in the directory hierachy
 function up()
 {
-    : ${CDUPVALUEDEFAULT:=5}	# set default value to 5 if not set externally
+    : ${CDUPVALUEDEFAULT:=5} # set default value to 5 if not set externally
 
     local upvalue= upcount=0 cdupcount=0
 

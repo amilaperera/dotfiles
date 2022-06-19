@@ -52,7 +52,6 @@ alias e='$VISUAL'       # edit in VISUAL, E is a function to edit in gvim in bac
 alias view='$VISUAL -R' # opens the file in readonly mode
 alias vi='$VISUAL'
 
-alias path="echo $PATH | tr ':' '\n'"
 alias flist="find . -type f | sed -n 's/.*\/\(.*\)/\1/p'"
 
 alias ct='ctags -R --c++-kinds=+p --fields=+iaS --extra=+q  $(find . \( -name "*.c" -o -name "*.cpp" -o -name "*.cxx" -o -name "*.h" \) -type f)'

@@ -24,6 +24,8 @@ done
 
 unset BASH_PATH config_file_list
 
+# local environment
+[ -f ~/.local/.local.bash ] && source ~/.local/.local.bash
+
 # fzf install
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
