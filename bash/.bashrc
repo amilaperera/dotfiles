@@ -1,12 +1,4 @@
 #!/bin/bash
-#############################################################
-# Author: Amila Perera
-# File Name: .bashrc
-#
-# Description:
-# bash initialization file
-# source configuration files from $HOME/.bash directory
-#############################################################
 
 # source the utility functions
 source "$HOME/.bash/bash_utility.sh"

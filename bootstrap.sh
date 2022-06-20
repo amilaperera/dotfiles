@@ -168,6 +168,10 @@ function essentials() {
 
   # now tmuxinator
   sh -c "sudo gem install tmuxinator"
+
+  # fzf
+  [ ! -d ~/.fzf ] && git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --key-bindings --completion --no-update-rc
 }
 
 function dev_tools() {

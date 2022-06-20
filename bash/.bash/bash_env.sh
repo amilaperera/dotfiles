@@ -1,8 +1,4 @@
 #!/bin/bash
-#############################################################
-# Author: Amila Perera
-# File Name: bash_env.sh
-#############################################################
 
 # set workinghost
 export workinghost=$(uname)
