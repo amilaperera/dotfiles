@@ -1,8 +1,4 @@
 #!/bin/bash
-#############################################################
-# Author: Amila Perera
-# File Name: bash_comp.sh
-#############################################################
 
 # general bash completions
 [ -f /etc/bash_completion ] && source /etc/bash_completion

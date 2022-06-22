@@ -1,8 +1,4 @@
 #!/bin/bash
-#############################################################
-# Author: Amila Perera
-# File Name: bash_utility.sh
-#############################################################
 
 # defining bash true/false
 bash_true=0

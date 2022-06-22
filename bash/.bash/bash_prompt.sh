@@ -1,8 +1,4 @@
 #!/bin/bash
-#############################################################
-# Author: Amila Perera
-# File Name: bash_prompt.sh
-#############################################################
 
 NONE="\[\033[0m\]"    # unsets color to term's fg color
 

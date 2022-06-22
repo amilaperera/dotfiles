@@ -1,8 +1,4 @@
 #!/bin/bash
-#############################################################
-# Author: Amila Perera
-# File Name: bash_func.sh
-#############################################################
 
 # path in a more readable manner
 function path()

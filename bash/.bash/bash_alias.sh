@@ -1,8 +1,4 @@
 #!/bin/bash
-#############################################################
-# Author: Amila Perera
-# File Name: bash_alias.sh
-#############################################################
 
 #ls family aliases
 alias ls="ls $LS_OPTIONS"            # add colors for filetype recognition
