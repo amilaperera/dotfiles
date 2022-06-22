@@ -27,20 +27,45 @@ probe_os_info
 # Install pre-requisites
 install_packages pre_requisites
 
-# Downloading gcc source archive from the following site.
-# https://mirrorservice.org/sites/sourceware.org/pub/gcc/releases/
-archive_dir=/tmp/gcc-${version}
-archive=${archive_dir}.tar.gz
-curl "https://mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-${version}/gcc-${version}.tar.gz" --output ${archive}
-die_if_error $? "Downloading the source tarball failed"
+# Working directory
+cwd=${HOME}/work
 
-# Extract
-cd /tmp && tar -zxvf ${archive}
-die_if_error $? "Extracting the source tarball failed"
+# Project directory
+project_directory=${cwd}/gcc
 
 # Prepare build directory
-build_dir=${archive_dir}/build
-mkdir -p ${build_dir}
+build_dir=${project_directory}/build
+
+# If project_directory doesn't exist create it and clone the project.
+# Otherwise this script assumes that the project has already been cloned.
+if [[ ! -e ${project_directory} ]]; then
+    # Clone the repository
+    mkdir -p ${cwd}
+    cd ${cwd} && git clone https://github.com/gcc-mirror/gcc
+    die_if_error $? "Cloning gcc failed"
+else
+    # Fresh build each time!!!!
+    cd ${project_directory} && git co master && git clean -dfx
+
+    if [[ -d "${build_dir}" ]]; then
+        rm -rf "${build_dir}"
+    fi
+    die_if_error $? "Removing the existing build directory failed"
+fi
+
+cd ${project_directory} && git pull
+die_if_error $? "Pulling failed"
+
+# Work out the branch with the version provided
+branch='${version}'
+if [[ "$version" != "master" ]]; then
+    branch="releases/gcc-${version}"
+fi
+
+cd ${project_directory} && git checkout ${branch}
+die_if_error $? "Checking out ${branch} failed"
+
+mkdir -p "${build_dir}"
 die_if_error $? "Creating the build directory failed"
 
 # configure

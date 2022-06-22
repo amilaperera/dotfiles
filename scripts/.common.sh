@@ -74,12 +74,14 @@ function pre_requisites() {
         pkgs+=(libmpc-dev)
         pkgs+=(libisl-dev)
         pkgs+=(libzstd-dev)
-        pkgs+=(ninja-build)
-        pkgs+=(git)
+    elif [[ $HAS_DNF -eq 1 ]]; then
+        pkgs+=(gmp-devel)
+        pkgs+=(mpfr-devel)
+        pkgs+=(libmpc-devel)
+        pkgs+=(isl-devel)
+        pkgs+=(libzstd-devel)
     fi
-    # gdb specific
     pkgs+=(texinfo)
-    pkgs+=(gmp-devel)
     install ${pkgs[*]}
 }
 

@@ -33,6 +33,9 @@ cwd=${HOME}/work
 # Project directory
 project_directory=${cwd}/binutils-gdb
 
+# Prepare build directory
+build_dir=${project_directory}/build
+
 # If project_directory doesn't exist create it and clone the project.
 # Otherwise this script assumes that the project has already been cloned.
 if [[ ! -e ${project_directory} ]]; then
@@ -42,6 +45,11 @@ if [[ ! -e ${project_directory} ]]; then
     die_if_error $? "Cloning binutils-gdb failed"
 else
     cd ${project_directory} && git co master && git clean -dfx
+    # Fresh build each time!!!!
+    if [[ -d "${build_dir}" ]]; then
+        rm -rf "${build_dir}"
+    fi
+    die_if_error $? "Removing the existing build directory failed"
 fi
 
 cd ${project_directory} && git pull
@@ -55,14 +63,6 @@ fi
 
 cd ${project_directory} && git checkout ${branch}
 die_if_error $? "Checking out ${branch} failed"
-
-# Prepare build directory
-build_dir=${project_directory}/build
-# Fresh build each time!!!!
-if [[ -d "${build_dir}" ]]; then
-    rm -rf "${build_dir}"
-fi
-die_if_error $? "Removing the existing build directory failed"
 
 mkdir -p "${build_dir}"
 die_if_error $? "Creating the build directory failed"
