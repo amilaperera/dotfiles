@@ -74,6 +74,8 @@ function pre_requisites() {
         pkgs+=(libmpc-dev)
         pkgs+=(libisl-dev)
         pkgs+=(libzstd-dev)
+        pkgs+=(flex)
+        pkgs+=(help2man)
     elif [[ $HAS_DNF -eq 1 ]]; then
         pkgs+=(gmp-devel)
         pkgs+=(mpfr-devel)
