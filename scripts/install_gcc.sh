@@ -92,8 +92,6 @@ die_if_error $? "make failed"
 cd ${build_dir} && make install -j8
 die_if_error $? "make install failed"
 
-# epilogue
-
 echo
 green "gcc-${version} installation successful"
 echo
