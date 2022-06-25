@@ -44,10 +44,12 @@ def process(args):
         # install
         prefix_arg = get_prefix(args.path, version)
 
+        toolset = get_toolset(args.toolset)
+
         # run bootstrap
-        bootstrap(prefix_arg, extract_directory)
+        bootstrap(prefix_arg, toolset, extract_directory)
         # run b2
-        b2(prefix_arg, extract_directory)
+        b2(prefix_arg, toolset, extract_directory)
 
         if not args.keep_download:
             remove_archive(file_name)
@@ -123,12 +125,28 @@ def get_prefix(path, version):
     # This is needed both in bootstrap and build procedure.
     return '--prefix=' + prefix_path
 
+def get_toolset(toolset):
+    if not toolset:
+        if os.name == 'nt':
+            toolset = 'msvc'
+        else:
+            toolset = 'gcc'
 
-def bootstrap(prefix_arg, extract_directory):
+    return toolset
+
+    # Print install path information.
+    print(Fore.GREEN + 'Install path: ', end='')
+    print('{}'.format(prefix_path))
+
+    # Set up the whole prefix argument.
+    # This is needed both in bootstrap and build procedure.
+    return '--prefix=' + prefix_path
+
+def bootstrap(prefix_arg, toolset, extract_directory):
     if os.name == 'nt':
-        cmd = ['bootstrap.bat']
+        cmd = ['bootstrap.bat', '--with-toolset='+toolset]
     else:
-        cmd = ['./bootstrap.sh']
+        cmd = ['./bootstrap.sh', '--with-toolset='+toolset]
 
     cmd.append(prefix_arg)
 
@@ -139,11 +157,11 @@ def bootstrap(prefix_arg, extract_directory):
     subprocess.run(cmd, shell=True, cwd=extract_directory)
 
 
-def b2(prefix_arg, extract_directory):
+def b2(prefix_arg, toolset, extract_directory):
     if os.name == 'nt':
-        cmd = ['b2.exe', 'install', prefix_arg, '-j 8']
+        cmd = ['b2.exe', 'toolset=' + toolset,  'install', prefix_arg, '-j 8']
     else:
-        cmd = ['./b2', 'install', prefix_arg, '-j 8']
+        cmd = ['./b2', 'toolset=' + toolset, 'install', prefix_arg, '-j 8']
 
     # Print build command
     print(Fore.GREEN + 'Build command: ', end='')
@@ -186,6 +204,7 @@ def main():
     parser = argparse.ArgumentParser(description='Install boost from source code')
     parser.add_argument('-v', '--version', required=True,
             help='Boost version to be installed')
+    parser.add_argument('-t', '--toolset')
     parser.add_argument('-p', '--path',
             help='Installation path [C:\\boost\\boost_<ver> | /usr/local/boost_<ver>]')
     parser.add_argument('--keep-download', action='store_true',
