@@ -109,7 +109,8 @@ def get_prefix(path, version):
         if os.name == 'nt':
             path = r'C:\boost\boost_' + version
         else:
-            path = '/usr/local/boost_' + version
+            root_path = os.path.join(os.path.expanduser("~"), ".local")
+            path = str(root_path) + '/boost_' + version
 
     # Normalize path name by collapsing redundant seprators.
     prefix_path = os.path.normpath(path)
@@ -142,7 +143,7 @@ def b2(prefix_arg, extract_directory):
     if os.name == 'nt':
         cmd = ['b2.exe', 'install', prefix_arg, '-j 8']
     else:
-        cmd = ['sudo', './b2', 'install', prefix_arg, '-j 8']
+        cmd = ['./b2', 'install', prefix_arg, '-j 8']
 
     # Print build command
     print(Fore.GREEN + 'Build command: ', end='')
@@ -170,7 +171,7 @@ def remove_extract(extract_directory):
                 # no issues of user permissions on Windows (I suppose)
                 shutil.rmtree(extract_directory)
             else:
-                cmd = ['sudo', 'rm', '-rf', extract_directory]
+                cmd = ['rm', '-rf', extract_directory]
                 print(Fore.GREEN + 'Extract directory remove command: ', end='')
                 print('{}'.format(' '.join(cmd)))
                 # don't change cwd, just execute the command from where we run the script
