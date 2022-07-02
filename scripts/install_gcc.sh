@@ -57,8 +57,8 @@ cd ${project_directory} && git pull
 die_if_error $? "Pulling failed"
 
 # Work out the branch with the version provided
-branch='${version}'
-if [[ "$version" != "master" ]]; then
+branch=${version}
+if [[ "$version" != "trunk" ]]; then
     branch="releases/gcc-${version}"
 fi
 

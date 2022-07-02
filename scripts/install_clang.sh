@@ -51,8 +51,8 @@ cd ${project_directory} && git pull
 die_if_error $? "Pulling failed"
 
 # Work out the branch with the version provided
-branch='${version}'
-if [[ "$version" != "master" ]]; then
+branch="main"
+if [[ "$version" != "trunk" ]]; then
     branch="llvmorg-${version}"
 fi
 
