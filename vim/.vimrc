@@ -46,6 +46,9 @@ Plug 'mattn/vim-lsp-settings'
 " Auto Completion
 Plug 'lifepillar/vim-mucomplete'
 
+" Highlight
+Plug 'azabiong/vim-highlighter'
+
 call plug#end()
 
 
