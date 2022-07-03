@@ -421,6 +421,17 @@ noremap <silent> <Leader>h2 yyp^v$r-
 " merge consecutive empty lines and clean up trailing spaces(from tpope's .vimrc file)
 map <Leader>fm :g/^\s*$/,/\S/-j<Bar>%s/\s\+$//<CR>
 
+" switching tabs made easy
+nmap <Leader>1 1gt
+nmap <Leader>2 2gt
+nmap <Leader>3 3gt
+nmap <Leader>4 4gt
+nmap <Leader>5 5gt
+nmap <Leader>6 6gt
+nmap <Leader>7 7gt
+nmap <Leader>8 8gt
+nmap <Leader>9 9gt
+
 " Mappings for functions
 " QuickFixWindow Toggle
 nmap <silent> <Leader>q <ESC>:QFix<CR>
