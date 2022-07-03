@@ -91,6 +91,9 @@ set foldtext=NeatFoldText()
 " Wildmenu settings
 set wildmenu              " command line completion wildmenu
 set wildmode=full         " completes till longest common string
+set wildignorecase        " ignores case when completing file names & directories
+" Ignore below when file name completion
+set wildignore=*.o,*.obj,*.a,*.so,*.jpg,*.png,*.gif,*.dll,*.exe,*.dpkg,*.rpm,*.pdf,*.chm
 
 " Timeout settings
 set timeoutlen=1200 " more time for macros
@@ -98,9 +101,6 @@ set ttimeoutlen=50  " makes Esc to work faster
 
 " Moving cursor to prev/next lines
 set whichwrap=b,s,<,>,~,[,]
-
-" Ignore below when file name completion
-set wildignore=*.o,*.obj,*.a,*.so,*.jpg,*.png,*.gif,*.dll,*.exe,*.dpkg,*.rpm,*.pdf,*.chm
 
 " History settings
 set history=1000
@@ -377,20 +377,14 @@ augroup FTOptions
     autocmd BufNewFile,BufRead Config.in set ft=config
 augroup END
 
-
 " Personal Mappings
 
-" When .vimrc is edited, reload it
-autocmd BufWritePost init.vim ++nested so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
-autocmd BufWritePost plugins.vim ++nested so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
-
-" Fast editing of the vim, tmux configuration files
-map <Leader>v :e! $MYVIMRC<CR>
-if has('win32') || has('win64')
-    map <Leader>gv :e! $HOME/_gvimrc<CR>
-else
-    map <Leader>gv :e! $HOME/.gvimrc<CR>
-endif
+" Fast editing of vimrc
+map <Leader>v :tabedit $MYVIMRC<CR>
+" sourcing of vimrc upon save
+" ++nested hack is to prevent lightline lose colors.
+" https://github.com/itchyny/lightline.vim/issues/406
+autocmd! BufWritePost $MYVIMRC ++nested so $MYVIMRC
 
 " encoding conversion
 map <silent> <Leader>u :e! ++enc=utf-8<CR>
