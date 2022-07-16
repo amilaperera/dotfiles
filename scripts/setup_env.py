@@ -355,8 +355,7 @@ class BashEnv(Env):
         cf = ('.bash',
               '.bashrc',
               '.bash_profile',
-              '.bash_logout',
-              '.inputrc')
+              '.bash_logout')
         super(BashEnv, self).__init__(args, 'bash', cf)
 
     def check_for_os_validity(self):
@@ -490,7 +489,8 @@ class MiscEnv(Env):
         cf = ('.tmux.conf',
               '.agignore',
               '.colordiffrc',
-              '.gitconfig')
+              '.gitconfig',
+              '.inputrc')
         super(MiscEnv, self).__init__(args, 'misc', cf)
 
     def check_for_os_validity(self):
