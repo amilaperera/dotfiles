@@ -2,20 +2,13 @@
 # /etc/inputrc
 $include /etc/inputrc
 
-$if Bash
-# ignore case when doing completion
-set completion-ignore-case on
-
-# replaces the word to be completed from the list of possible completions
 TAB: menu-complete
 
-# append "/" to all dirnames
-set mark-directories on
-# completed names which are symlinks to dirs hava "/" appended
-set mark-symlinked-directories on
+# vi editing mode
+set editing-mode vi
 
-# list ls -F for completion
-# set visible-stats-on
+# completion follows LS_COLORS
+set colored-stats on
 
 # Match all files
 set match-hidden-files on
@@ -23,11 +16,27 @@ set match-hidden-files on
 # Filename completion/expansion
 set show-all-if-ambiguous on
 
-# Expand homedir name
-#set expand-tilde on
+# ignore case when doing completion
+set completion-ignore-case on
 
-# 'Magic Space'
-# Insert a space character then performs
-# a history expansion in the line
-#Space: magic-space
+# append "/" to all dirnames
+set mark-directories on
+
+# completed names which are symlinks to dirs hava "/" appended
+set mark-symlinked-directories on
+
+# completion be appended by characters that indicate their file types reported by stat sys call
+set visible-stats-on
+
+# Match all files
+set match-hidden-files on
+
+# Filename completion/expansion
+set show-all-if-ambiguous on
+
+# Macros that are convenient for shell interaction
+$if Bash
+# edit the path
+"\C-xp": "PATH=${PATH}\e\C-e\C-a\ef\C-f"
 $endif
+
