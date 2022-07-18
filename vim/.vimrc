@@ -450,6 +450,9 @@ map <Leader>dn :call TermDebugSendCommand('n')<CR>
 map <Leader>ds :call TermDebugSendCommand('s')<CR>
 map <Leader>df :call TermDebugSendCommand('finish')<CR>
 map <Leader>dc :call TermDebugSendCommand('continue')<CR>
+" restoring colors if they're cleared by the vim colorscheme
+hi debugPC term=reverse ctermbg=darkblue guibg=darkblue
+hi debugBreakpoint term=reverse ctermbg=red guibg=red
 
 " Source particular environment related vim settings
 call SourceIfExists("~/.local/.env-settings.vim")
