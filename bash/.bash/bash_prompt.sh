@@ -32,9 +32,10 @@ BGM="\[\033[45m\]"
 BGC="\[\033[46m\]"
 BGW="\[\033[47m\]"
 
-SSH_STRING=
+# different color if we're in a ssh session
+HC=${C}
 if [[ -n $SSH_CLIENT ]]; then
-    SSH_STRING="${Y}(ssh)"
+    HC="${EMB}"
 fi
 
 git_prompt_file=/usr/share/git-core/contrib/completion/git-prompt.sh
@@ -53,9 +54,9 @@ fi
 function _prompt_command()
 {
     if (($UID != 0)); then
-        echo "__git_ps1 \"${C}\u${NONE}@${C}\h${SSH_STRING}${NONE}:${EMW}\w${NONE}\" \" \\$ \""
+        echo "__git_ps1 \"${C}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}\" \" \\$ \""
     else
-        echo "__git_ps1 \"${EMR}\u${NONE}@${C}\h${SSH_STRING}${NONE}:${EMW}\w${NONE}\" \" \\$ \""
+        echo "__git_ps1 \"${EMR}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}\" \" \\$ \""
     fi
 }
 PROMPT_COMMAND=$(_prompt_command)

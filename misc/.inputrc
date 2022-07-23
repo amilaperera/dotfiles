@@ -34,6 +34,8 @@ set match-hidden-files on
 # Filename completion/expansion
 set show-all-if-ambiguous on
 
+"\e[Z": complete
+
 # Macros that are convenient for shell interaction
 $if Bash
 # edit the path
