@@ -465,3 +465,7 @@ hi debugBreakpoint term=reverse ctermbg=red guibg=red
 
 " Source particular environment related vim settings
 call SourceIfExists("~/.local/.env-settings.vim")
+
+" execute current file with two ,,
+nmap <leader>, :so %<CR>
+
