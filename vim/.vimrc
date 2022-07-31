@@ -23,7 +23,11 @@ Plug 'itchyny/lightline.vim'
 
 " Git stuff
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+if has('nvim') || has('patch-8.0.902')
+    Plug 'mhinz/vim-signify'
+else
+    Plug 'mhinz/vim-signify', { 'branch': 'legacy'  }
+endif
 
 " Vim-Tmux integration
 Plug 'tpope/vim-tbone'
@@ -191,6 +195,11 @@ nmap <Leader>gq :Ggrep -q<Space>
 nmap <Leader>gw :Ggrep -q -w <C-R><C-W><Space>
 " Logging the last 10000 commits (helpful in big projects)
 nmap <Leader>gl :Gclog -10000<CR>
+
+" Signify
+nnoremap <leader>hd :SignifyDiff<cr>
+nnoremap <leader>hp :SignifyHunkDiff<cr>
+nnoremap <leader>hu :SignifyHunkUndo<cr>
 
 " NerdCommenter Settings
 let g:NERDSpaceDelims       = 1
