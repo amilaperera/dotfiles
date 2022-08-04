@@ -77,7 +77,6 @@ set mouse=nvi                  " use mouse in normal, visual & insert modes
 set mousemodel=popup           " right mosue button pops up a menu
 set updatetime=250             " vim update time - affects the behaviour of certain plugins(git-gutter)
 set laststatus=2               " status line always
-set t_Co=256                   " letting vim know that we're using 256 color terminal
 let mapleader = ","            " set mapleader to ','
 set pastetoggle=<F2>
 
@@ -155,7 +154,9 @@ endfunction
 " ColorScheme
 " set the colorscheme only for terminal vim
 " for gui vim use the colorscheme in the .gvimrc
-if ! has('gui_running')
+if has ('nvim')
+    colorscheme gruvbox
+elseif ! has('gui_running')
     set background=dark
     if (&term == "xterm-256color" || &term == "screen-256color" || &term == "tmux-256color")
         colorscheme gruvbox
