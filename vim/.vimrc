@@ -5,7 +5,11 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Plugin manager setup
-call plug#begin('~/.vim/plugged')
+if has('nvim')
+    call plug#begin(stdpath('data') . '/plugged')
+else
+    call plug#begin('~/.vim/plugged')
+endif
 
 " General enhancements
 Plug 'tpope/vim-repeat'

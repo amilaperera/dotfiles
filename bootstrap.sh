@@ -289,7 +289,7 @@ function nvim_from_sources() {
   echo "  - Switching to stable..."
   cd ~/tmp/neovim && git checkout stable
   echo "  - Building and installing neovim..."
-  cd ~/tmp/neovim && sudo make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=/usr/local/nvim install
+  cd ~/tmp/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=${HOME}/.local install
 }
 
 function vim_from_sources() {
@@ -416,8 +416,9 @@ options=(
   4 "Python stuff"                                             off
   5 "Extra repositories (Fedor Only)"                          off
   6 "Install vim latest from sources (Recommended for Debian)" off
-  7 "Setup github SSH"                                         off
-  8 "Setup personal configs(bash,tmux,vim etc.)"               off
+  7 "Install nvim latest from sources"                         off
+  8 "Setup github SSH"                                         off
+  9 "Setup personal configs(bash,tmux,vim etc.)"               off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -444,13 +445,16 @@ for choice in $choices; do
       install_packages vim_from_sources
       ;;
     7)
+      install_packages nvim_from_sources
+      ;;
+    8)
       if setup_github_personal_ssh; then
         # wait until the user wishes to continue
         read -n 1 -p "Press [c] to continue with setup or any other key to abort: " input
         [[ "$input" != "c" ]] && break
       fi
       ;;
-    8)
+    9)
       setup_configs_if_auth_ok
       ;;
   esac
