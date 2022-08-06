@@ -96,11 +96,12 @@ export LESS="--LONG-PROMPT --RAW-CONTROL-CHARS --clear-screen --QUIET"
 # setting man page viewr to less
 export MANPAGER="less"
 
-#ulimit -S -c 0 >/dev/null 2>&1    # no core files by default
-case $workinghost in
-    CYGWIN*		)	export VISUAL='vim' ;;
-    *			)	export VISUAL='vim' ;;
-esac
+# set VISUAL; we prioritize nvim
+if _check_if_command_exists nvim; then
+    export VISUAL='nvim'
+else
+    export VISUAL='vim'
+fi
 
 export EDITOR="$VISUAL"
 export SVN_EDITOR="$VISUAL"
