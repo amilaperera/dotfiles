@@ -273,23 +273,25 @@ function extra_repos() {
 
 # install latest nvim from source code
 function nvim_from_sources() {
-  [[ $HAS_APT -ne 1 ]] && yellow "Not installing neovim from sources for non Debian based distros...."
-  echo "  - Installing pre-requisites..."
-  local pre_requisites=()
-  if [[ $HAS_APT -eq 1 ]]; then
-    pre_requisites=(ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip)
-  fi
-  install ${pre_requisites[*]}
+    echo "  - Installing pre-requisites..."
+    pre_requisites=()
+    if [[ $HAS_APT -eq 1 ]]; then
+        pre_requisites=(ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip)
+        install ${pre_requisites[*]}
+    elif [[ $HAS_DNF -eq 1 ]]; then
+        pre_requisites=(ninja-build libtool autoconf automake cmake gcc gcc-c++ make pkgconfig unzip patch gettext curl)
+        install ${pre_requisites[*]}
+    fi
 
-  echo "  - Cloning neovim..."
-  # create tmp directory if not exists
-  mkdir -p ~/tmp/neovim
-  git clone https://github.com/neovim/neovim.git ~/tmp/neovim
-  # switch to stable branch
-  echo "  - Switching to stable..."
-  cd ~/tmp/neovim && git checkout stable
-  echo "  - Building and installing neovim..."
-  cd ~/tmp/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=${HOME}/.local install
+    echo "  - Cloning neovim..."
+    # create tmp directory if not exists
+    mkdir -p ~/tmp/neovim
+    git clone https://github.com/neovim/neovim.git ~/tmp/neovim
+    # switch to stable branch
+    echo "  - Switching to stable..."
+    cd ~/tmp/neovim && git checkout stable
+    echo "  - Building and installing neovim..."
+    cd ~/tmp/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=${HOME}/.local install
 }
 
 function vim_from_sources() {
