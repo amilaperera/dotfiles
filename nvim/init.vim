@@ -35,7 +35,6 @@ endif
 
 " Vim-Tmux integration
 Plug 'tpope/vim-tbone'
-Plug 'benmills/vimux'
 
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
@@ -244,20 +243,6 @@ call yankstack#setup()
 nmap <C-p> <Plug>yankstack_substitute_older_paste
 nmap <C-n> <Plug>yankstack_substitute_newer_paste
 
-" vimux settings
-" Prompt for a command to run
-map <Leader>vp :VimuxPromptCommand<CR>
-" Run last command executed by VimuxRunCommand
-map <Leader>vl :VimuxRunLastCommand<CR>
-" Inspect runner pane
-map <Leader>vi :VimuxInspectRunner<CR>
-" Close vim tmux runner opened by VimuxRunCommand
-map <Leader>vq :VimuxCloseRunner<CR>
-" Interrupt any command running in the runner pane
-map <Leader>vx :VimuxInterruptRunner<CR>
-" Zoom the runner pane (use <bind-key> z to restore runner pane)
-map <Leader>vz :call VimuxZoomRunner()<CR>
-
 " lsp
 call SourceIfExists("~/.local/.lsp-server-settings.vim")
 
@@ -280,6 +265,7 @@ function! s:on_lsp_buffer_enabled() abort
     let g:lsp_diagnostics_enabled = 0
     let g:lsp_diagnostics_highlights_enabled = 0
     let g:lsp_diagnostics_signs_enabled = 0
+    let g:lsp_diagnostics_virtual_text_enabled = 0
 endfunction
 
 augroup lsp_install
@@ -337,36 +323,6 @@ augroup QFixToggle
 augroup END
 
 let g:jah_Quickfix_Win_Height = 10 " setting qfix window height
-
-" tabs to spaces & spaces to tabs conversion {{{2
-" Return indent (all whitespace at start of a line), converted from
-" tabs to spaces if what = 1, or from spaces to tabs otherwise.
-" When converting to tabs, result has no redundant spaces.
-function! Indenting(indent, what, cols)
-    let spccol = repeat(' ', a:cols)
-    let result = substitute(a:indent, spccol, '\t', 'g')
-    let result = substitute(result, ' \+\ze\t', '', 'g')
-    if a:what == 1
-        let result = substitute(result, '\t', spccol, 'g')
-    endif
-    return result
-endfunction
-
-" Convert whitespace used for indenting (before first non-whitespace).
-" what = 0 (convert spaces to tabs), or 1 (convert tabs to spaces).
-" cols = string with number of columns per tab, or empty to use 'tabstop'.
-" The cursor position is restored, but the cursor will be in a different
-" column when the number of characters in the indent of the line is changed.
-function! IndentConvert(line1, line2, what, cols)
-    let savepos = getpos('.')
-    let cols = empty(a:cols) ? &tabstop : a:cols
-    execute a:line1 . ',' . a:line2 . 's/^\s\+/\=Indenting(submatch(0), a:what, cols)/e'
-    call histdel('search', -1)
-    call setpos('.', savepos)
-endfunction
-command! -nargs=? -range=% Space2Tab call IndentConvert(<line1>,<line2>,0,<q-args>)
-command! -nargs=? -range=% Tab2Space call IndentConvert(<line1>,<line2>,1,<q-args>)
-command! -nargs=? -range=% RetabIndent call IndentConvert(<line1>,<line2>,&et,<q-args>)
 
 " File type specific settings
 augroup FTCheck
