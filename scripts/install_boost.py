@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 
 """
-This script is used to install boost libraries on Windows & Linux systems.
-Currently tested on,
-    * Windows 10
-    * Fedora 34
-
 Once the boost libraries are installed, use -DBOOST_ROOT=<PATH> to change
 the boost root directory to link against the required library version.
 
@@ -154,7 +149,7 @@ def bootstrap(prefix_arg, toolset, extract_directory):
     print(Fore.GREEN + 'Bootstrap command: ', end='')
     print('{}'.format(' '.join(cmd)))
 
-    subprocess.run(cmd, shell=True, cwd=extract_directory)
+    subprocess.run(cmd, shell=False, cwd=extract_directory)
 
 
 def b2(prefix_arg, toolset, extract_directory):
