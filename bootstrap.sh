@@ -285,11 +285,14 @@ function nvim_from_sources() {
 
     echo "  - Cloning neovim..."
     # create tmp directory if not exists
-    mkdir -p ~/tmp/neovim
-    git clone https://github.com/neovim/neovim.git ~/tmp/neovim
+    if [ ! -d $HOME/tmp/neovim ]; then
+        git clone https://github.com/neovim/neovim.git ~/tmp/neovim
+    else
+        cd ~/tmp/neovim && git pull
+    fi
     # switch to stable branch
     echo "  - Switching to stable..."
-    cd ~/tmp/neovim && git checkout stable
+    cd ~/tmp/neovim && git checkout stable && git pull
     echo "  - Building and installing neovim..."
     cd ~/tmp/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=${HOME}/.local install
 }
