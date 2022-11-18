@@ -189,9 +189,11 @@ function dev_tools() {
     dev_tools+=(libevent-dev)
     dev_tools+=(bison)
     dev_tools+=(byacc)
+    dev_tools+=(python3-dev) # for building boost
   else
     dev_tools+=(base-devel)
     dev_tools+=(boost boost-libs)
+    dev_tools+=(python3-devel) # for building boost
   fi
   dev_tools+=(clang)
   dev_tools+=(cmake)
@@ -237,13 +239,11 @@ function python_stuff() {
     # force python3
     python_stuff+=(python3)
     python_stuff+=(python3-pip)
-    python_stuff+=(python3-dev)
     python_stuff+=(ipython3)
     python_stuff+=(python3-jedi)
   else
     python_stuff+=(python)
     python_stuff+=(python-pip)
-    python_stuff+=(python3-devel) # for building boost
     python_stuff+=(ipython)
     python_stuff+=(python-jedi)
   fi

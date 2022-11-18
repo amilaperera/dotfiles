@@ -7,6 +7,7 @@ the boost root directory to link against the required library version.
 TODO:
     * Toolchain specification on command line.
     * Any other flags to bootstrap or b2 to tweak the build
+    * Needs python3-devel as a pre-requisite
 
 NOTE:
     * On Windows for version 1.69 below the script doesn't work. This is discussed below.
@@ -36,10 +37,10 @@ def process(args):
     extract_directory = extract(temp_dir, file_name)
 
     if not args.download_only:
-        # install
-        prefix_arg = get_prefix(args.path, version)
-
         toolset = get_toolset(args.toolset)
+
+        # install
+        prefix_arg = get_prefix(args.path, version, toolset)
 
         # run bootstrap
         bootstrap(prefix_arg, toolset, extract_directory)
@@ -92,9 +93,9 @@ def extract(temp_dir, file_name):
     return os.path.join(temp_dir, dir_name)
 
 
-def get_prefix(path, version):
+def get_prefix(path, version, toolset):
     # If --prefix is not not given we default to sane paths.
-    # If --prefix is not sane, Windows & Linux use C:\Boost & /usr/local
+    # If --prefix is not sane, Windows & Linux use C:\Boost & $HOME/.local
     # respectively.
     # But this doesn't *often* create version directory nicely under the BOOST_ROOT
     # directory. Therefore we need to do the following manipulation if the path
@@ -107,7 +108,7 @@ def get_prefix(path, version):
             path = r'C:\boost\boost_' + version
         else:
             root_path = os.path.join(os.path.expanduser("~"), ".local")
-            path = str(root_path) + '/boost_' + version
+            path = str(root_path) + '/boost_' + version + "." + toolset
 
     # Normalize path name by collapsing redundant seprators.
     prefix_path = os.path.normpath(path)
@@ -128,14 +129,6 @@ def get_toolset(toolset):
             toolset = 'gcc'
 
     return toolset
-
-    # Print install path information.
-    print(Fore.GREEN + 'Install path: ', end='')
-    print('{}'.format(prefix_path))
-
-    # Set up the whole prefix argument.
-    # This is needed both in bootstrap and build procedure.
-    return '--prefix=' + prefix_path
 
 def bootstrap(prefix_arg, toolset, extract_directory):
     if os.name == 'nt':
@@ -201,7 +194,7 @@ def main():
             help='Boost version to be installed')
     parser.add_argument('-t', '--toolset')
     parser.add_argument('-p', '--path',
-            help='Installation path [C:\\boost\\boost_<ver> | /usr/local/boost_<ver>]')
+            help='Installation path [C:\\boost\\boost_<ver> | ${HOME}/.local/boost_<ver>]')
     parser.add_argument('--keep-download', action='store_true',
             help='Keeps download archive after installing. Ignored if --keep-downloads is specified')
     parser.add_argument('--download-only', action='store_true',
