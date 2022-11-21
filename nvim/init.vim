@@ -135,12 +135,10 @@ set magic                     " keeps the magic option to its default value for 
 
 set scrolloff=2               " keeps 5 lines for scope when scrolling
 set matchtime=10              " tenth of milliseconds to show the matching paren
-set lazyredraw                " don't redraw screen while typing macros
 set nostartofline             " leave my cursor where it was
 set showcmd                   " show the command being typed
 set cmdheight=2               " set command height to 2
 set textwidth=100             " maximum width of the text that is being inserted
-set title                     " display title
 set display=lastline          " show as much as possible of the last line
 
 " source a file if it exists
