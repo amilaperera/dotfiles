@@ -20,17 +20,10 @@ require("packer").startup(function(use)
 		},
 	})
 
-    use({
-        "rose-pine/neovim",
-        as = "rose-pine",
-        config = function()
-            vim.cmd("colorscheme rose-pine")
-        end
-    })
+    -- colorscheme
+    use("ellisonleao/gruvbox.nvim")
 
     use({"nvim-treesitter/nvim-treesitter", run = ':TSUpdate'})
-
-    use("tpope/vim-fugitive")
 
     use {
         'VonHeikemen/lsp-zero.nvim',
@@ -53,6 +46,13 @@ require("packer").startup(function(use)
             -- Snippet Collection (Optional)
             {'rafamadriz/friendly-snippets'},
         }
+    }
+
+    use("tpope/vim-fugitive")
+    use("tpope/vim-surround")
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons', opt = false }
     }
 end)
 
