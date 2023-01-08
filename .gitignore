@@ -1,2 +1,4 @@
 *.pyc
 .cgdb/readline_history.txt
+nvim.lua/plugin/packer_compiled.lua
+
