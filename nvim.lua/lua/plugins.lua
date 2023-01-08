@@ -20,11 +20,22 @@ require("packer").startup(function(use)
 		},
 	})
 
+    -- file explorer
+    use({
+        'nvim-tree/nvim-tree.lua',
+        requires = {
+            'nvim-tree/nvim-web-devicons', -- optional, for file icons
+        },
+        tag = 'nightly' -- optional, updated every week. (see issue #1193)
+    })
+
     -- colorscheme
     use("ellisonleao/gruvbox.nvim")
 
+    -- tree-sitter
     use({"nvim-treesitter/nvim-treesitter", run = ':TSUpdate'})
 
+    -- lsp
     use {
         'VonHeikemen/lsp-zero.nvim',
         requires = {
@@ -50,9 +61,9 @@ require("packer").startup(function(use)
 
     use("tpope/vim-fugitive")
     use("tpope/vim-surround")
-    use {
+    use({
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = false }
-    }
+    })
 end)
 
