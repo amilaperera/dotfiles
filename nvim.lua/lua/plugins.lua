@@ -21,13 +21,7 @@ require("packer").startup(function(use)
 	})
 
     -- file explorer
-    use({
-        'nvim-tree/nvim-tree.lua',
-        requires = {
-            'nvim-tree/nvim-web-devicons', -- optional, for file icons
-        },
-        tag = 'nightly' -- optional, updated every week. (see issue #1193)
-    })
+    use({'nvim-tree/nvim-tree.lua'})
 
     -- colorscheme
     use("ellisonleao/gruvbox.nvim")

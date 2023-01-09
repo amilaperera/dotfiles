@@ -7,4 +7,5 @@ o.expandtab = true
 o.number = true
 o.ignorecase = true
 o.smartcase = true
+o.cursorline = true
 
