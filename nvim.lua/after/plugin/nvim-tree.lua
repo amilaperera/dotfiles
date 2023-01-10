@@ -8,31 +8,38 @@ vim.opt.termguicolors = true
 -- Setup with some options
 -- Desperately trying to bring NvimTree closer to plain old (but yet good) NerdTree
 require("nvim-tree").setup({
-  renderer = {
-    icons = {
-      show = {
-        git = true,
-	file = false,
-	folder = false,
-	folder_arrow = true,
-      },
-      glyphs = {
-        folder = {
-          arrow_closed = "⏵",
-          arrow_open = "⏷",
+    view = {
+        mappings = {
+            list = {
+                { key = "u", action = "dir_up" },
+            },
         },
-        git = {
-          unstaged = "✗",
-          staged = "✓",
-          unmerged = "⌥",
-          renamed = "➜",
-          untracked = "★",
-          deleted = "⊖",
-          ignored = "◌",
-        },
-      },
     },
-  },
+    renderer = {
+        icons = {
+            show = {
+                git = true,
+                file = false,
+                folder = false,
+                folder_arrow = true,
+            },
+            glyphs = {
+                folder = {
+                    arrow_closed = "⏵",
+                    arrow_open = "⏷",
+                },
+                git = {
+                    unstaged = "✗",
+                    staged = "✓",
+                    unmerged = "⌥",
+                    renamed = "➜",
+                    untracked = "★",
+                    deleted = "⊖",
+                    ignored = "◌",
+                },
+            },
+        },
+    },
 })
 
 -- open/close
