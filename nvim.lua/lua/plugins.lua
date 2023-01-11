@@ -52,11 +52,19 @@ require("packer").startup(function(use)
         }
     }
 
+    -- git integration
     use("tpope/vim-fugitive")
-    use("tpope/vim-surround")
+    use("mhinz/vim-signify")
+
+    -- status line
     use({
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = false }
     })
+    -- auto pairs
+    use {
+        "windwp/nvim-autopairs",
+        config = function() require("nvim-autopairs").setup {} end
+    }
 end)
 
