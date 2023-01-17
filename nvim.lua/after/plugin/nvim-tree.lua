@@ -28,6 +28,7 @@ require("nvim-tree").setup({
       glyphs = {
         symlink = "",
         folder = {
+          symlink = "",
           arrow_closed = "⏵",
           arrow_open = "⏷",
         },
