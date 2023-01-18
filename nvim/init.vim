@@ -51,7 +51,8 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
 " Auto Completion
-Plug 'lifepillar/vim-mucomplete'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Highlight
 Plug 'azabiong/vim-highlighter'
@@ -209,7 +210,7 @@ let g:NERDRemoveExtraSpaces = 1
 imap <C-c> <plug>NERDCommenterInsert
 
 " Nerdtree settings
-map <silent> <C-e> :NERDTreeToggle<CR>
+map <leader>e :NERDTreeToggle<CR>
 let g:NERDTreeDirArrows     = 1
 let g:NERDTreeShowHidden    = 0
 let g:NERDTreeWinSize       = 32
@@ -229,9 +230,10 @@ let c_no_curly_error = 1
 
 " fzf
 nnoremap <Leader>f :Files<CR>
-nnoremap <Leader>fg :GFiles<CR>
+nnoremap <C-t> :GFiles<CR>
 nnoremap <Leader>m :History<CR>
-nnoremap <Leader>fb :Buffers<CR>
+nnoremap <Leader>g :Commits<CR>
+nnoremap <Leader>b :BCommits<CR>
 let g:fzf_preview_window=[]
 
 " yankstack
@@ -270,23 +272,6 @@ augroup lsp_install
     au!
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
-
-" MUcomplete
-" Mandatory options for plugin to work
-set completeopt+=menuone
-set completeopt+=noselect
-
-" Shut off completion messages
-set shortmess+=c
-
-" prevent a condition where vim lags due to searching include files.
-set complete-=i
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#chains = {}
-let g:mucomplete#chains.default  = ['path', 'omni', 'keyn', 'dict', 'uspl', 'ulti']
-let g:mucomplete#chains.markdown = ['path', 'keyn', 'dict', 'uspl']
-let g:mucomplete#chains.vim      = ['path', 'keyn', 'dict', 'uspl']
-map muc :MUcompleteAutoToggle<CR>
 
 " Functions
 
