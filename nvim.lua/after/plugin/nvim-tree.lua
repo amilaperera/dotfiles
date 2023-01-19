@@ -17,7 +17,7 @@ require("nvim-tree").setup({
   },
   renderer = {
     icons = {
-      symlink_arrow = " ➛ ",
+      symlink_arrow = '➛',
       show = {
         file = false,
         folder = false,
@@ -26,20 +26,20 @@ require("nvim-tree").setup({
         modified = true
       },
       glyphs = {
-        symlink = "",
+        symlink = '',
         folder = {
-          symlink = "",
-          arrow_closed = "⏵",
-          arrow_open = "⏷",
+          symlink = '',
+          arrow_closed = '▶',
+          arrow_open = '▼',
         },
         git = {
-          unstaged = "✗",
-          staged = "✓",
-          unmerged = "⌥",
-          renamed = "➜",
-          untracked = "★",
-          deleted = "⊖",
-          ignored = "◌",
+          unstaged = '✗',
+          staged = '✓',
+          unmerged = '⌥',
+          renamed = '➜',
+          untracked = '★',
+          deleted = '⊖',
+          ignored = '◌',
         },
       },
     },
