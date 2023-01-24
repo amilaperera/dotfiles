@@ -57,10 +57,8 @@ require("packer").startup(function(use)
   use("mhinz/vim-signify")
 
   -- status line
-  use({
-    'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = false }
-  })
+  use('nvim-lualine/lualine.nvim')
+
   -- auto pairs
   use {
     "windwp/nvim-autopairs",
