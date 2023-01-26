@@ -13,11 +13,13 @@ require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
 
   -- telescope
-  use {
-    'nvim-telescope/telescope.nvim', tag = '0.1.0',
-    -- or                            , branch = '0.1.x',
-    requires = { {'nvim-lua/plenary.nvim'} }
-  }
+  -- use {
+  --   'nvim-telescope/telescope.nvim', tag = '0.1.0',
+  --   -- or                            , branch = '0.1.x',
+  --   requires = { {'nvim-lua/plenary.nvim'} }
+  -- }
+  -- fzf
+  use ({'ibhagwan/fzf-lua'})
 
   -- file explorer
   use({'nvim-tree/nvim-tree.lua'})
