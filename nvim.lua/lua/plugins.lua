@@ -24,8 +24,10 @@ require("packer").startup(function(use)
   -- file explorer
   use({'nvim-tree/nvim-tree.lua'})
 
-  -- colorscheme
+  -- colorschemes
   use("ellisonleao/gruvbox.nvim")
+  use("joshdick/onedark.vim")
+  use("rose-pine/neovim")
 
   -- tree-sitter
   use({"nvim-treesitter/nvim-treesitter", run = ':TSUpdate'})
