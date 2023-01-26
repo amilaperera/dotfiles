@@ -31,7 +31,7 @@ require("packer").startup(function(use)
   use({"nvim-treesitter/nvim-treesitter", run = ':TSUpdate'})
 
   -- lsp
-  use {
+  use({
     'VonHeikemen/lsp-zero.nvim',
     requires = {
       -- LSP Support
@@ -52,7 +52,7 @@ require("packer").startup(function(use)
       -- Snippet Collection (Optional)
       {'rafamadriz/friendly-snippets'},
     }
-  }
+  })
 
   -- git integration
   use("tpope/vim-fugitive")
@@ -62,10 +62,10 @@ require("packer").startup(function(use)
   use('nvim-lualine/lualine.nvim')
 
   -- auto pairs
-  use {
+  use({
     "windwp/nvim-autopairs",
     config = function() require("nvim-autopairs").setup {} end
-  }
+  })
   -- vim unimpaired
   use("tpope/vim-unimpaired")
 end)
