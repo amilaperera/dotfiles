@@ -22,3 +22,6 @@ o.wildignorecase = true
 
 o.spelllang = 'en'
 o.spell = true
+
+o.textwidth = 120
+o.scrolloff = 2
