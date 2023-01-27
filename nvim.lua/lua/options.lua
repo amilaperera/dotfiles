@@ -6,6 +6,7 @@ o.shiftwidth = 4
 o.expandtab = true
 
 o.number = true
+o.relativenumber = true
 
 o.ignorecase = true
 o.smartcase = true
