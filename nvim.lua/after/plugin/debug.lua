@@ -1,30 +1,28 @@
 -- term-debug helpers
 
--- start gdb with source window on a vertical split
-vim.api.nvim_create_user_command(
-  'StartGdbW',
-  function(opts)
-    vim.cmd([[packadd termdebug]])
-    vim.g.termdebug_wide = 1
-    vim.fn.execute('Termdebug ' .. opts.args)
-  end,
-  { nargs = 1, complete = 'file' }
-)
+-- start gdb
+-- StartGdb => all windows on h splits (good for vertical monitor)
+-- StartGdbW => source window on v split
+vim.cmd([[
+  function! StartGdb(bin)
+      packadd termdebug
+      execute 'Termdebug ' . a:bin
+  endfunction
 
--- start gdb with horizontal splits (looks better on vertical monitor)
-vim.api.nvim_create_user_command(
-  'StartGdb',
-  function(opts)
-    vim.cmd([[packadd termdebug]])
-    vim.fn.execute('Termdebug ' .. opts.args)
-  end,
-  { nargs = 1, complete = 'file' }
-)
+  function! StartGdbW(bin)
+      packadd termdebug
+      let g:termdebug_wide=1
+      execute 'Termdebug ' . a:bin
+  endfunction
 
-vim.keymap.set('n', '<Leader>dn', "<cmd>TermDebugSendCommand('n')<CR>", { silent = true })
-vim.keymap.set('n', '<Leader>ds', "<cmd>TermDebugSendCommand('s')<CR>", { silent = true })
-vim.keymap.set('n', '<Leader>df', "<cmd>TermDebugSendCommand('finish')<CR>", { silent = true })
-vim.keymap.set('n', '<Leader>dc', "<cmd>TermDebugSendCommand('continue')<CR>", { silent = true })
+  command! -nargs=1 -complete=file StartGdb call StartGdb(<q-args>)
+  command! -nargs=1 -complete=file StartGdbW call StartGdbW(<q-args>)
+]])
+
+vim.keymap.set('n', '<Leader>dn', "<cmd>call TermDebugSendCommand('n')<CR>", { silent = true })
+vim.keymap.set('n', '<Leader>ds', "<cmd>call TermDebugSendCommand('s')<CR>", { silent = true })
+vim.keymap.set('n', '<Leader>df', "<cmd>call TermDebugSendCommand('finish')<CR>", { silent = true })
+vim.keymap.set('n', '<Leader>dc', "<cmd>call TermDebugSendCommand('continue')<CR>", { silent = true })
 
 -- restoring colors if they're cleared by the vim colorscheme
 vim.cmd([[hi debugPC term=reverse ctermbg=darkblue guibg=darkblue]])
