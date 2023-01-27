@@ -19,10 +19,10 @@ require("packer").startup(function(use)
   --   requires = { {'nvim-lua/plenary.nvim'} }
   -- }
   -- fzf
-  use ({'ibhagwan/fzf-lua'})
+  use ('ibhagwan/fzf-lua')
 
   -- file explorer
-  use({'nvim-tree/nvim-tree.lua'})
+  use('nvim-tree/nvim-tree.lua')
 
   -- colorschemes
   use("ellisonleao/gruvbox.nvim")
