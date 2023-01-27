@@ -70,5 +70,8 @@ require("packer").startup(function(use)
   })
   -- vim unimpaired
   use("tpope/vim-unimpaired")
+
+  -- tmux integration
+  use("tpope/vim-tbone")
 end)
 
