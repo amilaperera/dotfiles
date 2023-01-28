@@ -33,7 +33,8 @@ local get_alternate_file = function()
     end
 end
 
-rotate = function(options)
+-- alternate files (works only with c++ projects)
+alternate = function(options)
     local alternate_file = get_alternate_file()
     if alternate_file == nil then return end
 
