@@ -1,4 +1,5 @@
 -- returns element e from table t if found, otherwise returns nil
+local M = {}
 local find_ext = function(t, e)
     for i = 1, #t do
         if t[i] == e then return i end
@@ -34,7 +35,7 @@ local get_alternate_file = function()
 end
 
 -- alternate files (works only with c++ projects)
-alternate = function(options)
+M.alternate = function(options)
     local alternate_file = get_alternate_file()
     if alternate_file == nil then return end
 
@@ -43,3 +44,5 @@ alternate = function(options)
     options = options or { open = 'edit'}
     vim.cmd(options['open'] .. alternate_file)
 end
+
+return M
