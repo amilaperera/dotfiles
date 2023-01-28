@@ -1,8 +1,8 @@
 vim.g.mapleader = ","
 
 -- reatin visual selection
-vim.keymap.set('v', '>', '>gv', { silent = true, remap = false})
-vim.keymap.set('v', '<', '<gv', { silent = true, remap = false})
+vim.keymap.set('v', '>', '>gv', { silent = true, remap = false })
+vim.keymap.set('v', '<', '<gv', { silent = true, remap = false })
 
 -- window resizing
 vim.keymap.set('n', '<Up>', '<cmd>resize +1<CR>', { silent = true })
@@ -12,14 +12,17 @@ vim.keymap.set('n', '<Right>', '<cmd>vertical resize +1<CR>', { silent = true })
 
 -- get the full path of the file in the current buffer
 vim.keymap.set('n', '<Leader><Space>', function()
-  print(vim.fn.expand('%:p'))
+    print(vim.fn.expand('%:p'))
 end)
 -- change to the directory of the current buffer
 vim.keymap.set('n', 'cd', function()
-  vim.cmd([[cd %:p:h]])
-  print(vim.cmd[[pwd]])
+    vim.cmd([[cd %:p:h]])
+    print(vim.cmd [[pwd]])
 end)
-
+-- format buffer
+vim.keymap.set("n", "<leader>F", function()
+    vim.lsp.buf.format()
+end)
 -- switching tabs made easy
 vim.keymap.set('n', '<Leader>1', '1gt')
 vim.keymap.set('n', '<Leader>2', '2gt')
