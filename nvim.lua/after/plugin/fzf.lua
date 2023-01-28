@@ -27,8 +27,13 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap(
     'n', '<leader>s', "<cmd>lua require('fzf-lua').live_grep()<CR>",
     { noremap = true, silent = true })
--- git project search
+-- git grep
 vim.api.nvim_set_keymap(
     'n', '<leader>ps',
+    "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always' })<CR>",
+    { noremap = true, silent = true })
+-- git grep with ignore case
+vim.api.nvim_set_keymap(
+    'n', '<leader>psi',
     "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always --ignore-case' })<CR>",
     { noremap = true, silent = true })
