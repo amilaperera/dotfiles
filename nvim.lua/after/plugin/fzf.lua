@@ -30,5 +30,5 @@ vim.api.nvim_set_keymap(
 -- git project search
 vim.api.nvim_set_keymap(
     'n', '<leader>ps',
-    "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always' })<CR>",
+    "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always --ignore-case' })<CR>",
     { noremap = true, silent = true })
