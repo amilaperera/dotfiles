@@ -62,9 +62,13 @@ require("packer").startup(function(use)
         "windwp/nvim-autopairs",
         config = function() require("nvim-autopairs").setup {} end
     })
+
     -- vim unimpaired
     use("tpope/vim-unimpaired")
 
     -- tmux integration
     use("tpope/vim-tbone")
+
+    -- commenter
+    use("scrooloose/nerdcommenter")
 end)
