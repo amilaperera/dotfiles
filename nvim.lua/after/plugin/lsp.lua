@@ -18,8 +18,14 @@ lsp.setup_nvim_cmp({
     mapping = cmp_mappings
 })
 
-lsp.configure('clangd', {
-    cmd = { 'clangd', '-j=4' }
-})
+-- tweaking lsp config depending on the environment
+local env_lsp_config = vim.fn.expand("env_lsp_config.lua")
+if vim.fn.empty(vim.fn.glob(env_lsp_config)) > 0 then
+    lsp.configure('clangd', {
+        cmd = { 'clangd', '-j=4' }
+    })
+else
+    require('env_lsp_config').config(lsp)
+end
 
 lsp.setup()
