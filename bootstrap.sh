@@ -198,7 +198,6 @@ function dev_tools() {
   fi
   dev_tools+=(clang)
   dev_tools+=(cmake)
-  dev_tools+=(fzf)
   dev_tools+=(kdiff3)
   [[ $HAS_APT -eq 1 ]] && dev_tools+=(exuberant-ctags) || dev_tools+=(ctags)
 
