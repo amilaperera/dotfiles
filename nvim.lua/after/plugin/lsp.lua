@@ -18,14 +18,23 @@ lsp.setup_nvim_cmp({
     mapping = cmp_mappings
 })
 
--- tweaking lsp config depending on the environment
+-- tweaking lsp config depending on the environment.
+-- In order to tweak, create .config/nvim/after/env_lsp_config.lua file
+-- and implement something like the following.
+--
+-- local M = {}
+-- local M.configure = function(lsp)
+--     lsp.configure('clangd', {
+--         cmd = {'clangd', '-j=8'}
+--     })
+-- end
 local env_lsp_config = vim.fn.expand("env_lsp_config.lua")
 if vim.fn.empty(vim.fn.glob(env_lsp_config)) > 0 then
     lsp.configure('clangd', {
         cmd = { 'clangd', '-j=4' }
     })
 else
-    require('env_lsp_config').config(lsp)
+    require('env_lsp_config').configure(lsp)
 end
 
 lsp.setup()
