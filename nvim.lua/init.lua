@@ -1,5 +1,5 @@
+require("alternate")
 require("mappings")
 require("options")
 require("plugins")
 require("termdebug")
-require("utils")

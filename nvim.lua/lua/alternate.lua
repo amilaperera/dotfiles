@@ -35,11 +35,11 @@ local get_alternate_file = function()
 end
 
 -- alternate files (works only with c++ projects)
-M.alternate = function(options)
+M.switch_to_alt_file = function(options)
     local alternate_file = get_alternate_file()
     if alternate_file == nil then return end
 
-    -- we know that alternate file exists by this time
+    -- we know that alternate file exists by now
     -- TODO: what happens if the current file has got updates without being saved ??
     options = options or { open = 'edit'}
     vim.cmd(options['open'] .. alternate_file)
