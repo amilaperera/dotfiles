@@ -22,6 +22,7 @@ require("packer").startup(function(use)
     use("ellisonleao/gruvbox.nvim")
     use("joshdick/onedark.vim")
     use("rose-pine/neovim")
+    use("sainnhe/edge")
 
     -- tree-sitter
     use({ "nvim-treesitter/nvim-treesitter", run = ':TSUpdate' })

@@ -6,7 +6,6 @@
 vim.cmd([[
     function! StartGdb(bin)
         packadd termdebug
-        let g:termdebug_wide=0
         execute 'Termdebug ' . a:bin
     endfunction
 
