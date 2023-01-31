@@ -33,3 +33,6 @@ o.textwidth = 120
 o.formatoptions:append('t')
 
 o.scrolloff = 2
+
+o.list = true
+o.listchars = { trail = '-', tab = '|.' }
