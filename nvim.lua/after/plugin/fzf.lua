@@ -27,13 +27,25 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap(
     'n', '<leader>s', "<cmd>lua require('fzf-lua').live_grep()<CR>",
     { noremap = true, silent = true })
--- git grep
+
+-- git grepping facilities
+
+-- project search (live grep, case sensitive)
 vim.api.nvim_set_keymap(
-    'n', '<leader>ps',
+    'n', '<leader>pl',
     "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always' })<CR>",
     { noremap = true, silent = true })
--- git grep with ignore case
+
+-- project search (live grep, case insensitive)
 vim.api.nvim_set_keymap(
-    'n', '<leader>psi',
+    'n', '<leader>pli',
     "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always --ignore-case' })<CR>",
+    { noremap = true, silent = true })
+
+-- project search with prompt
+-- A nice use case would be to search the exact word under the cursor (C-R, C-W)
+-- without having to type it
+vim.api.nvim_set_keymap(
+    'n', '<leader>ps',
+    "<cmd>lua require('fzf-lua').grep({ input_prompt = 'git-grep for > ', cmd = 'git grep --line-number --column --color=always --word-regexp' })<CR>",
     { noremap = true, silent = true })
