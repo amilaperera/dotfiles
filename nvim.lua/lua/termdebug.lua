@@ -23,7 +23,3 @@ vim.keymap.set('n', '<Leader>dn', "<cmd>call TermDebugSendCommand('n')<CR>", { s
 vim.keymap.set('n', '<Leader>ds', "<cmd>call TermDebugSendCommand('s')<CR>", { silent = true })
 vim.keymap.set('n', '<Leader>df', "<cmd>call TermDebugSendCommand('finish')<CR>", { silent = true })
 vim.keymap.set('n', '<Leader>dc', "<cmd>call TermDebugSendCommand('continue')<CR>", { silent = true })
-
--- restoring colors if they're cleared by the vim colorscheme
-vim.cmd([[hi debugPC term=reverse ctermbg=darkblue guibg=darkblue]])
-vim.cmd([[hi debugBreakpoint term=reverse ctermbg=red guibg=red]])
