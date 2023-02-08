@@ -1,8 +1,6 @@
-vim.o.background = "dark"
-vim.cmd([[let g:edge_style = 'neon']])
 vim.cmd([[let g:edge_transparent_background = 1]])
 vim.cmd([[let g:edge_disable_italic_comment = 1]])
-vim.cmd([[let g:edge_menu_selection_background = 'purple']])
+vim.o.background = "dark"
 vim.cmd.colorscheme("edge")
 
 -- restoring colors if they're cleared by the vim colorscheme
