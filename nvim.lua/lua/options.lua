@@ -28,7 +28,7 @@ o.foldenable = false
 o.wildignorecase = true
 
 o.spelllang = 'en'
-o.spell = true
+o.spell = false
 
 o.textwidth = 120
 o.formatoptions:append('t')

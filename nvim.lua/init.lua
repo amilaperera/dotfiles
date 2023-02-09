@@ -1,4 +1,5 @@
 require("alternate")
+require("auto_commands")
 require("mappings")
 require("options")
 require("plugins")
