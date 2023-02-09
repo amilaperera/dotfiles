@@ -1,6 +1,7 @@
 local o = vim.opt
 
 o.guicursor = ""
+o.termguicolors = true
 
 o.tabstop = 4
 o.softtabstop = 4
