@@ -4,10 +4,14 @@ vim.o.background = "dark"
 vim.cmd.colorscheme("edge")
 
 -- More traditional colors for diff to be consistent across many terminals
+-- diff
 vim.cmd([[highlight DiffAdd guibg=#005f00]])
 vim.cmd([[highlight DiffDelete guibg=#af0000]])
 vim.cmd([[highlight DiffChange guibg=#878700]])
 
--- restoring colors if they're cleared by the vim colorscheme
+-- spelling
+vim.cmd([[highlight SpellBad guibg=underline]])
+
+-- termdebug
 vim.cmd([[highlight debugPC term=reverse ctermbg=yellow guibg=yellow]])
 vim.cmd([[highlight debugBreakpoint term=reverse ctermbg=red guibg=red]])
