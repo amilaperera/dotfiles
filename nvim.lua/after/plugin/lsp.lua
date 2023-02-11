@@ -23,4 +23,15 @@ lsp.configure('clangd', {
     cmd = { 'clangd', '-j=4' }
 })
 
+lsp.configure('sumneko_lua', {
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { 'vim' }
+            }
+        }
+    }
+})
+
+
 lsp.setup()
