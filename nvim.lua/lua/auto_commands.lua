@@ -14,3 +14,13 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
     end,
     group = "SpellCheckGroup"
 })
+
+-- easily close temporary buffer windows like help, fugitive etc.
+vim.api.nvim_create_augroup("EasyClose", { clear = true })
+vim.api.nvim_create_autocmd({"FileType"}, {
+    pattern = {"fugitive", "help"},
+    callback = function()
+        vim.keymap.set('n', 'q', '<cmd>close<CR>', { silent = true })
+    end,
+    group = "EasyClose"
+})
