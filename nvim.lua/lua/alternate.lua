@@ -32,6 +32,8 @@ local get_alternate_file = function()
             return next
         end
     end
+
+    print("Couldn't found an alternate file for " .. vim.fn.expand('%'))
 end
 
 -- alternate files (works only with c++ projects)
