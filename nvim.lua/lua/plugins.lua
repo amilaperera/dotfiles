@@ -72,4 +72,7 @@ require("packer").startup(function(use)
 
     -- commenter
     use("scrooloose/nerdcommenter")
+
+    -- async run
+    use("skywind3000/asyncrun.vim")
 end)
