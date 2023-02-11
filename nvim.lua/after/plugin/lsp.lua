@@ -23,6 +23,7 @@ lsp.configure('clangd', {
     cmd = { 'clangd', '-j=4' }
 })
 
+-- letting lsp know that vim is a part of global namespace
 lsp.configure('sumneko_lua', {
     settings = {
         Lua = {
@@ -32,6 +33,5 @@ lsp.configure('sumneko_lua', {
         }
     }
 })
-
 
 lsp.setup()
