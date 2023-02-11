@@ -10,7 +10,7 @@ vim.cmd([[highlight DiffDelete guibg=#af0000]])
 vim.cmd([[highlight DiffChange guibg=#878700]])
 
 -- spelling
-vim.cmd([[highlight SpellBad guibg=underline]])
+vim.cmd([[highlight SpellBad cterm=underline gui=underline guibg=underline guisp=grey]])
 
 -- termdebug
 vim.cmd([[highlight debugPC term=reverse ctermbg=yellow guibg=yellow]])
