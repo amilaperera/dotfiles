@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # first source compiler activating script
-source ~/.local/dev_stuff/.local.bash
+source "$HOME/.local/dev_stuff/.local.bash"
 
 old_dir=$(pwd)
 
