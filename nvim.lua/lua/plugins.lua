@@ -75,4 +75,7 @@ require("packer").startup(function(use)
 
     -- async run
     use("skywind3000/asyncrun.vim")
+
+    -- highligher
+    use("azabiong/vim-highlighter")
 end)
