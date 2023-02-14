@@ -35,10 +35,12 @@ vim.keymap.set('n', '<Leader>8', '8gt')
 vim.keymap.set('n', '<Leader>9', '9gt')
 
 -- moving visual blocks up and down
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 
 -- scroll up and down focussing the center
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set('n', "<C-d>", "<C-d>zz")
+vim.keymap.set('n', "<C-u>", "<C-u>zz")
 
+-- open $MYVIMRC in a new tab
+vim.keymap.set('n', "<Leader>v", ":tabe $MYVIMRC<CR>")

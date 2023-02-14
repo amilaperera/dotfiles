@@ -19,7 +19,15 @@ command! -nargs=1 -complete=file StartGdb call StartGdb(<q-args>)
 command! -nargs=1 -complete=file StartGdbW call StartGdbW(<q-args>)
 ]])
 
-vim.keymap.set('n', '<Leader>dn', "<cmd>call TermDebugSendCommand('n')<CR>", { silent = true })
-vim.keymap.set('n', '<Leader>ds', "<cmd>call TermDebugSendCommand('s')<CR>", { silent = true })
-vim.keymap.set('n', '<Leader>df', "<cmd>call TermDebugSendCommand('finish')<CR>", { silent = true })
-vim.keymap.set('n', '<Leader>dc', "<cmd>call TermDebugSendCommand('continue')<CR>", { silent = true })
+-- Useful keymaps for debugging
+-- window switching
+vim.keymap.set('n', '<A-i>', "<cmd>Source<CR>", { silent = true }) -- implementation window
+vim.keymap.set('n', '<A-g>', "<cmd>Gdb<CR>", { silent = true }) -- gdb window
+-- stepping in/out etc
+vim.keymap.set('n', '<A-n>', "<cmd>TermDebugSendCommand('n')<CR>", { silent = true })
+vim.keymap.set('n', '<A-s>', "<cmd>TermDebugSendCommand('s')<CR>", { silent = true })
+vim.keymap.set('n', '<A-f>', "<cmd>TermDebugSendCommand('finish')<CR>", { silent = true })
+vim.keymap.set('n', '<A-c>', "<cmd>TermDebugSendCommand('continue')<CR>", { silent = true })
+-- frame traversal
+vim.keymap.set('n', '<A-u>', "<cmd>TermDebugSendCommand('up')<CR>", { silent = true })
+vim.keymap.set('n', '<A-d>', "<cmd>TermDebugSendCommand('down')<CR>", { silent = true })
