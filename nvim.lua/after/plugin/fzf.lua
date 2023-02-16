@@ -1,51 +1,51 @@
-require('fzf-lua').setup({
-    winopts = {
-        preview = {
-            border = 'border',
-            layout = 'vertical'
-        }
-    }
-})
+-- require('fzf-lua').setup({
+    -- winopts = {
+        -- preview = {
+            -- border = 'border',
+            -- layout = 'vertical'
+        -- }
+    -- }
+-- })
 
-vim.api.nvim_set_keymap(
-    'n', '<leader>f', "<cmd>lua require('fzf-lua').files()<CR>",
-    { noremap = true, silent = true })
-vim.api.nvim_set_keymap(
-    'n', '<C-t>', "<cmd>lua require('fzf-lua').git_files()<CR>",
-    { noremap = true, silent = true })
-vim.api.nvim_set_keymap(
-    'n', '<leader>c', "<cmd>lua require('fzf-lua').git_commits()<CR>",
-    { noremap = true, silent = true })
-vim.api.nvim_set_keymap(
-    'n', '<leader>b', "<cmd>lua require('fzf-lua').buffers()<CR>",
-    { noremap = true, silent = true })
--- most recently used
-vim.api.nvim_set_keymap(
-    'n', '<leader>m', "<cmd>lua require('fzf-lua').oldfiles()<CR>",
-    { noremap = true, silent = true })
--- search
-vim.api.nvim_set_keymap(
-    'n', '<leader>s', "<cmd>lua require('fzf-lua').live_grep()<CR>",
-    { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap(
+    -- 'n', '<leader>f', "<cmd>lua require('fzf-lua').files()<CR>",
+    -- { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap(
+    -- 'n', '<C-t>', "<cmd>lua require('fzf-lua').git_files()<CR>",
+    -- { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap(
+    -- 'n', '<leader>c', "<cmd>lua require('fzf-lua').git_commits()<CR>",
+    -- { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap(
+    -- 'n', '<leader>b', "<cmd>lua require('fzf-lua').buffers()<CR>",
+    -- { noremap = true, silent = true })
+-- -- most recently used
+-- vim.api.nvim_set_keymap(
+    -- 'n', '<leader>m', "<cmd>lua require('fzf-lua').oldfiles()<CR>",
+    -- { noremap = true, silent = true })
+-- -- search
+-- vim.api.nvim_set_keymap(
+    -- 'n', '<leader>s', "<cmd>lua require('fzf-lua').live_grep()<CR>",
+    -- { noremap = true, silent = true })
 
--- git grepping facilities
+-- -- git grepping facilities
 
--- project search (live grep, case sensitive)
-vim.api.nvim_set_keymap(
-    'n', '<leader>pl',
-    "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always' })<CR>",
-    { noremap = true, silent = true })
+-- -- project search (live grep, case sensitive)
+-- vim.api.nvim_set_keymap(
+    -- 'n', '<leader>pl',
+    -- "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always' })<CR>",
+    -- { noremap = true, silent = true })
 
--- project search (live grep, case insensitive)
-vim.api.nvim_set_keymap(
-    'n', '<leader>pli',
-    "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always --ignore-case' })<CR>",
-    { noremap = true, silent = true })
+-- -- project search (live grep, case insensitive)
+-- vim.api.nvim_set_keymap(
+    -- 'n', '<leader>pli',
+    -- "<cmd>lua require('fzf-lua').live_grep({ cmd = 'git grep --line-number --column --color=always --ignore-case' })<CR>",
+    -- { noremap = true, silent = true })
 
--- project search with prompt
--- A nice use case would be to search the exact word under the cursor (C-R, C-W)
--- without having to type it
-vim.api.nvim_set_keymap(
-    'n', '<leader>ps',
-    "<cmd>lua require('fzf-lua').grep({ input_prompt = 'git-grep for > ', cmd = 'git grep --line-number --column --color=always --word-regexp' })<CR>",
-    { noremap = true, silent = true })
+-- -- project search with prompt
+-- -- A nice use case would be to search the exact word under the cursor (C-R, C-W)
+-- -- without having to type it
+-- vim.api.nvim_set_keymap(
+    -- 'n', '<leader>ps',
+    -- "<cmd>lua require('fzf-lua').grep({ input_prompt = 'git-grep for > ', cmd = 'git grep --line-number --column --color=always --word-regexp' })<CR>",
+    -- { noremap = true, silent = true })

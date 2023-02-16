@@ -12,8 +12,13 @@ end
 require("packer").startup(function(use)
     use("wbthomason/packer.nvim")
 
-    -- fzf
-    use('ibhagwan/fzf-lua')
+    -- -- fzf
+    -- use('ibhagwan/fzf-lua')
+
+    use {
+      'nvim-telescope/telescope.nvim',
+      requires = { {'nvim-lua/plenary.nvim'} }
+    }
 
     -- file explorer
     use('nvim-tree/nvim-tree.lua')

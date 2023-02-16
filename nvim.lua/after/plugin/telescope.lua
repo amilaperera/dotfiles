@@ -1,28 +1,34 @@
 require('telescope').setup {
-    defaults = {},
+    defaults = {
+        layout_strategy = 'vertical',
+        layout_config = { height = 0.95, width = 0.7 },
+    },
     pickers = {
         find_files = {
-            theme = "dropdown"
+            -- theme = "dropdown"
         },
         git_files = {
-            theme = "dropdown"
-        },
-        -- git_commits = {
             -- theme = "dropdown"
-        -- },
+        },
+        git_commits = {
+            git_command = {"git", "log", "--pretty=oneline", "--abbrev-commit"},
+            -- theme = "dropdown"
+        },
         buffers = {
-            theme = "dropdown"
+            -- theme = "dropdown"
         },
         old_files = {
-            theme = "dropdown"
+            -- theme = "dropdown"
         },
         live_grep = {
-            theme = "dropdown"
+            -- theme = "dropdown"
         },
     }
 }
 
 local builtin = require("telescope.builtin")
+-- builtin.git_commits({git_command = {"git", "log", "--pretty=oneline", "--abbrev-commit"}})
+
 vim.keymap.set('n', '<leader>f', builtin.find_files, {})
 vim.keymap.set('n', '<C-t>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>c', builtin.git_commits, {})
