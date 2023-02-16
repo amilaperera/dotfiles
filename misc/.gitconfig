@@ -1,24 +1,24 @@
 [user]
-	name = Amila Perera
-	email = perera.amila@gmail.com
+    name = Amila Perera
+    email = perera.amila@gmail.com
 [alias]
-	st = status
-	ci = commit
-	co = checkout
-	br = branch
-[color]
-	ui = always
+    st = status
+    ci = commit
+    co = checkout
+    br = branch
 [diff]
-	tool = bc
+    tool = nvim
 [difftool]
-	prompt = false
+    prompt = false
 [merge]
-	tool = bc
+    tool = nvim
 [mergetool]
-	prompt = false
+    prompt = false
 [pull]
-	rebase = false
+    rebase = false
 [url "https://invent.kde.org/"]
-	insteadOf = kde:
+    insteadOf = kde:
 [url "ssh://git@invent.kde.org/"]
-	pushInsteadOf = kde:
+    pushInsteadOf = kde:
+[color]
+	ui = auto
