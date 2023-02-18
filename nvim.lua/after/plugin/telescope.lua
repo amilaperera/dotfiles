@@ -1,3 +1,9 @@
+-- if rg doesn't exist we don't use telescope, instead we use fzf
+-- FIXME: Is there a better way ?
+if vim.fn.executable('rg') == 0 then
+    return
+end
+
 require('telescope').setup {
     defaults = {
         layout_strategy = 'vertical',
