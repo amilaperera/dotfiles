@@ -22,8 +22,23 @@ local get_git_root = function()
     return vim.fn.fnamemodify(p, ':p:h:h')
 end
 
-local builtin = require("telescope.builtin")
+-- explore a directory
+local explore = function(opts)
+    if vim.fn.chdir(opts.dir) == '' then
+        print("Can't find" .. opts.dir)
+    else
+        local builtin = require("telescope.builtin")
 
+        opts.git = opts.git or false
+        if opts.git then
+            builtin.git_files({cwd = opts.dir})
+        else
+            builtin.find_files({cwd = opts.dir})
+        end
+    end
+end
+
+local builtin = require("telescope.builtin")
 -- keymaps
 vim.keymap.set('n', '<leader>f', builtin.find_files, {})
 vim.keymap.set('n', '<C-t>', builtin.git_files, {})
@@ -43,12 +58,10 @@ vim.keymap.set('n', '<leader>ps', function()
 end)
 
 -- explore configs
-vim.keymap.set('n', '<leader>ec', function()
-        if vim.fn.chdir('~/.dotfiles') == '' then
-            print("Can't find ~/.dotfiles")
-        end
-        builtin.git_files({cwd = '~/.dotfiles'})
-    end)
+vim.keymap.set('n', '<leader>ec', function() explore({dir = "~/.dotfiles", git = true}) end)
+
+-- explore plugins' directory
+vim.keymap.set('n', '<leader>ep', function() explore({dir = "~/.local/share/nvim/site/pack/packer/start"}) end)
 
 -- Awesome fzf algorithm with telescope
 require('telescope').load_extension('fzf')
