@@ -1,6 +1,6 @@
--- if rg doesn't exist we don't use telescope, instead we use fzf
--- FIXME: Is there a better way ?
-if vim.fn.executable('rg') == 0 then
+-- check if we can load the module as packer treats this as a conditionally useable plugin
+local loaded, _ = pcall(function () require 'telescope' end)
+if not loaded then
     return
 end
 

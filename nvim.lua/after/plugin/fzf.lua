@@ -1,6 +1,6 @@
--- if rg exists we don't use fzf, instead we use telescope
--- FIXME: Is there a better way ?
-if vim.fn.executable('rg') == 1 then
+-- check if we can load the module as packer treats this as a conditionally useable plugin
+local loaded, _ = pcall(function () require 'fzf-lua' end)
+if not loaded then
     return
 end
 

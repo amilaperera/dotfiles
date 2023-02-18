@@ -16,6 +16,8 @@ local packer_bootstrap = ensure_packer()
 require("packer").startup(function(use)
     use("wbthomason/packer.nvim")
 
+    -- It will be either fzf or telescope
+    -- The decision is based on the existence of 'ripgrep'
     -- fzf
     use {
         'ibhagwan/fzf-lua',
