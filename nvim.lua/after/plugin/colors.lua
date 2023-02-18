@@ -1,7 +1,7 @@
-vim.cmd([[let g:edge_transparent_background = 0]])
-vim.cmd([[let g:edge_disable_italic_comment = 1]])
+-- vim.cmd([[let g:edge_transparent_background = 0]])
+-- vim.cmd([[let g:edge_disable_italic_comment = 1]])
 vim.o.background = "dark"
-vim.cmd.colorscheme("edge")
+vim.cmd.colorscheme("kanagawa")
 
 -- More traditional colors for diff to be consistent across many terminals
 -- diff

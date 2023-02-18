@@ -1,12 +1,16 @@
--- Install packer if not installed
-local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-local is_bootstrap = false
-
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    is_bootstrap = true
-    vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
-    vim.cmd([[packadd packer.nvim]])
+-- bootstrapping
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
+
+local packer_bootstrap = ensure_packer()
 
 -- Packer installations
 require("packer").startup(function(use)
@@ -26,12 +30,12 @@ require("packer").startup(function(use)
     -- file explorer
     use('nvim-tree/nvim-tree.lua')
 
-    -- colorschemes
+    -- some colorschemes I would like try
+    use("sainnhe/edge")
     use("ellisonleao/gruvbox.nvim")
     use("joshdick/onedark.vim")
-    use("rose-pine/neovim")
-    use("sainnhe/edge")
-
+    use("rebelot/kanagawa.nvim")
+    use({"catppuccin/nvim", as = "catppuccin"})
     -- tree-sitter
     use({ "nvim-treesitter/nvim-treesitter", run = ':TSUpdate' })
 
@@ -63,6 +67,9 @@ require("packer").startup(function(use)
     use("tpope/vim-fugitive")
     use("mhinz/vim-signify")
 
+    -- yanking improved
+    use("gbprod/yanky.nvim")
+
     -- status line
     use('nvim-lualine/lualine.nvim')
 
@@ -86,4 +93,10 @@ require("packer").startup(function(use)
 
     -- highligher
     use("azabiong/vim-highlighter")
+
+    -- Automatically set up configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if packer_bootstrap then
+        require('packer').sync()
+    end
 end)
