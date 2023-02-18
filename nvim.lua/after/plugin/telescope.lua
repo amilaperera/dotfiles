@@ -15,11 +15,14 @@ require('telescope').setup {
 
 -- retrieve the git root (no system calls i.e. git rev-parse)
 local get_git_root = function()
-    local find_path = vim.fn.escape(vim.fn.expand('%:p:h'), ' ') .. ';'
-    if find_path == '' then return nil end
+    local cwd = vim.fn.escape(vim.fn.expand('%:p:h'), ' ')
+    local find_path = cwd .. ';'
 
-    local p = vim.fn.finddir('.git', find_path)
-    return vim.fn.fnamemodify(p, ':p:h:h')
+    local git_root = vim.fn.finddir('.git', find_path)
+    if git_root == '' then -- not a git directory
+        return cwd
+    end
+    return vim.fn.fnamemodify(git_root, ':p:h:h')
 end
 
 -- explore a directory
@@ -52,6 +55,13 @@ vim.keymap.set('n', '<leader>pl', function()
         builtin.live_grep({cwd = root})
     end, {})
 
+-- project live grep (case insensitive)
+vim.keymap.set('n', '<leader>ipl', function()
+        local root = get_git_root()
+        builtin.live_grep({cwd = root, additional_args = {"-i"}})
+    end, {})
+
+-- project search (Handy alternative to C-R C-W to search the exact word)
 vim.keymap.set('n', '<leader>ps', function()
     local root = get_git_root()
     builtin.grep_string({cwd = root, search = vim.fn.input("Grep > ") })
