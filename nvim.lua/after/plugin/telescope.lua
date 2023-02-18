@@ -4,37 +4,51 @@ require('telescope').setup {
         layout_config = { height = 0.95, width = 0.7 },
     },
     pickers = {
-        find_files = {
-            -- theme = "dropdown"
-        },
-        git_files = {
-            -- theme = "dropdown"
-        },
         git_commits = {
+            -- The command is the default used by the plugin itself,
+            -- but Fedora 37 had some issues without me providing it here for some reason (probably a combination of git +
+            -- telescope caused this issue)
             git_command = {"git", "log", "--pretty=oneline", "--abbrev-commit"},
-            -- theme = "dropdown"
-        },
-        buffers = {
-            -- theme = "dropdown"
-        },
-        old_files = {
-            -- theme = "dropdown"
-        },
-        live_grep = {
-            -- theme = "dropdown"
         },
     }
 }
 
-local builtin = require("telescope.builtin")
--- builtin.git_commits({git_command = {"git", "log", "--pretty=oneline", "--abbrev-commit"}})
+-- retrieve the git root (no system calls i.e. git rev-parse)
+local get_git_root = function()
+    local find_path = vim.fn.escape(vim.fn.expand('%:p:h'), ' ') .. ';'
+    if find_path == '' then return nil end
 
+    local p = vim.fn.finddir('.git', find_path)
+    return vim.fn.fnamemodify(p, ':p:h:h')
+end
+
+local builtin = require("telescope.builtin")
+
+-- keymaps
 vim.keymap.set('n', '<leader>f', builtin.find_files, {})
 vim.keymap.set('n', '<C-t>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>c', builtin.git_commits, {})
 vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 vim.keymap.set('n', '<leader>m', builtin.oldfiles, {})
-vim.keymap.set('n', '<leader>pl', builtin.live_grep, {})
+
+-- project live grep
+vim.keymap.set('n', '<leader>pl', function() 
+        local root = get_git_root()
+        builtin.live_grep({cwd = root})
+    end, {})
+
 vim.keymap.set('n', '<leader>ps', function()
-    builtin.grep_string({ search = vim.fn.input("Grep > ") })
+    local root = get_git_root()
+    builtin.grep_string({cwd = root, search = vim.fn.input("Grep > ") })
 end)
+
+-- explore configs
+vim.keymap.set('n', '<leader>ec', function()
+        if vim.fn.chdir('~/.dotfiles') == '' then
+            print("Can't find ~/.dotfiles")
+        end
+        builtin.git_files({cwd = '~/.dotfiles'})
+    end)
+
+-- Awesome fzf algorithm with telescope
+require('telescope').load_extension('fzf')

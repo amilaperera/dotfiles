@@ -15,10 +15,13 @@ require("packer").startup(function(use)
     -- -- fzf
     -- use('ibhagwan/fzf-lua')
 
+    -- telescope
     use {
       'nvim-telescope/telescope.nvim',
       requires = { {'nvim-lua/plenary.nvim'} }
     }
+    -- telescope extensions
+    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
     -- file explorer
     use('nvim-tree/nvim-tree.lua')
