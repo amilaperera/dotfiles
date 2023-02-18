@@ -47,7 +47,7 @@ vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 vim.keymap.set('n', '<leader>m', builtin.oldfiles, {})
 
 -- project live grep
-vim.keymap.set('n', '<leader>pl', function() 
+vim.keymap.set('n', '<leader>pl', function()
         local root = get_git_root()
         builtin.live_grep({cwd = root})
     end, {})
