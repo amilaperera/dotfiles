@@ -13,6 +13,8 @@ require('fzf-lua').setup({
     }
 })
 
+-- keymaps
+vim.keymap.set('n', 'T', '<cmd>FzfLua<CR>', {})
 vim.api.nvim_set_keymap(
     'n', '<leader>f', "<cmd>lua require('fzf-lua').files()<CR>",
     { noremap = true, silent = true })

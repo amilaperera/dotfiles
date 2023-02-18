@@ -83,9 +83,6 @@ require("packer").startup(function(use)
     use("tpope/vim-fugitive")
     use("mhinz/vim-signify")
 
-    -- yanking improved
-    use("gbprod/yanky.nvim")
-
     -- status line
     use('nvim-lualine/lualine.nvim')
 
