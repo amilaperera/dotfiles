@@ -24,7 +24,7 @@ vim.cmd.colorscheme("kanagawa")
 -- diff
 vim.cmd([[highlight DiffAdd guibg=#005f00]])
 vim.cmd([[highlight DiffDelete guibg=#af0000]])
-vim.cmd([[highlight DiffChange guibg=#878700]])
+vim.cmd([[highlight DiffText guibg=#5f5f87]])
 
 -- spelling
 vim.cmd([[highlight SpellBad cterm=underline gui=underline guibg=underline guisp=grey]])
