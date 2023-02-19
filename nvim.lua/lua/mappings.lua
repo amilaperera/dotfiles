@@ -16,8 +16,8 @@ vim.keymap.set('n', '<Leader><Space>', function()
 end)
 -- change to the directory of the current buffer
 vim.keymap.set('n', 'cd', function()
-    vim.cmd([[cd %:p:h]])
-    print(vim.cmd [[pwd]])
+    vim.fn.chdir(vim.fn.expand('%:p:h'))
+    print("Changed to: " .. vim.fn.getcwd())
 end)
 -- format buffer
 vim.keymap.set("n", "<leader>F", function()
