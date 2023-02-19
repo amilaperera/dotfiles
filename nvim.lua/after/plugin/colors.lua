@@ -1,6 +1,23 @@
--- vim.cmd([[let g:edge_transparent_background = 0]])
--- vim.cmd([[let g:edge_disable_italic_comment = 1]])
-vim.o.background = "dark"
+-- no italics
+require('kanagawa').setup({
+    undercurl = false,
+    commentStyle = { italic = false },
+    functionStyle = {},
+    keywordStyle = { italic = false },
+    statementStyle = { bold = false },
+    typeStyle = {},
+    variablebuiltinStyle = { italic = false},
+    specialReturn = true,       -- special highlight for the return keyword
+    specialException = true,    -- special highlight for exception handling keywords
+    transparent = false,        -- do not set background color
+    dimInactive = false,        -- dim inactive window `:h hl-NormalNC`
+    globalStatus = false,       -- adjust window separators highlight for laststatus=3
+    terminalColors = true,      -- define vim.g.terminal_color_{0,17}
+    colors = {},
+    overrides = {},
+    theme = "default"
+})
+
 vim.cmd.colorscheme("kanagawa")
 
 -- More traditional colors for diff to be consistent across many terminals
