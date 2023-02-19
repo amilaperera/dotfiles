@@ -44,3 +44,6 @@ vim.keymap.set('n', "<C-u>", "<C-u>zz")
 
 -- open $MYVIMRC in a new tab
 vim.keymap.set('n', "<Leader>v", ":tabe $MYVIMRC<CR>")
+
+-- save file and execute
+vim.keymap.set('n', "<Leader>x", ":w<CR>:source %<CR>")

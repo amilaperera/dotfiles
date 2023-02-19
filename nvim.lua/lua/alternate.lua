@@ -8,19 +8,20 @@ local find_ext = function(t, e)
 end
 
 local get_alternate_file = function()
-    local ext = vim.fn.expand('%:e')
+    local fn = vim.fn
+    local ext = fn.expand('%:e')
 
     local map = { 'c', 'cpp', 'cc', 'cxx', 'h', 'hpp', 'hxx', 'ipp', 'ixx' }
 
     local index = find_ext(map, ext)
     if  index == nil then return end
 
-    local root_part = vim.fn.expand('%:p:r')
+    local root_part = fn.expand('%:p:r')
 
     -- find from the index to the end
     for i = index+1, #map do
         local next = root_part .. '.' .. map[i]
-        if vim.fn.filereadable(next) == 1 then
+        if fn.filereadable(next) == 1 then
             return next
         end
     end
@@ -28,12 +29,12 @@ local get_alternate_file = function()
     -- find from the start to the index
     for i = 1, index - 1 do
         local next = root_part .. '.' .. map[i]
-        if vim.fn.filereadable(next) == 1 then
+        if fn.filereadable(next) == 1 then
             return next
         end
     end
 
-    print("Couldn't found an alternate file for " .. vim.fn.expand('%'))
+    print("Couldn't found an alternate file for " .. fn.expand('%'))
 end
 
 -- alternate files (works only with c++ projects)
