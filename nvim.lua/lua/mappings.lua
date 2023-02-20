@@ -14,25 +14,17 @@ vim.keymap.set('n', '<Right>', '<cmd>vertical resize +1<CR>', { silent = true })
 vim.keymap.set('n', '<Leader><Space>', function()
     print(vim.fn.expand('%:p'))
 end)
+
 -- change to the directory of the current buffer
 vim.keymap.set('n', 'cd', function()
     vim.fn.chdir(vim.fn.expand('%:p:h'))
     print("Changed to: " .. vim.fn.getcwd())
 end)
--- format buffer
-vim.keymap.set("n", "<leader>F", function()
-    vim.lsp.buf.format()
-end)
+
 -- switching tabs made easy
-vim.keymap.set('n', '<Leader>1', '1gt')
-vim.keymap.set('n', '<Leader>2', '2gt')
-vim.keymap.set('n', '<Leader>3', '3gt')
-vim.keymap.set('n', '<Leader>4', '4gt')
-vim.keymap.set('n', '<Leader>5', '5gt')
-vim.keymap.set('n', '<Leader>6', '6gt')
-vim.keymap.set('n', '<Leader>7', '7gt')
-vim.keymap.set('n', '<Leader>8', '8gt')
-vim.keymap.set('n', '<Leader>9', '9gt')
+for i = 1,9 do
+    vim.keymap.set('n', '<Leader>'..i, i..'gt')
+end
 
 -- moving visual blocks up and down
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
@@ -44,6 +36,3 @@ vim.keymap.set('n', "<C-u>", "<C-u>zz")
 
 -- open $MYVIMRC in a new tab
 vim.keymap.set('n', "<Leader>v", ":tabe $MYVIMRC<CR>")
-
--- save file and execute
-vim.keymap.set('n', "<Leader>x", ":w<CR>:source %<CR>")

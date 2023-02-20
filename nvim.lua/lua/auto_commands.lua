@@ -7,3 +7,13 @@ vim.api.nvim_create_autocmd({"FileType"}, {
     end,
     group = "FastCloseGroup"
 })
+
+-- save and source file
+vim.api.nvim_create_augroup("SourceFiles", { clear = true })
+vim.api.nvim_create_autocmd({"FileType"}, {
+    pattern = {"lua", "vim"},
+    callback = function()
+        vim.keymap.set('n', '<leader>x', ":w<CR>:source %<CR>", { buffer = true })
+    end,
+    group = "SourceFiles"
+})
