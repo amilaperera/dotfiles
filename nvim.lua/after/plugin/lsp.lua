@@ -10,12 +10,31 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ["<C-Space>"] = cmp.mapping.complete(),
 })
 
-lsp.set_preferences({
-    sign_icons = {}
+-- open definition in a new tab/ horizontal split/ vertical split
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        vim.keymap.set('n', 'gD', "<cmd>tab split | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
+    end,
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        vim.keymap.set('n', 'gX', "<cmd>split | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
+    end,
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        vim.keymap.set('n', 'gV', "<cmd>vsplit | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
+    end,
 })
 
 lsp.setup_nvim_cmp({
     mapping = cmp_mappings
+})
+
+lsp.set_preferences({
+    sign_icons = {}
 })
 
 -- tweaking lsp config depending on the environment.
