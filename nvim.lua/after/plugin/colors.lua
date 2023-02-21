@@ -30,5 +30,5 @@ vim.cmd([[highlight DiffText guibg=#5f5f87]])
 vim.cmd([[highlight SpellBad cterm=underline gui=underline guibg=underline guisp=grey]])
 
 -- termdebug
-vim.cmd([[highlight debugPC term=reverse ctermbg=yellow guibg=yellow]])
+vim.cmd([[highlight debugPC term=reverse ctermbg=blue guibg=navyblue]])
 vim.cmd([[highlight debugBreakpoint term=reverse ctermbg=red guibg=red]])
