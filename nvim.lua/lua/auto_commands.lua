@@ -32,12 +32,20 @@ vim.api.nvim_create_autocmd({"FileType"}, {
 local cursor_group = vim.api.nvim_create_augroup("CursorGroup", { clear = true })
 vim.api.nvim_create_autocmd({"InsertEnter", "WinLeave"}, {
     pattern = {"*"},
-    command = "setl nocursorline",
+    command = "setlocal nocursorline",
     group = cursor_group
 })
 
 vim.api.nvim_create_autocmd({"InsertLeave", "WinEnter"}, {
     pattern = {"*"},
-    command = "setl cursorline",
+    command = "setlocal cursorline",
     group = cursor_group
+})
+
+-- Highlight on yank
+local yank_group = vim.api.nvim_create_augroup("YankGropu", { clear = true })
+vim.api.nvim_create_autocmd({"TextYankPost"}, {
+    pattern = {"*"},
+    command = "silent! lua vim.highlight.on_yank {on_visual=true, timeout=100}",
+    group = yank_group
 })
