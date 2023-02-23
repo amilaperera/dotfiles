@@ -1,19 +1,43 @@
 -- easily close temporary buffer windows like help, fugitive etc.
-vim.api.nvim_create_augroup("FastCloseGroup", { clear = true })
+local fast_close_group = vim.api.nvim_create_augroup("FastCloseGroup", { clear = true })
 vim.api.nvim_create_autocmd({"FileType"}, {
     pattern = {"help", "fugitive", "fugitiveblame"},
     callback = function()
         vim.keymap.set('n', 'q', '<cmd>close<CR>', { silent = true, buffer = true })
     end,
-    group = "FastCloseGroup"
+    group = fast_close_group
 })
 
 -- save and source file
-vim.api.nvim_create_augroup("SourceFiles", { clear = true })
+local source_files_group = vim.api.nvim_create_augroup("SourceFilesGroup", { clear = true })
 vim.api.nvim_create_autocmd({"FileType"}, {
     pattern = {"lua", "vim"},
     callback = function()
         vim.keymap.set('n', '<leader>x', ":w<CR>:source %<CR>", { buffer = true })
     end,
-    group = "SourceFiles"
+    group = source_files_group
+})
+
+-- colorcolumns for filetypes where I would like to preserve textwidth
+local cc_group = vim.api.nvim_create_augroup("CcGroup", { clear = true })
+vim.api.nvim_create_autocmd({"FileType"}, {
+    pattern = {"c", "cpp", "lua", "python", "sh", "bash"},
+    command = "setlocal colorcolumn=+1",
+    group = cc_group
+})
+
+-- Toggle cursorline on only if,
+--  buffer window active
+--  not in insert mode
+local cursor_group = vim.api.nvim_create_augroup("CursorGroup", { clear = true })
+vim.api.nvim_create_autocmd({"InsertEnter", "WinLeave"}, {
+    pattern = {"*"},
+    command = "setl nocursorline",
+    group = cursor_group
+})
+
+vim.api.nvim_create_autocmd({"InsertLeave", "WinEnter"}, {
+    pattern = {"*"},
+    command = "setl cursorline",
+    group = cursor_group
 })
