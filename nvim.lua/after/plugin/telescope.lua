@@ -7,7 +7,7 @@ end
 require('telescope').setup {
     defaults = {
         layout_strategy = 'vertical',
-        layout_config = { height = 0.95, width = 0.7 },
+        layout_config = { height = 0.95, width = 0.9 },
     },
     pickers = {
         git_commits = {

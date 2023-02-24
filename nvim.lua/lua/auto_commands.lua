@@ -18,13 +18,17 @@ vim.api.nvim_create_autocmd({"FileType"}, {
     group = source_files_group
 })
 
--- colorcolumns for filetypes where I would like to preserve textwidth
+-- colorcolumn for filetypes where I would like to preserve textwidth.
+-- Looks a bit visually distracting, therefore for the timebeing I'm going to leave it off.
+-- One alternative is to use "yot" from unimpaired to toggle it whenever you need
+--[[
 local cc_group = vim.api.nvim_create_augroup("CcGroup", { clear = true })
 vim.api.nvim_create_autocmd({"FileType"}, {
     pattern = {"c", "cpp", "lua", "python", "sh", "bash"},
     command = "setlocal colorcolumn=+1",
     group = cc_group
 })
+--]]
 
 -- Toggle cursorline on only if,
 --  buffer window active
