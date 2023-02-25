@@ -1,6 +1,6 @@
 -- invoking fugitive
 vim.keymap.set('n', "<leader>g", vim.cmd.Git)
--- to align with tb to blame a line
+-- to align with 'tb' to blame a line
 vim.keymap.set('n', "<leader>tB", "<cmd>Git blame<CR>")
 
 require('gitsigns').setup {
