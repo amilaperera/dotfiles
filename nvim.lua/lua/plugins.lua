@@ -81,7 +81,7 @@ require("packer").startup(function(use)
 
     -- git integration
     use("tpope/vim-fugitive")
-    use("mhinz/vim-signify")
+    use("lewis6991/gitsigns.nvim")
 
     -- status line
     use('nvim-lualine/lualine.nvim')
