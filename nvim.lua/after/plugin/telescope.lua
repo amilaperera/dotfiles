@@ -41,7 +41,11 @@ local get_git_root = function(dir)
 end
 
 local git_root_of_current_buffer = function()
-    return get_git_root('%:p:h')
+    local flag, git_root = get_git_root('%:p:h')
+    if flag == false then
+        error(git_root .. " is not a git directory.")
+    end
+    return git_root
 end
 
 local is_git_directory = function(dir)
