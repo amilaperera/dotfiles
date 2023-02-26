@@ -27,17 +27,17 @@ local get_git_root = function(dir)
     -- This is the general case i.e. .git is likely to be directory
     local git_root = vim.fn.finddir('.git', find_path)
     if git_root ~= '' then
-        return vim.fn.fnamemodify(git_root, ':p:h:h')
+        return true, vim.fn.fnamemodify(git_root, ':p:h:h')
     end
 
     -- Or else it may be a regular file
     git_root = vim.fn.findfile('.git', find_path)
     if git_root ~= '' then
-        return vim.fn.fnamemodify(git_root, ':p:h')
+        return true, vim.fn.fnamemodify(git_root, ':p:h')
     end
 
     -- Nothing found, simply return current working directory
-    return cwd
+    return false, cwd
 end
 
 local git_root_of_current_buffer = function()
@@ -45,9 +45,8 @@ local git_root_of_current_buffer = function()
 end
 
 local is_git_directory = function(dir)
-    local cwd = vim.fn.escape(vim.fn.expand(dir), ' ')
-    local find_path = cwd .. ';'
-    return vim.fn.finddir('.git', find_path) ~= ''
+    local flag, _ = get_git_root(dir)
+    return flag
 end
 
 -- explore a directory
