@@ -13,7 +13,7 @@ o.smartindent = true
 o.hlsearch = true
 o.incsearch = true
 o.ignorecase = true
-o.smartcase = false
+o.smartcase = true
 
 o.number = true
 o.relativenumber = true
