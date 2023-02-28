@@ -86,18 +86,12 @@ vim.keymap.set('n', '<leader>sg', function()
     builtin.grep_string({cwd = root, search = vim.fn.input("Grep > ") })
 end, {desc = '[S]earch by [G]rep'})
 
--- project live grep
-vim.keymap.set('n', '<leader>sps', function()
+-- search project
+-- Handle case sensitivity with smartcase
+vim.keymap.set('n', '<leader>sp', function()
     local root = git_root_of_current_buffer()
     builtin.live_grep({cwd = root})
-end, {desc = '[S]earch [P]roject (case [S]ensitive)'})
-
--- project live grep (case insensitive)
-vim.keymap.set('n', '<leader>spi', function()
-    local root = git_root_of_current_buffer()
-    builtin.live_grep({cwd = root, additional_args = {"-i"}})
-end, {desc = '[S]earch [P]roject (case [I]nsensitive)'})
-
+end, {desc = '[S]earch [P]roject'})
 
 -- explore configs
 vim.keymap.set('n', '<leader>xc', function() explore({dir = "~/.dotfiles"}) end)
