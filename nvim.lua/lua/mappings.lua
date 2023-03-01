@@ -11,11 +11,6 @@ vim.keymap.set('n', '<Down>', '<cmd>resize -1<CR>', { silent = true })
 vim.keymap.set('n', '<Left>', '<cmd>vertical resize -1<CR>', { silent = true })
 vim.keymap.set('n', '<Right>', '<cmd>vertical resize +1<CR>', { silent = true })
 
--- get the full path of the file in the current buffer
-vim.keymap.set('n', '<Leader><Space>', function()
-    print(vim.fn.expand('%:p'))
-end)
-
 -- change to the directory of the current buffer
 vim.keymap.set('n', 'cd', function()
     vim.fn.chdir(vim.fn.expand('%:p:h'))
