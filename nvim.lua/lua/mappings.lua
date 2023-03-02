@@ -32,3 +32,7 @@ vim.keymap.set('n', "<C-u>", "<C-u>zz")
 
 -- open $MYVIMRC in a new tab
 vim.keymap.set('n', "<Leader>v", ":tabe $MYVIMRC<CR>")
+
+-- custom commands
+vim.api.nvim_create_user_command('P', function() print(vim.fn.expand('%:p')) end, {})
+
