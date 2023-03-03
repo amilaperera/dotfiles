@@ -13,7 +13,7 @@ local source_files_group = vim.api.nvim_create_augroup("SourceFilesGroup", { cle
 vim.api.nvim_create_autocmd({"FileType"}, {
     pattern = {"lua", "vim"},
     callback = function()
-        vim.keymap.set('n', '<leader>x', ":w<CR>:source %<CR>", { buffer = true })
+        vim.keymap.set('n', '<Leader><Space>', ":w<CR>:source %<CR>", { buffer = true })
     end,
     group = source_files_group
 })
