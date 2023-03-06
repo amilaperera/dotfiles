@@ -34,7 +34,7 @@ local get_alternate_file = function()
         end
     end
 
-    print("Couldn't found an alternate file for " .. fn.expand('%'))
+    print("Couldn't find an alternative file for " .. fn.expand('%'))
 end
 
 -- alternate files (works only with c++ projects)

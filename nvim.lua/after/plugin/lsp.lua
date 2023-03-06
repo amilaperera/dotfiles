@@ -13,9 +13,10 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 -- open definition in a new tab/ horizontal split/ vertical split
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
+        -- definiton on splits/tabs
         vim.keymap.set('n', 'gV', "<cmd>vsplit | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
-        vim.keymap.set('n', 'gD', "<cmd>tab split | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
-        vim.keymap.set('n', 'gX', "<cmd>split | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
+        vim.keymap.set('n', 'gS', "<cmd>split | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
+        vim.keymap.set('n', 'gN', "<cmd>tab split | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
         vim.keymap.set('n', '<leader>F', function() vim.lsp.buf.format() end, { buffer = args.buf })
     end,
 })

@@ -19,7 +19,7 @@ end)
 
 -- switching tabs made easy
 for i = 1,9 do
-    vim.keymap.set('n', '<Leader>'..i, i..'gt')
+    vim.keymap.set('n', '<leader>'..i, i..'gt')
 end
 
 -- moving visual blocks up and down
@@ -31,7 +31,7 @@ vim.keymap.set('n', "<C-d>", "<C-d>zz")
 vim.keymap.set('n', "<C-u>", "<C-u>zz")
 
 -- open $MYVIMRC in a new tab
-vim.keymap.set('n', "<Leader>v", ":tabe $MYVIMRC<CR>")
+vim.keymap.set('n', "<leader>v", ":tabe $MYVIMRC<CR>")
 
 -- File full path. Gives better information than Ctrl_G
 vim.keymap.set('n', "<Space>", function() print(vim.fn.expand('%:p')) end, { silent = true })
