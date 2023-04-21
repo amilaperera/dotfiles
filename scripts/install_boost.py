@@ -17,18 +17,18 @@ NOTE:
 """
 
 import argparse
-import os, errno
+import os
 import tempfile
 import urllib.request
 import tarfile
 import subprocess
 import shutil
-from colorama import Fore, Style, init
+from colorama import Fore, init
 
 
 def process(args):
     # retrive meta information from the provided arguments
-    version, temp_dir, url, file_name = metainfo(args);
+    version, temp_dir, url, file_name = metainfo(args)
 
     # download boost from 'url' and store it in 'file_name'
     download(url, file_name)
@@ -56,7 +56,7 @@ def metainfo(args):
     version_with_dots = args.version + '.0'
     version_with_underscore = version_with_dots.replace('.', '_')
 
-    temp_dir = tempfile.gettempdir();
+    temp_dir = tempfile.gettempdir()
     print(Fore.GREEN + 'Temp directory: '.format(temp_dir), end='')
     print('{}'.format(temp_dir))
 
@@ -68,7 +68,7 @@ def metainfo(args):
 
     # url to retrieve
     url = 'https://boostorg.jfrog.io/artifactory/main/release/' + \
-            version_with_dots + '/source/' + archive_name
+        version_with_dots + '/source/' + archive_name
 
     return version_with_dots, temp_dir, url, file_name
 
@@ -97,12 +97,13 @@ def get_prefix(path, version, toolset):
     # If --prefix is not not given we default to sane paths.
     # If --prefix is not sane, Windows & Linux use C:\Boost & $HOME/.local
     # respectively.
-    # But this doesn't *often* create version directory nicely under the BOOST_ROOT
-    # directory. Therefore we need to do the following manipulation if the path
+    # But this doesn't *often* create version directory nicely under the
+    # BOOST_ROOT directory.
+    # Therefore we need to do the following manipulation if the path
     # is not set.
 
-    # Either way, when building with CMake provide -DBOOST_ROOT=<path> to change
-    # the boost version aginst with the project is linked.
+    # Either way, when building with CMake provide -DBOOST_ROOT=<path>
+    # to change the boost version aginst with the project is linked.
     if not path:
         if os.name == 'nt':
             path = r'C:\boost\boost_' + version
@@ -121,6 +122,7 @@ def get_prefix(path, version, toolset):
     # This is needed both in bootstrap and build procedure.
     return '--prefix=' + prefix_path
 
+
 def get_toolset(toolset):
     if not toolset:
         if os.name == 'nt':
@@ -129,6 +131,7 @@ def get_toolset(toolset):
             toolset = 'gcc'
 
     return toolset
+
 
 def bootstrap(prefix_arg, toolset, extract_directory):
     if os.name == 'nt':
@@ -156,7 +159,8 @@ def b2(prefix_arg, toolset, extract_directory):
     print('{}'.format(' '.join(cmd)))
 
     args = {'cwd': extract_directory}
-    # Windows needs shell=True for some reason even though b2.exe is not a shell builtin
+    # Windows needs shell=True for some reason even though b2.exe is not a
+    # shell builtin
     if os.name == 'nt':
         args.update({'shell': True})
     else:
@@ -178,9 +182,11 @@ def remove_extract(extract_directory):
                 shutil.rmtree(extract_directory)
             else:
                 cmd = ['rm', '-rf', extract_directory]
-                print(Fore.GREEN + 'Extract directory remove command: ', end='')
+                print(Fore.GREEN +
+                      'Extract directory remove command: ', end='')
                 print('{}'.format(' '.join(cmd)))
-                # don't change cwd, just execute the command from where we run the script
+                # don't change cwd, just execute the command from where we run
+                # the script
                 subprocess.run(cmd)
         except:
             print(Fore.RED + 'Error happened while trying to remove the extract directory.')
