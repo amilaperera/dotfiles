@@ -182,6 +182,7 @@ function dev_tools() {
     dev_tools+=(@development-tools)
     dev_tools+=(boost-devel)
     dev_tools+=(ninja-build)
+    dev_tools+=(python3-devel) # for building boost
   elif [[ $HAS_APT -eq 1 ]]; then
     dev_tools+=(build-essential)
     dev_tools+=(libboost-all-dev)
@@ -190,11 +191,11 @@ function dev_tools() {
     dev_tools+=(libevent-dev)
     dev_tools+=(bison)
     dev_tools+=(byacc)
-    dev_tools+=(python3-dev) # for building boost
+    dev_tools+=(python3-dev)
   else
     dev_tools+=(base-devel)
     dev_tools+=(boost boost-libs)
-    dev_tools+=(python3-devel) # for building boost
+    dev_tools+=(python3-devel)
   fi
   dev_tools+=(clang)
   dev_tools+=(cmake)
