@@ -8,7 +8,8 @@
 #
 
 import argparse
-import os, errno
+import os
+import errno
 import shutil
 import subprocess
 import sys
@@ -17,6 +18,7 @@ import threading
 import re
 from colorama import Fore, Style, init
 import requests
+
 
 class Env(object):
     """Environment setup base class"""
@@ -193,19 +195,21 @@ class Env(object):
 
     @staticmethod
     def dot_dir():
-       local_dot_dir = os.path.join(Env.get_home(), '.dotfiles')
-       if os.path.isdir(local_dot_dir):
-           return local_dot_dir
-       else:
-           raise OSError('dot directory does not exist in {}'.format(local_dot_dir))
+        local_dot_dir = os.path.join(Env.get_home(), '.dotfiles')
+        if os.path.isdir(local_dot_dir):
+            return local_dot_dir
+        else:
+            raise OSError(
+                'dot directory does not exist in {}'.format(local_dot_dir))
 
     @staticmethod
     def scripts_dir():
-       local_scripts_dir = os.path.join(Env.dot_dir(), 'scripts')
-       if os.path.isdir(local_scripts_dir):
-           return local_scripts_dir
-       else:
-           raise OSError('dot directory does not exist in {}'.format(local_scripts_dir))
+        local_scripts_dir = os.path.join(Env.dot_dir(), 'scripts')
+        if os.path.isdir(local_scripts_dir):
+            return local_scripts_dir
+        else:
+            raise OSError(
+                'dot directory does not exist in {}'.format(local_scripts_dir))
 
     @staticmethod
     def src_to_dest_message(msg, src, dest):
@@ -363,8 +367,9 @@ class BashEnv(Env):
 
     def _create_bash_symlinks(self):
         for config_file in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join('..', 'bash', config_file)),
-                               os.path.join(self.install_dir, config_file))
+            Env.create_symlink(
+                os.path.abspath(os.path.join('..', 'bash', config_file)),
+                os.path.join(self.install_dir, config_file))
 
     def setup_env(self):
         self._create_bash_symlinks()
@@ -387,13 +392,14 @@ class VimEnv(Env):
             if Env.is_windows():
                 # copy .vimrc & .gvimrc files as
                 # _vimrc and _gvimrc files respectively to the $HOME folder
-                Env.copy_file(os.path.join('..','vim', config_file),
+                Env.copy_file(os.path.join('..', 'vim', config_file),
                               os.path.join(home_path,
                                            '_' + config_file.split('.')[1]))
             else:
                 # create a link to .vimrc & .gvimrc files in the home directory
-                Env.create_symlink(os.path.abspath(os.path.join('..', 'vim', config_file)),
-                                   os.path.join(home_path, config_file))
+                Env.create_symlink(
+                    os.path.abspath(os.path.join('..', 'vim', config_file)),
+                    os.path.join(home_path, config_file))
 
     def _install_plugin_manager(self):
         target_file = os.path.expanduser('~/.vim/autoload/plug.vim')
@@ -427,58 +433,46 @@ class VimEnv(Env):
 class NeoVimEnv(Env):
     """NeoVim environment setup class"""
 
+    @staticmethod
+    def get_destination_dir(home_path):
+        if Env.is_windows():
+            return os.path.join(home_path, 'AppData', 'Local')
+        else:
+            return os.path.join(home_path, '.config')
+
     def __init__(self, args):
-        cf = ('init.vim', 'ginit.vim')
+        cf = ('nvim.lua',)
         super(NeoVimEnv, self).__init__(args, 'nvim', cf)
 
     def check_for_os_validity(self):
         self.raise_if_not_linux_or_win()
 
     def _set_config_files(self):
-        home_path = self.install_dir
         print('Setting up config file')
+        dest_dir = NeoVimEnv.get_destination_dir(self.install_dir)
         for config_file in self.config_files:
-            if Env.is_windows():
-                dest_dir = os.path.join(home_path, 'AppData', 'Local', 'nvim/')
-                if not os.path.exists(dest_dir):
-                    os.makedirs(dest_dir)
-                Env.copy_file(os.path.join('..', 'nvim', config_file), os.path.join(dest_dir, config_file))
-            else:
-                # create a link to .vimrc & .gvimrc files in the home directory
-                dest_dir = os.path.join(home_path, '.config', 'nvim/')
-                if not os.path.exists(dest_dir):
-                    os.makedirs(dest_dir)
-                Env.create_symlink(os.path.abspath(os.path.join('..', 'nvim', config_file)),
-                                   os.path.join(dest_dir, config_file))
-
-    def _install_plugin_manager(self):
-        target_file = os.path.expanduser('~/.local/share/nvim/site/autoload/plug.vim')
-        url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-
-        if Env.is_windows():
-            target_file = os.path.join(self.install_dir, 'AppData', 'Local', 'nvim-data', 'site', 'autoload', 'plug.vim')
-
-        # create parent directory if not exists
-        if not os.path.exists(os.path.dirname(target_file)):
-            os.makedirs(os.path.dirname(target_file))
-
-        resp = requests.get(url)
-        with open(target_file, 'wb') as f:
-            f.write(resp.content)
+            if not os.path.exists(dest_dir):
+                os.makedirs(dest_dir)
+            Env.create_symlink(
+                os.path.abspath(os.path.join('..', config_file)),
+                os.path.join(dest_dir, 'nvim'))
 
     def _install_plugins(self):
-        nvim_found = False
         try:
             subprocess.call(["nvim", "--version"])
-            with open(os.devnull, 'w') as devnull:
-                subprocess.check_call(['nvim', '+PlugInstall', '+qall'])
+            subprocess.check_call([
+                'nvim',
+                '--headless',
+                '-c',
+                'autocmd User PackerComplete quitall',
+                '-c',
+                'PackerSync'])
         except OSError as e:
             if e.errno == errno.ENOENT:
                 raise OSError("NeoVim not found. Please install neovim before running this")
 
     def setup_env(self):
         self._set_config_files()
-        self._install_plugin_manager()
         self._install_plugins()
 
 
@@ -498,8 +492,10 @@ class MiscEnv(Env):
 
     def _create_misc_symlinks(self):
         for config_file in self.config_files:
-            Env.create_symlink(os.path.abspath(os.path.join(Env.dot_dir(), 'misc', config_file)),
-                               os.path.join(self.install_dir, config_file))
+            Env.create_symlink(
+                os.path.abspath(
+                    os.path.join(Env.dot_dir(), 'misc', config_file)),
+                os.path.join(self.install_dir, config_file))
 
     def setup_env(self):
         self._create_misc_symlinks()
@@ -564,6 +560,7 @@ def main():
             TmuxSessions(args).setup()
         else:
             pass
+
 
 if __name__ == '__main__':
     try:

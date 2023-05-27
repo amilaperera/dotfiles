@@ -202,7 +202,7 @@ def main():
     parser.add_argument('-p', '--path',
             help='Installation path [C:\\boost\\boost_<ver> | ${HOME}/.local/boost_<ver>]')
     parser.add_argument('--keep-download', action='store_true',
-            help='Keeps download archive after installing. Ignored if --keep-downloads is specified')
+            help='Keeps download archive after installing. If ignored --keep-download is true')
     parser.add_argument('--download-only', action='store_true',
             help='Downloads and extracts the archive witout installing')
 

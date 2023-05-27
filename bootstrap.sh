@@ -163,6 +163,7 @@ function essentials() {
   essential_pkgs+=(tmux)
   essential_pkgs+=(ruby)
   essential_pkgs+=(rubygems)
+  essential_pkgs+=(nodejs-npm) # some lsp servers rely on this
   [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(alacritty)
 
   install ${essential_pkgs[*]}
