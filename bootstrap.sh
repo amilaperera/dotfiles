@@ -154,7 +154,7 @@ function essentials() {
   essential_pkgs+=(ripgrep)
   essential_pkgs+=(tree)
   [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(redhat-lsb)
-  essential_pkgs+=(vim)
+  [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(vim neovim)
   essential_pkgs+=(htop)
   essential_pkgs+=(wget)
   essential_pkgs+=(curl)
@@ -388,9 +388,9 @@ function setup_configs() {
     cd ~/.dotfiles/scripts && PATH=$PATH:/snap/bin python3 setup_env.py -e bash vim misc tmux_sessions
   else
     if [[ ${BYPASS_SSH} -eq 1 ]]; then
-      cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash vim misc tmux_sessions
+      cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash nvim vim misc tmux_sessions
     else
-      cd ~/.dotfiles/scripts && python3 setup_env.py -e bash vim misc tmux_sessions
+      cd ~/.dotfiles/scripts && python3 setup_env.py -e bash nvim vim misc tmux_sessions
     fi
   fi
 }
