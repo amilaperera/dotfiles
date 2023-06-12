@@ -71,11 +71,11 @@ cd ${build_dir} && cmake -G "Ninja" \
 die_if_error $? "CMake configuration failed"
 
 # make
-cd ${build_dir} && ninja -j8
+cd ${build_dir} && ninja -j4
 die_if_error $? "ninja build failed"
 
 # make install
-cd ${build_dir} && ninja install -j8
+cd ${build_dir} && ninja install -j4
 die_if_error $? "ninja install failed"
 
 echo
