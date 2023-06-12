@@ -163,8 +163,9 @@ function essentials() {
   essential_pkgs+=(tmux)
   essential_pkgs+=(ruby)
   essential_pkgs+=(rubygems)
-  essential_pkgs+=(nodejs-npm) # some lsp servers rely on this
-  [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(alacritty)
+  # some lsp servers rely on node
+  [[ $HAS_APT -eq 1 ]] && essential_pkgs+=(nodejs npm)
+  [[ $HAS_DNF -eq 1 ]] && essential_pkgs+=(nodejs-npm)
 
   install ${essential_pkgs[*]}
 
@@ -243,6 +244,7 @@ function python_stuff() {
     python_stuff+=(python3-pip)
     python_stuff+=(ipython3)
     python_stuff+=(python3-jedi)
+    python_stuff+=(python3-venv)
   else
     python_stuff+=(python)
     python_stuff+=(python-pip)
