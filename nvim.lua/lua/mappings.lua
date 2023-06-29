@@ -1,7 +1,7 @@
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
 
--- reatin visual selection
+-- retaining visual selection
 vim.keymap.set('v', '>', '>gv', { silent = true, remap = false })
 vim.keymap.set('v', '<', '<gv', { silent = true, remap = false })
 

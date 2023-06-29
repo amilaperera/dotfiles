@@ -10,10 +10,16 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
         ["<C-Space>"] = cmp.mapping.complete(),
     })
 
+-- make sure these servers are installed
+lsp.ensure_installed({
+    'clangd',
+    'lua_ls',
+})
+
 -- open definition in a new tab/ horizontal split/ vertical split
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
-        -- definiton on splits/tabs
+        -- definition on splits/tabs
         vim.keymap.set('n', 'gV', "<cmd>vsplit | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
         vim.keymap.set('n', 'gS', "<cmd>split | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
         vim.keymap.set('n', 'gN', "<cmd>tab split | lua vim.lsp.buf.definition()<CR>", { buffer = args.buf })
@@ -30,9 +36,12 @@ lsp.set_preferences({
 })
 
 -- tweaking lsp config depending on the environment.
-lsp.configure('clangd', {
+require('lspconfig').clangd.setup({
     cmd = { 'clangd', '-j=4' }
 })
+
+-- configure lua language server for neovim
+require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
 -- letting lsp know that vim is a part of global namespace
 lsp.configure('lua_ls', {
