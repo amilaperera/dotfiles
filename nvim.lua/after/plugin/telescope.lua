@@ -16,6 +16,14 @@ require('telescope').setup {
             -- telescope caused this issue)
             git_command = {"git", "log", "--pretty=oneline", "--abbrev-commit"},
         },
+        buffers = {
+            show_all_buffers = true,
+            mappings = {
+                i = {
+                    ["<c-d>"] = "delete_buffer"
+                }
+            }
+        }
     }
 }
 
@@ -71,8 +79,9 @@ end
 local builtin = require("telescope.builtin")
 -- keymaps
 vim.keymap.set('n', 'T', '<cmd>Telescope<CR>', {desc = 'Invoke telescope'})
-vim.keymap.set('n', '<C-T>', builtin.git_files, {desc = ''})
-vim.keymap.set('n', '<leader>?', builtin.oldfiles, {desc = '[?] Find recentlyl opened files'})
+vim.keymap.set('n', '<C-T>', builtin.git_files, {desc = 'Telescope inside git directory'})
+vim.keymap.set('n', '<leader>R', builtin.resume, {desc = 'Telescope resume'})
+vim.keymap.set('n', '<leader>?', builtin.oldfiles, {desc = '[?] Find recently opened files'})
 vim.keymap.set('n', '<leader>,', builtin.buffers, {desc = '[,] Find existing buffers'})
 vim.keymap.set('n', '<leader>/', builtin.current_buffer_fuzzy_find, {desc = '[/] Fuzzily search current buffer'})
 

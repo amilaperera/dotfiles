@@ -23,6 +23,7 @@ for i = 1,9 do
 end
 vim.keymap.set('n', '<C-Left>', ":tabprevious<CR>")
 vim.keymap.set('n', '<C-Right>', ":tabnext<CR>")
+vim.keymap.set('n', '<C-x>', ":tabclose<CR>")
 
 -- moving visual blocks up and down
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
