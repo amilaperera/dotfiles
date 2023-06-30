@@ -23,6 +23,7 @@ command! -nargs=1 -complete=file StartGdbW call StartGdbW(<q-args>)
 -- window switching
 vim.keymap.set('n', '<A-i>', "<cmd>Source<CR>", { silent = true }) -- implementation window
 vim.keymap.set('n', '<A-g>', "<cmd>Gdb<CR>", { silent = true }) -- gdb window
+vim.keymap.set('n', '<A-b>', "<cmd>Break<CR>", { silent = true }) -- set a break point
 -- stepping in/out etc
 vim.keymap.set('n', '<A-n>', "<cmd>call TermDebugSendCommand('n')<CR>", { silent = true })
 vim.keymap.set('n', '<A-s>', "<cmd>call TermDebugSendCommand('s')<CR>", { silent = true })
