@@ -254,7 +254,7 @@ class Env(object):
                 raise OSError("Couldn't find ", name, " executable")
         else:
             if exe_path is None:
-                exe_path = os.path.join('~', '.local', 'bin', name)
+                exe_path = os.path.join(os.path.expanduser('~'), '.local', 'bin', name)
                 if not os.path.isfile(exe_path):
                     raise OSError("Couldn't find vim executable")
 
