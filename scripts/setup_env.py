@@ -245,6 +245,23 @@ class Env(object):
         shutil.copy(src, dest)
         Env.src_to_dest_message('Copying file', src, dest)
 
+    @staticmethod
+    def get_executable_or_local(name):
+        exe_path = shutil.which(name)
+
+        if Env.is_windows():
+            if exe_path is None:
+                raise OSError("Couldn't find ", name, " executable")
+        else:
+            if exe_path is None:
+                exe_path = os.path.join('~', '.local', 'bin', name)
+                if not os.path.isfile(exe_path):
+                    raise OSError("Couldn't find vim executable")
+
+        print('Executable path:', exe_path)
+        return exe_path
+
+
     @property
     def install_dir(self):
         return self._install_dir
@@ -381,6 +398,7 @@ class VimEnv(Env):
     def __init__(self, args):
         cf = ('.vimrc', '.gvimrc')
         super(VimEnv, self).__init__(args, 'vim', cf)
+        self.exe_path = Env.get_executable_or_local('vim')
 
     def check_for_os_validity(self):
         self.raise_if_not_linux_or_win()
@@ -421,8 +439,8 @@ class VimEnv(Env):
             # TODO: ??
             pass
         else:
-            with open(os.devnull, 'w') as devnull:
-                subprocess.check_call(['vim', '+PlugInstall', '+qall'])
+            with open(os.devnull, 'w'):
+                subprocess.check_call([self.exe_path, '+PlugInstall', '+qall'])
 
     def setup_env(self):
         self._set_config_files()
@@ -443,6 +461,7 @@ class NeoVimEnv(Env):
     def __init__(self, args):
         cf = ('nvim.lua',)
         super(NeoVimEnv, self).__init__(args, 'nvim', cf)
+        self.exe_path = Env.get_executable_or_local('nvim')
 
     def check_for_os_validity(self):
         self.raise_if_not_linux_or_win()
@@ -459,9 +478,9 @@ class NeoVimEnv(Env):
 
     def _install_plugins(self):
         try:
-            subprocess.call(["nvim", "--version"])
+            subprocess.call([self.exe_path, "--version"])
             subprocess.check_call([
-                'nvim',
+                self.exe_path,
                 '--headless',
                 '-c',
                 'autocmd User PackerComplete quitall',
@@ -469,7 +488,7 @@ class NeoVimEnv(Env):
                 'PackerSync'])
         except OSError as e:
             if e.errno == errno.ENOENT:
-                raise OSError("NeoVim not found. Please install neovim before running this")
+                raise OSError("NeoVim not found or command error")
 
     def setup_env(self):
         self._set_config_files()
