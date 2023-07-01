@@ -383,15 +383,10 @@ function setup_configs() {
     yellow "$HOME/.dotfiles directory already exists"
   fi
   echo
-  if [[ $HAS_APT -eq 1 ]]; then
-    # Doesn't seem to get snap bin directory by default
-    cd ~/.dotfiles/scripts && PATH=$PATH:/snap/bin python3 setup_env.py -e bash vim misc tmux_sessions
+  if [[ ${BYPASS_SSH} -eq 1 ]]; then
+    cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash nvim vim misc tmux_sessions
   else
-    if [[ ${BYPASS_SSH} -eq 1 ]]; then
-      cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash nvim vim misc tmux_sessions
-    else
-      cd ~/.dotfiles/scripts && python3 setup_env.py -e bash nvim vim misc tmux_sessions
-    fi
+    cd ~/.dotfiles/scripts && python3 setup_env.py -e bash nvim vim misc tmux_sessions
   fi
 }
 
