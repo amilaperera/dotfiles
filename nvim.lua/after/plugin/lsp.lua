@@ -36,7 +36,7 @@ lsp.set_preferences({
 })
 
 -- tweaking lsp config depending on the environment.
-require('lspconfig').clangd.setup({
+lsp.configure('clangd', {
     cmd = { 'clangd', '-j=4' }
 })
 
