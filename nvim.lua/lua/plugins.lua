@@ -44,7 +44,12 @@ require("packer").startup(function(use)
     }
 
     -- file explorer
-    use('nvim-tree/nvim-tree.lua')
+    use {
+        'nvim-tree/nvim-tree.lua',
+        requires = {
+            'nvim-tree/nvim-web-devicons', -- optional
+        },
+    }
 
     -- some colorschemes I would like try
     use("sainnhe/edge")

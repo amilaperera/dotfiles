@@ -16,35 +16,6 @@ end
 -- Desperately trying to bring NvimTree closer to plain old (but yet good) NerdTree
 require("nvim-tree").setup({
     on_attach = on_attach,
-    renderer = {
-        icons = {
-            symlink_arrow = '➛',
-            show = {
-                file = false,
-                folder = false,
-                folder_arrow = true,
-                git = true,
-                modified = true
-            },
-            glyphs = {
-                symlink = '',
-                folder = {
-                    symlink = '',
-                    arrow_closed = '▸',
-                    arrow_open = '▾',
-                },
-                git = {
-                    unstaged = '✗',
-                    staged = '✓',
-                    unmerged = '⌥',
-                    renamed = '➜',
-                    untracked = '★',
-                    deleted = '⊖',
-                    ignored = '◌',
-                },
-            },
-        },
-    },
     update_focused_file = {
         enable = true,
         update_root = true,
