@@ -421,6 +421,23 @@ function setup_configs_if_auth_ok()
     fi
 }
 
+function nerd_fonts()
+{
+    echo "  - Downloading Nerd fonts..."
+    curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.zip --output /tmp/Hack.zip
+    if [[ $? -eq 0 ]]; then
+        echo "  - Downloading finished"
+        mkdir -p ~/.fonts
+        unzip /tmp/Hack.zip -d ~/.fonts
+        echo "  - Updating font cache"
+        fc-cache -fv
+    else
+        red "Error downloading Nerd fonts"
+        return 1
+    fi
+    return $?
+}
+
 # Function wrapper to install packages
 function install_packages()
 {
@@ -440,13 +457,13 @@ cmd=(dialog --separate-output --checklist "Select Options:" 22 76 16)
 options=(
     1 "Essential packages (bash, tmux, git, curl etc.)"          on
     2 "Development tools"                                        off
-    3 "Snaps"                                                    off
-    4 "Python stuff"                                             off
-    5 "Extra repositories (Fedor Only)"                          off
-    6 "Install vim latest from sources (Recommended for Debian)" off
-    7 "Install nvim latest from sources"                         off
-    8 "Setup github SSH"                                         off
-    9 "Setup personal configs(bash,tmux,vim etc.)"               off
+    3 "Python stuff"                                             off
+    4 "Extra repositories (Fedor Only)"                          off
+    5 "Install vim latest from sources (Recommended for Debian)" off
+    6 "Install nvim latest from sources"                         off
+    7 "Setup github SSH"                                         off
+    8 "Setup personal configs(bash,tmux,vim etc.)"               off
+    9 "Install Nerd fonts(Hack)"                                 off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -461,29 +478,29 @@ for choice in $choices; do
             install_packages dev_tools
             ;;
         3)
-            install_packages snaps
-            ;;
-        4)
             install_packages python_stuff
             ;;
-        5)
+        4)
             install_packages extra_repos
             ;;
-        6)
+        5)
             install_packages vim_from_sources
             ;;
-        7)
+        6)
             install_packages nvim_from_sources
             ;;
-        8)
+        7)
             if setup_github_personal_ssh; then
                 # wait until the user wishes to continue
                 read -n 1 -p "Press [c] to continue with setup or any other key to abort: " input
                 [[ "$input" != "c" ]] && break
             fi
             ;;
-        9)
+        8)
             setup_configs_if_auth_ok
+            ;;
+        9)
+            install_packages nerd_fonts
             ;;
     esac
 done
