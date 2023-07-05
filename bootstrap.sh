@@ -453,7 +453,7 @@ probe_os_info
 check_dependencies
 update_os
 
-cmd=(dialog --separate-output --checklist "Select Options:" 22 76 16)
+cmd=(dialog --separate-output --no-tags --checklist "Select Options:" 22 76 16)
 options=(
     1 "Essential packages (bash, tmux, git, curl etc.)"          on
     2 "Development tools"                                        off
