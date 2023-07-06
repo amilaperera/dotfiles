@@ -7,7 +7,7 @@ BASH_PATH=${HOME}/.bash
 
 # configuration files of the entire bash system
 # NOTE: Order of the files getting sourced matters.
-config_file_list="bash_env bash_colors bash_prompt bash_alias bash_func bash_bm bash_comp"
+config_file_list="bash_env bash_prompt bash_alias bash_func bash_bm bash_comp"
 
 for config_file in ${config_file_list}; do
     file=${BASH_PATH}/${config_file}.sh

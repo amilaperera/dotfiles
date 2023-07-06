@@ -97,7 +97,7 @@ export LESS="--LONG-PROMPT --RAW-CONTROL-CHARS --clear-screen --QUIET"
 export MANPAGER="less"
 
 # set VISUAL; we prioritize nvim
-if _check_if_command_exists nvim; then
+if aep_command_exists nvim; then
     export VISUAL='nvim'
 else
     export VISUAL='vim'

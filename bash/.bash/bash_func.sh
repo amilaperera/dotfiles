@@ -45,16 +45,13 @@ function buf()
 }
 
 # Moves files to hidden folder in tmp, that gets cleared on each reboot
-function del()
-{
-  mkdir -p /tmp/.trash && mv "$@" /tmp/.trash;
-}
+function del() { mkdir -p /tmp/.trash && mv "$@" /tmp/.trash ; }
+
+# Find aliases
+function ff() { find -iname "$@" -type f ; } # find files
 
 # path in a more readable manner
-function path()
-{
-    echo $PATH | tr ':' '\n'
-}
+function path() { echo $PATH | tr ':' '\n' ; }
 
 # keeps the csh users happy
 function setenv()
@@ -67,12 +64,7 @@ function setenv()
     fi
 }
 
-# fuzzy cd function
-# NOTE: ignore-case does not work with fuzzy cd
-function cdf()
-{
-    cd *$1*
-}
+function cdf() { cd *$1*; } # fuzzy cd
 
 # goes up in the directory hierachy
 function up()
@@ -105,6 +97,8 @@ function up()
     return 0
 }
 
+# History manipulation
+#
 # histroy tail function
 function ht()
 {
@@ -123,12 +117,7 @@ function ht()
 }
 
 # history grep
-function hig()
-{
-    # this function removes the default grep line number from the history which is troublsome
-    # line number is given in GREP_OPTIONS variable
-    history | egrep --color=always "${@}"
-}
+function hig() { history | egrep --color=always "${@}" ; }
 
 # Trivial command line calculator
 function calc()
@@ -165,18 +154,6 @@ function swap()
 {
     local tempfile=swaptemp.$$
     mv -f "${1}" "${tempfile}" && mv -f "${2}" "${1}" && mv -f "${tempfile}" "${2}"
-}
-
-# opens firefox
-function ff()
-{
-    firefox "${@}" 2>/dev/null &
-}
-
-# opens acroread
-function pdf()
-{
-    acroread "${@}" 2>/dev/null &
 }
 
 # diff with colordiff
@@ -236,7 +213,7 @@ function tmux_start()
 
     [ $# -eq 0 ] && session_name="$USER" || session_name=$1
 
-    if _check_if_command_exists tmux; then
+    if aep_check_if_command_exists tmux; then
         if [[ "$TERM" != "screen-256color" ]]; then
             tmux attach-session -t "$session_name"
             if [ $? -ne 0 ]; then
@@ -275,6 +252,18 @@ cl()
     fi
 }
 
+# disk usage per directory
+function usage()
+{
+    if [ "$(uname)" = "Linux" ]; then
+        if [ -n "$1" ]; then
+            du -h --max-depth=1 "$1"
+        else
+            du -h --max-depth=1
+        fi
+    fi
+}
+
 # view man pages in colors
 # copied from https://wiki.archlinux.org/index.php/Man_Page
 function man()
@@ -287,5 +276,5 @@ function man()
         LESS_TERMCAP_ue=$'\E[0m' \
         LESS_TERMCAP_us=$'\E[01;04;35m' \
         man "$@"
-    }
+}
 
