@@ -207,6 +207,7 @@ function dev_tools()
         pkgs+=(bison)
         pkgs+=(byacc)
         pkgs+=(python3-dev)
+        pkgs+=(python3-dev)
     else
         pkgs+=(base-devel)
         pkgs+=(boost boost-libs)
@@ -215,6 +216,7 @@ function dev_tools()
     pkgs+=(clang)
     pkgs+=(cmake)
     pkgs+=(kdiff3)
+    pkgs+=(unzip)
     [[ $HAS_APT -eq 1 ]] && pkgs+=(exuberant-ctags) || pkgs+=(ctags)
 
     # Latest git-prompt.sh
@@ -428,7 +430,7 @@ function nerd_fonts()
     if [[ $? -eq 0 ]]; then
         echo "  - Downloading finished"
         mkdir -p ~/.fonts
-        unzip /tmp/Hack.zip -d ~/.fonts
+        unzip /tmp/Hack.zip -od ~/.fonts
         echo "  - Updating font cache"
         fc-cache -fv
     else
