@@ -1,5 +1,55 @@
 #!/bin/bash
 
+# Creates a new directory and cd to it
+function take() { mkdir -p -- "$1" && cd -P -- "$1"; }
+
+# Mute output of a command
+function quiet()
+{
+    "$@" &> /dev/null &
+}
+
+# Creates a zip archive of a folder
+function zipf() { zip -r "$1".zip "$1" ; }
+
+# Extract most know archives with one command
+function extract()
+{
+    if [ -f "$1" ] ; then
+        case "$1" in
+            *.tar.bz2)   tar xjf "$1"     ;;
+            *.tar.gz)    tar xzf "$1"     ;;
+            *.bz2)       bunzip2 "$1"     ;;
+            *.rar)       unrar e "$1"     ;;
+            *.gz)        gunzip "$1"      ;;
+            *.tar)       tar xf "$1"      ;;
+            *.tbz2)      tar xjf "$1"     ;;
+            *.tgz)       tar xzf "$1"     ;;
+            *.zip)       unzip "$1"       ;;
+            *.Z)         uncompress "$1"  ;;
+            *.7z)        7z x "$1"        ;;
+            *)     echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# Takes the back up of a file with timestamp
+function buf()
+{
+  local filename filetime
+  filename=$1
+  filetime=$(date +%Y%m%d_%H%M%S)
+  cp -a "${filename}" "${filename}_${filetime}"
+}
+
+# Moves files to hidden folder in tmp, that gets cleared on each reboot
+function del()
+{
+  mkdir -p /tmp/.trash && mv "$@" /tmp/.trash;
+}
+
 # path in a more readable manner
 function path()
 {
@@ -84,12 +134,6 @@ function hig()
 function calc()
 {
     awk "BEGIN {print \"The answer is : \" $*}";
-}
-
-# creates a new directory and cd to it
-function take()
-{
-    mkdir -p -- "${1}" && cd -P -- "${1}"
 }
 
 # displays the umask in both permission bits and acl
