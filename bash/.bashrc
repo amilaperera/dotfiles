@@ -7,7 +7,7 @@ BASH_PATH=${HOME}/.bash
 
 # configuration files of the entire bash system
 # NOTE: Order of the files getting sourced matters.
-list="env prompt aliases func bm completions"
+list="env prompt aliases func bm plugins completions"
 
 for entry in ${list}; do
     if [ -f ${BASH_PATH}/$entry.sh ]; then
