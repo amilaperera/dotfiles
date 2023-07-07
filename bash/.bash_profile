@@ -1,5 +1,6 @@
 #!/bin/bash
 
-if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-fi
+[[ -f ~/.profile ]] && source ~/.profile
+
+[[ -f ~/.bashrc ]] && source ~/.bashrc
+
