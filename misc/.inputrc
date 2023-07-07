@@ -8,7 +8,9 @@ TAB: menu-complete
 set editing-mode vi
 
 # completion follows LS_COLORS
-set colored-stats on
+# The behaviour seems buggy in tmux when it changes to TERM
+# set colored-stats on
+set colored-completion-prefix on
 
 # Match all files
 set match-hidden-files on
