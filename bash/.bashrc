@@ -1,20 +1,28 @@
 #!/bin/bash
 
 # source the utility functions
-source "$HOME/.bash/bash_utility.sh"
+source "$HOME/.bash/utility.sh"
 
 BASH_PATH=${HOME}/.bash
 
 # configuration files of the entire bash system
 # NOTE: Order of the files getting sourced matters.
-config_file_list="bash_env bash_prompt bash_alias bash_func bash_bm bash_comp"
+list="env prompt aliases func bm completions"
 
-for config_file in ${config_file_list}; do
-    file=${BASH_PATH}/${config_file}.sh
-    [ -f ${file} ] && source ${file}
+for entry in ${list}; do
+    if [ -f ${BASH_PATH}/$entry.sh ]; then
+        source ${BASH_PATH}/$entry.sh
+    elif [ -d ${BASH_PATH}/$entry ]; then
+        # go to directory and source all the files ending with '.sh'
+        for f in ${BASH_PATH}/$entry/*; do
+            if [ "${f: -3}" == ".sh" ]; then
+                source $f
+            fi
+        done
+    fi
 done
 
-unset BASH_PATH config_file_list
+unset BASH_PATH list
 
 # local environment
 [ -f ~/.local/.local.bash ] && source ~/.local/.local.bash
