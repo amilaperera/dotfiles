@@ -7,6 +7,10 @@ TAB: menu-complete
 # vi editing mode
 set editing-mode vi
 
+# history search
+"\e[A": history-search-backward'
+"\e[B": history-search-forward'
+
 # completion follows LS_COLORS
 # The behaviour seems buggy in tmux when it changes to TERM
 # set colored-stats on

@@ -67,7 +67,7 @@ alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
 # NOTE: Supports just Debian & Fedora
-if [[ $distroname == "Debian" ]]; then
+if [[ $aep_distro_name == "Debian" ]]; then
     alias U='sudo apt-get update && sudo apt-get upgrade -y'
 else
     alias U='sudo dnf update -y'

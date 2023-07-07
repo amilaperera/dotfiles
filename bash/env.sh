@@ -1,96 +1,60 @@
 #!/bin/bash
 
-# set workinghost
-export workinghost=$(uname)
-
-# getting the Linux Distrubution Version
-if [[ $workinghost == "Linux" ]]; then
-    for path in ${PATH//:/ }; do
-        if [ -f ${path}/lsb_release ]; then
-            export distroname=$(lsb_release -si) # distro name
-            export distrover=$(lsb_release -sr)  # distibution version
-            export arch=$(uname -m)              # architecture
-            break;
-        fi
-    done
-fi
-
 # set umask to 644 permission(files when touch) and 755(directories when mkdir)
 # same can be done with umask u=rwx,g=rx,o=rx
 UMASK=022
 umask $UMASK
 
-# returns 1 if a path contains a given directory
-function _contains_path()
+# Set PATH variable
+# Reference: https://superuser.com/questions/39751/add-directory-to-path-if-its-not-already-there
+function aep_add_path()
 {
-    local path=":${1}:" dir="${2}"
-    case $path in
-        *:$dir:*) return 1;;
-        *)        return 0;;
-    esac
-}
-
-# remove duplicate path entries and cleans PATH variable
-function _clean_path()
-{
-    local path="${1}"
-    local newpath= directory=
-    [ -z $path ] && return 1
-
-    # remove duplicate entries from the path
-    for directory in ${path//:/ }; do
-        [ -d $directory ] \
-            && _contains_path "${newpath}" "${directory}" \
-            && newpath="${newpath}":"${directory}"
-        done
-
-    # removes unnecessary : marks
-    newpath=$(echo $newpath | sed -e 's/^:*//' -e 's/:*$//' -e 's/::*/:/g')
-    # returns newpath
-    echo $newpath
-}
-
-# sets path from the mypathstring selecting existing directories
-function _set_path()
-{
-    # If you want to add a path permenantly add it to mypathstring
-    # priority of the path is increased as the paths are added to the bottom of the mypathstring
-    local mypatharray=(
-    "/sbin"
-    "/bin"
-    "/usr/bin"
-    "/usr/sbin"
-    "/usr/local/bin"
-    "/usr/local/sbin"
-    "$HOME/.local/bin"
-)
-
-local path=
-for path in "${mypatharray[@]}"; do
-    if [ -d "$path" ]; then
-        _contains_path "$PATH" "$path" && PATH=$path:$PATH
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="${PATH:+"$PATH:"}$1"
     fi
-done
-
-PATH=$(_clean_path $PATH)
 }
 
-# sets and export PATH
-_set_path
+# Now set path variable
+path_array=("$HOME/.local/bin")
+
+for p in ${path_array[@]}; do
+    aep_add_path $p
+done
 export PATH
+unset path_array
 
-# setting term colors
-[ -z $TMUX ] && TERM=xterm-256color               # let tmux decide TERM to use,
-# otherwise set it to xterm-256color
+# Export some useful information about the distibution
+if [[ $(uname) == "Linux" ]]; then
+    if aep_command_exists lsb_release; then
+        export aep_distro_name=$(lsb_release -si) # distro name
+        export aep_distro_ver=$(lsb_release -sr)  # distibution version
+        export aep_arch=$(uname -m)               # architecture
+    fi
+fi
 
-export HISTSIZE=5000                              # No of commands in history stack in memory
-export HISTFILESIZE=5000                          # No of commands in history file
-export HISTCONTROL=ignoredups:ignorespace         # omit dups and lines starting with spaces
-export HISTTIMEFORMAT=': %Y-%m-%d_%H:%M:%S; '     # time stamp of histfile
+# History manipulation
+#
+# Lines are appended to history file
+shopt -s histappend
+# Save multi-line commands as one command
+shopt -s cmdhist
+# Re-edit the command line for failing history expansions
+shopt -s histreedit
+# Re-edit the result of history expansions
+shopt -s histverify
+# save history with newlines instead of ; where possible
+shopt -s lithist
+# No of commands in history stack in memory (unlimited)
+export HISTSIZE=
+# No of commands in history file
+export HISTFILESIZE=30000
+# Avoid duplicate entries
+HISTCONTROL="erasedups:ignoreboth"
+# Don't record some commands
+export HISTIGNORE="exit:ls:bg:fg:history:clear"
+export HISTTIMEFORMAT='%F %T '
 
-export HOSTFILE='/etc/hosts'                      # use this file for hostname completion
-export LC_COLLATE='C'                             # set traditional C sort order
-
+export LC_COLLATE='C'
 export LESS="--LONG-PROMPT --RAW-CONTROL-CHARS --clear-screen --QUIET"
 
 # setting man page viewr to less
