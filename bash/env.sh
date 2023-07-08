@@ -33,7 +33,6 @@ if [[ $(uname) == "Linux" ]]; then
 fi
 
 # History manipulation
-#
 # Lines are appended to history file
 shopt -s histappend
 # Save multi-line commands as one command
@@ -54,11 +53,19 @@ HISTCONTROL="erasedups:ignoreboth"
 export HISTIGNORE="exit:ls:bg:fg:history:clear"
 export HISTTIMEFORMAT='%F %T '
 
-export LC_COLLATE='C'
-export LESS="--LONG-PROMPT --RAW-CONTROL-CHARS --clear-screen --QUIET"
+# Pager related
+export LESS="-R"
+export PAGER="less -R"
+# colorizing man pages via bat
+if aep_command_exists bat; then
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    export MANROFFOPT="-c"
+fi
 
-# setting man page viewr to less
-export MANPAGER="less"
+# only define LC_CTYPE if undefined
+if [[ -z "$LC_CTYPE" && -z "$LC_ALL" ]]; then
+    export LC_CTYPE=${LANG%%:*}
+fi
 
 # set VISUAL; we prioritize nvim
 if aep_command_exists nvim; then
@@ -68,28 +75,21 @@ else
 fi
 
 export EDITOR="$VISUAL"
-export SVN_EDITOR="$VISUAL"
-export CVS_EDITOR="$VISUAL"
 export FCEDIT="$VISUAL"
 
-export LS_OPTIONS="--color=auto -F -h"
-
 # shell behaviour adjustment with shopt options and set options
-shopt -s histappend   # appends rather than overwrite history on exit
+set -o vi             # specifies vi editing mode for command-line editing
+
+set -o noclobber    # prevents overwriting existing files
+set -o ignoreeof    # Dont let Ctrl+D exit the shell
+
 shopt -s cdspell      # correct minor spelling mistakes with cd command
 shopt -s checkwinsize # update COLUMNS and LINES variables according to window size
-shopt -s cmdhist      # makes multiline commands 1 line in history
 shopt -s extglob      # extended globbing
 shopt -s globstar     # ** globbing operator matches file names and directories recursively
 shopt -s sourcepath   # The source builtin uses $PATH to find the file to be sourced
 shopt -s autocd       # a name of a dir is executed as if it were the argument to cd
-shopt -s histverify   # resulting history line is loaded to the readline editing buffer
-                      # before being executed
 
 shopt -u mailwarn     # disable mail warning
 unset MAILCHECK
-
-set -o ignoreeof    # Dont let Ctrl+D exit the shell
-set -o noclobber    # prevents overwriting existing files
-set -o vi           # specifies vi editing mode for command-line editing
 

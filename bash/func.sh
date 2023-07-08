@@ -50,6 +50,9 @@ function del() { mkdir -p /tmp/.trash && mv "$@" /tmp/.trash ; }
 # Find aliases
 function ff() { find -iname "$@" -type f ; } # find files
 
+# List files
+function flist() { find $1 -type f | sed -n 's/.*\/\(.*\)/\1/p' ; }
+
 # path in a more readable manner
 function path() { echo $PATH | tr ':' '\n' ; }
 
@@ -262,19 +265,5 @@ function usage()
             du -h --max-depth=1
         fi
     fi
-}
-
-# view man pages in colors
-# copied from https://wiki.archlinux.org/index.php/Man_Page
-function man()
-{
-    env LESS_TERMCAP_mb=$'\E[01;31m' \
-        LESS_TERMCAP_md=$'\E[01;34m' \
-        LESS_TERMCAP_me=$'\E[0m' \
-        LESS_TERMCAP_se=$'\E[0m' \
-        LESS_TERMCAP_so=$'\E[01;33;40m' \
-        LESS_TERMCAP_ue=$'\E[0m' \
-        LESS_TERMCAP_us=$'\E[01;04;35m' \
-        man "$@"
 }
 
