@@ -15,28 +15,22 @@ set editing-mode vi
 # The behaviour seems buggy in tmux when it changes to TERM
 # set colored-stats on
 set colored-completion-prefix on
-
 # Match all files
 set match-hidden-files on
-
 # Filename completion/expansion
 set show-all-if-ambiguous on
-
 # ignore case when doing completion
 set completion-ignore-case on
-
+# treat hyphens and underscores equivalent
+set completion-map-case on
 # append "/" to all dirnames
 set mark-directories on
-
 # completed names which are symlinks to dirs hava "/" appended
 set mark-symlinked-directories on
-
 # completion be appended by characters that indicate their file types reported by stat sys call
 set visible-stats on
-
 # Match all files
 set match-hidden-files on
-
 # Filename completion/expansion
 set show-all-if-ambiguous on
 

@@ -88,8 +88,16 @@ shopt -s checkwinsize # update COLUMNS and LINES variables according to window s
 shopt -s extglob      # extended globbing
 shopt -s globstar     # ** globbing operator matches file names and directories recursively
 shopt -s sourcepath   # The source builtin uses $PATH to find the file to be sourced
-shopt -s autocd       # a name of a dir is executed as if it were the argument to cd
+
+# Prepend cd to directory names automatically
+shopt -s autocd 2>/dev/null
+# Correct spelling errors during tab-completion
+shopt -s dirspell 2> /dev/null
+# Correct spelling errors in arguments supplied to cd
+shopt -s cdspell 2> /dev/null
 
 shopt -u mailwarn     # disable mail warning
 unset MAILCHECK
 
+# This defines where cd looks for targets
+CDPATH=".:~:~/work"
