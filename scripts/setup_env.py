@@ -373,10 +373,9 @@ class BashEnv(Env):
     """Bash environment setup class"""
 
     def __init__(self, args):
-        cf = ('.bash',
+        cf = ('aep_bash_lib',
               '.bashrc',
-              '.bash_profile',
-              '.bash_logout')
+              '.bash_profile')
         super(BashEnv, self).__init__(args, 'bash', cf)
 
     def check_for_os_validity(self):

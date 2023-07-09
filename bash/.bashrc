@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # source the utility functions
-source "$HOME/.bash/utility.sh"
+BASH_PATH=${HOME}/aep_bash_lib
 
-BASH_PATH=${HOME}/.bash
+source "${BASH_PATH}/utility.sh"
 
 # configuration files of the entire bash system
 # NOTE: Order of the files getting sourced matters.
