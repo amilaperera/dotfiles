@@ -1,1 +1,0 @@
-/home/amilaperera/.dotfiles/nvim.lua

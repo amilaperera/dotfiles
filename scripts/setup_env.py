@@ -375,7 +375,8 @@ class BashEnv(Env):
     def __init__(self, args):
         cf = ('aep_bash_lib',
               '.bashrc',
-              '.bash_profile')
+              '.bash_profile',
+              '.inputrc')
         super(BashEnv, self).__init__(args, 'bash', cf)
 
     def check_for_os_validity(self):
@@ -501,8 +502,7 @@ class MiscEnv(Env):
         cf = ('.tmux.conf',
               '.agignore',
               '.colordiffrc',
-              '.gitconfig',
-              '.inputrc')
+              '.gitconfig')
         super(MiscEnv, self).__init__(args, 'misc', cf)
 
     def check_for_os_validity(self):
