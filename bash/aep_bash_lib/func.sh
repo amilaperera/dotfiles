@@ -238,7 +238,7 @@ function tmux_colors()
 }
 
 # cd and list
-cl()
+function cl()
 {
     local ls_command="ls -al --color=auto -F -h"
     if (( $# == 0 )); then
@@ -266,4 +266,23 @@ function usage()
         fi
     fi
 }
+
+function top_ps_filter()
+{
+    local output_type=$1
+    local n=$2
+    local filter=$3
+
+    if [[ "$output_type" == "--long" ]]; then
+        ps aux --sort -%${filter} | head -n $n
+    elif [[ "$output_type" == "--short" ]]; then
+        ps -eo user,pid,ppid,cmd,comm,%mem,%cpu --sort=-%$filter | head -n $n
+    else
+        echo "top$3 [--short|--long] N"
+        return 2
+    fi
+}
+
+function topcpu() { top_ps_filter ${1:-"--short"} ${2:-10} "cpu" ; }
+function topmem() { top_ps_filter ${1:-"--short"} ${2:-10} "mem" ; }
 
