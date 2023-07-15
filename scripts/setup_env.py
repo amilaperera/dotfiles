@@ -164,7 +164,7 @@ class Env(object):
                 subprocess.Popen([Env.git_cmd, 'ls-remote', repo],
                                  stdout=devnull, stderr=subprocess.STDOUT,
                                  env=new_env)
-        except:
+        except Exception:
             print('Repository[{}] is invalid'.format(repo), file=sys.stderr)
             return False
 
@@ -254,13 +254,13 @@ class Env(object):
                 raise OSError("Couldn't find ", name, " executable")
         else:
             if exe_path is None:
-                exe_path = os.path.join(os.path.expanduser('~'), '.local', 'bin', name)
+                exe_path = os.path.join(
+                    os.path.expanduser('~'), '.local', 'bin', name)
                 if not os.path.isfile(exe_path):
                     raise OSError("Couldn't find vim executable")
 
         print('Executable path:', exe_path)
         return exe_path
-
 
     @property
     def install_dir(self):
@@ -421,7 +421,8 @@ class VimEnv(Env):
 
     def _install_plugin_manager(self):
         target_file = os.path.expanduser('~/.vim/autoload/plug.vim')
-        url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        url = 'https://raw.githubusercontent.com' \
+            '/junegunn/vim-plug/master/plug.vim'
 
         if Env.is_windows():
             target_file = os.path.expanduser('~/vimfiles/autoload/plug.vim')
@@ -532,7 +533,8 @@ class TmuxSessions(Env):
 
     def _create_misc_symlinks(self):
         for config_file in self.config_files:
-            Env.create_symlink(os.path.join(Env.dot_dir(), 'misc', config_file),
+            Env.create_symlink(os.path.join(
+                Env.dot_dir(), 'misc', config_file),
                                os.path.join(self.install_dir, config_file))
 
     def setup_env(self):
@@ -540,13 +542,21 @@ class TmuxSessions(Env):
 
 
 def main():
-    supported_env_targets = ['bash', 'zsh', 'vim', 'nvim', 'misc', 'tmux_sessions']
+    supported_env_targets = [
+        'bash',
+        'zsh',
+        'vim',
+        'nvim',
+        'misc',
+        'tmux_sessions'
+    ]
 
+    help_str = 'specifies target environments - ' + str(supported_env_targets)
     parser = argparse.ArgumentParser(description='Set up the environment')
     parser.add_argument('-e', '--env',
                         nargs='+',
                         required=True,
-                        help='specifies target environments - ' + str(supported_env_targets))
+                        help=help_str)
     parser.add_argument('-p', '--path',
                         help='path for the git executable')
     parser.add_argument('-d', '--dir',
@@ -556,9 +566,10 @@ def main():
     args = parser.parse_args()
 
     for env in args.env:
-        if not env in supported_env_targets:
+        if env not in supported_env_targets:
             print('Unsupported target environment found: ' + env)
-            print('Supported target environments are ' + str(supported_env_targets))
+            print('Supported target environments are ' +
+                  str(supported_env_targets))
             raise ValueError('invalid arguments')
 
     Env.set_git_executable(args)
@@ -590,4 +601,3 @@ if __name__ == '__main__':
     except Exception as e:
         print('Error: ', end='')
         print(Fore.RED + '{}'.format(e))
-
