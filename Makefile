@@ -36,7 +36,7 @@ bash:
 nvim:
 	@echo
 	@echo "================= Installing nvim configs ================="
-	ln -sf $(NVIM) $(HOMEDIR).config/nvim
+	ln -sfT $(NVIM) $(HOMEDIR).config/nvim
 	nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 vim:
@@ -51,6 +51,7 @@ misc:
 	ln -sf $(MISC)/.gdbinit $(HOMEDIR)
 	ln -sf $(MISC)/.gitconfig $(HOMEDIR)
 	ln -sf $(MISC)/.agignore $(HOMEDIR)
+	mkdir -p $(HOMEDIR).local && ln -sf $(MISC)/build_wrapper.sh $(HOMEDIR).local/
 
 update:
 	@echo
