@@ -16,24 +16,24 @@ require('fzf-lua').setup({
 -- keymaps
 vim.keymap.set('n', 'T', '<cmd>FzfLua<CR>', {})
 vim.api.nvim_set_keymap(
-    'n', '<leader>f', "<cmd>lua require('fzf-lua').files()<CR>",
+    'n', '<leader>sf', "<cmd>lua require('fzf-lua').files()<CR>",
     { noremap = true, silent = true })
 vim.api.nvim_set_keymap(
-    'n', '<C-t>', "<cmd>lua require('fzf-lua').git_files()<CR>",
+    'n', '<C-T>', "<cmd>lua require('fzf-lua').git_files()<CR>",
     { noremap = true, silent = true })
 vim.api.nvim_set_keymap(
-    'n', '<leader>c', "<cmd>lua require('fzf-lua').git_commits()<CR>",
+    'n', '<leader>sc', "<cmd>lua require('fzf-lua').git_commits()<CR>",
     { noremap = true, silent = true })
 vim.api.nvim_set_keymap(
-    'n', '<leader>b', "<cmd>lua require('fzf-lua').buffers()<CR>",
+    'n', '<leader>,', "<cmd>lua require('fzf-lua').buffers()<CR>",
     { noremap = true, silent = true })
 -- most recently used
 vim.api.nvim_set_keymap(
-    'n', '<leader>m', "<cmd>lua require('fzf-lua').oldfiles()<CR>",
+    'n', '<leader>?', "<cmd>lua require('fzf-lua').oldfiles()<CR>",
     { noremap = true, silent = true })
 -- search
 vim.api.nvim_set_keymap(
-    'n', '<leader>s', "<cmd>lua require('fzf-lua').live_grep()<CR>",
+    'n', '<leader>sp', "<cmd>lua require('fzf-lua').live_grep()<CR>",
     { noremap = true, silent = true })
 
 -- git grepping facilities

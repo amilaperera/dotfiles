@@ -3,24 +3,16 @@ vim.keymap.set('n', "<leader>g", vim.cmd.Git)
 -- to align with 'tb' to blame a line
 vim.keymap.set('n', "<leader>tB", "<cmd>Git blame<CR>")
 
+-- git signs
 require('gitsigns').setup {
-    --[[
-    signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-    },
-    --]]
-    signs = {
-        add          = { text = '│' },
-        change       = { text = '│' },
-        delete       = { text = '_' },
-        topdelete    = { text = '‾' },
-        changedelete = { text = '~' },
-        untracked    = { text = '┆' },
-    },
+    -- signs = {
+        -- add          = { text = '│' },
+        -- change       = { text = '│' },
+        -- delete       = { text = '_' },
+        -- topdelete    = { text = '‾' },
+        -- changedelete = { text = '~' },
+        -- untracked    = { text = '┆' },
+    -- },
     current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
     on_attach = function(bufnr)
         local gs = package.loaded.gitsigns

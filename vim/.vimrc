@@ -212,7 +212,7 @@ let g:NERDRemoveExtraSpaces = 1
 imap <C-c> <plug>NERDCommenterInsert
 
 " Nerdtree settings
-map <silent> <C-e> :NERDTreeToggle<CR>
+map <leader><Enter> :NERDTreeToggle<CR>
 let g:NERDTreeDirArrows     = 1
 let g:NERDTreeShowHidden    = 0
 let g:NERDTreeWinSize       = 32
@@ -231,10 +231,11 @@ let g:cpp_concepts_highlight = 1
 let c_no_curly_error = 1
 
 " fzf
-nnoremap <Leader>f :Files<CR>
-nnoremap <Leader>fg :GFiles<CR>
-nnoremap <Leader>m :History<CR>
-nnoremap <Leader>fb :Buffers<CR>
+nnoremap T :FZF<CR>
+nnoremap <C-T> :GFiles<CR>
+nnoremap <leader>? :History<CR>
+nnoremap <leader>, :Buffers<CR>
+nnoremap <leader>sf :Files<CR>
 let g:fzf_preview_window=[]
 
 " yankstack
@@ -420,7 +421,7 @@ map <Right> :vertical resize +1<CR>
 nmap <silent> <Leader>cd :lcd %:h<CR>:pwd<CR>
 
 " get the full path of the file in the buffer
-nmap <Leader> <Space> :echo expand('%:p')<CR>
+nmap <Space> :echo expand('%:p')<CR>
 
 " Heading
 noremap <silent> <Leader>h1 yyp^v$r=
@@ -472,5 +473,5 @@ hi debugBreakpoint term=reverse ctermbg=red guibg=red
 call SourceIfExists("~/.local/.env-settings.vim")
 
 " execute current file with two ,,
-nmap <leader>, :so %<CR>
+nmap <leader><Space> :so %<CR>
 
