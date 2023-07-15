@@ -1,3 +1,5 @@
+SHELL=/bin/bash
+
 DIR     := $(shell pwd)
 BASH    := $(DIR)/bash
 NVIM    := $(DIR)/nvim.lua
@@ -31,7 +33,7 @@ bash:
 	ln -sf $(BASH)/.bash_profile $(HOMEDIR)
 	ln -sf $(BASH)/.inputrc $(HOMEDIR)
 	ln -sf $(BASH)/aep_bash_lib $(HOMEDIR)
-	source ~/.bashrc
+	builtin source ~/.bashrc
 
 nvim:
 	@echo
