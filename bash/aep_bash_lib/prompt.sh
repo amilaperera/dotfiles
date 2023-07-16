@@ -57,16 +57,19 @@ function aep_prompt_command()
 {
     aep_update_history
     if (($UID != 0)); then
-        export PS1="${C}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1 " (%s)") \\$ "
+        # export PS1="${C}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1 " (%s)") \\$ "
+        echo "__git_ps1 \"${C}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}\" \" \\$ \""
     else
-        export PS1="${EMR}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1 " (%s)") \\$ "
+        echo "__git_ps1 \"${EMR}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}\" \" \\$ \""
+        # export PS1="${EMR}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1 " (%s)") \\$ "
     fi
 }
 
 # Automatically trim long paths
 export PROMPT_DIRTRIM=${PROMPT_DIRTRIM:-2}
 
-export PROMPT_COMMAND=aep_prompt_command
+# export PROMPT_COMMAND=aep_prompt_command
+export PROMPT_COMMAND=$(aep_prompt_command)
 
 PS2="${EMK}-${EMB}-${EMK}Continue${EMB}:${NONE} "
 PS3=$(echo -e -n "\033[1;34m-\033[1;30m-Enter Your Option\033[1;34m:\033[0m ")

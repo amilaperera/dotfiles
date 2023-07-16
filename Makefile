@@ -18,7 +18,7 @@ else
 	 $(error "Unsupported OS")
 endif
 
-.PHONY: all update bash nvim vim misc
+.PHONY: all update bash nvim vim
 
 all: bash nvim vim misc
 	@echo
