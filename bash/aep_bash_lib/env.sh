@@ -64,10 +64,11 @@ elif aep_command_exists batcat; then
     batcmd=batcat
 fi
 
-if [ -n $batcmd ]; then
+if [ -n "$batcmd" ]; then
     export MANPAGER="sh -c 'col -bx | ${batcmd} -l man -p'"
     export MANROFFOPT="-c"
 fi
+unset batcmd
 
 # only define LC_CTYPE if undefined
 if [[ -z "$LC_CTYPE" && -z "$LC_ALL" ]]; then
