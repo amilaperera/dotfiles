@@ -57,8 +57,15 @@ export HISTTIMEFORMAT='%F %T '
 export LESS="-R"
 export PAGER="less -R"
 # colorizing man pages via bat
+batcmd=
 if aep_command_exists bat; then
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    batcmd=bat
+elif aep_command_exists batcat; then
+    batcmd=batcat
+fi
+
+if [ -n $batcmd ]; then
+    export MANPAGER="sh -c 'col -bx | ${batcmd} -l man -p'"
     export MANROFFOPT="-c"
 fi
 
