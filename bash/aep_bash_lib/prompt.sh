@@ -38,13 +38,15 @@ if [[ -n $SSH_CLIENT ]]; then
     HC="${EMB}"
 fi
 
-git_prompt_file=/usr/share/git-core/contrib/completion/git-prompt.sh
-if [[ ! -f $git_prompt_file ]]; then
-    git_prompt_file=$HOME/.local/git-prompt.sh
+git_prompt_file=
+if [ -f "$HOME/.local/git-prompt.sh" ]; then
+    git_prompt_file="$HOME/.local/git-prompt.sh"
+elif [ -f "/usr/share/git-core/contrib/completion/git-prompt.sh" ]; then
+    git_prompt_file="/usr/share/git-core/contrib/completion/git-prompt.sh"
 fi
 
 if [[ -f $git_prompt_file ]]; then
-    source $git_prompt_file
+    . $git_prompt_file
     export GIT_PS1_SHOWCOLORHINTS=true
     export GIT_PS1_SHOWDIRTYSTATE=true
     export GIT_PS1_SHOWUNTRACKEDFILES=true
@@ -57,19 +59,16 @@ function aep_prompt_command()
 {
     aep_update_history
     if (($UID != 0)); then
-        # export PS1="${C}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1 " (%s)") \\$ "
-        echo "__git_ps1 \"${C}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}\" \" \\$ \""
+        PS1="${C}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1) \\$ "
     else
-        echo "__git_ps1 \"${EMR}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}\" \" \\$ \""
-        # export PS1="${EMR}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1 " (%s)") \\$ "
+        PS1="${EMR}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1) \\$ "
     fi
 }
 
 # Automatically trim long paths
 export PROMPT_DIRTRIM=${PROMPT_DIRTRIM:-2}
 
-# export PROMPT_COMMAND=aep_prompt_command
-export PROMPT_COMMAND=$(aep_prompt_command)
+export PROMPT_COMMAND=aep_prompt_command
 
 PS2="${EMK}-${EMB}-${EMK}Continue${EMB}:${NONE} "
 PS3=$(echo -e -n "\033[1;34m-\033[1;30m-Enter Your Option\033[1;34m:\033[0m ")

@@ -20,9 +20,11 @@ else
 	 $(error "Unsupported OS")
 endif
 
-.PHONY: all update bash nvim vim
+.PHONY: core all bash nvim vim misc update
 
-all: bash nvim vim misc
+core: bash nvim vim
+
+all: update core misc
 	@echo
 	@echo "All done. Good day!!!"
 
@@ -54,6 +56,7 @@ misc:
 	ln -sf $(MISC)/.gitconfig $(HOMEDIR)
 	ln -sf $(MISC)/.agignore $(HOMEDIR)
 	mkdir -p $(HOMEDIR).local && ln -sf $(MISC)/build_wrapper.sh $(HOMEDIR).local/
+	curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh >| $(HOMEDIR).local/git-prompt.sh
 
 update:
 	@echo
