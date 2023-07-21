@@ -57,16 +57,23 @@ function aep_update_history() { history -a ; history -c ; history -r ; }
 
 function aep_prompt_command()
 {
-    aep_update_history
-    if (($UID != 0)); then
-        PS1="${C}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1) \\$ "
+    local exit_status=$?
+    if [ $exit_status -eq 0 ]; then
+        exit_status=$(echo ${EMG}➜${NONE})
     else
-        PS1="${EMR}\u${NONE}@${HC}\h${NONE}:${EMW}\w${NONE}$(__git_ps1) \\$ "
+        exit_status=$(echo ${EMR}➜${NONE})
+    fi
+
+    aep_update_history
+    if [ $UID -ne 0 ]; then
+        PS1="${C}\u${NONE}@${HC}\h${NONE}: ${Y}\w${NONE}$(__git_ps1)\n$exit_status "
+    else
+        PS1="${EMR}\u${NONE}@${HC}\h${NONE}: ${Y}\w${NONE}$(__git_ps1)\n$exit_status "
     fi
 }
 
 # Automatically trim long paths
-export PROMPT_DIRTRIM=${PROMPT_DIRTRIM:-2}
+export PROMPT_DIRTRIM=${PROMPT_DIRTRIM:-4}
 
 export PROMPT_COMMAND=aep_prompt_command
 
