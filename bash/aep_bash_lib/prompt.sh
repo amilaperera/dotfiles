@@ -59,16 +59,16 @@ function aep_prompt_command()
 {
     local exit_status=$?
     if [ $exit_status -eq 0 ]; then
-        exit_status=$(echo ${EMG}➜${NONE})
+        exit_status=$(echo ${EMG}⟫${NONE})
     else
-        exit_status=$(echo ${EMR}➜${NONE})
+        exit_status=$(echo ${EMR}⟫${NONE})
     fi
 
     aep_update_history
-    if [ $UID -ne 0 ]; then
-        PS1="${C}\u${NONE}@${HC}\h${NONE}: ${Y}\w${NONE}$(__git_ps1)\n$exit_status "
+    if (($UID != 0)); then
+        PS1="${C}\u${NONE}@${HC}\h${NONE}: ${EMW}\w${NONE}$(__git_ps1)\n${exit_status} "
     else
-        PS1="${EMR}\u${NONE}@${HC}\h${NONE}: ${Y}\w${NONE}$(__git_ps1)\n$exit_status "
+        PS1="${EMR}\u${NONE}@${HC}\h${NONE}: ${EMW}\w${NONE}$(__git_ps1)\n${exit_status} "
     fi
 }
 
