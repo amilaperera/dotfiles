@@ -69,13 +69,6 @@ else
     alias U='sudo dnf update -y'
 fi
 
-# tmux
-alias t='tmux -2'
-alias ta='tmux -2 attach-session -t'
-alias tk='tmux -2 kill-session -t'
-alias tl='tmux -2 list-sessions'
-alias ts='tmux -2 new -s'
-
 alias src='source ~/.bashrc'
 
 # fzf
