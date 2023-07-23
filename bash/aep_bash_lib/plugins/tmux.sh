@@ -1,5 +1,7 @@
 # tmux
 #
+
+# This creates a default tmux session
 function aep_create_default_session()
 {
     local root=$HOME
@@ -7,7 +9,7 @@ function aep_create_default_session()
     local session="default"
 
     if [ ! -d ${dotdir} ]; then
-        return 2
+        dotdir=$root
     fi
 
     # If the session already exists do nothing
@@ -41,14 +43,10 @@ function aep_create_default_session()
     fi
 }
 
-function t()
-{
-    aep_create_default_session
-}
-
-alias ta='tmux -2 attach-session -t'
-alias tl='tmux -2 list-sessions'
-alias ts='tmux -2 new -s'
+alias t='aep_create_default_session'
+alias ta='tmux attach-session -t'
+alias tl='tmux list-sessions'
+alias ts='tmux new -s'
 
 function tk()
 {
