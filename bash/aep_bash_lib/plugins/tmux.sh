@@ -6,6 +6,10 @@ function aep_create_default_session()
     local dotdir=$root/.dotfiles
     local session="default"
 
+    if [ ! -d ${dotdir} ]; then
+        return 2
+    fi
+
     # If the session already exists do nothing
     tmux has-session -t "${session}" 2>/dev/null
     if [ $? -ne 0 ]; then
