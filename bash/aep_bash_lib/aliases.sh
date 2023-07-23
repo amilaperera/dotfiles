@@ -56,11 +56,6 @@ alias agcm="ag -G '(cmake|CMakeLists.txt)$'"
 
 # alias alternative to up() function
 alias ,='cd -'
-alias ..='cd ../'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
-alias ......='cd ../../../../../'
 
 # NOTE: Supports just Debian & Fedora
 if [[ $aep_distro_name == "Debian" ]]; then
@@ -69,7 +64,11 @@ else
     alias U='sudo dnf update -y'
 fi
 
+# source bash resources
 alias src='source ~/.bashrc'
+
+# environment grep
+alias eg='env | grep'
 
 # fzf
 alias f='"$EDITOR" $(fzf --preview "less {}")'
