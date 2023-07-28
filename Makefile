@@ -2,7 +2,7 @@ SHELL=/bin/bash
 
 DIR     := $(shell pwd)
 BASH    := $(DIR)/bash
-NVIM    := $(DIR)/nvim.lua
+NVIM    := $(DIR)/nvim
 VIM     := $(DIR)/vim
 MISC    := $(DIR)/misc
 HOMEDIR := ~/

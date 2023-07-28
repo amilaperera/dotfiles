@@ -460,7 +460,7 @@ class NeoVimEnv(Env):
             return os.path.join(home_path, '.config')
 
     def __init__(self, args):
-        cf = ('nvim.lua',)
+        cf = ('nvim',)
         super(NeoVimEnv, self).__init__(args, 'nvim', cf)
         self.exe_path = Env.get_executable_or_local('nvim')
 
