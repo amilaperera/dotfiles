@@ -174,16 +174,11 @@ function essentials()
     pkgs+=(xclip)
     pkgs+=(dictd)
     pkgs+=(tmux)
-    pkgs+=(ruby)
-    pkgs+=(rubygems)
     # some lsp servers rely on node
     [[ $HAS_APT -eq 1 ]] && pkgs+=(nodejs npm)
     [[ $HAS_DNF -eq 1 ]] && pkgs+=(nodejs-npm)
 
     install ${pkgs[*]}
-
-    # now tmuxinator
-    sh -c "sudo gem install tmuxinator"
 
     # fzf
     [ ! -d ~/.fzf ] && git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -409,9 +404,9 @@ function setup_configs()
     fi
     echo
     if [[ ${BYPASS_SSH} -eq 1 ]]; then
-        cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash nvim vim misc tmux_sessions
+        cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash nvim vim misc
     else
-        cd ~/.dotfiles/scripts && python3 setup_env.py -e bash nvim vim misc tmux_sessions
+        cd ~/.dotfiles/scripts && python3 setup_env.py -e bash nvim vim misc
     fi
 }
 

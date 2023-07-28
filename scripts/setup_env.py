@@ -502,7 +502,6 @@ class MiscEnv(Env):
     def __init__(self, args):
         cf = ('.tmux.conf',
               '.agignore',
-              '.colordiffrc',
               '.gitconfig')
         super(MiscEnv, self).__init__(args, 'misc', cf)
 
@@ -520,35 +519,13 @@ class MiscEnv(Env):
         self._create_misc_symlinks()
 
 
-class TmuxSessions(Env):
-    """Tmuxinator projects setup class"""
-
-    def __init__(self, args):
-        cf = ('dots.yml',)
-        args.dir = os.path.join(Env.get_home(), '.config', 'tmuxinator')
-        super(TmuxSessions, self).__init__(args, 'tmux sessions', cf)
-
-    def check_for_os_validity(self):
-        self.raise_if_not_linux()
-
-    def _create_misc_symlinks(self):
-        for config_file in self.config_files:
-            Env.create_symlink(os.path.join(
-                Env.dot_dir(), 'misc', config_file),
-                               os.path.join(self.install_dir, config_file))
-
-    def setup_env(self):
-        self._create_misc_symlinks()
-
-
 def main():
     supported_env_targets = [
         'bash',
         'zsh',
         'vim',
         'nvim',
-        'misc',
-        'tmux_sessions'
+        'misc'
     ]
 
     help_str = 'specifies target environments - ' + str(supported_env_targets)
@@ -585,8 +562,6 @@ def main():
             NeoVimEnv(args).setup()
         elif env == 'misc':
             MiscEnv(args).setup()
-        elif env == 'tmux_sessions':
-            TmuxSessions(args).setup()
         else:
             pass
 
