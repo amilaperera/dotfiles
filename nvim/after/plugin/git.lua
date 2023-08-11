@@ -1,7 +1,7 @@
 -- invoking fugitive
-vim.keymap.set('n', "<leader>g", vim.cmd.Git)
+vim.keymap.set('n', "<Leader>g", vim.cmd.Git)
 -- to align with 'tb' to blame a line
-vim.keymap.set('n', "<leader>tB", "<cmd>Git blame<CR>")
+vim.keymap.set('n', "<Leader>tB", "<cmd>Git blame<CR>")
 
 -- git signs
 require('gitsigns').setup {
@@ -37,17 +37,17 @@ require('gitsigns').setup {
         end, {expr=true})
 
         -- Actions
-        map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-        map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
-        map('n', '<leader>hS', gs.stage_buffer)
-        map('n', '<leader>hu', gs.undo_stage_hunk)
-        map('n', '<leader>hR', gs.reset_buffer)
-        map('n', '<leader>hp', gs.preview_hunk)
-        map('n', '<leader>hb', function() gs.blame_line{full=true} end)
-        map('n', '<leader>tb', gs.toggle_current_line_blame)
-        map('n', '<leader>hd', gs.diffthis)
-        map('n', '<leader>hD', function() gs.diffthis('~') end)
-        map('n', '<leader>td', gs.toggle_deleted)
+        map({'n', 'v'}, '<Leader>hs', ':Gitsigns stage_hunk<CR>')
+        map({'n', 'v'}, '<Leader>hr', ':Gitsigns reset_hunk<CR>')
+        map('n', '<Leader>hS', gs.stage_buffer)
+        map('n', '<Leader>hu', gs.undo_stage_hunk)
+        map('n', '<Leader>hR', gs.reset_buffer)
+        map('n', '<Leader>hp', gs.preview_hunk)
+        map('n', '<Leader>hb', function() gs.blame_line{full=true} end)
+        map('n', '<Leader>tb', gs.toggle_current_line_blame)
+        map('n', '<Leader>hd', gs.diffthis)
+        map('n', '<Leader>hD', function() gs.diffthis('~') end)
+        map('n', '<Leader>td', gs.toggle_deleted)
 
         -- Text object
         map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')

@@ -24,6 +24,6 @@ require("nvim-tree").setup({
 })
 
 -- open/close
-vim.keymap.set('n', '<leader><Enter>', ':NvimTreeToggle<CR>')
+vim.keymap.set('n', '<Leader><Enter>', ':NvimTreeToggle<CR>')
 -- reveal file
-vim.keymap.set('n', '<leader>r', ':NvimTreeFindFile<CR>')
+vim.keymap.set('n', '<Leader>r', ':NvimTreeFindFile<CR>')
