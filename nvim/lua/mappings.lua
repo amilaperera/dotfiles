@@ -23,11 +23,11 @@ for i = 1,9 do
 end
 vim.keymap.set('n', '<C-Left>', ":tabprevious<CR>")
 vim.keymap.set('n', '<C-Right>', ":tabnext<CR>")
-vim.keymap.set('n', '<C-x>', ":tabclose<CR>")
+vim.keymap.set('n', '<Leader>xt', ":tabclose<CR>")
 
 -- moving visual blocks up and down
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+vim.keymap.set('v', ']e', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', '[e', ":m '<-2<CR>gv=gv")
 
 -- scroll up and down focussing the center
 vim.keymap.set('n', "<C-d>", "<C-d>zz")
