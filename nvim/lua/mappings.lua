@@ -32,11 +32,11 @@ vim.keymap.set('n', '<Leader>xt', ":tabclose<CR>")
 
 -- Moving visual blocks up and down.
 -- multiple lines in visual mode
-vim.keymap.set('v', ']e', ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', '[e', ":m '<-2<CR>gv=gv")
+vim.keymap.set('v', ']e', ":m '>+1<CR>gv=gv")
 -- current line normal mode
-vim.keymap.set('n', ']e', "ddp")
 vim.keymap.set('n', '[e', "ddkP")
+vim.keymap.set('n', ']e', "ddp")
 
 -- scroll up and down focussing the center
 vim.keymap.set('n', "<C-d>", "<C-d>zz")
@@ -81,4 +81,42 @@ vim.keymap.set(
     "yox",
     function() toggle_cursor_options('cursorline', 'cursorcolumn') end,
     { silent = true })
+
+-- prev/next
+vim.keymap.set('n', '[b', ":bprevious<CR>", { silent = true })
+vim.keymap.set('n', ']b', ":bnext<CR>", { silent = true })
+vim.keymap.set('n', '[t', ":tabprevious<CR>", { silent = true })
+vim.keymap.set('n', ']t', ":tabnext<CR>", { silent = true })
+vim.keymap.set('n', '[q', ":cprevious<CR>", { silent = true })
+vim.keymap.set('n', ']q', ":cnext<CR>", { silent = true })
+
+-- open/close
+local is_list_open = function(key)
+    local info = vim.fn.getwininfo()
+    for _, list in ipairs(info) do
+        if list[key] == 1 then
+            return true
+        end
+    end
+    return false
+end
+
+local toggle_quickfix = function()
+    if is_list_open('quickfix') then
+        vim.cmd[[cclose]]
+    else
+        vim.cmd[[copen]]
+    end
+end
+
+local toggle_loclist = function()
+    if is_list_open('loclist') then
+        vim.cmd[[lclose]]
+    else
+        vim.cmd[[lopen]]
+    end
+end
+
+vim.keymap.set("n", "<Leader>q", function() toggle_quickfix() end, { silent = true})
+vim.keymap.set("n", "<Leader>l", function() toggle_loclist() end, { silent = true})
 
