@@ -47,10 +47,14 @@ local quickfix_group = vim.api.nvim_create_augroup("QuickFixGroup", { clear = tr
 vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
     pattern = {"[^l]*"},
     command = "cwindow",
+    nested = true,
     group = quickfix_group
 })
+
+-- Automatically open location list window
 vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
     pattern = {"l*"},
     command = "lwindow",
+    nested = true,
     group = quickfix_group
 })
