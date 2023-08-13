@@ -38,7 +38,5 @@ vim.cmd([[highlight debugPC term=reverse ctermbg=blue guibg=navyblue]])
 vim.cmd([[highlight debugBreakpoint term=reverse ctermbg=red guibg=red]])
 
 -- highlight plugin
-vim.keymap.set('n', '<CR>', '<cmd>Hi><CR>', { silent = true })
-vim.keymap.set('n', 'g<CR>', '<cmd>Hi<<CR>', { silent = true })
-vim.keymap.set('n', '[<CR>', '<cmd>Hi{<CR>', { silent = true })
-vim.keymap.set('n', ']<CR>', '<cmd>Hi}<CR>', { silent = true })
+vim.keymap.set('n', '[<CR>', '<cmd>Hi{<CR>', { silent = true, desc = "nearest highlight backward" })
+vim.keymap.set('n', ']<CR>', '<cmd>Hi}<CR>', { silent = true, desc = "nearest highlight forward" })
