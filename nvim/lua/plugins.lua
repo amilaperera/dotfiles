@@ -97,9 +97,6 @@ require("packer").startup(function(use)
         config = function() require("nvim-autopairs").setup() end
     })
 
-    -- vim unimpaired
-    use("tpope/vim-unimpaired")
-
     -- tmux integration
     use("tpope/vim-tbone")
 
