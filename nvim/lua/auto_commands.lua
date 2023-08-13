@@ -41,3 +41,16 @@ vim.api.nvim_create_autocmd({"TextYankPost"}, {
     command = "silent! lua vim.highlight.on_yank {on_visual=true, timeout=100}",
     group = yank_group
 })
+
+-- Automatically open quickfix window
+local quickfix_group = vim.api.nvim_create_augroup("QuickFixGroup", { clear = true })
+vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
+    pattern = {"[^l]*"},
+    command = "cwindow",
+    group = quickfix_group
+})
+vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
+    pattern = {"l*"},
+    command = "lwindow",
+    group = quickfix_group
+})
