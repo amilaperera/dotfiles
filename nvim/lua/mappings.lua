@@ -43,9 +43,7 @@ vim.keymap.set('n', "<C-u>", "<C-u>zz")
 -- open $MYVIMRC in a new tab
 vim.keymap.set('n', "<Leader>v", ":tabe $MYVIMRC<CR>")
 
--- File full path. If you're unhappy with Ctrl_G output
-vim.keymap.set('n', "<Space>", function() print(vim.fn.expand('%:p')) end, { silent = true })
-
+-- toggles an option
 local toggle_option = function(option)
     if vim.opt[option]:get() then
         vim.opt[option] = false
@@ -54,6 +52,7 @@ local toggle_option = function(option)
     end
 end
 
+-- toggles 2 options
 local toggle_options = function(opt1, opt2)
     if vim.opt[opt1]:get() and vim.opt[opt2]:get() then
         vim.opt[opt1], vim.opt[opt2] = false, false
@@ -88,7 +87,7 @@ vim.keymap.set('n', ']q', ":cnext<CR>", { silent = true, desc = "Go to next erro
 vim.keymap.set('n', '[l', ":lprevious<CR>", { silent = true, desc = "Go to previous item in location list" })
 vim.keymap.set('n', ']l', ":lnext<CR>", { silent = true, desc = "Go to next item in location list" })
 
--- open/close
+-- quickfix/location list toggling
 local is_list_open = function(key)
     local info = vim.fn.getwininfo()
     for _, list in ipairs(info) do
@@ -103,7 +102,7 @@ local toggle_quickfix = function()
     if is_list_open('quickfix') then
         vim.cmd[[cclose]]
     else
-        vim.cmd[[copen]]
+        vim.cmd[[cwindow]]
     end
 end
 
@@ -111,7 +110,7 @@ local toggle_loclist = function()
     if is_list_open('loclist') then
         vim.cmd[[lclose]]
     else
-        vim.cmd[[lopen]]
+        vim.cmd[[lwindow]]
     end
 end
 
