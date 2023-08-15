@@ -77,6 +77,19 @@ vim.keymap.set(
     function() toggle_options('cursorline', 'cursorcolumn') end,
     { silent = true, desc = "Toggle both cursoline and cursorcolumn" })
 
+vim.keymap.set(
+    'n',
+    "yot",
+    function()
+        -- this overwrites if you have set any value to colorcolumn
+        if next(vim.opt.colorcolumn:get()) == nil then
+            vim.opt.colorcolumn = "+1"
+        else
+            vim.opt.colorcolumn = ""
+        end
+    end,
+    { silent = true, desc = "Toggle colorcolumn" })
+
 -- prev/next
 vim.keymap.set('n', '[b', ":bprevious<CR>", { silent = true, desc = "Go to previous buffer" })
 vim.keymap.set('n', ']b', ":bnext<CR>", { silent = true, desc = "Go to next buffer" })
