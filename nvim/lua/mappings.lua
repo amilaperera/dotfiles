@@ -81,14 +81,14 @@ vim.keymap.set(
     'n',
     "yot",
     function()
-        -- this overwrites if you have set any value to colorcolumn
+        -- this overwrites any value you have set for colorcolumn
         if next(vim.opt.colorcolumn:get()) == nil then
-            vim.opt.colorcolumn = "+1"
+            vim.opt.colorcolumn = {"+1"}
         else
-            vim.opt.colorcolumn = ""
+            vim.opt.colorcolumn = {}
         end
     end,
-    { silent = true, desc = "Toggle colorcolumn" })
+    { silent = true, desc = "Toggle colorcolumn=+1 or none" })
 
 -- prev/next
 vim.keymap.set('n', '[b', ":bprevious<CR>", { silent = true, desc = "Go to previous buffer" })
