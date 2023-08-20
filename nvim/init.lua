@@ -1,6 +1,7 @@
 require("alternate")
 require("auto_commands")
 require("mappings")
+require("netrw")
 require("options")
 require("plugins")
 require("termdebug")
