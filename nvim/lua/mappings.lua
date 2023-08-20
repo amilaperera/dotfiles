@@ -142,5 +142,5 @@ end
 
 -- Window maximize/minimize toggle
 -- TODO: Add the window zoom status to status bar
-vim.keymap.set("n", "<C-w>m", function() toggle_window_zoom() end, { silent = true, desc = "Toggle window maximizing" })
+vim.keymap.set("n", "<Leader>z", function() toggle_window_zoom() end, { silent = true, desc = "Toggle window maximizing" })
 
