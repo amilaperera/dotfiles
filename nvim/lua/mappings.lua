@@ -130,3 +130,17 @@ end
 vim.keymap.set("n", "<Leader>q", function() toggle_quickfix() end, { silent = true, desc = "Toggle quickfix window" })
 vim.keymap.set("n", "<Leader>l", function() toggle_loclist() end, { silent = true, desc = "Toggle location list" })
 
+local toggle_window_zoom = function()
+    if vim.w.window_restore_command == nil then
+        vim.w.window_restore_command = vim.fn.winrestcmd()
+        vim.cmd[[vertical resize | resize]]
+    else
+        vim.fn.execute(vim.w.window_restore_command)
+        vim.w.window_restore_command = nil
+    end
+end
+
+-- Window maximize/minimize toggle
+-- TODO: Add the window zoom status to status bar
+vim.keymap.set("n", "<C-w>m", function() toggle_window_zoom() end, { silent = true, desc = "Toggle window maximizing" })
+
