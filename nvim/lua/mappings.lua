@@ -131,12 +131,12 @@ vim.keymap.set("n", "<Leader>q", function() toggle_quickfix() end, { silent = tr
 vim.keymap.set("n", "<Leader>l", function() toggle_loclist() end, { silent = true, desc = "Toggle location list" })
 
 local toggle_window_zoom = function()
-    if vim.w.window_restore_command == nil then
-        vim.w.window_restore_command = vim.fn.winrestcmd()
+    if vim.t.window_restore_command == nil then
+        vim.t.window_restore_command = vim.fn.winrestcmd()
         vim.cmd[[vertical resize | resize]]
     else
-        vim.fn.execute(vim.w.window_restore_command)
-        vim.w.window_restore_command = nil
+        vim.fn.execute(vim.t.window_restore_command)
+        vim.t.window_restore_command = nil
     end
 end
 
