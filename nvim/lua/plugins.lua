@@ -51,12 +51,10 @@ require("packer").startup(function(use)
         },
     }
 
-    -- some colorschemes I would like try
-    use("sainnhe/edge")
-    use("ellisonleao/gruvbox.nvim")
-    use("joshdick/onedark.vim")
+    -- colorscheme.
+    -- Others to consider: edge, gruvbox, catppuccin, onedark
     use("rebelot/kanagawa.nvim")
-    use({"catppuccin/nvim", as = "catppuccin"})
+
     -- tree-sitter
     use({ "nvim-treesitter/nvim-treesitter", run = ':TSUpdate' })
 
@@ -87,9 +85,6 @@ require("packer").startup(function(use)
     -- git integration
     use("tpope/vim-fugitive")
     use("lewis6991/gitsigns.nvim")
-
-    -- status line
-    use('nvim-lualine/lualine.nvim')
 
     -- auto pairs
     use({
