@@ -52,11 +52,9 @@ require("packer").startup(function(use)
     }
 
     -- some colorschemes I would like try
-    use("sainnhe/edge")
-    use("ellisonleao/gruvbox.nvim")
-    use("joshdick/onedark.vim")
+    -- Othe colorschemes worth trying: edge, gruvbox, onedark, catppuccin
     use("rebelot/kanagawa.nvim")
-    use({"catppuccin/nvim", as = "catppuccin"})
+
     -- tree-sitter
     use({ "nvim-treesitter/nvim-treesitter", run = ':TSUpdate' })
 
