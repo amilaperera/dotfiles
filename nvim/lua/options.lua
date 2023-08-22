@@ -37,3 +37,5 @@ o.scrolloff = 2
 
 o.list = true
 o.listchars = { trail = '-', tab = '|.' }
+
+o.laststatus = 2
