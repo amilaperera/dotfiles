@@ -1,54 +1,34 @@
 StatusLine = {}
 
-StatusLine.mode_map = {
-  ['n']      = 'N',
-  ['no']     = 'O-PENDING',
-  ['nov']    = 'O-PENDING',
-  ['noV']    = 'O-PENDING',
-  ['no\22']  = 'O-PENDING',
-  ['niI']    = 'NORMAL',
-  ['niR']    = 'NORMAL',
-  ['niV']    = 'NORMAL',
-  ['nt']     = 'NORMAL',
-  ['ntT']    = 'NORMAL',
-  ['v']      = 'VISUAL',
-  ['vs']     = 'VISUAL',
-  ['V']      = 'V-LINE',
-  ['Vs']     = 'V-LINE',
-  ['\22']    = 'V-BLOCK',
-  ['\22s']   = 'V-BLOCK',
-  ['s']      = 'SELECT',
-  ['S']      = 'S-LINE',
-  ['\19']    = 'S-BLOCK',
-  ['i']      = 'INSERT',
-  ['ic']     = 'INSERT',
-  ['ix']     = 'INSERT',
-  ['R']      = 'REPLACE',
-  ['Rc']     = 'REPLACE',
-  ['Rx']     = 'REPLACE',
-  ['Rv']     = 'V-REPLACE',
-  ['Rvc']    = 'V-REPLACE',
-  ['Rvx']    = 'V-REPLACE',
-  ['c']      = 'COMMAND',
-  ['cv']     = 'EX',
-  ['ce']     = 'EX',
-  ['r']      = 'REPLACE',
-  ['rm']     = 'MORE',
-  ['r?']     = 'CONFIRM',
-  ['!']      = 'SHELL',
-  ['t']      = 'TERMINAL',
-}
-
-local get_mode = function()
-  local mode_code = vim.api.nvim_get_mode().get_mode
-  if StatusLine.mode_map[mode_code] == nil then
-    return mode_code
-  end
-  return StatusLine.mode_map[mode_code]
+local get_file = function()
+    return " %t %m %r %h"
 end
 
-StatusLine.active = function()
-    return get_mode()
+local get_file_type = function()
+    local encoding = vim.opt.fenc:get()
+    local encoding_str = '[unknown]'
+    if encoding ~= nil and encoding == '' then
+        encoding_str = ''
+    else
+        encoding_str = '[' .. encoding .. ']'
+    end
+    return "%= %y " .. encoding_str
 end
 
-vim.api.nvim_exec([[set statusline=%!v:lua.StatusLine.active()]], false)
+local get_location_info = function()
+    return " %- %4p%% %5l:%c / %L "
+end
+
+local get_git_info = function()
+    local info = vim.b.gitsigns_status_dict
+    if not info or info.head == "" then
+        return ""
+    end
+    return "Git(" .. info.head .. ") +" .. info.added .. " -" .. info.removed .. " ~" .. info.changed
+end
+
+StatusLine.active_statusline = function()
+    return get_file()..get_git_info()..get_file_type()..get_location_info()
+end
+
+vim.api.nvim_exec([[set statusline=%!v:lua.StatusLine.active_statusline()]], false)
