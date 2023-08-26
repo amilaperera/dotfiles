@@ -22,15 +22,19 @@ vim.api.nvim_create_autocmd({"FileType"}, {
 --  buffer window active
 --  not in insert mode
 local cursor_group = vim.api.nvim_create_augroup("CursorGroup", { clear = true })
-vim.api.nvim_create_autocmd({"InsertEnter", "WinLeave"}, {
+vim.api.nvim_create_autocmd({"InsertEnter", "WinLeave", "BufLeave"}, {
     pattern = {"*"},
-    command = "setlocal nocursorline",
+    callback = function ()
+        vim.api.nvim_exec([[setlocal nocursorline]], false)
+    end,
     group = cursor_group
 })
 
-vim.api.nvim_create_autocmd({"InsertLeave", "WinEnter"}, {
+vim.api.nvim_create_autocmd({"InsertLeave", "WinEnter", "BufEnter"}, {
     pattern = {"*"},
-    command = "setlocal cursorline",
+    callback = function ()
+        vim.api.nvim_exec([[setlocal cursorline]], false)
+    end,
     group = cursor_group
 })
 
