@@ -7,6 +7,10 @@ local get_file = function()
 end
 
 local get_git_info = function()
+    local git_status = vim.fn.FugitiveStatusline()
+    if git_status ~= nil or git_status ~= '' then
+        return "%="..git_status
+    end
     return ""
 end
 
@@ -18,7 +22,7 @@ local get_file_type = function()
     else
         encoding_str = '[' .. encoding .. ']'
     end
-    return "%= %y " .. encoding_str
+    return "%=%y " .. encoding_str
 end
 
 local get_location_info = function()
@@ -33,6 +37,13 @@ M.active_statusline = function()
         ..get_git_info()
         ..get_file_type()
         ..get_location_info()
+end
+
+M.inactive_statusline = function()
+    return get_truncating_method()
+        ..get_file()
+        .."%=%y"                    -- right align file type,
+        ..get_location_info()       -- then location information
 end
 
 return M
