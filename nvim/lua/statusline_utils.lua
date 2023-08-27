@@ -42,8 +42,8 @@ end
 M.inactive_statusline = function()
     return get_truncating_method()
         ..get_file()
-        .."%=%y"                    -- right align file type,
-        ..get_location_info()       -- then location information
+        .."%="
+        ..get_location_info()
 end
 
 return M
