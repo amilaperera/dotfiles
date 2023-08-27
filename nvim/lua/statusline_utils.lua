@@ -7,26 +7,26 @@ local get_file = function()
 end
 
 local get_git_info = function()
-    local git_status = vim.fn.FugitiveStatusline()
-    if git_status ~= nil or git_status ~= '' then
-        return "%="..git_status
+    local git_status = vim.fn.FugitiveHead()
+    if git_status ~= nil and git_status ~= '' then
+        return "%=(" .. git_status .. ")"
     end
     return ""
 end
 
 local get_file_type = function()
     local encoding = vim.opt.fenc:get()
-    local encoding_str = '[unknown]'
+    local encoding_str = ''
     if encoding ~= nil and encoding == '' then
         encoding_str = ''
     else
-        encoding_str = '[' .. encoding .. ']'
+        encoding_str = ' | ' .. encoding .. ' '
     end
-    return "%=%y " .. encoding_str
+    return "%=" .. vim.o.filetype .. encoding_str
 end
 
 local get_location_info = function()
-    return "%5.(%p%%%) %6.(%l,%c%) "
+    return "%6.(%p%%%) %6.(%l,%c%) "
 end
 
 local M = {}

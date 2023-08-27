@@ -148,18 +148,17 @@ vim.keymap.set("n", "yoz", function() toggle_window_zoom() end, { silent = false
 -- NOTE: Relies on gitsigns
 vim.keymap.set(
     "n",
-    "<C-g>",
+    "<Leader>G",
     function()
         local info = vim.b.gitsigns_status_dict
         local info_str = ''
         if info ~= nil then
-            info_str = ' | Git('
+            info_str = ' '
             .. info.head
-            .. ', +' .. info.added
+            .. ' | +' .. info.added
             .. ' -' ..info.removed
             .. ' ~' ..info.changed
-            .. ')'
         end
-        print(vim.api.nvim_command_output([[file]]) .. info_str)
+        print(info_str)
     end,
-    { silent = true, desc = "Improved Ctrl-G"})
+    { silent = true, desc = "Git status on the buffer"})
