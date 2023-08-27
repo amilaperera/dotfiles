@@ -26,7 +26,7 @@ local get_file_type = function()
 end
 
 local get_location_info = function()
-    return "%6.(%p%%%) %6.(%l,%c%) "
+    return "%6.(%p%%%) %8.(%l,%c%) "
 end
 
 local M = {}
