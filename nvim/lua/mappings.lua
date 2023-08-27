@@ -144,3 +144,22 @@ end
 -- TODO: Add the window zoom status to status bar
 vim.keymap.set("n", "yoz", function() toggle_window_zoom() end, { silent = false, desc = "Toggle window zooming" })
 
+-- Improved Ctrl-G which includes git status information
+-- NOTE: Relies on gitsigns
+vim.keymap.set(
+    "n",
+    "<C-g>",
+    function()
+        local info = vim.b.gitsigns_status_dict
+        local info_str = ''
+        if info ~= nil then
+            info_str = ' | Git('
+            .. info.head
+            .. ', +' .. info.added
+            .. ' -' ..info.removed
+            .. ' ~' ..info.changed
+            .. ')'
+        end
+        print(vim.api.nvim_command_output([[file]]) .. info_str)
+    end,
+    { silent = true, desc = "Improved Ctrl-G"})
