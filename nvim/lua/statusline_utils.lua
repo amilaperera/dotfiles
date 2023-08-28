@@ -15,8 +15,8 @@ local get_git_info = function()
 end
 
 local get_file_type_and_encoding = function()
-    local file_type = vim.o.filetype
-    local encoding = vim.opt.fenc:get()
+    local file_type = vim.bo.filetype
+    local encoding = vim.bo.fileencoding
 
     -- filetype is undeducible
     if file_type == nil or file_type == '' then
@@ -29,11 +29,11 @@ local get_file_type_and_encoding = function()
     end
 
     -- both filetype & encoding are deduced
-    return table.concat({"%=", vim.o.filetype, " | ", encoding});
+    return table.concat({"%=", vim.o.filetype, "   ", encoding});
 end
 
 local get_location_info = function()
-    return "%8.(%l,%c%) %4.(%p%%%)"
+    return "%8.(%l:%c%) %4.(%p%%%)"
 end
 
 local M = {}

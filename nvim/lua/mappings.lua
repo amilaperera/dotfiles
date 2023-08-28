@@ -154,11 +154,7 @@ vim.keymap.set(
         local info = vim.b.gitsigns_status_dict
         local info_str = ''
         if info ~= nil then
-            info_str = ' '
-            .. info.head
-            .. ' | +' .. info.added
-            .. ' -' ..info.removed
-            .. ' ~' ..info.changed
+            info_str = table.concat({info.head, ' | +', info.added, ' -', info.removed, ' ~', info.changed})
         end
         print(info_str)
     end,
