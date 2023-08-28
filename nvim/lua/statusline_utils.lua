@@ -1,5 +1,5 @@
 local get_truncating_method = function()
-    return " %<"
+    return "%<"
 end
 
 local get_file = function()
@@ -14,36 +14,47 @@ local get_git_info = function()
     return ""
 end
 
-local get_file_type = function()
+local get_file_type_and_encoding = function()
+    local file_type = vim.o.filetype
     local encoding = vim.opt.fenc:get()
-    local encoding_str = ''
-    if encoding ~= nil and encoding == '' then
-        encoding_str = ''
-    else
-        encoding_str = ' | ' .. encoding .. ' '
+
+    -- filetype is undeducible
+    if file_type == nil or file_type == '' then
+        return ("%=" .. encoding) or ''
     end
-    return "%=" .. vim.o.filetype .. encoding_str
+
+    -- encoding is undeducible
+    if encoding == nil and encoding == '' then
+        return ("%=" .. file_type) or ''
+    end
+
+    -- both filetype & encoding are deduced
+    return table.concat({"%=", vim.o.filetype, " | ", encoding});
 end
 
 local get_location_info = function()
-    return "%6.(%p%%%) %8.(%l,%c%) "
+    return "%8.(%l,%c%) %4.(%p%%%)"
 end
 
 local M = {}
 
 M.active_statusline = function()
-    return get_truncating_method()
-        ..get_file()
-        ..get_git_info()
-        ..get_file_type()
-        ..get_location_info()
+    return table.concat({
+        get_truncating_method(),
+        get_file(),
+        get_git_info(),
+        get_file_type_and_encoding(),
+        get_location_info()
+    });
 end
 
 M.inactive_statusline = function()
-    return get_truncating_method()
-        ..get_file()
-        .."%="
-        ..get_location_info()
+    return table.concat ({
+        get_truncating_method(),
+        get_file(),
+        "%=",
+        get_location_info()
+    });
 end
 
 return M
