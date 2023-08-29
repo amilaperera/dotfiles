@@ -20,16 +20,21 @@ local get_file_type_and_encoding = function()
 
     -- filetype is undeducible
     if file_type == nil or file_type == '' then
-        return ("%=" .. encoding) or ''
+        if encoding ~= nil and encoding ~= '' then
+            return table.concat({encoding, ' '})
+        end
+        return ''
     end
 
     -- encoding is undeducible
     if encoding == nil and encoding == '' then
-        return ("%=" .. file_type) or ''
+        if file_type ~= nil and file_type ~= '' then
+            return table.concat({file_type, ' '})
+        end
+        return ''
     end
 
-    -- both filetype & encoding are deduced
-    return table.concat({"%=", vim.o.filetype, "   ", encoding});
+    return table.concat({vim.o.filetype, "  ", encoding .. ' '})
 end
 
 local get_location_info = function()
@@ -43,6 +48,7 @@ M.active_statusline = function()
         get_truncating_method(),
         get_file(),
         get_git_info(),
+        "%=",
         get_file_type_and_encoding(),
         get_location_info()
     });
