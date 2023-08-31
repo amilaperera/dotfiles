@@ -13,7 +13,7 @@ end
 local packer_bootstrap = ensure_packer()
 
 -- Packer installations
-require("packer").startup(function(use)
+return require("packer").startup(function(use)
     use("wbthomason/packer.nvim")
 
     -- It will be either fzf or telescope

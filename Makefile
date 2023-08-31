@@ -20,7 +20,7 @@ else
 	 $(error "Unsupported OS")
 endif
 
-.PHONY: core all bash nvim vim misc update
+.PHONY: core all fzf bash nvim vim misc update
 
 core: bash nvim vim
 
@@ -28,7 +28,14 @@ all: update core misc
 	@echo
 	@echo "All done. Good day!!!"
 
-bash:
+fzf:
+	@echo
+	@echo "================= Installing fzf ================="
+	rm -rf ~/.fzf
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install --key-bindings --completion --no-update-rc
+
+bash: fzf
 	@echo
 	@echo "================= Installing bash configs ================="
 	ln -sf $(BASH)/.bashrc $(HOMEDIR)
