@@ -43,7 +43,7 @@ vim.keymap.set(
 vim.keymap.set(
     'n',
     ']e',
-    function() vim.fn.execute("normal dd" .. (math.max(1, vim.v.count1 - 1)) .. "jp") end,
+    function() vim.fn.execute("normal dd" .. (vim.v.count1) .. "jP") end,
     { silent = true, desc = "In normal mode moves the current [count] line(s) down" })
 
 -- scroll up and down focussing the center
@@ -100,15 +100,15 @@ vim.keymap.set(
     end,
     { silent = true, desc = "Toggle colorcolumn=+1 or none" })
 
--- prev/next
-vim.keymap.set('n', '[b', ":bprevious<CR>", { silent = true, desc = "Go to previous buffer" })
-vim.keymap.set('n', ']b', ":bnext<CR>", { silent = true, desc = "Go to next buffer" })
-vim.keymap.set('n', '[t', ":tabprevious<CR>", { silent = true, desc = "Go to previous tab" })
-vim.keymap.set('n', ']t', ":tabnext<CR>", { silent = true, desc = "Go to next tab" })
-vim.keymap.set('n', '[q', ":cprevious<CR>", { silent = true, desc = "Go to previous item in quickfix window" })
-vim.keymap.set('n', ']q', ":cnext<CR>", { silent = true, desc = "Go to next error item in quickfix window" })
-vim.keymap.set('n', '[l', ":lprevious<CR>", { silent = true, desc = "Go to previous item in location list" })
-vim.keymap.set('n', ']l', ":lnext<CR>", { silent = true, desc = "Go to next item in location list" })
+-- prev/next with a count
+vim.keymap.set('n', '[b', function() vim.fn.execute(vim.v.count1 .. "bprevious") end, { silent = true, desc = "Go to [count] previous buffer" })
+vim.keymap.set('n', ']b', function() vim.fn.execute(vim.v.count1 .. "bnext") end, { silent = true, desc = "Go to [count] next buffer" })
+vim.keymap.set('n', '[t', function() vim.fn.execute('-' .. vim.v.count1 .. 'tabnext') end, { silent = true, desc = "Go to the [count] previous tab" })
+vim.keymap.set('n', ']t', function() vim.fn.execute('+' .. vim.v.count1 .. 'tabnext') end, { silent = true, desc = "Go to the [count] next tab" })
+vim.keymap.set('n', '[q', function() vim.fn.execute(vim.v.count1 .. "cprevious") end, { silent = true, desc = "Go to [count] previous item in quickfix window" })
+vim.keymap.set('n', ']q', function() vim.fn.execute(vim.v.count1 .. "cnext") end, { silent = true, desc = "Go to [count] next error item in quickfix window" })
+vim.keymap.set('n', '[l', function() vim.fn.execute(vim.v.count1 .. "lprevious") end, { silent = true, desc = "Go to [count] previous item in location list" })
+vim.keymap.set('n', ']l', function() vim.fn.execute(vim.v.count1 .. "lnext") end, { silent = true, desc = "Go to [count] next item in location list" })
 
 -- Insert blank lines while you're in nomral mode.
 -- Cursor line stays unchanged.
