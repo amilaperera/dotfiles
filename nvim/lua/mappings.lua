@@ -30,8 +30,27 @@ vim.keymap.set('n', '<Leader>xt', ":tabclose<CR>", { silent = true, desc = "Clos
 
 -- Moving visual blocks up and down.
 -- multiple lines in visual mode
-vim.keymap.set('v', '[e', ":m '<-2<CR>gv=gv", { silent = true, desc = "In visual mode moves selection up" })
-vim.keymap.set('v', ']e', ":m '>+1<CR>gv=gv", { silent = true, desc = "In visual mode moves selection down" })
+function move_visual_up(count)
+    vim.api.nvim_exec("'<,'>move'<--" .. count, false)
+    vim.api.nvim_command("normal! gv")
+end
+
+function move_visual_down(count)
+    vim.api.nvim_exec("'<,'>move'>+" .. count, false)
+    vim.api.nvim_command("normal! gv")
+end
+
+vim.api.nvim_set_keymap(
+    'x',
+    '[e',
+    ":lua move_visual_up(vim.v.count1)<CR>",
+    { noremap = true, silent = true, desc = "In visual mode moves the current [count] lines up" })
+
+vim.api.nvim_set_keymap(
+    'x',
+    ']e',
+    ":lua move_visual_down(vim.v.count1)<CR>",
+    { noremap = true, silent = true, desc = "In visual mode moves the current [count] lines down" })
 
 -- current line normal mode (count supported)
 vim.keymap.set(
