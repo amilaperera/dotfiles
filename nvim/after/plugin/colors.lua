@@ -37,6 +37,9 @@ vim.cmd([[highlight SpellBad cterm=underline gui=underline guibg=underline guisp
 vim.cmd([[highlight debugPC term=reverse ctermbg=blue guibg=navyblue]])
 vim.cmd([[highlight debugBreakpoint term=reverse ctermbg=red guibg=red]])
 
+-- statusline
+vim.cmd([[highlight Statusline guifg=#bbbbbb guibg=#16161d]])
+
 -- highlight plugin
 vim.keymap.set('n', '[<CR>', '<cmd>Hi{<CR>', { silent = true, desc = "nearest highlight backward" })
 vim.keymap.set('n', ']<CR>', '<cmd>Hi}<CR>', { silent = true, desc = "nearest highlight forward" })
