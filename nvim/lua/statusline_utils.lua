@@ -1,3 +1,5 @@
+local utils = require('utils')
+
 local get_truncating_method = function()
     return "%<"
 end
@@ -6,10 +8,16 @@ local get_file = function()
     return "%t %h%m%r"
 end
 
+-- ignore git branch for following file types
+local git_ignore_types = {'fugitive', 'NvimTree'}
+
 local get_git_info = function()
-    local git_status = vim.fn.FugitiveHead()
-    if git_status ~= nil and git_status ~= '' then
-        return "%=(" .. "%#StatuslineGitBranch#" .. git_status .. "%*" .. ")"
+    if utils.table_contains(git_ignore_types, vim.bo.filetype) == false then
+        local git_status = vim.fn.FugitiveHead()
+
+        if git_status ~= nil and git_status ~= '' then
+            return "%=(" .. "%#StatuslineGitBranch#" .. git_status .. "%*" .. ")"
+        end
     end
     return ""
 end
