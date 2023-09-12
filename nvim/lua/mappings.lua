@@ -122,8 +122,22 @@ vim.keymap.set(
 -- prev/next with a count
 vim.keymap.set('n', '[b', function() vim.fn.execute(vim.v.count1 .. "bprevious") end, { silent = true, desc = "Go to [count] previous buffer" })
 vim.keymap.set('n', ']b', function() vim.fn.execute(vim.v.count1 .. "bnext") end, { silent = true, desc = "Go to [count] next buffer" })
-vim.keymap.set('n', '[t', function() vim.fn.execute('-' .. vim.v.count1 .. 'tabnext') end, { silent = true, desc = "Go to the [count] previous tab" })
-vim.keymap.set('n', ']t', function() vim.fn.execute('+' .. vim.v.count1 .. 'tabnext') end, { silent = true, desc = "Go to the [count] next tab" })
+vim.keymap.set(
+    'n',
+    '[t',
+    function()
+        vim.fn.execute('normal ' .. vim.v.count1 .. 'gT')
+    end,
+    { silent = true, desc = "Go to the [count] previous tab" })
+vim.keymap.set(
+    'n',
+    ']t',
+    function()
+        for i = 1, vim.v.count1 do
+            vim.fn.execute('normal gt')
+        end
+    end,
+    { silent = true, desc = "Go to the [count] next tab" })
 vim.keymap.set('n', '[q', function() vim.fn.execute(vim.v.count1 .. "cprevious") end, { silent = true, desc = "Go to [count] previous item in quickfix window" })
 vim.keymap.set('n', ']q', function() vim.fn.execute(vim.v.count1 .. "cnext") end, { silent = true, desc = "Go to [count] next error item in quickfix window" })
 vim.keymap.set('n', '[l', function() vim.fn.execute(vim.v.count1 .. "lprevious") end, { silent = true, desc = "Go to [count] previous item in location list" })

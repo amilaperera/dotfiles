@@ -9,7 +9,7 @@ end
 local get_git_info = function()
     local git_status = vim.fn.FugitiveHead()
     if git_status ~= nil and git_status ~= '' then
-        return "%=(" .. "%#String#" .. git_status .. "%*" .. ")"
+        return "%=(" .. "%#StatuslineGitBranch#" .. git_status .. "%*" .. ")"
     end
     return ""
 end
