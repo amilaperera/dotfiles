@@ -119,9 +119,7 @@ vim.keymap.set(
     end,
     { silent = true, desc = "Toggle colorcolumn=+1 or none" })
 
--- prev/next with a count
-vim.keymap.set('n', '[b', function() vim.fn.execute(vim.v.count1 .. "bprevious") end, { silent = true, desc = "Go to [count] previous buffer" })
-vim.keymap.set('n', ']b', function() vim.fn.execute(vim.v.count1 .. "bnext") end, { silent = true, desc = "Go to [count] next buffer" })
+-- prev/next tab with a count
 vim.keymap.set(
     'n',
     '[t',
@@ -129,6 +127,7 @@ vim.keymap.set(
         vim.fn.execute('normal ' .. vim.v.count1 .. 'gT')
     end,
     { silent = true, desc = "Go to the [count] previous tab" })
+
 vim.keymap.set(
     'n',
     ']t',
@@ -138,10 +137,22 @@ vim.keymap.set(
         end
     end,
     { silent = true, desc = "Go to the [count] next tab" })
-vim.keymap.set('n', '[q', function() vim.fn.execute(vim.v.count1 .. "cprevious") end, { silent = true, desc = "Go to [count] previous item in quickfix window" })
-vim.keymap.set('n', ']q', function() vim.fn.execute(vim.v.count1 .. "cnext") end, { silent = true, desc = "Go to [count] next error item in quickfix window" })
-vim.keymap.set('n', '[l', function() vim.fn.execute(vim.v.count1 .. "lprevious") end, { silent = true, desc = "Go to [count] previous item in location list" })
-vim.keymap.set('n', ']l', function() vim.fn.execute(vim.v.count1 .. "lnext") end, { silent = true, desc = "Go to [count] next item in location list" })
+
+-- very basic mapping generator you can use for prev/next commands
+local create_expr_mapping_family = function(mode, map, cmd, item)
+    local tbl = { previous = '[', next = ']'}
+    for k, v in pairs(tbl) do
+        vim.keymap.set(
+            mode,
+            v .. map,
+            function() return "<cmd>" .. vim.v.count1 .. cmd .. k .. "<CR>" end,
+            { expr = true, silent = true, desc = "Go to [count] " .. k .. " item in " .. item })
+    end
+end
+
+create_expr_mapping_family({'n'}, 'b', 'b', 'buffer')
+create_expr_mapping_family({'n'}, 'q', 'c', 'quickfix list')
+create_expr_mapping_family({'n'}, 'l', 'l', 'location list')
 
 -- Insert blank lines while you're in nomral mode.
 -- Cursor line stays unchanged.
