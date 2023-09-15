@@ -5,7 +5,7 @@ local get_truncating_method = function()
 end
 
 local get_file = function()
-    return " %t %h%m%r"
+    return "%t %h%m%r"
 end
 
 -- ignore git branch for following file types
@@ -13,10 +13,10 @@ local git_ignore_types = {'fugitive', 'fugitiveblame', 'git', 'gitcommit', 'Nvim
 
 local get_git_info = function()
     if utils.table_contains(git_ignore_types, vim.bo.filetype) == false then
-        local git_branch = vim.fn.FugitiveHead()
+        local git_status = vim.fn.FugitiveHead()
 
-        if git_branch ~= nil and git_branch ~= '' then
-            return "%#StatuslineGitBranch# " .. git_branch .. " %*"
+        if git_status ~= nil and git_status ~= '' then
+            return "%=(" .. "%#StatuslineGitBranch#" .. git_status .. "%*" .. ")"
         end
     end
     return ""
@@ -54,12 +54,11 @@ local M = {}
 M.active_statusline = function()
     return table.concat({
         get_truncating_method(),
-        get_git_info(),
         get_file(),
+        get_git_info(),
         "%=",
         get_file_type_and_encoding(),
-        get_location_info(),
-        " "
+        get_location_info()
     });
 end
 
@@ -68,8 +67,7 @@ M.inactive_statusline = function()
         get_truncating_method(),
         get_file(),
         "%=",
-        get_location_info(),
-        " "
+        get_location_info()
     });
 end
 
