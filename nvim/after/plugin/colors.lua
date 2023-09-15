@@ -39,7 +39,7 @@ vim.cmd([[highlight debugBreakpoint term=reverse ctermbg=red guibg=red]])
 
 -- statusline
 vim.cmd([[highlight Statusline guifg=#aaaaaa guibg=#16161d]])
-vim.cmd([[highlight StatuslineGitBranch guifg=#7fac5e guibg=#16161d]])
+vim.cmd([[highlight StatuslineGitBranch guifg=#30b000 guibg=#222222]])
 
 -- highlight plugin
 vim.keymap.set('n', '[<CR>', '<cmd>Hi{<CR>', { silent = true, desc = "nearest highlight backward" })
