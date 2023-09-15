@@ -1,5 +1,6 @@
 -- invoking fugitive
-vim.keymap.set('n', "<Leader>g", vim.cmd.Git)
+vim.keymap.set('n', "<Leader>gg", vim.cmd.Git)
+vim.keymap.set('n', "<Leader>gp", "<cmd>Git push<CR>")
 -- to align with 'tb' to blame a line
 vim.keymap.set('n', "<Leader>tB", "<cmd>Git blame<CR>")
 
