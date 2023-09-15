@@ -9,7 +9,7 @@ local get_file = function()
 end
 
 -- ignore git branch for following file types
-local git_ignore_types = {'fugitive', 'fugitiveblame', 'NvimTree', 'gitcommit', 'qf'}
+local git_ignore_types = {'fugitive', 'fugitiveblame', 'git', 'gitcommit', 'NvimTree', 'qf'}
 
 local get_git_info = function()
     if utils.table_contains(git_ignore_types, vim.bo.filetype) == false then

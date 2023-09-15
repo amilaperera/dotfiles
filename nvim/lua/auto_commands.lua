@@ -1,7 +1,7 @@
 -- easily close temporary buffer windows like help, fugitive etc.
 local fast_close_group = vim.api.nvim_create_augroup("FastCloseGroup", { clear = true })
 vim.api.nvim_create_autocmd({"FileType"}, {
-    pattern = {"help", "fugitive", "fugitiveblame"},
+    pattern = {"help", "fugitive", "fugitiveblame", "git", "gitcommit"},
     callback = function()
         vim.keymap.set('n', 'q', '<cmd>close<CR>', { silent = true, buffer = true })
     end,
@@ -46,19 +46,3 @@ vim.api.nvim_create_autocmd({"TextYankPost"}, {
     group = yank_group
 })
 
--- Automatically open quickfix window
-local quickfix_group = vim.api.nvim_create_augroup("QuickFixGroup", { clear = true })
-vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
-    pattern = {"[^l]*"},
-    command = "cwindow",
-    nested = true,
-    group = quickfix_group
-})
-
--- Automatically open location list window
-vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
-    pattern = {"l*"},
-    command = "lwindow",
-    nested = true,
-    group = quickfix_group
-})

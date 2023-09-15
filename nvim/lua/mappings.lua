@@ -1,3 +1,5 @@
+local utils = require('utils')
+
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
 
@@ -138,21 +140,7 @@ vim.keymap.set(
     end,
     { silent = true, desc = "Go to the [count] next tab" })
 
--- very basic mapping generator you can use for prev/next commands
-local create_expr_mapping_family = function(mode, map, cmd, item)
-    local tbl = { previous = '[', next = ']'}
-    for k, v in pairs(tbl) do
-        vim.keymap.set(
-            mode,
-            v .. map,
-            function() return "<cmd>" .. vim.v.count1 .. cmd .. k .. "<CR>" end,
-            { expr = true, silent = true, desc = "Go to [count] " .. k .. " item in " .. item })
-    end
-end
-
-create_expr_mapping_family({'n'}, 'b', 'b', 'buffer')
-create_expr_mapping_family({'n'}, 'q', 'c', 'quickfix list')
-create_expr_mapping_family({'n'}, 'l', 'l', 'location list')
+utils.create_expr_mapping_family({'n'}, 'b', 'b', 'buffer')
 
 -- Insert blank lines while you're in nomral mode.
 -- Cursor line stays unchanged.
@@ -181,36 +169,6 @@ vim.keymap.set(
         vim.fn.execute('normal k')
     end,
     { silent = true, desc = "Insert empty [count] line(s) after the current line" })
-
--- quickfix/location list toggling
-local is_list_open = function(key)
-    local info = vim.fn.getwininfo()
-    for _, list in ipairs(info) do
-        if list[key] == 1 then
-            return true
-        end
-    end
-    return false
-end
-
-local toggle_quickfix = function()
-    if is_list_open('quickfix') then
-        vim.cmd[[cclose]]
-    else
-        vim.cmd[[cwindow]]
-    end
-end
-
-local toggle_loclist = function()
-    if is_list_open('loclist') then
-        vim.cmd[[lclose]]
-    else
-        vim.cmd[[lwindow]]
-    end
-end
-
-vim.keymap.set("n", "<Leader>q", function() toggle_quickfix() end, { silent = true, desc = "Toggle quickfix window" })
-vim.keymap.set("n", "<Leader>l", function() toggle_loclist() end, { silent = true, desc = "Toggle location list" })
 
 local toggle_window_zoom = function()
     if vim.t.window_restore_command == nil then

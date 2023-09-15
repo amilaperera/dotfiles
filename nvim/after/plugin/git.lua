@@ -1,8 +1,9 @@
 -- invoking fugitive
 vim.keymap.set('n', "<Leader>gg", vim.cmd.Git)
+-- some usefule git mappings
 vim.keymap.set('n', "<Leader>gp", "<cmd>Git push<CR>")
--- to align with 'tb' to blame a line
 vim.keymap.set('n', "<Leader>tB", "<cmd>Git blame<CR>")
+vim.keymap.set('n', "<Leader>gl", "<cmd>Git log --oneline -- %<CR>")
 
 -- git signs
 require('gitsigns').setup {
