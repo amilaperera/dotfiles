@@ -8,10 +8,26 @@ vim.keymap.set('v', '>', '>gv', { silent = true, remap = false, desc = "Shift a 
 vim.keymap.set('v', '<', '<gv', { silent = true, remap = false, desc = "Shift a visual selection left (retains selection)" })
 
 -- window resizing
-vim.keymap.set('n', '<Up>', '<cmd>resize +1<CR>', { silent = true, desc = "Increases current window height by 1" })
-vim.keymap.set('n', '<Down>', '<cmd>resize -1<CR>', { silent = true, desc = "Decreases current window height by 1" })
-vim.keymap.set('n', '<Right>', '<cmd>vertical resize +1<CR>', { silent = true , desc = "Increases the current window width by 1"})
-vim.keymap.set('n', '<Left>', '<cmd>vertical resize -1<CR>', { silent = true , desc = "Decreases the current window width by 1"})
+vim.keymap.set(
+    'n',
+    '<Up>',
+    function() return '<cmd>resize +' .. vim.v.count1 .. '<CR>' end,
+    { expr = true, silent = true, desc = "Increases current window height by a count" })
+vim.keymap.set(
+    'n',
+    '<Down>',
+    function() return '<cmd>resize -' .. vim.v.count1 .. '<CR>' end,
+    { expr = true, silent = true, desc = "Decreases current window height by a count" })
+vim.keymap.set(
+    'n',
+    '<Right>',
+    function() return '<cmd>vertical resize +' .. vim.v.count1 .. '<CR>' end,
+    { expr = true, silent = true , desc = "Increases the current window width by a count"})
+vim.keymap.set(
+    'n',
+    '<Left>',
+    function() return '<cmd>vertical resize -' .. vim.v.count1 .. '<CR>' end,
+    { expr = true, silent = true , desc = "Decreases the current window width by a count"})
 
 -- change to the directory of the current buffer
 vim.keymap.set('n', 'cd', function()
