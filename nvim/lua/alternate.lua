@@ -34,7 +34,7 @@ local get_alternate_file = function()
         end
     end
 
-    print("Couldn't find an alternative file for " .. fn.expand('%'))
+    vim.api.nvim_err_writeln("Couldn't find an alternative file for " .. vim.fn.expand('%:t'))
 end
 
 -- alternate files (works only with c++ projects)
