@@ -4,7 +4,7 @@ local utils = require('utils')
 local quickfix_group = vim.api.nvim_create_augroup("QuickFixGroup", { clear = true })
 vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
     pattern = {"[^l]*"},
-    command = "cwindow",
+    command = "cwindow | setlocal nornu | setlocal nu",
     nested = true,
     group = quickfix_group
 })
@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
 -- Automatically open location list window
 vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
     pattern = {"l*"},
-    command = "lwindow",
+    command = "lwindow | setlocal nornu | setlocal nu",
     nested = true,
     group = quickfix_group
 })
@@ -50,3 +50,29 @@ vim.keymap.set("n", "<Leader>l", function() toggle_loclist() end, { silent = tru
 -- mappings to go back and forth in quick fix & localtion list
 utils.create_expr_mapping_family({'n'}, 'q', 'c', 'quickfix list')
 utils.create_expr_mapping_family({'n'}, 'l', 'l', 'location list')
+
+-- Filtering quickfix list
+-- This enables Cfilter/Lfilter commands
+vim.cmd([[packadd cfilter]])
+
+-- Removes the current entry from the quickfix list
+local remove_current_qf_entry = function()
+    local list = vim.fn.getqflist()
+    local before = #list
+    local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
+    table.remove(list, r)
+    print("before: " .. before .. ", after: " .. #list)
+    vim.fn.setqflist(list, 'r')
+    vim.fn.execute('cfirst ' .. r)
+    vim.fn.execute('copen')
+end
+
+-- map 'dd' in qf
+vim.api.nvim_create_autocmd({"FileType"}, {
+    pattern = {"qf"},
+    callback = function()
+        vim.keymap.set('n', 'dd', function() remove_current_qf_entry() end, { buffer = true })
+    end,
+    group = quickfix_group
+})
+
