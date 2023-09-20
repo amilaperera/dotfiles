@@ -53,7 +53,6 @@ vim.api.nvim_create_autocmd({"CmdwinEnter"}, {
     callback = function ()
         vim.api.nvim_exec([[setlocal nornu | setlocal nu]], false)
         vim.keymap.set('n', 'q', '<cmd>close<CR>', { silent = true, buffer = true })
-        vim.keymap.set('n', '<CR>', '<CR>q:', { silent = true, buffer = true, desc = 'Keeps commandline window opened after executing command' })
     end,
     group = commandline_window_group
 })

@@ -58,13 +58,19 @@ vim.cmd([[packadd cfilter]])
 -- Removes the current entry from the quickfix list
 local remove_current_qf_entry = function()
     local list = vim.fn.getqflist()
-    local before = #list
+    if list == nil or #list == 0 then
+        return
+    end
+
     local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
     table.remove(list, r)
-    print("before: " .. before .. ", after: " .. #list)
     vim.fn.setqflist(list, 'r')
-    vim.fn.execute('cfirst ' .. r)
-    vim.fn.execute('copen')
+
+    if #list ~= 0 then
+        vim.fn.execute('cfirst ' .. r .. ' | copen')
+    else
+        vim.api.nvim_err_writeln("No more entries in the quickfix list")
+    end
 end
 
 -- map 'dd' in qf
