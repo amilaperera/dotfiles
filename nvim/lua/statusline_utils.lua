@@ -13,7 +13,7 @@ local git_ignore_types = {'fugitive', 'fugitiveblame', 'git', 'gitcommit', 'Nvim
 
 local get_git_info = function()
     if utils.table_contains(git_ignore_types, vim.bo.filetype) == false then
-        local git_status = vim.fn.FugitiveHead()
+        local git_status = vim.fn.FugitiveHead(8) -- in case of a detached head state, truncate commit hash to 8 chars
 
         if git_status ~= nil and git_status ~= '' then
             return "%=(" .. "%#StatuslineGitBranch#" .. git_status .. "%*" .. ")"
