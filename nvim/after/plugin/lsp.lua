@@ -4,17 +4,18 @@ lsp.preset('recommended')
 local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
-        ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-        ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        ["<C-Space>"] = cmp.mapping.complete(),
-    })
-
--- make sure these servers are installed
-lsp.ensure_installed({
-    'clangd',
-    'lua_ls',
+    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ["<C-Space>"] = cmp.mapping.complete(),
 })
+
+local lsp_zero = require('lsp-zero')
+lsp_zero.on_attach(function(client, bufnr)
+    -- see :help lsp-zero-keybindings
+    -- to learn the available actions
+    lsp_zero.default_keymaps({ buffer = bufnr })
+end)
 
 -- open definition in a new tab/ horizontal split/ vertical split
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -27,8 +28,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
-lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+require('mason').setup({})
+require('mason-lspconfig').setup({
+    ensure_installed = { 'clangd', 'lua_ls' },
+    handlers = {
+        lsp_zero.default_setup,
+    },
 })
 
 lsp.set_preferences({
@@ -55,8 +60,8 @@ lsp.configure('lua_ls', {
 })
 
 -- virtual text for diagnostics - just not for me!!
-vim.diagnostic.config(lsp.defaults.diagnostics({
-  virtual_text = false
-}))
+vim.diagnostic.config({
+    virtual_text = false
+})
 
 lsp.setup()
