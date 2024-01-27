@@ -286,3 +286,19 @@ function top_ps_filter()
 function topcpu() { top_ps_filter ${1:-"--short"} ${2:-10} "cpu" ; }
 function topmem() { top_ps_filter ${1:-"--short"} ${2:-10} "mem" ; }
 
+# Extract lines relative to a target line.
+# The following command will extract a range of 10 lines before and 40 lines after 100th line in file.txt
+# $ extract_lines 100 10 40 file.txt
+function extract_lines()
+{
+    local N=$1 # target line number
+    local A=$2 # number of lines before N th line
+    local B=$3 # number of lines after N th line
+    local file=$4
+
+    local start=(( N - A ))
+    local end=(( N + B ))
+
+    sed -n "${start},${end}p" ${file}
+}
+
