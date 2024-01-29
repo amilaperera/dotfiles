@@ -296,8 +296,8 @@ function extract_lines()
     local B=$3 # number of lines after N th line
     local file=$4
 
-    local start=(( N - A ))
-    local end=(( N + B ))
+    local start=$(( N - A ))
+    local end=$(( N + B ))
 
     sed -n "${start},${end}p" ${file}
 }
