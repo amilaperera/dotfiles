@@ -32,4 +32,4 @@ alias gco='git checkout'
 alias gcb='git checkout -b'
 alias gw='git worktree'
 alias gwl='git worktree list'
-
+alias gshow='git show --ws-error-highlight=all'
