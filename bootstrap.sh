@@ -102,6 +102,10 @@ function export_install_command()
         HAS_PACMAN=1
         install_command="pacman --noconfirm -S"
         update_os_command="pacman --noconfirm -Syu"
+    elif which zypper &> /dev/null; then
+        HAS_ZYPPER=1
+        install_command="zypper --non-interactive install"
+        update_os_command="zypper update"
     fi
     if [[ -n $install_command ]]; then
         echo -e "Install Command: ${GREEN}${install_command}${NC}"
@@ -121,8 +125,7 @@ function probe_os_info()
 
 function install()
 {
-    local cmd=
-    [[ $HAS_PACMAN -eq 1 ]] && cmd=`echo "sudo ${install_command} ${@}"` || cmd=`echo "sudo ${install_command} ${@} -y"`
+    local cmd=`echo "sudo ${install_command} ${@}"`
     echo $cmd
     sh -c "$cmd"
 }
@@ -162,11 +165,12 @@ function essentials()
 {
     local pkgs=()
     pkgs+=(git gitk)
-    [[ $HAS_APT -eq 1 ]] && pkgs+=(silversearcher-ag) || pkgs+=(the_silver_searcher)
     pkgs+=(ripgrep)
     pkgs+=(tree)
     [[ $HAS_DNF -eq 1 ]] && pkgs+=(redhat-lsb)
-    [[ $HAS_DNF -eq 1 ]] && pkgs+=(vim neovim)
+    if [[ $HAS_DNF -eq 1 || $HAS_ZYPPER -eq 1 ]]; then
+        pkgs+=(vim neovim)
+    fi
     pkgs+=(htop)
     pkgs+=(bat)
     pkgs+=(wget)
@@ -179,6 +183,10 @@ function essentials()
     [[ $HAS_DNF -eq 1 ]] && pkgs+=(nodejs-npm)
 
     install ${pkgs[*]}
+
+    # Latest git-prompt.sh
+    echo " - Downloading git-prompt.sh"
+    curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh > ~/.local/git-prompt.sh
 
     # fzf
     [ ! -d ~/.fzf ] && git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -204,20 +212,21 @@ function dev_tools()
         pkgs+=(byacc)
         pkgs+=(python3-dev)
         pkgs+=(python3-dev)
+    elif [[ $HAS_ZYPPER -eq 1 ]]; then
+        pkgs+=(gcc)
+        pkgs+=(gcc-c++)
+        pkgs+=(python3-devel)
     else
         pkgs+=(base-devel)
         pkgs+=(boost boost-libs)
         pkgs+=(python3-devel)
     fi
+
     pkgs+=(clang)
     pkgs+=(cmake)
     pkgs+=(kdiff3)
     pkgs+=(unzip)
     [[ $HAS_APT -eq 1 ]] && pkgs+=(exuberant-ctags) || pkgs+=(ctags)
-
-    # Latest git-prompt.sh
-    echo " - Downloading git-prompt.sh"
-    curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh > ~/.local/git-prompt.sh
 
     install ${pkgs[*]}
 }
@@ -426,7 +435,7 @@ function nerd_fonts()
     if [[ $? -eq 0 ]]; then
         echo "  - Downloading finished"
         mkdir -p ~/.fonts
-        unzip /tmp/Hack.zip -od ~/.fonts
+        unzip /tmp/Hack.zip -d ~/.fonts
         echo "  - Updating font cache"
         fc-cache -fv
     else
