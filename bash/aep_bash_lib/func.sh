@@ -302,3 +302,9 @@ function extract_lines()
     sed -n "${start},${end}p" ${file}
 }
 
+# Rather than installing pip, just do a direct invocation of the python file from the repo
+# https://github.com/sivel/speedtest-cli
+function check_internet_speed()
+{
+    curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -
+}

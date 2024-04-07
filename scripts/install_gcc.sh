@@ -92,11 +92,11 @@ function install_version()
     die_if_error $? "Configuration failed"
 
     # make
-    cd ${build_dir} && make -j8
+    cd ${build_dir} && make -j4
     die_if_error $? "make failed"
 
     # make install
-    cd ${build_dir} && make install -j8
+    cd ${build_dir} && make install -j4
     die_if_error $? "make install failed"
 
     echo

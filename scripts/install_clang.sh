@@ -35,8 +35,8 @@ function prepare_project_for_building()
     if [[ ! -e ${project_directory} ]]; then
         # Clone the repository
         mkdir -p ${cwd}
-          cd ${cwd} && git clone https://github.com/llvm/llvm-project.git
-          die_if_error $? "Cloning llvm-project failed"
+        cd ${cwd} && git clone https://github.com/llvm/llvm-project.git
+        die_if_error $? "Cloning llvm-project failed"
     else
         # Fresh build each time!!!!
         cd ${project_directory} && git co master && git clean -dfx
