@@ -92,20 +92,20 @@ function export_install_command()
 {
     if which dnf &> /dev/null; then
         HAS_DNF=1
-        install_command="dnf install"
+        install_command="dnf install -y"
         update_os_command="dnf update -y"
     elif which apt-get &> /dev/null; then
         HAS_APT=1
-        install_command="apt-get install"
+        install_command="apt-get install -y"
         update_os_command="apt-get update -y"
     elif which pacman &> /dev/null; then
         HAS_PACMAN=1
-        install_command="pacman --noconfirm -S"
+        install_command="pacman --noconfirm -Sy"
         update_os_command="pacman --noconfirm -Syu"
     elif which zypper &> /dev/null; then
         HAS_ZYPPER=1
         install_command="zypper --non-interactive install"
-        update_os_command="zypper update"
+        update_os_command="zypper --non-interactive update"
     fi
     if [[ -n $install_command ]]; then
         echo -e "Install Command: ${GREEN}${install_command}${NC}"
