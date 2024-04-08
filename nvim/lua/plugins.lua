@@ -26,6 +26,12 @@ return require("packer").startup(function(use)
         end
     }
 
+    -- custom statusline, nvim-tree depends on it
+    use {
+        'nvim-tree/nvim-web-devicons',
+        config = function() require('nvim-tree/nvim-web-devicons').setup() end
+    }
+
     -- telescope
     use {
         'nvim-telescope/telescope.nvim',
