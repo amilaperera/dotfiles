@@ -231,33 +231,6 @@ function dev_tools()
     install ${pkgs[*]}
 }
 
-function arm_cortex_dev_tools()
-{
-    local pkgs=()
-    [[ $HAS_DNF -eq 1 ]] && pkgs+=(arm-none-eabi-gcc-cs) || pkgs+=(arm-none-eabi-gcc)
-    [[ $HAS_DNF -eq 1 ]] && pkgs+=(arm-none-eabi-gcc-cs-c++) || pkgs+=(arm-none-eabi-g++)
-    pkgs+=(arm-none-eabi-gdb)
-    pkgs+=(openocd)
-
-    install ${pkgs[*]}
-}
-
-function arm_linux_dev_tools()
-{
-    local pkgs=()
-    if [[ $HAS_DNF -eq 1 ]]; then
-        sudo dnf copr enable lantw44/arm-linux-gnueabihf-toolchain
-        pkgs+=(arm-linux-gnueabihf-binutils)
-        pkgs+=(arm-linux-gnueabihf-gcc)
-        pkgs+=(arm-linux-gnueabihf-glibc)
-    else
-        pkgs+=(gcc-arm-linux-gnueabihf)
-        pkgs+=(g++-arm-linux-gnueabih)
-    fi
-
-    install ${pkgs[*]}
-}
-
 function python_stuff()
 {
     local pkgs=()
@@ -342,32 +315,6 @@ function vim_from_sources()
         --with-python3-config-dir=$(python3-config --configdir) \
         --prefix=${HOME}/.local
     cd ~/tmp/vim && make && make install
-}
-
-function snaps()
-{
-    pkgs=(snapd)
-    install ${pkgs[*]}
-    sh -c "sudo systemctl enable --now snapd.socket"
-    sh -c "sudo ln -s /var/lib/snapd/snap /snap"
-
-    # Now install the most essential snaps
-    echo " - Install snap core"
-    snap_core=(core)
-    snap_install ${snap_core[*]}
-
-    echo " - Installing snap-store"
-    snaps=(snap-store)
-    for s in "${snaps[@]}"; do
-        snap_install ${s}
-    done
-
-    snaps_classic=()
-    snaps_classic+=(clion)
-    snaps_classic+=(code)
-    for s in "${snaps_classic[@]}"; do
-        snap_install_classic ${s}
-    done
 }
 
 function setup_github_personal_ssh()
@@ -500,6 +447,7 @@ for choice in $choices; do
             if setup_github_personal_ssh; then
                 # wait until the user wishes to continue
                 read -n 1 -p "Press [c] to continue with setup or any other key to abort: " input
+                echo
                 [[ "$input" != "c" ]] && break
             fi
             ;;
