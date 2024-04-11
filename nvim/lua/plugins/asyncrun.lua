@@ -15,7 +15,7 @@ return {
                         'BuildGcc',
                         function(opts)
                             local targets = opts.args or ''
-                            vim.fn.execute("AsyncRun sh ~/.local/build_wrapper.sh <root> gcc debug " .. targets)
+                            vim.fn.execute("AsyncRun ~/.local/build_wrapper.sh <root> gcc debug " .. targets)
                         end,
                         {nargs = '?'})
 
@@ -24,7 +24,7 @@ return {
                         'BuildGccRel',
                         function(opts)
                             local targets = opts.args or ''
-                            vim.fn.execute("AsyncRun sh ~/.local/build_wrapper.sh <root> gcc rel " .. targets)
+                            vim.fn.execute("AsyncRun ~/.local/build_wrapper.sh <root> gcc rel " .. targets)
                         end,
                         {nargs = '?'})
 
@@ -33,7 +33,7 @@ return {
                         'BuildClang',
                         function(opts)
                             local targets = opts.args or ''
-                            vim.fn.execute("AsyncRun sh ~/.local/build_wrapper.sh <root> clang debug " .. targets)
+                            vim.fn.execute("AsyncRun ~/.local/build_wrapper.sh <root> clang debug " .. targets)
                         end,
                         {nargs = '?'})
 
@@ -42,7 +42,7 @@ return {
                         'BuildClangRel',
                         function(opts)
                             local targets = opts.args or ''
-                            vim.fn.execute("AsyncRun sh ~/.local/build_wrapper.sh <root> clang rel " .. targets)
+                            vim.fn.execute("AsyncRun ~/.local/build_wrapper.sh <root> clang rel " .. targets)
                         end,
                         {nargs = '?'})
                 end,
