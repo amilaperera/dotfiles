@@ -1,4 +1,6 @@
-local utils = require('utils')
+vim.g.laststatus = 2
+
+local common = require('common')
 local devicons = require('nvim-web-devicons')
 
 local get_truncating_method = function()
@@ -23,7 +25,7 @@ local get_file_type_icon = function(ft)
 end
 
 local get_git_info = function()
-    if utils.table_contains(git_ignore_types, vim.bo.filetype) == false then
+    if common.table_contains(git_ignore_types, vim.bo.filetype) == false then
         -- in case of a detached head state, truncate commit hash to 8 chars
         local git_status = vim.fn.FugitiveHead(8)
 
@@ -65,9 +67,7 @@ local get_location_info = function()
     return "%8.(%l:%c%) %4.(%p%%%)"
 end
 
-local M = {}
-
-M.active_statusline = function()
+_G.aep_active_statusline = function()
     return table.concat({
         get_truncating_method(),
         get_file(),
@@ -78,7 +78,7 @@ M.active_statusline = function()
     });
 end
 
-M.inactive_statusline = function()
+_G.aep_inactive_statusline = function()
     return table.concat({
         get_truncating_method(),
         get_file(),
@@ -87,5 +87,19 @@ M.inactive_statusline = function()
     });
 end
 
-return M
+local statusline_group = vim.api.nvim_create_augroup("StatuslineGroup", { clear = true })
+vim.api.nvim_create_autocmd({"WinEnter", "BufEnter"}, {
+    pattern = {"*"},
+    callback = function ()
+        vim.api.nvim_exec([[setlocal statusline=%!v:lua.aep_active_statusline()]], false)
+    end,
+    group = statusline_group
+})
 
+vim.api.nvim_create_autocmd({"WinLeave", "BufLeave"}, {
+    pattern = {"*"},
+    callback = function ()
+        vim.api.nvim_exec([[setlocal statusline=%!v:lua.aep_inactive_statusline()]], false)
+    end,
+    group = statusline_group
+})

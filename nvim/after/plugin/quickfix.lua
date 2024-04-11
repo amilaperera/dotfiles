@@ -1,4 +1,4 @@
-local utils = require('utils')
+local utils = require('common')
 
 -- Automatically open quickfix window
 local quickfix_group = vim.api.nvim_create_augroup("QuickFixGroup", { clear = true })

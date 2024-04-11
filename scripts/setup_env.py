@@ -478,18 +478,7 @@ class NeoVimEnv(Env):
                 os.path.join(dest_dir, 'nvim'))
 
     def _install_plugins(self):
-        try:
-            subprocess.call([self.exe_path, "--version"])
-            subprocess.check_call([
-                self.exe_path,
-                '--headless',
-                '-c',
-                'autocmd User PackerComplete quitall',
-                '-c',
-                'PackerSync'])
-        except OSError as e:
-            if e.errno == errno.ENOENT:
-                raise OSError("NeoVim not found or command error")
+        print(Fore.GREEN + 'Nothing to install.. Just start nvim..')
 
     def setup_env(self):
         self._set_config_files()
