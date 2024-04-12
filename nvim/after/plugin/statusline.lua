@@ -15,7 +15,13 @@ end
 local git_ignore_types = {'fugitive', 'fugitiveblame', 'git', 'gitcommit', 'NvimTree', 'qf'}
 
 local get_file_type_icon = function(ft)
-    local file_type_icon = devicons.get_icon_by_filetype(ft)
+    -- retrieve by filename
+    local file_type_icon = devicons.get_icon(vim.fn.expand('%:t'), vim.fn.expand('%:e'))
+    if ft ~= nil and file_type_icon == nil then
+        -- now by filetype
+        file_type_icon = devicons.get_icon_by_filetype(ft)
+    end
+
     if file_type_icon == nil then
         file_type_icon = ''
     else
@@ -43,13 +49,14 @@ local get_file_type_and_encoding = function()
     -- filetype is undeducible
     if file_type == nil or file_type == '' then
         if encoding ~= nil and encoding ~= '' then
-            return table.concat({encoding, ' '})
+            -- even though the filetype is undeduced we see if we can work out an icon by extension
+            return table.concat({get_file_type_icon(nil), encoding, ' '})
         end
         return ''
     end
 
     -- encoding is undeducible
-    if encoding == nil and encoding == '' then
+    if encoding == nil or encoding == '' then
         if file_type ~= nil and file_type ~= '' then
             return table.concat({get_file_type_icon(file_type), ' ', file_type, ' '})
         end
