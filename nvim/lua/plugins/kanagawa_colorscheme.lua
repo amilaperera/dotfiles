@@ -44,7 +44,7 @@ return {
 
             -- statusline
             vim.cmd([[highlight Statusline guifg=#aaaaaa guibg=#16161d]])
-            vim.cmd([[highlight StatuslineGitBranch guifg=#7fac0f guibg=#16161d]])
+            vim.cmd([[highlight StatuslineGitBranch guifg=#7fac5e guibg=#16161d]])
         end,
     },
 }
