@@ -1,20 +1,20 @@
-local utils = require('common')
+local common = require("common")
 
 -- Automatically open quickfix window
 local quickfix_group = vim.api.nvim_create_augroup("QuickFixGroup", { clear = true })
-vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
-    pattern = {"[^l]*"},
+vim.api.nvim_create_autocmd({ "QuickFixCmdPost" }, {
+    pattern = { "[^l]*" },
     command = "cwindow | setlocal nornu | setlocal nu",
     nested = true,
-    group = quickfix_group
+    group = quickfix_group,
 })
 
 -- Automatically open location list window
-vim.api.nvim_create_autocmd({"QuickFixCmdPost"}, {
-    pattern = {"l*"},
+vim.api.nvim_create_autocmd({ "QuickFixCmdPost" }, {
+    pattern = { "l*" },
     command = "lwindow | setlocal nornu | setlocal nu",
     nested = true,
-    group = quickfix_group
+    group = quickfix_group,
 })
 
 -- quickfix/location list toggling
@@ -29,27 +29,31 @@ local is_list_open = function(key)
 end
 
 local toggle_quickfix = function()
-    if is_list_open('quickfix') then
-        vim.cmd[[cclose]]
+    if is_list_open("quickfix") then
+        vim.cmd([[cclose]])
     else
-        vim.cmd[[cwindow]]
+        vim.cmd([[cwindow]])
     end
 end
 
 local toggle_loclist = function()
-    if is_list_open('loclist') then
-        vim.cmd[[lclose]]
+    if is_list_open("loclist") then
+        vim.cmd([[lclose]])
     else
-        vim.cmd[[lwindow]]
+        vim.cmd([[lwindow]])
     end
 end
 
-vim.keymap.set("n", "<Leader>q", function() toggle_quickfix() end, { silent = true, desc = "Toggle quickfix window" })
-vim.keymap.set("n", "<Leader>l", function() toggle_loclist() end, { silent = true, desc = "Toggle location list" })
+vim.keymap.set("n", "<Leader>q", function()
+    toggle_quickfix()
+end, { silent = true, desc = "Toggle quickfix window" })
+vim.keymap.set("n", "<Leader>l", function()
+    toggle_loclist()
+end, { silent = true, desc = "Toggle location list" })
 
 -- mappings to go back and forth in quick fix & localtion list
-utils.create_expr_mapping_family({'n'}, 'q', 'c', 'quickfix list')
-utils.create_expr_mapping_family({'n'}, 'l', 'l', 'location list')
+common.create_expr_mapping_family({ "n" }, "q", "c", "quickfix list")
+common.create_expr_mapping_family({ "n" }, "l", "l", "location list")
 
 -- Filtering quickfix list
 -- This enables Cfilter/Lfilter commands
@@ -64,21 +68,22 @@ local remove_current_qf_entry = function()
 
     local r, _ = unpack(vim.api.nvim_win_get_cursor(0))
     table.remove(list, r)
-    vim.fn.setqflist(list, 'r')
+    vim.fn.setqflist(list, "r")
 
     if #list ~= 0 then
-        vim.fn.execute('cfirst ' .. r .. ' | copen')
+        vim.fn.execute("cfirst " .. r .. " | copen")
     else
         vim.api.nvim_err_writeln("No more entries in the quickfix list")
     end
 end
 
 -- map 'dd' in qf
-vim.api.nvim_create_autocmd({"FileType"}, {
-    pattern = {"qf"},
+vim.api.nvim_create_autocmd({ "FileType" }, {
+    pattern = { "qf" },
     callback = function()
-        vim.keymap.set('n', 'dd', function() remove_current_qf_entry() end, { buffer = true })
+        vim.keymap.set("n", "dd", function()
+            remove_current_qf_entry()
+        end, { buffer = true })
     end,
-    group = quickfix_group
+    group = quickfix_group,
 })
-

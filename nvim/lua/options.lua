@@ -27,13 +27,13 @@ o.foldenable = false
 
 o.wildignorecase = true
 
-o.spelllang = 'en'
+o.spelllang = "en"
 o.spell = false
 
 o.textwidth = 120
-o.formatoptions:append('t')
+o.formatoptions:append("t")
 
 o.scrolloff = 2
 
 o.list = true
-o.listchars = { trail = '-', tab = '|.' }
+o.listchars = { trail = "-", tab = "|." }

@@ -2,25 +2,29 @@
 local M = {}
 local find_ext = function(t, e)
     for i = 1, #t do
-        if t[i] == e then return i end
+        if t[i] == e then
+            return i
+        end
     end
     return nil
 end
 
 local get_alternate_file = function()
     local fn = vim.fn
-    local ext = fn.expand('%:e')
+    local ext = fn.expand("%:e")
 
-    local map = { 'c', 'cpp', 'cc', 'cxx', 'h', 'hpp', 'hxx', 'ipp', 'ixx' }
+    local map = { "c", "cpp", "cc", "cxx", "h", "hpp", "hxx", "ipp", "ixx" }
 
     local index = find_ext(map, ext)
-    if  index == nil then return end
+    if index == nil then
+        return
+    end
 
-    local root_part = fn.expand('%:p:r')
+    local root_part = fn.expand("%:p:r")
 
     -- find from the index to the end
-    for i = index+1, #map do
-        local next = root_part .. '.' .. map[i]
+    for i = index + 1, #map do
+        local next = root_part .. "." .. map[i]
         if fn.filereadable(next) == 1 then
             return next
         end
@@ -28,24 +32,26 @@ local get_alternate_file = function()
 
     -- find from the start to the index
     for i = 1, index - 1 do
-        local next = root_part .. '.' .. map[i]
+        local next = root_part .. "." .. map[i]
         if fn.filereadable(next) == 1 then
             return next
         end
     end
 
-    vim.api.nvim_err_writeln("Couldn't find an alternative file for " .. vim.fn.expand('%:t'))
+    vim.api.nvim_err_writeln("Couldn't find an alternative file for " .. vim.fn.expand("%:t"))
 end
 
 -- alternate files (works only with c++ projects)
 M.switch_to_alt_file = function(options)
     local alternate_file = get_alternate_file()
-    if alternate_file == nil then return end
+    if alternate_file == nil then
+        return
+    end
 
     -- we know that alternate file exists by now
     -- TODO: what happens if the current file has got updates without being saved ??
-    options = options or { open = 'edit'}
-    vim.cmd(options['open'] .. alternate_file)
+    options = options or { open = "edit" }
+    vim.cmd(options["open"] .. alternate_file)
 end
 
 return M
