@@ -36,8 +36,8 @@ return require("lazy").setup({
     -- file explorer
     require("plugins.nvimtree"),
 
-    -- currently kanagawa
-    require("plugins.colorscheme"),
+    -- colorschemes
+    require("plugins.kanagawa_colorscheme"),
 
     -- git related stuff
     require("plugins.git"),

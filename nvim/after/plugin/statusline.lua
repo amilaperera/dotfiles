@@ -34,9 +34,8 @@ local get_git_info = function()
     if common.table_contains(git_ignore_types, vim.bo.filetype) == false then
         -- in case of a detached head state, truncate commit hash to 8 chars
         local git_status = vim.fn.FugitiveHead(8)
-
         if git_status ~= nil and git_status ~= "" then
-            return "%=" .. "%#StatuslineGitBranch#" .. " " .. git_status .. "%*"
+            return "%#StatuslineGitBranch#" .. " " .. git_status .. "%*  "
         end
     end
     return ""
@@ -44,7 +43,7 @@ end
 
 local get_file_type_and_encoding = function()
     local file_type = vim.bo.filetype
-    local encoding = vim.bo.fileencoding
+    local encoding = vim.bo.fileencoding or vim.bo.encoding
 
     -- filetype is undeducible
     if file_type == nil or file_type == "" then
@@ -79,8 +78,8 @@ end
 _G.aep_active_statusline = function()
     return table.concat({
         get_truncating_method(),
-        get_file(),
         get_git_info(),
+        get_file(),
         "%=",
         get_file_type_and_encoding(),
         get_location_info(),
