@@ -12,6 +12,7 @@ o.smartindent = true
 
 o.hlsearch = true
 o.incsearch = true
+o.inccommand = "split"
 o.ignorecase = true
 o.smartcase = true
 
@@ -32,6 +33,10 @@ o.spell = false
 
 o.textwidth = 120
 o.formatoptions:append("t")
+
+-- Configure how new splits should be opened
+o.splitright = true
+o.splitbelow = true
 
 o.scrolloff = 2
 

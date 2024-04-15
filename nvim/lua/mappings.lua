@@ -1,7 +1,7 @@
 local utils = require("common")
 
-vim.g.mapleader = ","
-vim.g.maplocalleader = ","
+vim.g.mapleader = vim.g.Environment.MapLeader
+vim.g.maplocalleader = vim.g.Environment.MapLeader
 
 -- retaining visual selection
 vim.keymap.set(
@@ -86,6 +86,15 @@ end, { silent = true, desc = "In normal mode moves the current [count] line(s) d
 -- scroll up and down focussing the center
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+-- Ctrl-L is hijacked for window navigation
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
+-- Window navigation
+vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- open $MYVIMRC in a new tab
 vim.keymap.set("n", "<Leader>v", ":tabe $MYVIMRC<CR>")
@@ -199,7 +208,7 @@ end, { silent = false, desc = "Toggle window zooming" })
 -- Git status information.
 -- This could also go in the statusline, but somewhat expensive.
 -- NOTE: Relies on gitsigns
-vim.keymap.set("n", "<C-h>", function()
+vim.keymap.set("n", "<Leader>gs", function()
     local info = vim.b.gitsigns_status_dict
     local info_str = ""
     if info ~= nil then

@@ -1,9 +1,7 @@
--- leader settings before the plugins are loaded (otherwise wrong leader)
-vim.g.mapleader = ","
-vim.g.maplocalleader = ","
-
--- Environment specific setting
+-- A global configurations
 vim.g.Environment = {
+    MapLeader = " ",
+    UseNerdFonts = true,
     Clangd = "clangd",
 }
 

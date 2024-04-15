@@ -35,7 +35,7 @@ local get_git_info = function()
         -- in case of a detached head state, truncate commit hash to 8 chars
         local git_status = vim.fn.FugitiveHead(8)
         if git_status ~= nil and git_status ~= "" then
-            return "%#StatuslineGitBranch#" .. " " .. git_status .. "%*  "
+            return "%#StatuslineGitBranch#" .. " " .. git_status .. "%* "
         end
     end
     return ""
