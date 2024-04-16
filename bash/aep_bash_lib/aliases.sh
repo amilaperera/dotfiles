@@ -73,5 +73,5 @@ alias src='source ~/.bashrc'
 alias eg='env | grep'
 
 # fzf
-alias f='"$EDITOR" $(fzf --preview "less {}")'
+alias f="fzf --multi --bind 'enter:become(${EDITOR} {+})'"
 
