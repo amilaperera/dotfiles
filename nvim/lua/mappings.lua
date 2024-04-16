@@ -83,25 +83,19 @@ vim.keymap.set("n", "]e", function()
     vim.fn.execute("normal dd" .. vim.v.count1 .. "jP")
 end, { silent = true, desc = "In normal mode moves the current [count] line(s) down" })
 
+-- redrawing the line at center. 'zz' already fast, but...
+vim.keymap.set("n", "<CR>", "zz")
+
 -- scroll up and down focussing the center
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
-
--- Ctrl-L is hijacked for window navigation
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-
--- Window navigation
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 -- open $MYVIMRC in a new tab
-vim.keymap.set("n", "<Leader>v", ":tabe $MYVIMRC<CR>")
+vim.keymap.set("n", "<Leader>n", ":tabe $MYVIMRC<CR>")
 
 -- toggles an option
 local toggle_option = function(option)

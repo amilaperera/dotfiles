@@ -20,10 +20,6 @@ return {
                     layout_config = { height = 0.95, width = 0.9 },
                 },
                 pickers = {
-                    git_commits = {
-                        -- The command is the default used by the plugin itself,
-                        git_command = { "git", "log", "--pretty=oneline", "--abbrev-commit" },
-                    },
                     buffers = {
                         show_all_buffers = true,
                         mappings = {
