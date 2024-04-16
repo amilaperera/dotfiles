@@ -83,9 +83,6 @@ vim.keymap.set("n", "]e", function()
     vim.fn.execute("normal dd" .. vim.v.count1 .. "jP")
 end, { silent = true, desc = "In normal mode moves the current [count] line(s) down" })
 
--- redrawing the line at center. 'zz' already fast, but...
-vim.keymap.set("n", "<CR>", "zz")
-
 -- scroll up and down focussing the center
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")

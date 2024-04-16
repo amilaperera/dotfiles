@@ -25,8 +25,8 @@ o.smartcase = true
 -- save undo history
 o.undofile = true
 
--- enable mouse mode
-o.mouse = "a"
+-- enable mouse mode only in normal and visual mode
+o.mouse = "nv"
 
 o.number = true
 o.relativenumber = true
