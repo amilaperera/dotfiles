@@ -60,27 +60,41 @@ function move_visual_down(count)
     vim.api.nvim_command("normal! gv")
 end
 
-vim.api.nvim_set_keymap(
+vim.keymap.set(
     "x",
     "[e",
     ":lua move_visual_up(vim.v.count1)<CR>",
-    { noremap = true, silent = true, desc = "In visual mode moves the current [count] lines up" }
+    { silent = true, desc = "In visual mode moves the current [count] lines up" }
 )
 
-vim.api.nvim_set_keymap(
+vim.keymap.set(
     "x",
     "]e",
     ":lua move_visual_down(vim.v.count1)<CR>",
-    { noremap = true, silent = true, desc = "In visual mode moves the current [count] lines down" }
+    { silent = true, desc = "In visual mode moves the current [count] lines down" }
 )
 
--- current line normal mode (count supported)
+-- Moving current line in normal mode (count supported)
 vim.keymap.set("n", "[e", function()
-    vim.fn.execute("normal dd" .. vim.v.count1 .. "kP")
+    local lines_in_buffer = vim.fn.line("$")
+
+    if vim.fn.line(".") == lines_in_buffer then
+        -- handling out of bounds cases
+        vim.fn.execute("normal ddP")
+    elseif vim.fn.line(".") > 1 then
+        vim.fn.execute("normal dd" .. vim.v.count1 .. "kP")
+    end
 end, { silent = true, desc = "In normal mode moves the current [count] line(s) up" })
 
 vim.keymap.set("n", "]e", function()
-    vim.fn.execute("normal dd" .. vim.v.count1 .. "jP")
+    local lines_in_buffer = vim.fn.line("$")
+
+    if vim.fn.line(".") == lines_in_buffer - 1 then
+        -- handling out of bounds cases
+        vim.fn.execute("normal ddp")
+    elseif vim.fn.line(".") < lines_in_buffer - 1 then
+        vim.fn.execute("normal dd" .. vim.v.count1 .. "jP")
+    end
 end, { silent = true, desc = "In normal mode moves the current [count] line(s) down" })
 
 -- scroll up and down focussing the center
