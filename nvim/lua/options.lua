@@ -11,7 +11,6 @@ o.shiftwidth = 4
 o.expandtab = true
 
 o.smartindent = true
-o.breakindent = true
 
 -- set highlight on search
 o.hlsearch = true

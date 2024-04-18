@@ -1,4 +1,4 @@
 *.pyc
 .cgdb/readline_history.txt
-nvim/plugin/packer_compiled.lua
+nvim/lazy-lock.json
 
