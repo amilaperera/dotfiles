@@ -88,12 +88,14 @@ end, { silent = true, desc = "In normal mode moves the current [count] line(s) u
 
 vim.keymap.set("n", "]e", function()
     local lines_in_buffer = vim.fn.line("$")
+    local curr = vim.fn.line(".")
 
-    if vim.fn.line(".") == lines_in_buffer - 1 then
-        -- handling out of bounds cases
+    -- handling out of bounds cases
+    if curr == lines_in_buffer - 1 then
         vim.fn.execute("normal ddp")
-    elseif vim.fn.line(".") < lines_in_buffer - 1 then
-        vim.fn.execute("normal dd" .. vim.v.count1 .. "jP")
+    elseif curr < lines_in_buffer - 1 then
+        local paste = (curr + vim.v.count1 >= lines_in_buffer) and "p" or "P"
+        vim.fn.execute("normal dd" .. vim.v.count1 .. "j" .. paste)
     end
 end, { silent = true, desc = "In normal mode moves the current [count] line(s) down" })
 

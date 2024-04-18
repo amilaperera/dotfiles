@@ -122,7 +122,7 @@ return {
 
             -- explore plugins' directory
             vim.keymap.set("n", "<Leader>xp", function()
-                explore({ dir = "~/.local/share/nvim/site/pack/packer/start" })
+                explore({ dir = "~/.local/share/nvim/lazy" })
             end)
         end,
     },
