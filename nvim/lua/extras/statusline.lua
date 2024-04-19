@@ -35,7 +35,7 @@ local get_git_info = function()
         -- in case of a detached head state, truncate commit hash to 8 chars
         local git_status = vim.fn.FugitiveHead(8)
         if git_status ~= nil and git_status ~= "" then
-            return "%#StatuslineGitBranch#" .. " " .. git_status .. "%* "
+            return "%#AepStatusLineGitBranch#" .. " " .. git_status .. "%* "
         end
     end
     return ""
@@ -75,7 +75,20 @@ local get_location_info = function()
     return "%8.(%l:%c%) %4.(%p%%%)"
 end
 
+local set_combined_color_group = function(name, opts)
+    local fg_col = common.get_default_hl({ name = opts.fg })
+    local bg_col = common.get_default_hl({ name = opts.bg })
+    if fg_col == nil or bg_col == nil then
+        return nil
+    end
+    common.set_default_hl(name, { fg = fg_col.fg, bg = bg_col.bg })
+end
+
 local M = {}
+
+M.config = function()
+    set_combined_color_group("AepStatusLineGitBranch", { fg = "String", bg = "StatusLine" })
+end
 
 M.active_statusline = function()
     return table.concat({

@@ -25,4 +25,15 @@ function M.create_expr_mapping_family(mode, map, cmd, item)
     end
 end
 
+-- create a highlight group in global namespace
+function M.set_default_hl(name, opts)
+    opts.default = true
+    vim.api.nvim_set_hl(0, name, opts)
+end
+
+-- get global namespace highlight
+function M.get_default_hl(opts)
+    return vim.api.nvim_get_hl(0, opts)
+end
+
 return M

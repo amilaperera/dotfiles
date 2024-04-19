@@ -41,10 +41,6 @@ return {
             -- termdebug
             vim.cmd([[highlight debugPC term=reverse ctermbg=blue guibg=navyblue]])
             vim.cmd([[highlight debugBreakpoint term=reverse ctermbg=red guibg=red]])
-
-            -- statusline
-            vim.cmd([[highlight Statusline guifg=#aaaaaa guibg=#16161d]])
-            vim.cmd([[highlight StatuslineGitBranch guifg=#7fac5e guibg=#16161d]])
         end,
     },
 }
