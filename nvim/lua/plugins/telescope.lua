@@ -101,6 +101,8 @@ return {
             vim.keymap.set("n", "<Leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
             vim.keymap.set("n", "<Leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
             vim.keymap.set("n", "<Leader>sc", builtin.git_commits, { desc = "[S]earch git [C]ommits" })
+            -- helpful for checking out a new branch when you're inside Neovim
+            vim.keymap.set("n", "<Leader>sb", builtin.git_branches, { desc = "[S]earch git [B]ranches" })
 
             -- Search by grep (Really handy if you use C-R C-W to search the word under cursor)
             vim.keymap.set("n", "<Leader>sg", function()

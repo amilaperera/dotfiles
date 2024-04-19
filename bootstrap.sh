@@ -102,10 +102,6 @@ function export_install_command()
         HAS_PACMAN=1
         install_command="pacman --noconfirm -Sy"
         update_os_command="pacman --noconfirm -Syu"
-    elif which zypper &> /dev/null; then
-        HAS_ZYPPER=1
-        install_command="zypper --non-interactive install"
-        update_os_command="zypper --non-interactive update"
     fi
     if [[ -n $install_command ]]; then
         echo -e "Install Command: ${GREEN}${install_command}${NC}"
@@ -168,9 +164,7 @@ function essentials()
     pkgs+=(ripgrep)
     pkgs+=(tree)
     [[ $HAS_DNF -eq 1 ]] && pkgs+=(redhat-lsb)
-    if [[ $HAS_DNF -eq 1 || $HAS_ZYPPER -eq 1 ]]; then
-        pkgs+=(vim neovim)
-    fi
+    [[ $HAS_DNF -eq 1 ]] && pkgs+=(vim neovim)
     pkgs+=(htop)
     pkgs+=(bat)
     pkgs+=(wget)
@@ -212,10 +206,6 @@ function dev_tools()
         pkgs+=(byacc)
         pkgs+=(python3-dev)
         pkgs+=(python3-dev)
-    elif [[ $HAS_ZYPPER -eq 1 ]]; then
-        pkgs+=(gcc)
-        pkgs+=(gcc-c++)
-        pkgs+=(python3-devel)
     else
         pkgs+=(base-devel)
         pkgs+=(boost boost-libs)
@@ -224,6 +214,7 @@ function dev_tools()
 
     pkgs+=(clang)
     pkgs+=(cmake)
+    pkgs+=(ccache)
     pkgs+=(kdiff3)
     pkgs+=(unzip)
     [[ $HAS_APT -eq 1 ]] && pkgs+=(exuberant-ctags) || pkgs+=(ctags)

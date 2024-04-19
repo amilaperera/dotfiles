@@ -51,8 +51,8 @@ o.splitbelow = true
 
 -- It's (somewhat) annoying to see '<20>' all the time when a keymap with the leader (assuming your leader is <Space>)
 -- is about to be triggered.
--- Having said that, this may take away other useful information such as the number of visually selected characters etc.
-o.showcmd = false
+-- Having said that, setting this to 'false' takes other useful information such as the number of visually selected characters etc.
+o.showcmd = true
 
 -- screen lines to keep above and below the cursor
 o.scrolloff = 5
