@@ -1,7 +1,8 @@
-local statusline_group = vim.api.nvim_create_augroup("StatuslineGroup", { clear = true })
+vim.g.laststatus = 2
 
 require("extras.statusline").config()
 
+local statusline_group = vim.api.nvim_create_augroup("StatuslineGroup", { clear = true })
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
     pattern = { "*" },
     callback = function()
