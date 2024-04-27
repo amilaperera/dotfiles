@@ -2,7 +2,7 @@ local common = require("common")
 local devicons = require("nvim-web-devicons")
 
 -- Module definitions
-local M = {}
+local AepStatusLine = {}
 
 local H = {}
 
@@ -33,6 +33,11 @@ H.get_file_type_icon = function(ft)
         file_type_icon = file_type_icon .. " "
     end
     return file_type_icon
+end
+
+H.get_mode_info = function()
+    local mode = vim.api.nvim_get_mode().mode
+    return "%#AepStatusLineInsertMode# " .. string.upper(mode) .. " %*"
 end
 
 H.get_git_info = function()
@@ -89,14 +94,10 @@ H.set_combined_color_group = function(name, opts)
     common.set_default_hl(name, { fg = fg_col.fg, bg = bg_col.bg })
 end
 
-M.config = function()
-    -- We discard return code as there's nothing much can do if the hl group can't be found
-    H.set_combined_color_group("AepStatusLineGitBranch", { fg = "String", bg = "StatusLine" })
-end
-
-M.active_statusline = function()
+AepStatusLine.active = function()
     return table.concat({
         H.get_truncating_method(),
+        H.get_mode_info(),
         H.get_git_info(),
         H.get_file(),
         "%=",
@@ -105,7 +106,7 @@ M.active_statusline = function()
     })
 end
 
-M.inactive_statusline = function()
+AepStatusLine.inactive = function()
     return table.concat({
         H.get_truncating_method(),
         H.get_file(),
@@ -114,4 +115,31 @@ M.inactive_statusline = function()
     })
 end
 
-return M
+H.update = vim.schedule_wrap(function()
+    local cur_win_id = vim.api.nvim_get_current_win()
+    for _, win_id in ipairs(vim.api.nvim_list_wins()) do
+        vim.wo[win_id].statusline = win_id == cur_win_id and "%{%v:lua.AepStatusLine.active()%}"
+            or "%{%v:lua.AepStatusLine.inactive()%}"
+    end
+end)
+
+AepStatusLine.setup = function(config)
+    _G.AepStatusLine = AepStatusLine
+
+    vim.g.laststatus = 2
+    vim.opt.showmode = false
+    -- We discard return code as there's nothing much can do if the hl group can't be found
+    H.set_combined_color_group("AepStatusLineGitBranch", { fg = "String", bg = "StatusLine" })
+    H.set_combined_color_group("AepStatusLineInsertMode", { fg = "ModeMsg", bg = "ModeMsg" })
+
+    H.update()
+
+    local augroup = vim.api.nvim_create_augroup("AepStatusLineGroup", { clear = true })
+    vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+        pattern = "*",
+        callback = H.update,
+        group = augroup,
+    })
+end
+
+return AepStatusLine
