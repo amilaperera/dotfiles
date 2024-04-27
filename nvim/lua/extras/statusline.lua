@@ -11,7 +11,7 @@ H.get_truncating_method = function()
 end
 
 H.get_file = function()
-    return "%t %h%m%r"
+    return " %t %h%m%r"
 end
 
 -- ignore git branch for following file types
