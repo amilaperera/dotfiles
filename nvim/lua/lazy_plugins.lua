@@ -38,6 +38,7 @@ return require("lazy").setup({
 
     -- colorschemes
     require("plugins.kanagawa_colorscheme"),
+    -- require("plugins.tokyonight_colorscheme"),
 
     -- git related stuff
     require("plugins.git"),

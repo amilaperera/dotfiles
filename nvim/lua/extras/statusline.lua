@@ -35,9 +35,46 @@ H.get_file_type_icon = function(ft)
     return file_type_icon
 end
 
-H.get_mode_info = function()
-    local mode = vim.api.nvim_get_mode().mode
-    return "%#AepStatusLineInsertMode# " .. string.upper(mode) .. " %*"
+H.mode_map = {
+    ["n"] = { short = "N" },
+    ["v"] = { short = "V" },
+    ["vs"] = { short = "V" },
+    ["V"] = { short = "V-L" },
+    ["Vs"] = { short = "V-L" },
+    ["\22"] = { short = "V-B" },
+    ["\22s"] = { short = "V-B" },
+    ["s"] = { short = "S" },
+    ["S"] = { short = "S-L" },
+    ["\19"] = { short = "S-B" },
+    ["i"] = { short = "I" },
+    ["R"] = { short = "R" },
+    ["c"] = { short = "C" },
+    ["r"] = { short = "P" },
+    ["!"] = { short = "Sh" },
+    ["t"] = { short = "T" },
+    ["Rc"] = { short = "R" },
+    ["Rx"] = { short = "R" },
+    ["Rv"] = { short = "V-R" },
+    ["Rvc"] = { short = "V-R" },
+    ["Rvx"] = { short = "V-R" },
+    ["rm"] = { short = "MORE" },
+    ["r?"] = { short = "CONFIRM" },
+    ["no"] = { short = "O-P" },
+    ["nov"] = { short = "O-P" },
+    ["noV"] = { short = "O-P" },
+    ["no\22"] = { short = "O-P" },
+}
+
+H.get_mode = function()
+    local wrap = function(code)
+        return " " .. code .. " "
+    end
+
+    local mode_code = vim.api.nvim_get_mode().mode
+    if H.mode_map[mode_code] == nil then
+        return wrap(mode_code)
+    end
+    return "%#AepStatusLineModeInfoColor#" .. wrap(H.mode_map[mode_code].short) .. "%*"
 end
 
 H.get_git_info = function()
@@ -45,7 +82,7 @@ H.get_git_info = function()
         -- in case of a detached head state, truncate commit hash to 8 chars
         local git_status = vim.fn.FugitiveHead(8)
         if git_status ~= nil and git_status ~= "" then
-            return "%#AepStatusLineGitBranch#" .. " " .. git_status .. "%* "
+            return " %#AepStatusLineGitBranch#" .. " " .. git_status .. "%* "
         end
     end
     return ""
@@ -97,7 +134,7 @@ end
 AepStatusLine.active = function()
     return table.concat({
         H.get_truncating_method(),
-        H.get_mode_info(),
+        H.get_mode(),
         H.get_git_info(),
         H.get_file(),
         "%=",
@@ -130,7 +167,7 @@ AepStatusLine.setup = function(config)
     vim.opt.showmode = false
     -- We discard return code as there's nothing much can do if the hl group can't be found
     H.set_combined_color_group("AepStatusLineGitBranch", { fg = "String", bg = "StatusLine" })
-    H.set_combined_color_group("AepStatusLineInsertMode", { fg = "ModeMsg", bg = "ModeMsg" })
+    H.set_combined_color_group("AepStatusLineModeInfoColor", { fg = "Visual", bg = "Visual" })
 
     H.update()
 
