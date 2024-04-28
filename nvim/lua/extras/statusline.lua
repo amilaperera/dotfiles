@@ -58,7 +58,7 @@ H.mode_map = {
     ["Rvc"] = { short = "V-R", hl = nil },
     ["Rvx"] = { short = "V-R", hl = nil },
     ["rm"] = { short = "MORE", hl = nil },
-    ["r?"] = { short = "CONFIRM", hl = nil },
+    ["r?"] = { short = "CONF", hl = nil },
     ["no"] = { short = "O-P", hl = nil },
     ["nov"] = { short = "O-P", hl = nil },
     ["noV"] = { short = "O-P", hl = nil },
@@ -81,6 +81,10 @@ H.get_mode = function()
 end
 
 H.get_git_info = function()
+    if vim.bo.buftype ~= "" then
+        return ""
+    end
+
     if common.table_contains(H.git_ignore_types(), vim.bo.filetype) == false then
         -- in case of a detached head state, truncate commit hash to 8 chars
         local git_status = vim.fn.FugitiveHead(8)
