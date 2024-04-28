@@ -1,5 +1,6 @@
 -- A global configurations
 vim.g.Environment = {
+    Colorscheme = "kanagawa",
     MapLeader = " ",
     UseNerdFonts = true,
     Clangd = "clangd",

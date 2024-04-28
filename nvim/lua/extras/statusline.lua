@@ -36,33 +36,33 @@ H.get_file_type_icon = function(ft)
 end
 
 H.mode_map = {
-    ["n"] = { short = "N" },
-    ["v"] = { short = "V" },
-    ["vs"] = { short = "V" },
-    ["V"] = { short = "V-L" },
-    ["Vs"] = { short = "V-L" },
-    ["\22"] = { short = "V-B" },
-    ["\22s"] = { short = "V-B" },
-    ["s"] = { short = "S" },
-    ["S"] = { short = "S-L" },
-    ["\19"] = { short = "S-B" },
-    ["i"] = { short = "I" },
-    ["R"] = { short = "R" },
-    ["c"] = { short = "C" },
-    ["r"] = { short = "P" },
-    ["!"] = { short = "Sh" },
-    ["t"] = { short = "T" },
-    ["Rc"] = { short = "R" },
-    ["Rx"] = { short = "R" },
-    ["Rv"] = { short = "V-R" },
-    ["Rvc"] = { short = "V-R" },
-    ["Rvx"] = { short = "V-R" },
-    ["rm"] = { short = "MORE" },
-    ["r?"] = { short = "CONFIRM" },
-    ["no"] = { short = "O-P" },
-    ["nov"] = { short = "O-P" },
-    ["noV"] = { short = "O-P" },
-    ["no\22"] = { short = "O-P" },
+    ["n"] = { short = "N", hl = "AepStatusLineNormalMode" },
+    ["v"] = { short = "V", hl = nil },
+    ["vs"] = { short = "V", hl = nil },
+    ["V"] = { short = "V-L", hl = nil },
+    ["Vs"] = { short = "V-L", hl = nil },
+    ["\22"] = { short = "V-B", hl = nil },
+    ["\22s"] = { short = "V-B", hl = nil },
+    ["s"] = { short = "S", hl = nil },
+    ["S"] = { short = "S-L", hl = nil },
+    ["\19"] = { short = "S-B", hl = nil },
+    ["i"] = { short = "I", hl = "AepStatusLineInsertMode" },
+    ["R"] = { short = "R", hl = nil },
+    ["c"] = { short = "C", hl = "AepStatusLineCommandMode" },
+    ["r"] = { short = "P", hl = nil },
+    ["!"] = { short = "Sh", hl = nil },
+    ["t"] = { short = "T", hl = nil },
+    ["Rc"] = { short = "R", hl = nil },
+    ["Rx"] = { short = "R", hl = nil },
+    ["Rv"] = { short = "V-R", hl = nil },
+    ["Rvc"] = { short = "V-R", hl = nil },
+    ["Rvx"] = { short = "V-R", hl = nil },
+    ["rm"] = { short = "MORE", hl = nil },
+    ["r?"] = { short = "CONFIRM", hl = nil },
+    ["no"] = { short = "O-P", hl = nil },
+    ["nov"] = { short = "O-P", hl = nil },
+    ["noV"] = { short = "O-P", hl = nil },
+    ["no\22"] = { short = "O-P", hl = nil },
 }
 
 H.get_mode = function()
@@ -72,9 +72,12 @@ H.get_mode = function()
 
     local mode_code = vim.api.nvim_get_mode().mode
     if H.mode_map[mode_code] == nil then
-        return wrap(mode_code)
+        -- we have an unknown mode
+        return "%#AepStatusLineModeInfoColor#" .. wrap(mode_code) .. "%*"
     end
-    return "%#AepStatusLineModeInfoColor#" .. wrap(H.mode_map[mode_code].short) .. "%*"
+
+    local color = H.mode_map[mode_code].hl == nil and "AepStatusLineModeInfoColor" or H.mode_map[mode_code].hl
+    return "%#" .. color .. "#" .. wrap(H.mode_map[mode_code].short) .. "%*"
 end
 
 H.get_git_info = function()
@@ -168,6 +171,9 @@ AepStatusLine.setup = function(config)
     -- We discard return code as there's nothing much can do if the hl group can't be found
     H.set_combined_color_group("AepStatusLineGitBranch", { fg = "String", bg = "StatusLine" })
     H.set_combined_color_group("AepStatusLineModeInfoColor", { fg = "Visual", bg = "Visual" })
+    H.set_combined_color_group("AepStatusLineNormalMode", { fg = "Title", bg = "Title" })
+    H.set_combined_color_group("AepStatusLineInsertMode", { fg = "IncSearch", bg = "IncSearch" })
+    H.set_combined_color_group("AepStatusLineCommandMode", { fg = "DiffAdd", bg = "DiffAdd" })
 
     H.update()
 
