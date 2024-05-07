@@ -141,7 +141,7 @@ end
 AepStatusLine.active = function()
     return table.concat({
         H.get_truncating_method(),
-        H.get_mode(),
+        -- H.get_mode(),
         H.get_git_info(),
         H.get_file(),
         "%=",
@@ -171,7 +171,7 @@ AepStatusLine.setup = function(config)
     _G.AepStatusLine = AepStatusLine
 
     vim.g.laststatus = 2
-    vim.opt.showmode = false
+    vim.opt.showmode = true
     -- We discard return code as there's nothing much can do if the hl group can't be found
     H.set_combined_color_group("AepStatusLineGitBranch", { fg = "String", bg = "StatusLine" })
     H.set_combined_color_group("AepStatusLineModeInfoColor", { fg = "Visual", bg = "Visual" })
