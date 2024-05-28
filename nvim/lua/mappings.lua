@@ -21,12 +21,15 @@ vim.keymap.set(
 vim.keymap.set("n", "<Up>", function()
     return "<cmd>resize +" .. vim.v.count1 .. "<CR>"
 end, { expr = true, silent = true, desc = "Increases current window height by a count" })
+
 vim.keymap.set("n", "<Down>", function()
     return "<cmd>resize -" .. vim.v.count1 .. "<CR>"
 end, { expr = true, silent = true, desc = "Decreases current window height by a count" })
+
 vim.keymap.set("n", "<Right>", function()
     return "<cmd>vertical resize +" .. vim.v.count1 .. "<CR>"
 end, { expr = true, silent = true, desc = "Increases the current window width by a count" })
+
 vim.keymap.set("n", "<Left>", function()
     return "<cmd>vertical resize -" .. vim.v.count1 .. "<CR>"
 end, { expr = true, silent = true, desc = "Decreases the current window width by a count" })
@@ -107,9 +110,6 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
--- open $MYVIMRC in a new tab
-vim.keymap.set("n", "<Leader>n", ":tabe $MYVIMRC<CR>")
-
 -- toggles an option
 local toggle_option = function(option)
     if vim.opt[option]:get() then
@@ -132,24 +132,31 @@ end
 vim.keymap.set("n", "yoc", function()
     toggle_option("cursorline")
 end, { silent = true, desc = "Toggle cursor line" })
+
 vim.keymap.set("n", "you", function()
     toggle_option("cursorcolumn")
 end, { silent = true, desc = "Toggle cursor column" })
+
 vim.keymap.set("n", "yoh", function()
     toggle_option("hlsearch")
 end, { silent = true, desc = "Toggle highlight search" })
+
 vim.keymap.set("n", "yoi", function()
     toggle_option("ignorecase")
 end, { silent = true, desc = "Toggle ignorecase" })
+
 vim.keymap.set("n", "yon", function()
     toggle_option("number")
 end, { silent = true, desc = "Toggle number" })
+
 vim.keymap.set("n", "yor", function()
     toggle_option("relativenumber")
 end, { silent = true, desc = "Toggle relativenumber" })
+
 vim.keymap.set("n", "yos", function()
     toggle_option("spell")
 end, { silent = true, desc = "Toggle spell checker" })
+
 vim.keymap.set("n", "yow", function()
     toggle_option("wrap")
 end, { silent = true, desc = "Toggle line wrapping" })
