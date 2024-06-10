@@ -136,7 +136,7 @@ return {
 
             vim.diagnostic.config({
                 underline = false, -- too much of a visual clutter
-                virtual_text = false, -- too much of a visual clutter
+                virtual_text = true,
                 signs = false,
             })
 
