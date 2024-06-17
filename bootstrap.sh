@@ -204,7 +204,7 @@ function dev_tools()
         pkgs+=(libevent-dev)
         pkgs+=(bison)
         pkgs+=(byacc)
-        pkgs+=(python3-dev)
+        pkgs+=(python3-venv)
         pkgs+=(python3-dev)
     else
         pkgs+=(base-devel)

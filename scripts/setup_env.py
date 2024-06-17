@@ -436,12 +436,7 @@ class VimEnv(Env):
             f.write(resp.content)
 
     def _install_plugins(self):
-        if Env.is_windows():
-            # TODO: ??
-            pass
-        else:
-            with open(os.devnull, 'w'):
-                subprocess.check_call([self.exe_path, '+PlugInstall', '+qall'])
+        print(Fore.GREEN + 'Start vim and do :PlugInstall')
 
     def setup_env(self):
         self._set_config_files()

@@ -60,9 +60,9 @@ alias agcm="ag -G '(cmake|CMakeLists.txt)$'"
 alias ,='cd -'
 
 # NOTE: Supports just Debian & Fedora
-if [[ $aep_distro_name == "Debian" ]]; then
-    alias U='sudo apt-get update && sudo apt-get upgrade -y'
-else
+if [[ $aep_has_apt -eq 1 ]]; then
+    alias U='sudo apt update && sudo apt upgrade -y'
+elif [[ $aep_has_dnf -eq 1 ]]; then
     alias U='sudo dnf update -y'
 fi
 

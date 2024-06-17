@@ -30,6 +30,14 @@ if [[ $(uname) == "Linux" ]]; then
         export aep_distro_ver=$(lsb_release -sr)  # distibution version
         export aep_arch=$(uname -m)               # architecture
     fi
+
+    if aep_command_exists dnf; then
+        export aep_has_dnf=1
+    elif aep_command_exists apt; then
+        export aep_has_apt=1
+    elif aep_command_exists apt; then
+        export aep_has_pac=1
+    fi
 fi
 
 # History manipulation
