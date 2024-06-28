@@ -172,6 +172,7 @@ function essentials()
     pkgs+=(xclip)
     pkgs+=(dictd)
     pkgs+=(tmux)
+    pkgs+=(neofetch)
     # some lsp servers rely on node
     [[ $HAS_APT -eq 1 ]] && pkgs+=(nodejs npm)
     [[ $HAS_DNF -eq 1 ]] && pkgs+=(nodejs-npm)
