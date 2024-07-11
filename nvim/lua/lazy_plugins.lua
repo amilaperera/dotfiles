@@ -16,7 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Plugins
 return require("lazy").setup({
     -- custom statusline, telescope, nvim-tree etc. rely on this
-    { "nvim-tree.nvim-web-devicons" },
+    { "nvim-tree/nvim-web-devicons", opts = {} },
 
     -- telescope and its extensions
     require("plugins.telescope"),
