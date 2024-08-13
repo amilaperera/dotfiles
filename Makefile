@@ -7,24 +7,11 @@ VIM     := $(DIR)/vim
 MISC    := $(DIR)/misc
 HOMEDIR := ~/
 
-# OS detection
-OS=$(shell lsb_release -si)
-
-ifeq ($(OS),Fedora)
-	update=sudo dnf update -y
-	command=sudo dnf install -y
-else ifeq ($(OS),Debian)
-	update=sudo apt-get update -y && sudo apt-get upgrade -y
-	command=sudo apt-get install -y
-else
-	 $(error "Unsupported OS")
-endif
-
-.PHONY: core all fzf bash nvim vim misc update
+.PHONY: core all fzf bash nvim vim misc
 
 core: bash nvim vim
 
-all: update core misc
+all: core misc
 	@echo
 	@echo "All done. Good day!!!"
 
@@ -48,7 +35,6 @@ nvim:
 	@echo
 	@echo "================= Installing nvim configs ================="
 	ln -sfT $(NVIM) $(HOMEDIR).config/nvim
-	nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 vim:
 	@echo
@@ -64,9 +50,4 @@ misc:
 	ln -sf $(MISC)/.agignore $(HOMEDIR)
 	mkdir -p $(HOMEDIR).local && ln -sf $(MISC)/build_wrapper.sh $(HOMEDIR).local/
 	curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh >| $(HOMEDIR).local/git-prompt.sh
-
-update:
-	@echo
-	@echo "==================== Upgrading system ===================="
-	$(update)
 
