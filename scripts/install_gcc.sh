@@ -110,5 +110,5 @@ done
 
 unset project_directory build_dir cwd
 
-echo   "Done. Have a good day !!!"
+echo "Done. Have a good day !!!"
 
