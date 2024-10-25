@@ -152,32 +152,20 @@ function pip_install()
 function essentials()
 {
     local pkgs=()
-    pkgs+=(git gitk)
+    pkgs+=(git)
     pkgs+=(ripgrep)
     pkgs+=(tree)
-    [[ $HAS_DNF -eq 1 ]] && pkgs+=(redhat-lsb)
-    [[ $HAS_DNF -eq 1 ]] && pkgs+=(vim neovim)
     pkgs+=(htop)
     pkgs+=(bat)
     pkgs+=(wget)
     pkgs+=(curl)
     pkgs+=(xclip)
     pkgs+=(dictd)
-    pkgs+=(tmux)
     pkgs+=(neofetch)
-    # some lsp servers rely on node
-    [[ $HAS_APT -eq 1 ]] && pkgs+=(nodejs npm)
-    [[ $HAS_DNF -eq 1 ]] && pkgs+=(nodejs-npm)
+    pkgs+=(tmux)
+    pkgs+=(vim)
 
     install ${pkgs[*]}
-
-    # Latest git-prompt.sh
-    echo " - Downloading git-prompt.sh"
-    curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh > ~/.local/git-prompt.sh
-
-    # fzf
-    [ ! -d ~/.fzf ] && git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install --key-bindings --completion --no-update-rc
 }
 
 function dev_tools()
@@ -230,9 +218,6 @@ function python_stuff()
     fi
 
     install ${pkgs[*]}
-    # local pips=()
-    # pips+=(pynvim)
-    # pip_install ${pips[*]}
 }
 
 function extra_repos()
@@ -342,7 +327,9 @@ function setup_configs()
     echo
 
     green "Setting up personal dotfiles"
-    make all
+    prev=$(pwd)
+    cd ~/.dotfiles && make all
+    cd $prev
 }
 
 function setup_configs_if_auth_ok()
@@ -424,12 +411,9 @@ for choice in $choices; do
             install_packages extra_repos
             ;;
         5)
-            install_packages vim_from_sources
-            ;;
-        6)
             install_packages nvim_from_sources
             ;;
-        7)
+        6)
             if setup_github_personal_ssh; then
                 # wait until the user wishes to continue
                 if ! confirm "Continue with setup (y/n) ?"; then
@@ -437,10 +421,10 @@ for choice in $choices; do
                 fi
             fi
             ;;
-        8)
+        7)
             setup_configs_if_auth_ok
             ;;
-        9)
+        8)
             install_packages nerd_fonts
             ;;
     esac
