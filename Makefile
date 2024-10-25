@@ -3,15 +3,12 @@ SHELL=/bin/bash
 DIR     := $(shell pwd)
 BASH    := $(DIR)/bash
 NVIM    := $(DIR)/nvim
-VIM     := $(DIR)/vim
 MISC    := $(DIR)/misc
 HOMEDIR := ~/
 
-.PHONY: core all fzf bash nvim vim misc
+.PHONY: all fzf bash nvim misc
 
-core: bash nvim vim
-
-all: core misc
+all: fzf bash nvim misc
 	@echo
 	@echo "All done. Good day!!!"
 
@@ -22,28 +19,23 @@ fzf:
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 	~/.fzf/install --key-bindings --completion --no-update-rc
 
-bash: fzf
+bash:
 	@echo
 	@echo "================= Installing bash configs ================="
 	ln -sf $(BASH)/.bashrc $(HOMEDIR)
 	ln -sf $(BASH)/.bash_profile $(HOMEDIR)
 	ln -sf $(BASH)/.inputrc $(HOMEDIR)
 	ln -sf $(BASH)/aep_bash_lib $(HOMEDIR)
-	builtin source ~/.bashrc
 
 nvim:
 	@echo
 	@echo "================= Installing nvim configs ================="
 	ln -sfT $(NVIM) $(HOMEDIR).config/nvim
 
-vim:
-	@echo
-	@echo "================= Installing vim configs =================="
-	ln -sf $(VIM)/.vimrc $(HOMEDIR)
-
 misc:
 	@echo
 	@echo "================= Installing misc configs ================="
+	ln -sf $(MISC)/.vimrc $(HOMEDIR)
 	ln -sf $(MISC)/.tmux.conf $(HOMEDIR)
 	ln -sf $(MISC)/.gdbinit $(HOMEDIR)
 	ln -sf $(MISC)/.gitconfig $(HOMEDIR)
