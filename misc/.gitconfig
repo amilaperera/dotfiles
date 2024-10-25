@@ -6,15 +6,9 @@
     ci = commit
     co = checkout
     br = branch
-[diff]
-    tool = nvim
-[difftool]
-    prompt = false
-[merge]
-    tool = nvim
-[mergetool]
-    prompt = false
-[pull]
-    rebase = false
+    lg = log --oneline --graph
+[core]
+    editor = nvim
+    autocrlf = input
 [color]
 	ui = auto
