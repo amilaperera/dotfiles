@@ -1,7 +1,7 @@
 Personal dotfiles
 =================
 
-This repo contains my personal dotfiles mainly related to _bash_, _vim_, _tmux_, _git_ etc.
+This repo contains my personal dotfiles mainly related to _bash_, _nvim_, _tmux_, _git_ etc.
 
 **Installation**
 

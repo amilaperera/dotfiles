@@ -28,16 +28,23 @@ function green()
     printf "${GREEN}$@${NC}\n"
 }
 
+function confirm()
+{
+    read -p "${@} " answer
+    [[ ! "$answer" =~ ^[Yy]$ ]] && return 1 || return 0
+}
+
 function show_os_info()
 {
-    local os_name=`awk -F= '/^NAME/{print $2}' /etc/os-release 2> /dev/null`
-    local version=`awk -F= '/^\<VERSION\>/{print $2}' /etc/os-release 2> /dev/null`
-    local sanitized_version=`echo "$version" | tr -d '"'`
+    local os_name=`grep -E '^NAME=' /etc/os-release | sed 's/^[^=]*=//; s/"//g'`
+    local version=`grep -E '^VERSION=' /etc/os-release | sed 's/^[^=]*=//; s/"//g'`
     if [[ -n $os_name ]]; then
-        echo -e "Operating System: ${GREEN}${os_name} ${sanitized_version}${NC}"
+        echo -e "Operating System: ${GREEN}${os_name} ${version}${NC}"
     else
         echo -e "Operating System: ${RED}"Unknown"${NC}"
     fi
+    echo -e "Host: ${GREEN}$(hostname)${NC}"
+    echo -e "User: ${GREEN}${USER}${NC}"
 }
 
 function update_os()
@@ -72,9 +79,8 @@ EOF
     if (( difference > OS_UPDATE_INTERVAL_SECONDS )); then
         # Now get the confirmation
         yellow "You haven't updated the packages in $(( difference / 86400 )) days."
-        read -n 1 -p "Continue to update packages [y]: " input
-        if [ "${input}" = "y" ] || [ -z ${input} ]; then
-            echo
+        read -p "Continue to update packages (y/n): " input
+        if [[ "$input" =~ ^[Yy]$ ]]; then
             return 0
         else
             return 1
@@ -143,20 +149,6 @@ function pip_install()
     sh -c "$cmd"
 }
 
-function snap_install()
-{
-    local cmd=`echo "sudo snap install ${@}"`
-    echo $cmd
-    sh -c "$cmd"
-}
-
-function snap_install_classic()
-{
-    local cmd=`echo "sudo snap install ${@} --classic"`
-    echo $cmd
-    sh -c "$cmd"
-}
-
 function essentials()
 {
     local pkgs=()
@@ -205,7 +197,6 @@ function dev_tools()
         pkgs+=(libevent-dev)
         pkgs+=(bison)
         pkgs+=(byacc)
-        pkgs+=(python3-venv)
         pkgs+=(python3-dev)
     else
         pkgs+=(base-devel)
@@ -216,7 +207,6 @@ function dev_tools()
     pkgs+=(clang)
     pkgs+=(cmake)
     pkgs+=(ccache)
-    pkgs+=(kdiff3)
     pkgs+=(unzip)
     [[ $HAS_APT -eq 1 ]] && pkgs+=(exuberant-ctags) || pkgs+=(ctags)
 
@@ -231,7 +221,6 @@ function python_stuff()
         pkgs+=(python3)
         pkgs+=(python3-pip)
         pkgs+=(ipython3)
-        pkgs+=(python3-jedi)
         pkgs+=(python3-venv)
     else
         pkgs+=(python)
@@ -241,9 +230,9 @@ function python_stuff()
     fi
 
     install ${pkgs[*]}
-    local pips=()
-    pips+=(pynvim)
-    pip_install ${pips[*]}
+    # local pips=()
+    # pips+=(pynvim)
+    # pip_install ${pips[*]}
 }
 
 function extra_repos()
@@ -351,11 +340,9 @@ function setup_configs()
         yellow "$HOME/.dotfiles directory already exists"
     fi
     echo
-    if [[ ${BYPASS_SSH} -eq 1 ]]; then
-        cd ~/.dotfiles/scripts && python3 setup_env.py --nossh --env bash nvim vim misc
-    else
-        cd ~/.dotfiles/scripts && python3 setup_env.py -e bash nvim vim misc
-    fi
+
+    green "Setting up personal dotfiles"
+    make all
 }
 
 function setup_configs_if_auth_ok()
@@ -396,6 +383,13 @@ function install_packages()
 # main
 ########################################
 probe_os_info
+
+# confirm before continuing
+if ! confirm "Continue the rest of bootstrapping with ROOT privileges to update/install packages (y/n) ?"; then
+    echo "Exiting."
+    exit 1
+fi
+
 check_dependencies
 update_os
 
@@ -438,9 +432,9 @@ for choice in $choices; do
         7)
             if setup_github_personal_ssh; then
                 # wait until the user wishes to continue
-                read -n 1 -p "Press [c] to continue with setup or any other key to abort: " input
-                echo
-                [[ "$input" != "c" ]] && break
+                if ! confirm "Continue with setup (y/n) ?"; then
+                    break
+                fi
             fi
             ;;
         8)
