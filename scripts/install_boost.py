@@ -23,7 +23,6 @@ import urllib.request
 import tarfile
 import subprocess
 import shutil
-from colorama import Fore, init
 
 
 def process(args):
@@ -85,7 +84,7 @@ def download(url, dest):
 
 
 def extract(temp_dir, file_name):
-    print(Fore.GREEN + 'Extracting: ', end='')
+    print('Extracting: ', end='')
     dir_name = file_name.split('.')[0]
     print(dir_name)
     with tarfile.open(file_name) as tar:
@@ -115,7 +114,7 @@ def get_prefix(path, version, toolset):
     prefix_path = os.path.normpath(path)
 
     # Print install path information.
-    print(Fore.GREEN + 'Install path: ', end='')
+    print('Install path: ', end='')
     print('{}'.format(prefix_path))
 
     # Set up the whole prefix argument.
@@ -142,7 +141,7 @@ def bootstrap(prefix_arg, toolset, extract_directory):
     cmd.append(prefix_arg)
 
     # Print bootstrap command
-    print(Fore.GREEN + 'Bootstrap command: ', end='')
+    print('Bootstrap command: ', end='')
     print('{}'.format(' '.join(cmd)))
 
     subprocess.run(cmd, shell=False, cwd=extract_directory)
@@ -155,7 +154,7 @@ def b2(prefix_arg, toolset, extract_directory):
         cmd = ['./b2', 'toolset=' + toolset, 'install', prefix_arg, '-j 8']
 
     # Print build command
-    print(Fore.GREEN + 'Build command: ', end='')
+    print('Build command: ', end='')
     print('{}'.format(' '.join(cmd)))
 
     args = {'cwd': extract_directory}
@@ -182,15 +181,14 @@ def remove_extract(extract_directory):
                 shutil.rmtree(extract_directory)
             else:
                 cmd = ['rm', '-rf', extract_directory]
-                print(Fore.GREEN +
-                      'Extract directory remove command: ', end='')
+                print('Extract directory remove command: ', end='')
                 print('{}'.format(' '.join(cmd)))
                 # don't change cwd, just execute the command from where we run
                 # the script
                 subprocess.run(cmd)
         except:
-            print(Fore.RED + 'Error happened while trying to remove the extract directory.')
-            print(Fore.YELLOW + 'Please remove the extract directory manually: ', end='')
+            print('Error happened while trying to remove the extract directory.')
+            print('Please remove the extract directory manually: ', end='')
             print(extract_directory)
 
 
@@ -212,12 +210,9 @@ def main():
 
 if __name__ == '__main__':
     try:
-        # Initialize colorama.
-        # Automate sending reset sequences after each colored output.
-        init(autoreset=True)
         main()
 
     except Exception as e:
         print('Error: ', end='')
-        print(Fore.RED + '{}'.format(e))
+        print('{}'.format(e))
 
