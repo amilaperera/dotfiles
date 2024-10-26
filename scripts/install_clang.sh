@@ -28,6 +28,8 @@ project_directory=${cwd}/llvm-project
 # Prepare build directory
 build_dir=${project_directory}/build
 
+parallel_jobs=4
+
 function prepare_project_for_building()
 {
     # If project_directory doesn't exist create it and clone the project.
@@ -39,7 +41,7 @@ function prepare_project_for_building()
         die_if_error $? "Cloning llvm-project failed"
     else
         # Fresh build each time!!!!
-        cd ${project_directory} && git co master && git clean -dfx
+        cd ${project_directory} && git checkout main && git clean -dfx
 
         if [[ -d "${build_dir}" ]]; then
             rm -rf "${build_dir}"
@@ -79,11 +81,11 @@ function install_version()
     die_if_error $? "CMake configuration failed"
 
     # make
-    cd ${build_dir} && ninja -j4
+    cd ${build_dir} && ninja -j${parallel_jobs}
     die_if_error $? "ninja build failed"
 
     # make install
-    cd ${build_dir} && ninja install -j4
+    cd ${build_dir} && ninja install -j${parallel_jobs}
     die_if_error $? "ninja install failed"
 
     echo
