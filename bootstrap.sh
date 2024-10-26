@@ -186,6 +186,8 @@ function dev_tools()
         pkgs+=(bison)
         pkgs+=(byacc)
         pkgs+=(python3-dev)
+        pkgs+=(npm)
+        pkgs+=(nodejs)
     else
         pkgs+=(base-devel)
         pkgs+=(boost boost-libs)
@@ -386,11 +388,10 @@ options=(
     2 "Development tools"                                        off
     3 "Python stuff"                                             off
     4 "Extra repositories (Fedor Only)"                          off
-    5 "Install vim latest from sources (Recommended for Debian)" off
-    6 "Install nvim latest from sources"                         off
-    7 "Setup github SSH"                                         off
-    8 "Setup personal configs(bash,tmux,vim etc.)"               off
-    9 "Install Nerd fonts(Hack)"                                 off
+    5 "Install nvim latest from sources"                         off
+    6 "Setup github SSH"                                         off
+    7 "Setup personal configs(bash,tmux,vim etc.)"               off
+    8 "Install Nerd fonts(Hack)"                                 off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
