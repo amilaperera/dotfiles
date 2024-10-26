@@ -58,42 +58,6 @@ function probe_os_info() {
     echo
 }
 
-function install() {
-    local cmd=
-    [[ $HAS_PACMAN -eq 1 ]] && cmd=`echo "sudo ${install_command} ${@}"` || cmd=`echo "sudo ${install_command} ${@} -y"`
-    echo $cmd
-    sh -c "$cmd"
-}
-
-function pre_requisites() {
-    local pkgs=()
-    if [[ $HAS_APT -eq 1 ]]; then
-        pkgs+=(build-essential)
-        pkgs+=(libgmp-dev)
-        pkgs+=(libmpfr-dev)
-        pkgs+=(libmpc-dev)
-        pkgs+=(libisl-dev)
-        pkgs+=(libzstd-dev)
-        pkgs+=(flex)
-        pkgs+=(help2man)
-    elif [[ $HAS_DNF -eq 1 ]]; then
-        pkgs+=(gmp-devel)
-        pkgs+=(mpfr-devel)
-        pkgs+=(libmpc-devel)
-        pkgs+=(isl-devel)
-        pkgs+=(libzstd-devel)
-    fi
-    pkgs+=(texinfo)
-    install ${pkgs[*]}
-}
-
-# Function wrapper to install packages
-function install_packages() {
-    yellow "Installing ${@}..."
-    ${@}
-    echo
-}
-
 function die() {
     red "Error: ${@}..."
     exit

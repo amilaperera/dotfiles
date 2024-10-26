@@ -16,9 +16,6 @@ fi
 # OS infomation probing
 probe_os_info
 
-# Install pre-requisites
-install_packages pre_requisites
-
 # Working directory
 cwd=${HOME}/work
 

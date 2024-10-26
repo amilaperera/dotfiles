@@ -177,6 +177,11 @@ function dev_tools()
         pkgs+=(boost-devel)
         pkgs+=(ninja-build)
         pkgs+=(python3-devel) # for building boost
+        pkgs+=(gmp-devel)
+        pkgs+=(mpfr-devel)
+        pkgs+=(libmpc-devel)
+        pkgs+=(isl-devel)
+        pkgs+=(libzstd-devel)
     elif [[ $HAS_APT -eq 1 ]]; then
         pkgs+=(build-essential)
         pkgs+=(libboost-all-dev)
@@ -188,17 +193,19 @@ function dev_tools()
         pkgs+=(python3-dev)
         pkgs+=(npm)
         pkgs+=(nodejs)
-    else
-        pkgs+=(base-devel)
-        pkgs+=(boost boost-libs)
-        pkgs+=(python3-devel)
+        pkgs+=(libgmp-dev)
+        pkgs+=(libmpfr-dev)
+        pkgs+=(libmpc-dev)
+        pkgs+=(libisl-dev)
+        pkgs+=(libzstd-dev)
+        pkgs+=(flex)
+        pkgs+=(help2man)
     fi
 
-    pkgs+=(clang)
     pkgs+=(cmake)
     pkgs+=(ccache)
     pkgs+=(unzip)
-    [[ $HAS_APT -eq 1 ]] && pkgs+=(exuberant-ctags) || pkgs+=(ctags)
+    pkgs+=(texinfo)
 
     install ${pkgs[*]}
 }
@@ -265,24 +272,6 @@ function nvim_from_sources()
     cd ~/tmp/neovim && git checkout stable && git pull
     echo "  - Building and installing neovim..."
     cd ~/tmp/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=${HOME}/.local install
-}
-
-function vim_from_sources()
-{
-    echo "  - Cloning vim..."
-    [[ -d ~/tmp/vim ]] && rm -rf ~/tmp/vim
-
-    mkdir -p ~/tmp/vim
-    git clone https://github.com/vim/vim.git ~/tmp/vim
-
-    echo "  - Building and installing vim..."
-    cd ~/tmp/vim && ./configure --with-features=huge \
-        --enable-terminal \
-        --enable-multibyte \
-        --enable-python3interp=yes \
-        --with-python3-config-dir=$(python3-config --configdir) \
-        --prefix=${HOME}/.local
-    cd ~/tmp/vim && make && make install
 }
 
 function setup_github_personal_ssh()
