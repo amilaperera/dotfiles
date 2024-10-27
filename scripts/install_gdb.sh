@@ -22,9 +22,6 @@ fi
 # OS infomation probing
 probe_os_info
 
-# Install pre-requisites
-install_packages pre_requisites
-
 # Working directory
 cwd=${HOME}/work
 
@@ -44,7 +41,7 @@ function prepare_project_for_building()
         cd ${cwd} && git clone https://github.com/bminor/binutils-gdb
         die_if_error $? "Cloning binutils-gdb failed"
     else
-        cd ${project_directory} && git co master && git clean -dfx
+        cd ${project_directory} && git checkout master && git clean -dfx
         # Fresh build each time!!!!
         if [[ -d "${build_dir}" ]]; then
             rm -rf "${build_dir}"

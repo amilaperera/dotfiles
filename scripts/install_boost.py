@@ -56,7 +56,7 @@ def metainfo(args):
     version_with_underscore = version_with_dots.replace('.', '_')
 
     temp_dir = tempfile.gettempdir()
-    print(Fore.GREEN + 'Temp directory: '.format(temp_dir), end='')
+    print('Temp directory: '.format(temp_dir), end='')
     print('{}'.format(temp_dir))
 
     # name of the boost archive
@@ -73,7 +73,7 @@ def metainfo(args):
 
 
 def download(url, dest):
-    print(Fore.GREEN + 'Downloading: ', end='')
+    print('Downloading: ', end='')
     print('{} into {}'.format(url, dest))
 
     # https://stackoverflow.com/questions/7243750/download-file-from-web-in-python-3
