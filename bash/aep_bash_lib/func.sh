@@ -47,8 +47,11 @@ function buf()
 # Moves files to hidden folder in tmp, that gets cleared on each reboot
 function del() { mkdir -p /tmp/.trash && mv "$@" /tmp/.trash ; }
 
-# Find aliases
-function ff() { find -iname "$@" -type f ; } # find files
+# Find files - realitve path
+function ff() { find -iname "$@" -type f ; }
+
+# Find files - absolute path
+function fff() { find ~+ -iname "$@" -type f ; }
 
 # List files
 function flist() { find $1 -type f | sed -n 's/.*\/\(.*\)/\1/p' ; }
