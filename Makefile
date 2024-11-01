@@ -49,4 +49,4 @@ misc:
 # This is kept separate, as not to cause any conflict with emails/username.
 gitconfig:
 	@echo "================= Installing git config ================="
-	ln -sf $(MISC)/.gitconfig $(HOMEDIR)
+	$(DIR)/scripts/create_gitconfig.sh
