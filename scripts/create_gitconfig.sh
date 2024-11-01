@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# if global .gitconfig exists, first confirm if we need to overwrite
+if [[ -f ${HOME}/.gitconfig ]]; then
+    read -p "${HOME}/.gitconfig exists. Do you want to overwrite (y/n) ? " response
+    if [[ ! "$response" =~ ^[yY] ]]; then
+        exit 0
+    fi
+fi
+
 # user
 default_username=`getent passwd $(whoami) | cut -d ':' -f 5 | cut -d ',' -f 1`
 
@@ -24,3 +32,8 @@ git config --global core.autocrlf 'input'
 
 # ui
 git config --global color.ui 'auto'
+
+# show settings
+echo
+echo "---- Global gitconfig settings ----"
+git --no-pager config --global --list

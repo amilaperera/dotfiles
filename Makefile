@@ -6,15 +6,11 @@ NVIM    := $(DIR)/nvim
 MISC    := $(DIR)/misc
 HOMEDIR := ~/
 
-.PHONY: all fzf bash nvim misc
+.PHONY: all fzf bash nvim misc gitconfig
 
-all: fzf bash nvim misc
+all: fzf bash nvim misc gitconfig
 	@echo
 	@echo "All done. Good day!!!"
-	@echo
-	@echo "=================================== IMPORTANT ===================================="
-	@echo "      Run 'make gitconfig' separately if you want to install the gitconfig."
-	@echo "=================================================================================="
 	@echo
 
 fzf:
@@ -46,7 +42,7 @@ misc:
 	mkdir -p $(HOMEDIR).local && ln -sf $(MISC)/build_wrapper.sh $(HOMEDIR).local/
 	curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh >| $(HOMEDIR).local/git-prompt.sh
 
-# This is kept separate, as not to cause any conflict with emails/username.
 gitconfig:
+	@echo
 	@echo "================= Installing git config ================="
 	$(DIR)/scripts/create_gitconfig.sh
