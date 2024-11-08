@@ -236,7 +236,7 @@ vim.keymap.set("n", "<Leader>gs", function()
 end, { silent = true, desc = "Git status on the buffer" })
 
 vim.keymap.set("n", "<Leader>gr", function()
-    local header = ':grep -irE "'
+    local header = ':grep -i "'
     -- This is used to move the cursor position so that user can start typing the search pattern.
     -- FIXME: May be a better way exists ? API ?
     local cursor_moves = "<C-b>"
