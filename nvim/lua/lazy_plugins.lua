@@ -43,6 +43,9 @@ return require("lazy").setup({
     -- git related stuff
     require("plugins.git"),
 
+    -- diffview
+    require("plugins.diffview"),
+
     -- async run
     require("plugins.asyncrun"),
 

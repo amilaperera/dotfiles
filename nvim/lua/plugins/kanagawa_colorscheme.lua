@@ -26,13 +26,13 @@ return {
 
             -- More traditional colors for diff to be consistent across many terminals
             -- diff
-            vim.cmd([[highlight DiffAdd guibg=#005f00]])
-            vim.cmd([[highlight DiffDelete guibg=#af0000]])
+            -- vim.cmd([[highlight DiffAdd guibg=#005f00]])
+            -- vim.cmd([[highlight DiffDelete guibg=#af0000]])
             vim.cmd([[highlight DiffText guibg=#5f5f87]])
 
             -- most of the plugins relies on the following highligt group links from the colorscheme
-            vim.cmd([[highlight diffAdded guifg=green]])
-            vim.cmd([[highlight diffDeleted guifg=red]])
+            -- vim.cmd([[highlight diffAdded guifg=green]])
+            -- vim.cmd([[highlight diffDeleted guifg=red]])
             vim.cmd([[highlight diffChanged guifg=orange]])
 
             -- spelling
