@@ -13,3 +13,5 @@ gsettings set org.gnome.shell.extensions.dash-to-dock show-windows-preview true
 
 gsettings list-recursively org.gnome.desktop.wm.preferences
 gsettings list-recursively org.gnome.shell.extensions.dash-to-dock
+
+gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
