@@ -31,6 +31,7 @@ bash:
 nvim:
 	@echo
 	@echo "================= Installing nvim configs ================="
+	mkdir -p $(HOMEDIR).config
 	ln -sfT $(NVIM) $(HOMEDIR).config/nvim
 
 misc:
