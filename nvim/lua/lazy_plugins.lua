@@ -77,6 +77,13 @@ return require("lazy").setup({
         "azabiong/vim-highlighter",
         config = function()
             -- highlight plugin
+            vim.keymap.set(
+                "n",
+                "[<TAB>",
+                "<cmd>Hi<<CR>",
+                { silent = true, desc = "nearest pattern highlight backward" }
+            )
+            vim.keymap.set("n", "]<TAB>", "<cmd>Hi><CR>", { silent = true, desc = "nearest pattern highlight forward" })
             vim.keymap.set("n", "[<CR>", "<cmd>Hi{<CR>", { silent = true, desc = "nearest highlight backward" })
             vim.keymap.set("n", "]<CR>", "<cmd>Hi}<CR>", { silent = true, desc = "nearest highlight forward" })
         end,
@@ -86,6 +93,7 @@ return require("lazy").setup({
     {
         "windwp/nvim-ts-autotag",
         config = function()
+            ---@diagnostic disable-next-line: missing-fields
             require("nvim-ts-autotag").setup({
                 opts = {
                     -- Defaults
@@ -112,4 +120,10 @@ return require("lazy").setup({
             )
         end,
     },
+
+    -- terminal
+    require("plugins.terminal"),
+
+    -- ai stuff
+    require("plugins.ai.copilot"),
 })

@@ -8,16 +8,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     group = fast_close_group,
 })
 
--- save and source file
-local source_files_group = vim.api.nvim_create_augroup("SourceFilesGroup", { clear = true })
-vim.api.nvim_create_autocmd({ "FileType" }, {
-    pattern = { "lua", "vim" },
-    callback = function()
-        vim.keymap.set("n", "<Leader><Space>", ":w<CR>:source %<CR>", { buffer = true })
-    end,
-    group = source_files_group,
-})
-
 -- Toggle cursorline on only if,
 --  buffer window active
 --  not in insert mode

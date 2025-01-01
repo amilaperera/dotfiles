@@ -90,7 +90,7 @@ return {
             vim.keymap.set("n", "<C-T>", builtin.git_files, { desc = "Telescope inside git directory" })
             vim.keymap.set("n", "<Leader>R", builtin.resume, { desc = "Telescope resume" })
             vim.keymap.set("n", "<Leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
-            vim.keymap.set("n", "<Leader>,", builtin.buffers, { desc = "[,] Find existing buffers" })
+            vim.keymap.set("n", "<Leader><Leader>", builtin.buffers, { desc = "[<Leader>] Find existing buffers" })
             vim.keymap.set(
                 "n",
                 "<Leader>/",
