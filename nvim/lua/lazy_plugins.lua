@@ -77,6 +77,13 @@ return require("lazy").setup({
         "azabiong/vim-highlighter",
         config = function()
             -- highlight plugin
+            vim.keymap.set(
+                "n",
+                "[<TAB>",
+                "<cmd>Hi<<CR>",
+                { silent = true, desc = "nearest pattern highlight backward" }
+            )
+            vim.keymap.set("n", "]<TAB>", "<cmd>Hi><CR>", { silent = true, desc = "nearest pattern highlight forward" })
             vim.keymap.set("n", "[<CR>", "<cmd>Hi{<CR>", { silent = true, desc = "nearest highlight backward" })
             vim.keymap.set("n", "]<CR>", "<cmd>Hi}<CR>", { silent = true, desc = "nearest highlight forward" })
         end,
