@@ -119,4 +119,7 @@ return require("lazy").setup({
             )
         end,
     },
+
+    -- terminal
+    require("plugins.terminal"),
 })
