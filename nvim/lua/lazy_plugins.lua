@@ -123,4 +123,7 @@ return require("lazy").setup({
 
     -- terminal
     require("plugins.terminal"),
+
+    -- ai stuff
+    require("plugins.ai.copilot"),
 })
