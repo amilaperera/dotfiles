@@ -28,9 +28,9 @@ return {
             })
 
             -- open/close
-            vim.keymap.set("n", "<Leader>e", ":NvimTreeToggle<CR>")
+            vim.keymap.set("n", "<Leader>ee", ":NvimTreeToggle<CR>")
             -- reveal file in explorer
-            vim.keymap.set("n", "<Leader>r", ":NvimTreeFindFile<CR>")
+            vim.keymap.set("n", "<Leader>rr", ":NvimTreeFindFile<CR>")
         end,
     },
 }

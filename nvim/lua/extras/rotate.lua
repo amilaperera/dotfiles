@@ -9,7 +9,7 @@ local find_ext = function(t, e)
     return nil
 end
 
-local get_alternate_file = function()
+local get_next_file = function()
     local fn = vim.fn
     local ext = fn.expand("%:e")
 
@@ -41,17 +41,17 @@ local get_alternate_file = function()
     vim.api.nvim_err_writeln("Couldn't find an alternative file for " .. vim.fn.expand("%:t"))
 end
 
--- alternate files (works only with c++ projects)
-M.switch_to_alt_file = function(options)
-    local alternate_file = get_alternate_file()
-    if alternate_file == nil then
+-- rotate files (works only with c++ projects)
+M.rotate_file = function(options)
+    local next_file = get_next_file()
+    if next_file == nil then
         return
     end
 
-    -- we know that alternate file exists by now
+    -- we know that rotate file exists by now
     -- TODO: what happens if the current file has got updates without being saved ??
     options = options or { open = "edit" }
-    vim.cmd(options["open"] .. alternate_file)
+    vim.cmd(options["open"] .. next_file)
 end
 
 return M

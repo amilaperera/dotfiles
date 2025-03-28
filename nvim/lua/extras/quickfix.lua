@@ -44,10 +44,10 @@ local toggle_loclist = function()
     end
 end
 
-vim.keymap.set("n", "<Leader>q", function()
+vim.keymap.set("n", "<Leader>qq", function()
     toggle_quickfix()
 end, { silent = true, desc = "Toggle quickfix window" })
-vim.keymap.set("n", "<Leader>l", function()
+vim.keymap.set("n", "<Leader>ll", function()
     toggle_loclist()
 end, { silent = true, desc = "Toggle location list" })
 

@@ -1,4 +1,4 @@
-require("extras.alternate")
+require("extras.rotate")
 require("extras.auto_commands")
 require("extras.quickfix")
 require("extras.statusline").setup({})
