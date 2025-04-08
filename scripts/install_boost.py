@@ -18,11 +18,11 @@ NOTE:
 
 import argparse
 import os
+import shutil
+import subprocess
+import tarfile
 import tempfile
 import urllib.request
-import tarfile
-import subprocess
-import shutil
 
 
 def process(args):
@@ -52,40 +52,44 @@ def process(args):
 
 
 def metainfo(args):
-    version_with_dots = args.version + '.0'
-    version_with_underscore = version_with_dots.replace('.', '_')
+    version_with_dots = args.version + ".0"
+    version_with_underscore = version_with_dots.replace(".", "_")
 
     temp_dir = tempfile.gettempdir()
-    print('Temp directory: '.format(temp_dir), end='')
-    print('{}'.format(temp_dir))
+    print("Temp directory: ".format(temp_dir), end="")
+    print("{}".format(temp_dir))
 
     # name of the boost archive
-    archive_name = 'boost_' + version_with_underscore + '.tar.gz'
+    archive_name = "boost_" + version_with_underscore + ".tar.gz"
 
     # destination file name
     file_name = os.path.join(temp_dir, archive_name)
 
     # url to retrieve
-    url = 'https://boostorg.jfrog.io/artifactory/main/release/' + \
-        version_with_dots + '/source/' + archive_name
+    url = (
+        "https://boostorg.jfrog.io/artifactory/main/release/"
+        + version_with_dots
+        + "/source/"
+        + archive_name
+    )
 
     return version_with_dots, temp_dir, url, file_name
 
 
 def download(url, dest):
-    print('Downloading: ', end='')
-    print('{} into {}'.format(url, dest))
+    print("Downloading: ", end="")
+    print("{} into {}".format(url, dest))
 
     # https://stackoverflow.com/questions/7243750/download-file-from-web-in-python-3
     # Download the file from `url` and save it locally under `dest`:
-    with urllib.request.urlopen(url) as response, open(dest, 'wb') as out_file:
+    with urllib.request.urlopen(url) as response, open(dest, "wb") as out_file:
         data = response.read()
         out_file.write(data)
 
 
 def extract(temp_dir, file_name):
-    print('Extracting: ', end='')
-    dir_name = file_name.split('.')[0]
+    print("Extracting: ", end="")
+    dir_name = file_name.split(".")[0]
     print(dir_name)
     with tarfile.open(file_name) as tar:
         tar.extractall(temp_dir)
@@ -104,66 +108,66 @@ def get_prefix(path, version, toolset):
     # Either way, when building with CMake provide -DBOOST_ROOT=<path>
     # to change the boost version aginst with the project is linked.
     if not path:
-        if os.name == 'nt':
-            path = r'C:\boost\boost_' + version
+        if os.name == "nt":
+            path = r"C:\boost\boost_" + version
         else:
             root_path = os.path.join(os.path.expanduser("~"), ".local")
-            path = str(root_path) + '/boost_' + version + "." + toolset
+            path = str(root_path) + "/boost_" + version + "." + toolset
 
     # Normalize path name by collapsing redundant seprators.
     prefix_path = os.path.normpath(path)
 
     # Print install path information.
-    print('Install path: ', end='')
-    print('{}'.format(prefix_path))
+    print("Install path: ", end="")
+    print("{}".format(prefix_path))
 
     # Set up the whole prefix argument.
     # This is needed both in bootstrap and build procedure.
-    return '--prefix=' + prefix_path
+    return "--prefix=" + prefix_path
 
 
 def get_toolset(toolset):
     if not toolset:
-        if os.name == 'nt':
-            toolset = 'msvc'
+        if os.name == "nt":
+            toolset = "msvc"
         else:
-            toolset = 'gcc'
+            toolset = "gcc"
 
     return toolset
 
 
 def bootstrap(prefix_arg, toolset, extract_directory):
-    if os.name == 'nt':
-        cmd = ['bootstrap.bat', '--with-toolset='+toolset]
+    if os.name == "nt":
+        cmd = ["bootstrap.bat", "--with-toolset=" + toolset]
     else:
-        cmd = ['./bootstrap.sh', '--with-toolset='+toolset]
+        cmd = ["./bootstrap.sh", "--with-toolset=" + toolset]
 
     cmd.append(prefix_arg)
 
     # Print bootstrap command
-    print('Bootstrap command: ', end='')
-    print('{}'.format(' '.join(cmd)))
+    print("Bootstrap command: ", end="")
+    print("{}".format(" ".join(cmd)))
 
     subprocess.run(cmd, shell=False, cwd=extract_directory)
 
 
 def b2(prefix_arg, toolset, extract_directory):
-    if os.name == 'nt':
-        cmd = ['b2.exe', 'toolset=' + toolset,  'install', prefix_arg, '-j 8']
+    if os.name == "nt":
+        cmd = ["b2.exe", "toolset=" + toolset, "install", prefix_arg, "-j 8"]
     else:
-        cmd = ['./b2', 'toolset=' + toolset, 'install', prefix_arg, '-j 8']
+        cmd = ["./b2", "toolset=" + toolset, "install", prefix_arg, "-j 8"]
 
     # Print build command
-    print('Build command: ', end='')
-    print('{}'.format(' '.join(cmd)))
+    print("Build command: ", end="")
+    print("{}".format(" ".join(cmd)))
 
-    args = {'cwd': extract_directory}
+    args = {"cwd": extract_directory}
     # Windows needs shell=True for some reason even though b2.exe is not a
     # shell builtin
-    if os.name == 'nt':
-        args.update({'shell': True})
+    if os.name == "nt":
+        args.update({"shell": True})
     else:
-        args.update({'check': True})
+        args.update({"check": True})
 
     subprocess.run(cmd, **args)
 
@@ -176,43 +180,52 @@ def remove_archive(file_name):
 def remove_extract(extract_directory):
     if os.path.exists(extract_directory):
         try:
-            if os.name == 'nt':
+            if os.name == "nt":
                 # no issues of user permissions on Windows (I suppose)
                 shutil.rmtree(extract_directory)
             else:
-                cmd = ['rm', '-rf', extract_directory]
-                print('Extract directory remove command: ', end='')
-                print('{}'.format(' '.join(cmd)))
+                cmd = ["rm", "-rf", extract_directory]
+                print("Extract directory remove command: ", end="")
+                print("{}".format(" ".join(cmd)))
                 # don't change cwd, just execute the command from where we run
                 # the script
                 subprocess.run(cmd)
         except:
-            print('Error happened while trying to remove the extract directory.')
-            print('Please remove the extract directory manually: ', end='')
+            print("Error happened while trying to remove the extract directory.")
+            print("Please remove the extract directory manually: ", end="")
             print(extract_directory)
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Install boost from source code')
-    parser.add_argument('-v', '--version', required=True,
-            help='Boost version to be installed')
-    parser.add_argument('-t', '--toolset')
-    parser.add_argument('-p', '--path',
-            help='Installation path [C:\\boost\\boost_<ver> | ${HOME}/.local/boost_<ver>]')
-    parser.add_argument('--keep-download', action='store_true',
-            help='Keeps download archive after installing. If ignored --keep-download is true')
-    parser.add_argument('--download-only', action='store_true',
-            help='Downloads and extracts the archive witout installing')
+    parser = argparse.ArgumentParser(description="Install boost from source code")
+    parser.add_argument(
+        "-v", "--version", required=True, help="Boost version to be installed"
+    )
+    parser.add_argument("-t", "--toolset")
+    parser.add_argument(
+        "-p",
+        "--path",
+        help="Installation path [C:\\boost\\boost_<ver> | ${HOME}/.local/boost_<ver>]",
+    )
+    parser.add_argument(
+        "--keep-download",
+        action="store_true",
+        help="Keeps download archive after installing. If ignored --keep-download is true",
+    )
+    parser.add_argument(
+        "--download-only",
+        action="store_true",
+        help="Downloads and extracts the archive witout installing",
+    )
 
     args = parser.parse_args()
     process(args)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         main()
 
     except Exception as e:
-        print('Error: ', end='')
-        print('{}'.format(e))
-
+        print("Error: ", end="")
+        print("{}".format(e))
