@@ -67,7 +67,7 @@ def metainfo(args):
 
     # url to retrieve
     url = (
-        "https://boostorg.jfrog.io/artifactory/main/release/"
+        "https://archives.boost.io/release/"
         + version_with_dots
         + "/source/"
         + archive_name
