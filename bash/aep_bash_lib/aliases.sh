@@ -43,27 +43,21 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 
-alias cls='clear'
-alias clr='cd ~/ && clear'
-
-alias _='sudo'
-
-alias e='$VISUAL'       # edit in VISUAL, E is a function to edit in gvim in background
-alias view='$VISUAL -R' # opens the file in readonly mode
-alias vi='$VISUAL'
-
-alias ag="ag --pager='less -R'"
-alias agcpp="ag -G '\.(cpp|cc|cxx|hpp|hh|hxx|h|ipp)$'"
-alias agcm="ag -G '(cmake|CMakeLists.txt)$'"
-
-# alias alternative to up() function
-alias ,='cd -'
+# ripgrep to conveniently grep across cpp related files
+# use `rg --type-list` to see the file types
+# use `--type-add` to append more extensions to the file types
+alias rgpp="rg --type-add 'cpp:*.{ipp,tpp}'"
 
 # NOTE: Supports just Debian & Fedora
 if [[ $aep_has_apt -eq 1 ]]; then
     alias U='sudo apt update && sudo apt upgrade -y'
 elif [[ $aep_has_dnf -eq 1 ]]; then
     alias U='sudo dnf update -y'
+fi
+
+# if nvim exists, alias vim -> nvim
+if aep_command_exists nvim; then
+    alias vim='nvim'
 fi
 
 # source bash resources

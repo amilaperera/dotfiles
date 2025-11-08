@@ -74,6 +74,7 @@ function install_version()
                                 -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;lldb" \
                                 -DCMAKE_INSTALL_PREFIX=${HOME}/.local/clang-${version} \
                                 -DCMAKE_BUILD_TYPE=Release \
+                                -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
                                 ../llvm
     die_if_error $? "CMake configuration failed"
 

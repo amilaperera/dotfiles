@@ -40,6 +40,7 @@ misc:
 	ln -sf $(MISC)/.vimrc $(HOMEDIR)
 	ln -sf $(MISC)/.tmux.conf $(HOMEDIR)
 	ln -sf $(MISC)/.gdbinit $(HOMEDIR)
+	ln -sf $(MISC)/.wezterm.lua $(HOMEDIR)
 	mkdir -p $(HOMEDIR).local && ln -sf $(MISC)/build_wrapper.sh $(HOMEDIR).local/
 	curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh >| $(HOMEDIR).local/git-prompt.sh
 

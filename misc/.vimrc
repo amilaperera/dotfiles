@@ -33,7 +33,7 @@ set smartcase             " ...unless the search contains uppercase letters
 " Visuals
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable file type plugins and indent
-colorscheme default
+colorscheme desert
 
 " Mappings
 " Clears highlight

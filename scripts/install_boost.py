@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 Once the boost libraries are installed, use -DBOOST_ROOT=<PATH> to change
@@ -67,7 +67,7 @@ def metainfo(args):
 
     # url to retrieve
     url = (
-        "https://boostorg.jfrog.io/artifactory/main/release/"
+        "https://archives.boost.io/release/"
         + version_with_dots
         + "/source/"
         + archive_name

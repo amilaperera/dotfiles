@@ -38,10 +38,10 @@ function extract()
 # Takes the back up of a file with timestamp
 function buf()
 {
-  local filename filetime
-  filename=$1
-  filetime=$(date +%Y%m%d_%H%M%S)
-  cp -a "${filename}" "${filename}_${filetime}"
+    local filename filetime
+    filename=$1
+    filetime=$(date +%Y%m%d_%H%M%S)
+    cp -a "${filename}" "${filename}_${filetime}"
 }
 
 # Moves files to hidden folder in tmp, that gets cleared on each reboot
@@ -88,10 +88,10 @@ function up()
     else
         # if one argument is supplied then go up the directory hierachy
         if(( $1 > $CDUPVALUEDEFAULT )); then
-            # limits the maximum up levels to the value defined by CDVALUEDEFAULT
-            cdupcount=$CDUPVALUEDEFAULT
-        else
-            cdupcount=$1
+        # limits the maximum up levels to the value defined by CDVALUEDEFAULT
+        cdupcount=$CDUPVALUEDEFAULT
+    else
+        cdupcount=$1
         fi
         # construct the upvalue string
         for (( upcount=0; upcount<$cdupcount; upcount++ )); do
@@ -162,23 +162,6 @@ function swap()
     mv -f "${1}" "${tempfile}" && mv -f "${2}" "${1}" && mv -f "${tempfile}" "${2}"
 }
 
-# diff with colordiff
-# in order to have bash completion worked properly you may have
-# to comment the existing cdiff completion which is hardly used
-# refer to /etc/bash_completion file
-function cdiff()
-{
-    colordiff -puw "${@}" | less -R
-}
-
-# view man page in english
-function engman()
-{
-    local lang=$LANG
-    LANG=en_US.UTF8 && man "${@}"
-    export LANG=$lang
-}
-
 # find man pages colorizing the matching result
 function fman()
 {
@@ -209,27 +192,6 @@ function color_codes()
         fc=$(echo $rows | cut -c$((f+1)))
         printf "$fc $vline$no\nb$fc$vline$bo\n"
     done
-}
-
-# start tmux session
-# NOTE: This function can be called in .bashrc
-function tmux_start()
-{
-    local session_name= archey_cmd="archey"
-
-    [ $# -eq 0 ] && session_name="$USER" || session_name=$1
-
-    if aep_check_if_command_exists tmux; then
-        if [[ "$TERM" != "screen-256color" ]]; then
-            tmux attach-session -t "$session_name"
-            if [ $? -ne 0 ]; then
-                # if a $session_name named tmux session doesn't exist,
-                # then create a new session
-                tmux new-session -s "$session_name" -d # first create in detached mode
-                tmux attach-session # attach the session
-            fi
-        fi
-    fi
 }
 
 # display tmux colors
@@ -319,13 +281,13 @@ function rgf()
     fi
 
     rg --color=always --line-number --no-heading --smart-case "${*:-}" |
-      fzf --ansi \
-          --color "hl:-1:underline,hl+:-1:underline:reverse" \
-          --delimiter : \
-          --preview "${preview} --color=always {1} --highlight-line {2}" \
-          --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
-          --bind 'enter:become(nvim {1} +{2})'
-}
+        fzf --ansi \
+        --color "hl:-1:underline,hl+:-1:underline:reverse" \
+        --delimiter : \
+        --preview "${preview} --color=always {1} --highlight-line {2}" \
+        --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+        --bind 'enter:become(nvim {1} +{2})'
+    }
 
 # Rather than installing pip, just do a direct invocation of the python file from the repo
 # https://github.com/sivel/speedtest-cli
