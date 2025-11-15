@@ -1,5 +1,6 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
+local mux = wezterm.mux
 
 local launch_menu = {}
 
@@ -19,17 +20,19 @@ else
     config.font = wezterm.font("Hack Nerd Font")
     config.font_size = 10
     config.default_domain = "local"
-    config.color_scheme = "Catppuccin Mocha"
+    config.color_scheme = "nightfox"
 end
 
-config.window_background_opacity = 0.9
+config.window_decorations = "RESIZE"
 
 config.colors = {
     cursor_bg = "white",
 }
-config.default_cursor_style = "SteadyBlock"
 
-local mux = wezterm.mux
+config.default_cursor_style = "SteadyBlock"
+config.term = "wezterm"
+
+config.use_fancy_tab_bar = false
 
 wezterm.on("gui-startup", function()
     local tab, pane, window = mux.spawn_window({})
