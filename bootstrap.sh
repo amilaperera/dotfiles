@@ -159,12 +159,12 @@ function essentials()
     pkgs+=(htop)
     pkgs+=(bat)
     pkgs+=(wget)
-    pkgs+=(curl)
     pkgs+=(xclip)
     pkgs+=(dictd)
     pkgs+=(neofetch)
     pkgs+=(tmux)
     pkgs+=(vim)
+    pkgs+=(wezterm)
 
     install ${pkgs[*]}
 }
