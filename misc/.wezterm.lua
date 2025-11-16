@@ -22,7 +22,22 @@ end
 
 -- font settings
 config.font = wezterm.font("Hack Nerd Font")
-config.font_size = 9
+
+-- Usually font size can stay at 10. If further tweaking is needed, depending on the monitor resolution,
+-- put the desired font size (number only) in the file ~/.wezterm_font_size
+local function read_file(path)
+    local f = io.open(path, "r")
+    if not f then
+        return nil
+    end
+    local content = f:read("*a")
+    f:close()
+    return content
+end
+
+local size_string = read_file(os.getenv("HOME") .. "/.wezterm_font_size")
+local font_size = tonumber(size_string) or 10
+config.font_size = font_size
 
 -- colorscheme
 config.color_scheme = "nightfox"
@@ -30,12 +45,12 @@ config.color_scheme = "nightfox"
 -- window settings
 config.window_decorations = "RESIZE"
 config.window_padding = {
-    left = 5,
-    right = 5,
+    left = 2,
+    right = 2,
     top = 0,
-    bottom = 0,
+    bottom = 2,
 }
-config.window_close_confirmation = 'NeverPrompt'
+config.window_close_confirmation = "NeverPrompt"
 
 -- maximize window on startup
 local mux = wezterm.mux
@@ -68,9 +83,13 @@ end
 config.leader = { key = "Space", mods = "ALT", timeout_milliseconds = 1000 }
 
 config.keys = {
-    { key = 'l', mods = "LEADER", action = wezterm.action.ShowLauncher },
-    { key = "b", mods = "LEADER", action = wezterm.action.SpawnCommandInNewTab({ args = { get_btop_cmd() }, }), },
-    { key = "w", mods = "LEADER", action = wezterm.action.SpawnCommandInNewTab({ args = { "wsl.exe", "--cd", "~" } }), },
+    { key = "l", mods = "LEADER", action = wezterm.action.ShowLauncher },
+    { key = "b", mods = "LEADER", action = wezterm.action.SpawnCommandInNewTab({ args = { get_btop_cmd() } }) },
+    {
+        key = "w",
+        mods = "LEADER",
+        action = wezterm.action.SpawnCommandInNewTab({ args = { "wsl.exe", "--cd", "~" } }),
+    },
 }
 
 -- Finally, return the configuration to wezterm:
