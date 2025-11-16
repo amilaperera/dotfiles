@@ -1,8 +1,16 @@
+--
+-- The config is minimum as to have wezterm behave as a terminal emulator only.
+-- For panes and windows management, use nothing but tmux.
+--
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
+
+-- platform identification
+local is_linux = wezterm.target_triple:find("linux") ~= nil
+local is_windows = wezterm.target_triple:find("windows") ~= nil
 
 -- platform specific settings
 if wezterm.target_triple:find("windows") then
@@ -41,6 +49,21 @@ config.colors = {
 
 -- tab bar settings
 config.use_fancy_tab_bar = false
+
+-- scrollback settings
+config.scrollback_lines = 20000
+config.enable_scroll_bar = false
+
+-- key bindings
+config.keys = {
+    {
+        key = "b",
+        mods = "CTRL|SHIFT",
+        action = wezterm.action.SpawnCommandInNewTab({
+            args = { "btop" },
+        }),
+    },
+}
 
 -- Finally, return the configuration to wezterm:
 return config
