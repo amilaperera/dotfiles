@@ -1,7 +1,22 @@
 Personal dotfiles
 =================
 
-This repo contains my personal dotfiles mainly related to _bash_, _nvim_, _tmux_, _git_ etc.
+This repo contains my personal dotfiles and scripts to set up a new Linux machine.
+
+**Included Configurations**
+* bash + readline
+* nvim
+* vim (very minimal, mostly using nvim)
+* tmux
+* git
+* wezterm
+
+**Scripts**
+* install essential packages via apt/dnf (Tested in Debian/Ubuntu and Fedora)
+* compile gcc/gdb from source code
+* compile llvm(clang) from source code
+* compile boost C++ from source code
+
 
 **Installation**
 
