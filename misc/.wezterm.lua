@@ -35,7 +35,7 @@ local function read_file(path)
     return content
 end
 
-local size_string = read_file(os.getenv("HOME") .. "/.wezterm_font_size")
+local size_string = read_file(wezterm.home_dir .. "/.wezterm_font_size")
 local font_size = tonumber(size_string) or 10
 config.font_size = font_size
 
