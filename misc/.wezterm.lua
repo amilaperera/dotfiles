@@ -21,7 +21,7 @@ if is_windows then
 end
 
 -- font settings
-config.font = wezterm.font("Hack Nerd Font Mono", {weight = "Regular"})
+config.font = wezterm.font("Hack Nerd Font Mono", { weight = "Regular" })
 
 -- Usually font size can stay at 10. If further tweaking is needed, depending on the monitor resolution,
 -- put the desired font size (number only) in the file ~/.wezterm_font_size
@@ -44,15 +44,14 @@ config.color_scheme = "Dark+"
 -- background image
 config.background = {
     {
-        source = { File = wezterm.home_dir.."/dotfiles/wallpaper2.png" },
+        source = { File = wezterm.home_dir .. "/.dotfiles/misc/wallpaper2.png" },
         hsb = {
             hue = 1.0,
             saturation = 1.0,
-            brightness = 0.04
-        }
-    }
+            brightness = 0.03,
+        },
+    },
 }
-
 
 -- window settings
 config.window_decorations = "RESIZE"
