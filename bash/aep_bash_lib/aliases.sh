@@ -3,9 +3,7 @@
 #ls family aliases
 
 # colors whenever possible
-if man diff | grep -q "color"; then
-    alias diff="diff --color=auto"
-fi
+alias diff="diff --color=auto"
 alias grep="grep --color=auto"
 alias ip="ip -color=auto"
 
