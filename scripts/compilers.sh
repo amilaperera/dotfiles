@@ -136,7 +136,7 @@ function set_gcc_ld_lib_path()
     fi
 
     local ld_path=$(dirname $lib_path_entry)
-    export LD_LIBRARY_PATH=:${ld_path}
+    export LD_LIBRARY_PATH=${ld_path}
     return 0
 }
 
