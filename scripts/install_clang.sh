@@ -69,12 +69,18 @@ function install_version()
     mkdir -p "${build_dir}"
     die_if_error $? "Creating the build directory failed"
 
+    local target_triple="$(uname -m)-linux-gnu"
+
     # Configure CMake
     cd ${build_dir} && cmake -G "Ninja" \
                                 -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;lldb" \
                                 -DCMAKE_INSTALL_PREFIX=${HOME}/.local/clang-${version} \
                                 -DCMAKE_BUILD_TYPE=Release \
-                                -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
+                                -DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind" \
+                                -DLLVM_DEFAULT_TARGET_TRIPLE="${target_triple}" \
+                                -DLIBCXX_USE_TARGET_INCLUDE_LAYOUT=OFF \
+                                -DLIBCXX_INCLUDE_BENCHMARKS=OFF \
+                                -DLIBCXX_ENABLE_FILESYSTEM=ON \
                                 ../llvm
     die_if_error $? "CMake configuration failed"
 

@@ -9,15 +9,29 @@ compiler_root="$HOME/.local"
 # latest stuff
 function activate_gcc()
 {
-    if ! activate_gcc15; then
-        return 1
+    if [[ -n "${COMPILER_GCC_CC}" && -n "${COMPILER_GCC_CXX}" ]]; then
+        export CC=${COMPILER_GCC_CC}
+        export CXX=${COMPILER_GCC_CXX}
+        export LD_LIBRARY_PATH=
+        export BOOST_ROOT=${compiler_root}/boost_1.89.0.gcc
+    else
+        if ! activate_gcc15; then
+            return 1
+        fi
     fi
 }
 
 function activate_clang()
 {
-    if ! activate_clang21; then
-        return 1
+    if [[ -n "${COMPILER_CLANG_CC}" && -n "${COMPILER_CLANG_CXX}" ]]; then
+        export CC=${COMPILER_CLANG_CC}
+        export CXX=${COMPILER_CLANG_CXX}
+        export LD_LIBRARY_PATH=
+        export BOOST_ROOT=${compiler_root}/boost_1.89.0.clang
+    else
+        if ! activate_clang21; then
+            return 1
+        fi
     fi
 }
 
