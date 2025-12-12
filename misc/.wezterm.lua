@@ -91,7 +91,7 @@ local get_btop_cmd = function()
 end
 
 -- first the leader
-config.leader = { key = "Space", mods = "ALT", timeout_milliseconds = 1000 }
+config.leader = { key = "w", mods = "ALT", timeout_milliseconds = 1000 }
 
 config.keys = {
     { key = "l", mods = "LEADER", action = wezterm.action.ShowLauncher },

@@ -164,7 +164,6 @@ function essentials()
     pkgs+=(neofetch)
     pkgs+=(tmux)
     pkgs+=(vim)
-    pkgs+=(wezterm)
 
     install ${pkgs[*]}
 }
