@@ -54,7 +54,7 @@ config.background = {
 }
 
 -- window settings
-config.window_decorations = "RESIZE"
+-- config.window_decorations = "RESIZE"
 config.window_padding = {
     left = 2,
     right = 2,
