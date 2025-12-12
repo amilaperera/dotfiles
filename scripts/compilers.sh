@@ -234,10 +234,12 @@ function check_compiler()
     echo $PATH | tr ':' '\n'
     echo
     echo -n "CC = $CC"
-    [[ -f $CC ]] && echo " [FOUND]" || echo " [NOT FOUND]"
+    [[ -n $CC ]] && echo " [FOUND]" || echo " [NOT FOUND]"
+    $CC --version
 
     echo -n "CXX = $CXX"
-    [[ -f $CXX ]] && echo " [FOUND]" || echo " [NOT FOUND]"
+    [[ -n $CXX ]] && echo " [FOUND]" || echo " [NOT FOUND]"
+    $CXX --version
 
     echo "LD_LIBRARY_PATH = $LD_LIBRARY_PATH"
 

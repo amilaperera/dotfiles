@@ -26,14 +26,8 @@ function aep_create_default_session()
         tmux send-keys -t "${session}:3.1" "nvim" Enter
         tmux send-keys -t "${session}:3.2"
 
-        tmux new-window -c "${root}" -t "${session}:4" -d -n "Scratch"
-        tmux split-window -c "${root}" -t "${session}:4"
-        tmux select-layout -t "${session}:4.1" "even-horizontal"
-        tmux send-keys -t "${session}:4.1" "nvim" Enter
-        tmux send-keys -t "${session}:4.2"
-
-        tmux new-window -c "${root}" -t "${session}:5" -d -n "Htop"
-        tmux send-keys -t "${session}:5.1" "htop" Enter
+        tmux new-window -c "${root}" -t "${session}:4" -d -n "Htop"
+        tmux send-keys -t "${session}:4.1" "htop" Enter
     fi
     # Attach if we're outside TMUX, otherwise switch
     if [ -z $TMUX ]; then
