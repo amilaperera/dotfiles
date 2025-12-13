@@ -161,7 +161,11 @@ function essentials()
     pkgs+=(wget)
     pkgs+=(xclip)
     pkgs+=(dictd)
-    pkgs+=(neofetch)
+    if [[ $HAS_DNF -eq 1 ]]; then
+        pkgs+=(fastfetch)
+    else
+        pkgs+=(neofetch)
+    fi
     pkgs+=(tmux)
     pkgs+=(vim)
 

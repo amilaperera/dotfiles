@@ -185,7 +185,7 @@ def remove_extract(extract_directory):
                 shutil.rmtree(extract_directory)
             else:
                 cmd = ["rm", "-rf", extract_directory]
-                print("Extract directory remove command: ", end="")
+                print("Extract directory removed: ", end="")
                 print("{}".format(" ".join(cmd)))
                 # don't change cwd, just execute the command from where we run
                 # the script
