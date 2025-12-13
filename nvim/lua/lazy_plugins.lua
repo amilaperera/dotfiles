@@ -105,22 +105,6 @@ return require("lazy").setup({
         end,
     },
 
-    -- markdown preview
-    {
-        "iamcco/markdown-preview.nvim",
-        build = function()
-            vim.fn["mkdp#util#install"]()
-        end,
-        config = function()
-            vim.keymap.set(
-                "n",
-                "<F5>",
-                ":MarkdownPreviewToggle<CR>",
-                { silent = true, desc = "Toggle markdown preview" }
-            )
-        end,
-    },
-
     -- terminal
     require("plugins.terminal"),
 
