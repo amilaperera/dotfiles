@@ -154,6 +154,8 @@ def bootstrap(prefix_arg, toolset, extract_directory):
 def b2(prefix_arg, toolset, extract_directory):
     if os.name == "nt":
         cmd = ["b2.exe", "toolset=" + toolset, "install", prefix_arg, "-j 8"]
+    elif toolset == "clang": # link with libc++
+        cmd = ["./b2", "toolset=" + toolset, "cxxflags=" + '"-stdlib=libc++"', "linkflags=" + '"-stdlib=libc++"', "install", prefix_arg, "-j 8"]
     else:
         cmd = ["./b2", "toolset=" + toolset, "install", prefix_arg, "-j 8"]
 
