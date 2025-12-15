@@ -264,7 +264,7 @@ function extract_lines()
     local start=$(( N - A ))
     local end=$(( N + B ))
 
-    sed -n "${start},${end}p" ${file}
+    sed -n "${start},${end}p;${end}q" ${file}
 }
 
 # ripgrep integration with fzf
