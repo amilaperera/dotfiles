@@ -62,3 +62,12 @@ o.scrolloff = 5
 --  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+
+-- Filetype configurations
+-- Treat .ipp and .tpp files as C++
+vim.filetype.add({
+    extension = {
+        ipp = "cpp",
+        tpp = "cpp",
+    },
+})
