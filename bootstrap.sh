@@ -178,7 +178,6 @@ function dev_tools()
     # more selective ones
     if [[ $HAS_DNF -eq 1 ]]; then
         pkgs+=(@development-tools)
-        pkgs+=(boost-devel)
         pkgs+=(ninja-build)
         pkgs+=(python3-devel) # for building boost
         pkgs+=(gmp-devel)
@@ -188,7 +187,6 @@ function dev_tools()
         pkgs+=(libzstd-devel)
     elif [[ $HAS_APT -eq 1 ]]; then
         pkgs+=(build-essential)
-        pkgs+=(libboost-all-dev)
         pkgs+=(ninja-build)
         pkgs+=(pkg-config)
         pkgs+=(libevent-dev)
