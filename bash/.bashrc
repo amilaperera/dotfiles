@@ -29,3 +29,6 @@ unset BASH_PATH list
 
 # local environment
 [ -f ~/.local/.local.bash ] && source ~/.local/.local.bash
+
+# opencode
+export PATH=/home/amila.perera/.opencode/bin:$PATH

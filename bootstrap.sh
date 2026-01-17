@@ -353,6 +353,18 @@ function nerd_fonts()
     return $?
 }
 
+function ai_stuff()
+{
+    echo "  - Installing opencode..."
+    curl -fsSL https://opencode.ai/install | bash
+    if [[ $? -eq 0 ]]; then
+        echo "  - opencode installed successfully"
+    else
+        red "Error installing OpenCode"
+        return 1
+    fi
+}
+
 # Function wrapper to install packages
 function install_packages()
 {
@@ -385,6 +397,7 @@ options=(
     6 "Setup github SSH"                                         off
     7 "Setup personal configs(bash,tmux,vim etc.)"               off
     8 "Install Nerd fonts(Hack)"                                 off
+    9 "AI"                                                       off
 )
 
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -420,6 +433,9 @@ for choice in $choices; do
             ;;
         8)
             install_packages nerd_fonts
+            ;;
+        9)
+            install_packages ai_stuff
             ;;
     esac
 done
