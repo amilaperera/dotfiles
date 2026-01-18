@@ -110,4 +110,5 @@ return require("lazy").setup({
 
     -- ai stuff
     require("plugins.ai.copilot"),
+    require("plugins.ai.opencode"),
 })
