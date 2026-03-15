@@ -3,7 +3,12 @@ SHELL=/bin/bash
 DIR     := $(shell pwd)
 BASH    := $(DIR)/bash
 NVIM    := $(DIR)/nvim
-MISC    := $(DIR)/misc
+GDB     := $(DIR)/gdb
+GIT     := $(DIR)/git
+TMUX    := $(DIR)/tmux
+VIM     := $(DIR)/vim
+WEZTERM := $(DIR)/wezterm
+
 HOMEDIR := ~/
 
 .PHONY: all fzf bash nvim misc gitconfig
@@ -37,14 +42,13 @@ nvim:
 misc:
 	@echo
 	@echo "================= Installing misc configs ================="
-	ln -sf $(MISC)/.vimrc $(HOMEDIR)
-	ln -sf $(MISC)/.tmux.conf $(HOMEDIR)
-	ln -sf $(MISC)/.gdbinit $(HOMEDIR)
-	ln -sf $(MISC)/.wezterm.lua $(HOMEDIR)
-	mkdir -p $(HOMEDIR).local && ln -sf $(MISC)/build_wrapper.sh $(HOMEDIR).local/
+	ln -sf $(VIM)/.vimrc $(HOMEDIR)
+	ln -sf $(TMUX)/.tmux.conf $(HOMEDIR)
+	ln -sf $(GDB)/.gdbinit $(HOMEDIR)
+	ln -sf $(WEZTERM)/.wezterm.lua $(HOMEDIR)
 	curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh >| $(HOMEDIR).local/git-prompt.sh
 
 gitconfig:
 	@echo
 	@echo "================= Installing git config ================="
-	$(DIR)/scripts/create_gitconfig.sh
+	$(GIT)/create_gitconfig.sh

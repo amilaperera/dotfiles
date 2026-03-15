@@ -88,10 +88,10 @@ function up()
     else
         # if one argument is supplied then go up the directory hierachy
         if(( $1 > $CDUPVALUEDEFAULT )); then
-        # limits the maximum up levels to the value defined by CDVALUEDEFAULT
-        cdupcount=$CDUPVALUEDEFAULT
-    else
-        cdupcount=$1
+            # limits the maximum up levels to the value defined by CDVALUEDEFAULT
+            cdupcount=$CDUPVALUEDEFAULT
+        else
+            cdupcount=$1
         fi
         # construct the upvalue string
         for (( upcount=0; upcount<$cdupcount; upcount++ )); do
@@ -281,13 +281,13 @@ function rgf()
     fi
 
     rg --color=always --line-number --no-heading --smart-case "${*:-}" |
-        fzf --ansi \
+    fzf --ansi \
         --color "hl:-1:underline,hl+:-1:underline:reverse" \
         --delimiter : \
         --preview "${preview} --color=always {1} --highlight-line {2}" \
         --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
         --bind 'enter:become(nvim {1} +{2})'
-    }
+}
 
 # Rather than installing pip, just do a direct invocation of the python file from the repo
 # https://github.com/sivel/speedtest-cli

@@ -42,6 +42,7 @@ return {
                 c = { "clang-format" },
                 cpp = { "clang-format" },
                 python = { "isort", "black" },
+                sh = { "beautysh" },
             },
         },
     },

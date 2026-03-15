@@ -19,6 +19,7 @@ return {
                 "markdown_inline",
                 "python",
                 "query",
+                "tmux",
                 "vim",
                 "vimdoc",
             }

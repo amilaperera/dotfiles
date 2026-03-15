@@ -38,8 +38,8 @@ function aep_confirm()
 
         read -p "$prompt" answer
         case "$answer" in
-            [yY] ) choice='y';;
-            [nN] ) choice='n';;
+            [yY] ) choice='y' ;;
+            [nN] ) choice='n' ;;
             * ) ;;
         esac
     done
@@ -50,8 +50,8 @@ function aep_confirm()
 function aep_interactive_shell()
 {
     case "$-" in
-        *i* ) return $aep_true;;
-        * ) return $aep_false;;
+        *i* ) return $aep_true ;;
+        * ) return $aep_false ;;
     esac
 }
 
