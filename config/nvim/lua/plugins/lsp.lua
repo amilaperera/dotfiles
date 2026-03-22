@@ -150,6 +150,13 @@ return {
                             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
                         end, "[T]oggle Inlay [H]ints")
                     end
+
+                    -- convenient keymap to switch between source/header files in C/C++ projects using clangd
+                    -- I have also got :Rotate (and its variants) for this (without clangd support),
+                    -- but it relies on the headers and sources being in the same directory.
+                    if client and client:supports_method("textDocument/switchSourceHeader", event.buf) then
+                        map("<M-o>", "<cmd>LspClangdSwitchSourceHeader<CR>", "Switch Source/Header")
+                    end
                 end,
             })
             -- Enable the following language servers
