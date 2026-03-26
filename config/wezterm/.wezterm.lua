@@ -44,7 +44,7 @@ config.color_scheme = "Dark+"
 -- background image
 config.background = {
     {
-        source = { File = wezterm.home_dir .. "/.dotfiles/wallpapers/wallpaper2.png" },
+        source = { File = wezterm.home_dir .. "/wallpapers/wallpaper2.png" },
         hsb = {
             hue = 1.0,
             saturation = 1.0,

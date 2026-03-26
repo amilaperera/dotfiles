@@ -1,19 +1,21 @@
 SHELL=/bin/bash
 
-DIR     := $(shell pwd)
-BASH    := $(DIR)/bash
-NVIM    := $(DIR)/nvim
-GDB     := $(DIR)/gdb
-GIT     := $(DIR)/git
-TMUX    := $(DIR)/tmux
-VIM     := $(DIR)/vim
-WEZTERM := $(DIR)/wezterm
+DIR       := $(shell pwd)
+BASH      := $(DIR)/bash
+NVIM      := $(DIR)/nvim
+GDB       := $(DIR)/gdb
+GIT       := $(DIR)/git
+TMUX      := $(DIR)/tmux
+VIM       := $(DIR)/vim
+WEZTERM   := $(DIR)/wezterm
+WALLPAPER := $(DIR)/../wallpapers
 
 HOMEDIR := ~/
+UNAME   := $(shell uname -s)
 
-.PHONY: all fzf bash nvim misc gitconfig
+.PHONY: all fzf bash nvim misc wallpaper gitconfig
 
-all: fzf bash nvim misc gitconfig
+all: fzf bash nvim misc wallpaper gitconfig
 	@echo
 	@echo "All done. Good day!!!"
 	@echo
@@ -47,6 +49,12 @@ misc:
 	ln -sf $(GDB)/.gdbinit $(HOMEDIR)
 	ln -sf $(WEZTERM)/.wezterm.lua $(HOMEDIR)
 	curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh >| $(HOMEDIR).local/git-prompt.sh
+
+wallpaper:
+	@echo
+	@echo "================= Installing wallpapers ================="
+	rm -rf $(HOMEDIR)wallpapers
+	ln -sfT $(WALLPAPER) $(HOMEDIR)wallpapers
 
 gitconfig:
 	@echo
