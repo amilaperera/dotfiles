@@ -23,7 +23,11 @@ return {
                 "vim",
                 "vimdoc",
             }
-            require("nvim-treesitter").install(parsers)
+
+            if vim.fn.has("win32") == 0 then
+                require("nvim-treesitter").install(parsers)
+            end
+
             vim.api.nvim_create_autocmd("FileType", {
                 callback = function(args)
                     local buf, filetype = args.buf, args.match
