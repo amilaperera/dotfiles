@@ -113,7 +113,8 @@ return require("lazy").setup({
     require("plugins.ai.copilot"),
 
     -- debugging
-    require("plugins.dap"),
+    -- TODO: Needs to figure out a few more things before enabling
+    -- require("plugins.dap"),
 }, { ---@diagnostic disable-line: missing-fields
     ui = {
         -- If you are using a Nerd Font: set icons to an empty table which will use the
