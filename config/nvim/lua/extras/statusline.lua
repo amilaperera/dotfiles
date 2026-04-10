@@ -160,11 +160,20 @@ AepStatusLine.inactive = function()
 end
 
 H.update = vim.schedule_wrap(function()
-    local cur_win_id = vim.api.nvim_get_current_win()
-    for _, win_id in ipairs(vim.api.nvim_list_wins()) do
-        vim.wo[win_id].statusline = win_id == cur_win_id and "%{%v:lua.AepStatusLine.active()%}"
-            or "%{%v:lua.AepStatusLine.inactive()%}"
-    end
+    -- NOTE:
+    -- The following became really buggy with Telescope window drawing.
+    -- I'm not quite sure what's happening.
+    -- But setting the global statusline seems to work for now.
+    --
+    -- local cur_win_id = vim.api.nvim_get_current_win()
+    -- for _, win_id in ipairs(vim.api.nvim_list_wins()) do
+    -- vim.wo[win_id].statusline = win_id == cur_win_id and "%{%v:lua.AepStatusLine.active()%}"
+    -- or "%{%v:lua.AepStatusLine.inactive()%}"
+    -- end
+
+    -- Set statusline globally and dynamically decide which content to use
+    vim.go.statusline =
+        "%{%(nvim_get_current_win()==#g:actual_curwin || &laststatus==3) ? v:lua.AepStatusLine.active() : v:lua.AepStatusLine.inactive()%}"
 end)
 
 AepStatusLine.setup = function(config)
