@@ -34,6 +34,18 @@ function confirm()
     [[ ! "$answer" =~ ^[Yy]$ ]] && return 1 || return 0
 }
 
+function get_hostname()
+{
+    which hostname &> /dev/null
+    if [[ $? -eq 0 ]]; then
+        hostname
+    elif [[ -f /etc/hostname ]]; then
+        cat /etc/hostname
+    else
+        echo "Unknown"
+    fi
+}
+
 function show_os_info()
 {
     local os_name=`grep -E '^NAME=' /etc/os-release | sed 's/^[^=]*=//; s/"//g'`
@@ -43,8 +55,11 @@ function show_os_info()
     else
         echo -e "Operating System: ${RED}"Unknown"${NC}"
     fi
-    echo -e "Host: ${GREEN}$(hostname)${NC}"
+    local hname=$(get_hostname)
+    local kernel=$(uname -r)
+    echo -e "Host: ${GREEN}${hname}${NC}"
     echo -e "User: ${GREEN}${USER}${NC}"
+    echo -e "Kernel: ${GREEN}${kernel}${NC}"
 }
 
 function update_os()
@@ -63,16 +78,14 @@ function should_update_os()
     if [[ ! -f ${INFO_FILE} ]]; then
         # File doesn't exist. Probably the first time doing bootstraping
         cat << EOF > ${INFO_FILE}
-last_update: 
-repo_site: 
-email: 
+last_update:
 EOF
         return 0
     fi
 
     # if the file exists, let's check if we have gone beyond the interval
     # read last_update timestamp
-    last_update_timestamp=$(sed -n -E "s/^last_update: (.*)/\1/p" ${INFO_FILE})
+    last_update_timestamp=$(sed -n -E "s/^last_update:(.*)/\1/p" ${INFO_FILE})
     current_timestamp=$(date +%s)
 
     difference=$((current_timestamp - last_update_timestamp))
@@ -91,7 +104,7 @@ EOF
 
 function update_last_update_timestamp()
 {
-    sed -i -E "s/(^last_update: )(.*)$/\1$(date +%s)/" ${INFO_FILE}
+    sed -i -E "s/(^last_update:)(.*)$/\1$(date +%s)/" ${INFO_FILE}
 }
 
 function export_install_command()
@@ -132,14 +145,21 @@ function install()
     sh -c "$cmd"
 }
 
+function install_if_not_exists()
+{
+    which ${1} &> /dev/null
+    if [[ $? -ne 0 ]]; then
+        install ${1}
+    else
+        yellow "${1} already exists, skipping installation..."
+    fi
+}
+
 function check_dependencies()
 {
     # We rely on dialog, if this doesn't exist install it first
     yellow "Checking dependencies for bootstraping"
-    which dialog &> /dev/null
-    if [[ $? -ne 0 ]]; then
-        install dialog
-    fi
+    install_if_not_exists dialog
 }
 
 function pip_install()
@@ -149,9 +169,10 @@ function pip_install()
     sh -c "$cmd"
 }
 
-function essentials()
+function base()
 {
     local pkgs=()
+    pkgs+=(curl)
     pkgs+=(git)
     pkgs+=(ripgrep)
     pkgs+=(tree)
@@ -179,7 +200,6 @@ function dev_tools()
     if [[ $HAS_DNF -eq 1 ]]; then
         pkgs+=(@development-tools)
         pkgs+=(ninja-build)
-        pkgs+=(python3-devel) # for building boost
         pkgs+=(gmp-devel)
         pkgs+=(mpfr-devel)
         pkgs+=(libmpc-devel)
@@ -192,7 +212,6 @@ function dev_tools()
         pkgs+=(libevent-dev)
         pkgs+=(bison)
         pkgs+=(byacc)
-        pkgs+=(python3-dev)
         pkgs+=(npm)
         pkgs+=(nodejs)
         pkgs+=(libgmp-dev)
@@ -216,19 +235,19 @@ function python_stuff()
 {
     local pkgs=()
     if [[ $HAS_APT -eq 1 ]]; then
-        # force python3
         pkgs+=(python3)
         pkgs+=(python3-pip)
-        pkgs+=(ipython3)
-        pkgs+=(python3-venv)
+        pkgs+=(python3-dev)
     else
         pkgs+=(python)
         pkgs+=(python-pip)
-        pkgs+=(ipython)
-        pkgs+=(python-jedi)
+        pkgs+=(python3-devel)
     fi
 
     install ${pkgs[*]}
+
+    # install uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh
 }
 
 function extra_repos()
@@ -387,7 +406,7 @@ update_os
 
 cmd=(dialog --separate-output --no-tags --checklist "Select Options:" 22 76 16)
 options=(
-    1 "Essential packages (bash, tmux, git, curl etc.)"          on
+    1 "Base packages (bash, tmux, git, curl etc.)"               on
     2 "Development tools"                                        off
     3 "Python stuff"                                             off
     4 "Extra repositories (Fedor Only)"                          off
@@ -404,7 +423,7 @@ clear
 for choice in $choices; do
     case $choice in
         1)
-            install_packages essentials
+            install_packages base
             ;;
         2)
             install_packages dev_tools

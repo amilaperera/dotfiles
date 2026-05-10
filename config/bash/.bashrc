@@ -27,6 +27,6 @@ unset BASH_PATH list
 # fzf install
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# local environment
+# This file is for user/environment specific configuration, and it will not be tracked by git.
+# You can put any custom configuration here, and it will be sourced when bash starts.
 [ -f ~/.local/.local.bash ] && source ~/.local/.local.bash
-
