@@ -1,28 +1,29 @@
-Personal dotfiles
-=================
+Dotfiles — Amila Perera
+-----------------------
 
-This repo contains my personal dotfiles and scripts to set up a new Linux machine.
+Personal dotfiles and scripts to quickly bootstrap a Linux workstation.
 
-**Included Configurations**
-* bash + readline
-* nvim
-* vim (very minimal, mostly using nvim)
-* tmux
-* git
-* wezterm
+Included configurations
+- bash (with aep_bash_lib)
+- nvim
+- vim (minimal)
+- tmux
+- git
+- wezterm
 
-**Scripts**
-* install essential packages via apt/dnf (Tested in Debian/Ubuntu and Fedora)
-* compile gcc/gdb from source code
-* compile llvm(clang) from source code
-* compile boost C++ from source code
+Scripts
+- Install packages (apt/dnf/pacman supported)
+- Build compilers and libraries (gcc, clang, boost)
 
+Quick start
+- Remote bootstrap:
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
+- Local:
+  ./bootstrap.sh
 
-**Installation**
+Apply or test individual configs
+- make -C config all    # install/link everything
+- make -C config nvim   # install/link only nvim config
 
-Execute the following command to bootstrap the new Linux machine (installing essential packages + configuration setup).
-
-```
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
-```
+Edit files under config/ and run the Makefile targets to apply changes.
 
