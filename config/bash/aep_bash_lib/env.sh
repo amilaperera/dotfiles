@@ -19,7 +19,7 @@ mkdir -p "$HOME/.cargo/bin"
 mkdir -p "$HOME/.opencode/bin"
 
 # Now set path variable
-path_array=("$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.opencode/bin")
+path_array=("$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.opencode/bin" "$HOME/.kilo/bin")
 
 for p in ${path_array[@]}; do
     aep_add_path $p

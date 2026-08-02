@@ -1,0 +1,8 @@
+FROM almalinux:latest
+
+RUN dnf install -y make sudo
+
+WORKDIR /install
+COPY Makefile .
+
+RUN make base
