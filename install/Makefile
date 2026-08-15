@@ -1,3 +1,13 @@
+# Colors
+NC := \033[0m
+BOLD := \033[1m
+RED := \033[91m
+GREEN := \033[92m
+YELLOW := \033[93m
+BLUE := \033[94m
+MAGENTA := \033[95m
+CYAN := \033[96m
+
 # Detect OS
 OS_ID := $(shell . /etc/os-release && echo $$ID)
 
@@ -63,38 +73,40 @@ endif
 .PHONY: help base dev pydev github nvim ai-opencode ai-kilocode dotfiles
 
 help:
-	@echo "Usage: make [target]"
-	@echo ""
-	@echo "Targets:"
-	@echo "  base     Install base packages (git, tmux, vim, curl, etc.)"
-	@echo "  dev      Install development tools (compilers, cmake, etc.)"
-	@echo "  pydev    Install Python dev tools and uv/uvx"
-	@echo "  github   Install gh CLI and setup SSH authentication"
-	@echo "  nvim     Install Neovim stable release from AppImage (optional: NVIM_TAG=vX.XX)"
-	@echo "  ai-tools Install AI coding assistants (opencode, kilocode)"
-	@echo "  dotfiles Clone dotfiles repo and set up configs (bash, tmux, vim, etc.)"
-	@echo "  help     Show this help message"
-	@echo ""
-	@echo "Detected OS: $(OS_ID)"
-	@echo "Package manager: $(PKG_MANAGER)"
+	@printf '%b\n' "$(BOLD)$(CYAN)Usage:$(NC) make [target]"
+	@printf '\n'
+	@printf '%b\n' "$(BOLD)$(GREEN)Targets:$(NC)"
+	@printf '  %bbase%b     Install base packages (git, tmux, vim, curl, etc.)\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bdev%b      Install development tools (compilers, cmake, etc.)\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bpydev%b    Install Python dev tools and uv/uvx\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bgithub%b   Install gh CLI and setup SSH authentication\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bnvim%b     Install Neovim stable release from AppImage\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bai-tools%b Install AI coding assistants (opencode, kilocode)\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bdotfiles%b Clone dotfiles repo and set up configs\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bhelp%b     Show this help message\n' "$(YELLOW)" "$(NC)"
+	@printf '\n'
+	@printf '%bDetected OS:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(OS_ID)" "$(NC)"
+	@printf '%bPackage manager:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(PKG_MANAGER)" "$(NC)"
 
 base:
-	@echo "Installing base packages ($(PKG_MANAGER))..."
+	@printf '%bInstalling base packages (%s)...%b\n' "$(CYAN)" "$(PKG_MANAGER)" "$(NC)"
 	sudo $(INSTALL) $(BASE_PKGS)
+	@printf '%bBase packages installed successfully!%b\n' "$(GREEN)" "$(NC)"
 
 dev: base
-	@echo "Installing development packages ($(PKG_MANAGER))..."
+	@printf '%bInstalling development packages (%s)...%b\n' "$(CYAN)" "$(PKG_MANAGER)" "$(NC)"
 	sudo $(INSTALL) $(DEV_PKGS)
+	@printf '%bDevelopment packages installed successfully!%b\n' "$(GREEN)" "$(NC)"
 
 pydev:
-	@echo "Installing Python packages ($(PKG_MANAGER))..."
+	@printf '%bInstalling Python packages (%s)...%b\n' "$(CYAN)" "$(PKG_MANAGER)" "$(NC)"
 	sudo $(INSTALL) $(PYTHON_PKGS)
-	@echo "Installing uv..."
+	@printf '%bInstalling uv...%b\n' "$(CYAN)" "$(NC)"
 	curl -LsSf https://astral.sh/uv/install.sh | sh
-	@echo "uv and uvx installed. Run 'source $$HOME/.local/bin/env' or restart your shell."
+	@printf '\n%buv and uvx installed.%b Run %bsource $$HOME/.local/bin/env%b or restart your shell.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
 github:
-	@echo "Installing GitHub CLI (gh)..."
+	@printf '%bInstalling GitHub CLI (gh)...%b\n' "$(CYAN)" "$(NC)"
 	@if [ "$(OS_ID)" = "fedora" ] || [ "$(OS_ID)" = "almalinux" ]; then \
 		sudo $(INSTALL) gh; \
 	elif [ "$(OS_ID)" = "debian" ]; then \
@@ -106,68 +118,65 @@ github:
 		sudo apt update && \
 		sudo $(INSTALL) gh; \
 	fi
-	@echo ""
-	@echo "Setting up SSH authentication with GitHub..."
-	@echo "This will generate an SSH key and add it to your GitHub account."
-	@echo ""
+	@printf '\n%bSetting up SSH authentication with GitHub...%b\n' "$(CYAN)" "$(NC)"
+	@printf 'This will open a browser to authenticate with GitHub.\n'
+	@printf '\n'
 	gh auth login --hostname github.com --git-protocol ssh --web
-	@echo ""
-	@echo "Verifying authentication..."
+	@printf '\n%bVerifying authentication...%b\n' "$(CYAN)" "$(NC)"
 	gh auth status
-	@echo ""
-	@echo "GitHub CLI setup complete. Run 'gh auth status' to verify."
+	@printf '\n%bGitHub CLI setup complete.%b Run %bgh auth status%b to verify.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
 nvim:
-	@echo "Installing Neovim..."
+	@printf '%bInstalling Neovim...%b\n' "$(CYAN)" "$(NC)"
 	@NVIM_ARCH=$$(uname -m); \
 	if [ "$$NVIM_ARCH" = "x86_64" ]; then \
 		NVIM_ARCH="x86_64"; \
 	else \
-		echo "Unsupported architecture: $$NVIM_ARCH"; \
+		printf '%bUnsupported architecture: %s%b\n' "$(RED)" "$$NVIM_ARCH" "$(NC)"; \
 		exit 1; \
 	fi; \
 	APPIMAGE="nvim-linux-$$NVIM_ARCH.appimage"; \
 	if [ -z "$(NVIM_TAG)" ]; then \
 		NVIM_TAG="stable"; \
 	fi; \
-	echo "Installing version: $$NVIM_TAG"; \
-	echo "Downloading $$APPIMAGE..."; \
+	printf '%bVersion:%b %s\n' "$(MAGENTA)" "$(NC)" "$$NVIM_TAG"; \
+	printf '%bDownloading %s...%b\n' "$(CYAN)" "$$APPIMAGE" "$(NC)"; \
 	mkdir -p $$HOME/.local; \
 	if ! curl -fSL "https://github.com/neovim/neovim/releases/download/$$NVIM_TAG/$$APPIMAGE" -o $$HOME/.local/$$APPIMAGE; then \
-		echo "Failed to download $$APPIMAGE"; \
+		printf '%bFailed to download %s%b\n' "$(RED)" "$$APPIMAGE" "$(NC)"; \
 		rm -f $$HOME/.local/$$APPIMAGE; \
 		exit 1; \
 	fi; \
-	echo "Making AppImage executable..."; \
+	printf '%bMaking AppImage executable...%b\n' "$(CYAN)" "$(NC)"; \
 	chmod u+x $$HOME/.local/$$APPIMAGE; \
-	echo "Extracting AppImage..."; \
+	printf '%bExtracting AppImage...%b\n' "$(CYAN)" "$(NC)"; \
 	cd $$HOME/.local && ./$$APPIMAGE --appimage-extract; \
-	echo "Creating symlink..."; \
+	printf '%bCreating symlink...%b\n' "$(CYAN)" "$(NC)"; \
 	mkdir -p $$HOME/.local/bin; \
 	ln -sf $$HOME/.local/squashfs-root/usr/bin/nvim $$HOME/.local/bin/nvim; \
-	echo "Neovim installed successfully. Run 'nvim' to start."
+	printf '\n%bNeovim installed successfully!%b Run %bnvim%b to start.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
 ai-opencode:
-	@echo "Installing opencode CLI..."
+	@printf '%bInstalling opencode CLI...%b\n' "$(CYAN)" "$(NC)"
 	@curl -fsSL https://opencode.ai/install | bash
-	@echo "opencode CLI installed. Run 'opencode' to start."
+	@printf '%bopencode CLI installed.%b Run %bopencode%b to start.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
 ai-kilocode:
-	@echo "Installing kilocode CLI..."
+	@printf '%bInstalling kilocode CLI...%b\n' "$(CYAN)" "$(NC)"
 	@curl -fsSL https://kilo.ai/cli/install | bash
-	@echo "kilocode CLI installed. Run 'kilo' to start."
+	@printf '%bkilocode CLI installed.%b Run %bkilo%b to start.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
 ai-tools: ai-opencode ai-kilocode
-	@echo "AI tools installed. You can now use 'opencode' and 'kilo' commands."
+	@printf '\n%bAI tools installed successfully!%b You can now use %bopencode%b and %bkilo%b commands.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
 dotfiles:
-	@echo "Setting up dotfiles configs..."
+	@printf '%bSetting up dotfiles...%b\n' "$(CYAN)" "$(NC)"
 	@if [ ! -d "$$HOME/.dotfiles" ]; then \
-		echo "Cloning dotfiles repository..."; \
+		printf '%bCloning dotfiles repository...%b\n' "$(CYAN)" "$(NC)"; \
 		git clone git@github.com:amilaperera/dotfiles.git $$HOME/.dotfiles; \
 	else \
-		echo "$$HOME/.dotfiles directory already exists"; \
+		printf '%b%s directory already exists%b\n' "$(YELLOW)" "$$HOME/.dotfiles" "$(NC)"; \
 	fi
-	@echo "Setting up personal dotfiles..."
+	@printf '%bSetting up personal dotfiles...%b\n' "$(CYAN)" "$(NC)"
 	@cd $$HOME/.dotfiles/config && $(MAKE) all
-	@echo "Dotfiles configs setup complete."
+	@printf '\n%bDotfiles configs setup complete!%b\n' "$(GREEN)" "$(NC)"
