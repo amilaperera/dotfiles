@@ -74,10 +74,9 @@ else ifeq ($(OS_ID),debian)
 	INSTALL   := apt-get install -y
 endif
 
-.PHONY: help base dev pydev github nvim ai-opencode ai-kilocode dotfiles build-alma build-fedora build-debian
+.PHONY: help base dev pydev github nvim ai-opencode ai-kilocode dotfiles build-alma build-fedora build-debian run-alma run-fedora run-debian
 
-# Docker build macro
-# Usage: $(call docker_build,<distro>)
+# Building a docker image using the corresponding docker file
 define docker_build
 	@img="$(1)"
 	dockerfile="$(CURDIR)/Dockerfile.$$img"
@@ -97,8 +96,7 @@ define docker_build
 	fi
 endef
 
-# Docker run macro
-# Usage: $(call docker_run,<distro>)
+# Run the docker file
 define docker_run
 	@img="dotfiles-test-$(1)"
 	if docker image inspect "$$img" >/dev/null 2>&1; then
@@ -113,23 +111,23 @@ help:
 	@printf '%b\n' "$(BOLD)$(CYAN)Usage:$(NC) make [target]"
 	printf '\n'
 	printf '%b\n' "$(BOLD)$(GREEN)Targets:$(NC)"
-	printf '  %bbase%b     Install base packages (git, tmux, vim, curl, etc.)\n' "$(YELLOW)" "$(NC)"
-	printf '  %bdev%b      Install development tools (compilers, cmake, etc.)\n' "$(YELLOW)" "$(NC)"
-	printf '  %bpydev%b    Install Python dev tools and uv/uvx\n' "$(YELLOW)" "$(NC)"
-	printf '  %bgithub%b   Install gh CLI and setup SSH authentication\n' "$(YELLOW)" "$(NC)"
-	printf '  %bnvim%b     Install Neovim stable release from AppImage\n' "$(YELLOW)" "$(NC)"
-	printf '  %bai-tools%b Install AI coding assistants (opencode, kilocode)\n' "$(YELLOW)" "$(NC)"
-	printf '  %bdotfiles%b Clone dotfiles repo and set up configs\n' "$(YELLOW)" "$(NC)"
-	printf '  %bbuild-alma%b   Build AlmaLinux Docker test image\n' "$(YELLOW)" "$(NC)"
-	printf '  %bbuild-fedora%b Build Fedora Docker test image\n' "$(YELLOW)" "$(NC)"
-	printf '  %bbuild-debian%b Build Debian Docker test image\n' "$(YELLOW)" "$(NC)"
-	printf '  %brun-alma%b   run AlmaLinux Docker test image\n' "$(YELLOW)" "$(NC)"
-	printf '  %brun-fedora%b run Fedora Docker test image\n' "$(YELLOW)" "$(NC)"
-	printf '  %brun-debian%b run Debian Docker test image\n' "$(YELLOW)" "$(NC)"
-	printf '  %bhelp%b     Show this help message\n' "$(YELLOW)" "$(NC)"
+	printf ' %bbase%b         Install base packages (git, tmux, vim, curl, etc.)\n' "$(YELLOW)" "$(NC)"
+	printf ' %bdev%b          Install development tools (compilers, cmake, etc.)\n' "$(YELLOW)" "$(NC)"
+	printf ' %bpydev%b        Install Python dev tools and uv/uvx\n' "$(YELLOW)" "$(NC)"
+	printf ' %bgithub%b       Install gh CLI and setup SSH authentication\n' "$(YELLOW)" "$(NC)"
+	printf ' %bnvim%b         Install Neovim stable release from AppImage\n' "$(YELLOW)" "$(NC)"
+	printf ' %bai-tools%b     Install AI coding assistants (opencode, kilocode)\n' "$(YELLOW)" "$(NC)"
+	printf ' %bdotfiles%b     Clone dotfiles repo and set up configs\n' "$(YELLOW)" "$(NC)"
+	printf ' %bbuild-alma%b   Build AlmaLinux Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %bbuild-fedora%b Build Fedora Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %bbuild-debian%b Build Debian Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %brun-alma%b     Run AlmaLinux Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %brun-fedora%b   Run Fedora Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %brun-debian%b   Run Debian Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %bhelp%b         Show this help message\n' "$(YELLOW)" "$(NC)"
 	printf '\n'
 	printf '%bDetected OS:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(OS_ID)" "$(NC)"
-	printf '%bPackage manager:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(PKG_MANAGER)" "$(NC)"
+	printf '%bPackage manager:%b %b%s%b\n\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(PKG_MANAGER)" "$(NC)"
 
 base:
 	@printf '%bInstalling base packages (%s)...%b\n' "$(CYAN)" "$(PKG_MANAGER)" "$(NC)"
@@ -163,8 +161,7 @@ github:
 		sudo $(INSTALL) gh
 	fi
 	printf '\n%bSetting up SSH authentication with GitHub...%b\n' "$(CYAN)" "$(NC)"
-	printf 'This will open a browser to authenticate with GitHub.\n'
-	printf '\n'
+	printf 'This will open a browser to authenticate with GitHub.\n\n'
 	gh auth login --hostname github.com --git-protocol ssh --web
 	printf '\n%bVerifying authentication...%b\n' "$(CYAN)" "$(NC)"
 	gh auth status
