@@ -70,7 +70,28 @@ else ifeq ($(OS_ID),debian)
 	INSTALL   := apt-get install -y
 endif
 
-.PHONY: help base dev pydev github nvim ai-opencode ai-kilocode dotfiles
+.PHONY: help base dev pydev github nvim ai-opencode ai-kilocode dotfiles build-alma build-fedora build-debian
+
+# Docker build macro
+# Usage: $(call docker-build,<distro>)
+define docker-build
+	@img="$(1)"; \
+	dockerfile="$(CURDIR)/Dockerfile.$$img"; \
+	tag="dotfiles-test-$$img"; \
+	if [[ ! -f "$${dockerfile}" ]]; then \
+		printf '%bError: Dockerfile.%s not found%b\n' "$(RED)" "$$img" "$(NC)"; \
+		exit 1; \
+	fi; \
+	printf '%b========================================%b\n' "$(BLUE)" "$(NC)"; \
+	printf '%bBuilding %s with tag: %s%b\n' "$(BLUE)" "$$img" "$$tag" "$(NC)"; \
+	printf '%b========================================%b\n' "$(BLUE)" "$(NC)"; \
+	if docker build -f "$${dockerfile}" -t "$${tag}" "$(CURDIR)"; then \
+		printf '%bPASS: %s%b\n' "$(GREEN)" "$$img" "$(NC)"; \
+	else \
+		printf '%bFAIL: %s%b\n' "$(RED)" "$$img" "$(NC)"; \
+		exit 1; \
+	fi
+endef
 
 help:
 	@printf '%b\n' "$(BOLD)$(CYAN)Usage:$(NC) make [target]"
@@ -83,6 +104,9 @@ help:
 	@printf '  %bnvim%b     Install Neovim stable release from AppImage\n' "$(YELLOW)" "$(NC)"
 	@printf '  %bai-tools%b Install AI coding assistants (opencode, kilocode)\n' "$(YELLOW)" "$(NC)"
 	@printf '  %bdotfiles%b Clone dotfiles repo and set up configs\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bbuild-alma%b   Build AlmaLinux Docker test image\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bbuild-fedora%b Build Fedora Docker test image\n' "$(YELLOW)" "$(NC)"
+	@printf '  %bbuild-debian%b Build Debian Docker test image\n' "$(YELLOW)" "$(NC)"
 	@printf '  %bhelp%b     Show this help message\n' "$(YELLOW)" "$(NC)"
 	@printf '\n'
 	@printf '%bDetected OS:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(OS_ID)" "$(NC)"
@@ -180,3 +204,12 @@ dotfiles:
 	@printf '%bSetting up personal dotfiles...%b\n' "$(CYAN)" "$(NC)"
 	@cd $$HOME/.dotfiles/config && $(MAKE) all
 	@printf '\n%bDotfiles configs setup complete!%b\n' "$(GREEN)" "$(NC)"
+
+build-alma:
+	$(call docker-build,alma)
+
+build-fedora:
+	$(call docker-build,fedora)
+
+build-debian:
+	$(call docker-build,debian)
