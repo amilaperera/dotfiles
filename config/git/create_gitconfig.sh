@@ -1,20 +1,41 @@
 #!/bin/bash
 
-# if global .gitconfig exists, first confirm if we need to overwrite
-if [[ -f ${HOME}/.gitconfig ]]; then
-    read -p "${HOME}/.gitconfig exists. Do you want to overwrite (y/n) ? " response
-    if [[ ! "$response" =~ ^[yY] ]]; then
-        exit 0
-    fi
+# Parse arguments
+name=""
+email=""
+force=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --name)
+            name="$2"
+            shift 2
+            ;;
+        --email)
+            email="$2"
+            shift 2
+            ;;
+        -f)
+            force=true
+            shift
+            ;;
+        *)
+            echo "Usage: $0 [-f] --name <name> --email <email>"
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -z "$name" || -z "$email" ]]; then
+    echo "Error: --name and --email are required"
+    echo "Usage: $0 [-f] --name <name> --email <email>"
+    exit 1
 fi
 
-# user
-default_username=`getent passwd $(whoami) | cut -d ':' -f 5 | cut -d ',' -f 1`
-
-read -p "User name [$default_username]: " user_name
-name=${user_name:-$default_username}
-
-read -p "Email : " email
+if [[ -f ${HOME}/.gitconfig && "$force" == false ]]; then
+    echo "${HOME}/.gitconfig exists. Specify -f to overwrite."
+    exit 1
+fi
 
 git config --global user.email "$email"
 git config --global user.name "$name"

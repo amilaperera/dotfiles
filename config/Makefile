@@ -13,6 +13,8 @@ WALLPAPER := $(DIR)/../wallpapers
 HOMEDIR := ~/
 UNAME   := $(shell uname -s)
 
+.ONESHELL:
+
 .PHONY: all fzf bash nvim misc wallpaper gitconfig
 
 all: fzf bash nvim misc wallpaper gitconfig
@@ -56,7 +58,15 @@ wallpaper:
 	rm -rf $(HOMEDIR)wallpapers
 	ln -sfT $(WALLPAPER) $(HOMEDIR)wallpapers
 
+ifndef NAME
+$(error NAME is not set. Usage: make gitconfig NAME="Your Name" EMAIL="you@example.com")
+endif
+
+ifndef EMAIL
+$(error EMAIL is not set. Usage: make gitconfig NAME="Your Name" EMAIL="you@example.com")
+endif
+
 gitconfig:
 	@echo
 	@echo "================= Installing git config ================="
-	$(GIT)/create_gitconfig.sh
+	$(GIT)/create_gitconfig.sh --name "$(NAME)" --email "$(EMAIL)" -f
