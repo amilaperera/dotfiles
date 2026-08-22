@@ -214,7 +214,12 @@ dotfiles:
 	@printf '%bSetting up dotfiles...%b\n' "$(CYAN)" "$(NC)"
 	if [ ! -d "$$HOME/.dotfiles" ]; then
 		printf '%bCloning dotfiles repository...%b\n' "$(CYAN)" "$(NC)"
-		git clone git@github.com:amilaperera/dotfiles.git $$HOME/.dotfiles
+		if ssh -T git@github.com 2>&1 | grep -q "You've successfully authenticated"; then
+			git clone git@github.com:amilaperera/dotfiles.git $$HOME/.dotfiles
+		else
+			printf '%bWARNING: SSH is not set up for GitHub. Falling back to HTTPS.%b\n' "$(YELLOW)" "$(NC)"
+			git clone https://github.com/amilaperera/dotfiles.git $$HOME/.dotfiles
+		fi
 	else
 		printf '%b%s directory already exists%b\n' "$(YELLOW)" "$$HOME/.dotfiles" "$(NC)"
 	fi
