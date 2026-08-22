@@ -50,6 +50,7 @@ misc:
 	ln -sf $(TMUX)/.tmux.conf $(HOMEDIR)
 	ln -sf $(GDB)/.gdbinit $(HOMEDIR)
 	ln -sf $(WEZTERM)/.wezterm.lua $(HOMEDIR)
+	mkdir -p $(HOMEDIR).local
 	curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh >| $(HOMEDIR).local/git-prompt.sh
 
 wallpaper:

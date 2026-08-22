@@ -99,11 +99,23 @@ endef
 # Run the docker file
 define docker_run
 	@img="dotfiles-test-$(1)"
+	container="$(1)"
 	if docker image inspect "$$img" >/dev/null 2>&1; then
 		printf '%bRunning %s docker container...%b\n' "$(CYAN)" "$$img" "$(NC)"
-		docker run -it --rm "$$img" /bin/bash
+		docker run --name "$$container" -it "$$img" /bin/bash
 	else
-		printf '%bError: Docker image %s not found. Please run %bmake build-%s%b first.%b\n' "$(RED)" "$$img" "$(YELLOW)" "$(1)" "$(RED)" "$(NC)"
+		printf '%bError: Docker image %s not found. Run %bmake build-%s%b first.%b\n' "$(RED)" "$$img" "$(YELLOW)" "$(1)" "$(RED)" "$(NC)"
+	fi
+endef
+
+# Execute /bin/bash in the docker container
+# Once you docker run a container, you can use this target to exec into it.
+define docker_exec
+	@container="$(1)"
+	if docker ps --all | grep "$$container">/dev/null 2>&1; then
+		docker start "$$container" && docker exec -it "$$container" /bin/bash
+	else
+		printf '%bError: Docker container %s not found. Run container with %bmake run-%s%b.%b\n' "$(RED)" "$$container" "$(YELLOW)" "$$container" "$(RED)" "$(NC)"
 	fi
 endef
 
@@ -124,6 +136,9 @@ help:
 	printf ' %brun-alma%b     Run AlmaLinux Docker test image\n' "$(YELLOW)" "$(NC)"
 	printf ' %brun-fedora%b   Run Fedora Docker test image\n' "$(YELLOW)" "$(NC)"
 	printf ' %brun-debian%b   Run Debian Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %bexec-alma%b    Execute /bin/bash in AlmaLinux container\n' "$(YELLOW)" "$(NC)"
+	printf ' %bexec-fedora%b  Execute /bin/bash in Fedora container\n' "$(YELLOW)" "$(NC)"
+	printf ' %bexec-debian%b  Execute /bin/bash in Debian container\n' "$(YELLOW)" "$(NC)"
 	printf ' %bhelp%b         Show this help message\n' "$(YELLOW)" "$(NC)"
 	printf '\n'
 	printf '%bDetected OS:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(OS_ID)" "$(NC)"
@@ -211,6 +226,14 @@ ai-tools: ai-opencode ai-kilocode
 	@printf '\n%bAI tools installed successfully!%b You can now use %bopencode%b and %bkilo%b commands.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
 dotfiles:
+	@if [ -z "$(NAME)" ]; then
+		printf '%bError: NAME is not set. Pass it as: make dotfiles NAME="Your Name"%b\n' "$(RED)" "$(NC)"
+		exit 1
+	fi
+	@if [ -z "$(EMAIL)" ]; then
+		printf '%bError: EMAIL is not set. Pass it as: make dotfiles EMAIL="your@email.com"%b\n' "$(RED)" "$(NC)"
+		exit 1
+	fi
 	@printf '%bSetting up dotfiles...%b\n' "$(CYAN)" "$(NC)"
 	if [ ! -d "$$HOME/.dotfiles" ]; then
 		printf '%bCloning dotfiles repository...%b\n' "$(CYAN)" "$(NC)"
@@ -224,7 +247,7 @@ dotfiles:
 		printf '%b%s directory already exists%b\n' "$(YELLOW)" "$$HOME/.dotfiles" "$(NC)"
 	fi
 	printf '%bSetting up personal dotfiles...%b\n' "$(CYAN)" "$(NC)"
-	cd $$HOME/.dotfiles/config && $(MAKE) all
+	cd $$HOME/.dotfiles/config && $(MAKE) all NAME="$(NAME)" EMAIL="$(EMAIL)"
 	printf '\n%bDotfiles configs setup complete!%b\n' "$(GREEN)" "$(NC)"
 
 build-alma:
@@ -233,14 +256,23 @@ build-alma:
 run-alma:
 	$(call docker_run,alma)
 
+exec-alma:
+	$(call docker_exec,alma)
+
 build-fedora:
 	$(call docker_build,fedora)
 
 run-fedora:
 	$(call docker_run,fedora)
 
+exec-fedora::
+	$(call docker_exec,fedora)
+
 build-debian:
 	$(call docker_build,debian)
 
 run-debian:
 	$(call docker_run,debian)
+
+exec-debian:
+	$(call docker_exec,debian)
