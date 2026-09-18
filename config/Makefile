@@ -59,15 +59,15 @@ wallpaper:
 	rm -rf $(HOMEDIR)wallpapers
 	ln -sfT $(WALLPAPER) $(HOMEDIR)wallpapers
 
-ifndef NAME
-$(error NAME is not set. Usage: make gitconfig NAME="Your Name" EMAIL="you@example.com")
-endif
-
-ifndef EMAIL
-$(error EMAIL is not set. Usage: make gitconfig NAME="Your Name" EMAIL="you@example.com")
-endif
-
 gitconfig:
+	@if [ -z "$(NAME)" ]; then
+		printf 'Error: NAME is not set. Usage: make gitconfig NAME="Your Name" EMAIL="you@example.com"\n'
+		exit 1
+	fi
+	@if [ -z "$(EMAIL)" ]; then
+		printf 'Error: EMAIL is not set. Usage: make gitconfig NAME="Your Name" EMAIL="you@example.com"\n'
+		exit 1
+	fi
 	@echo
 	@echo "================= Installing git config ================="
 	$(GIT)/create_gitconfig.sh --name "$(NAME)" --email "$(EMAIL)" -f

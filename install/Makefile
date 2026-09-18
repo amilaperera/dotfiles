@@ -16,10 +16,14 @@ ifeq ($(OS_ID),fedora)
 	PKG_MANAGER := dnf
 else ifeq ($(OS_ID),almalinux)
 	PKG_MANAGER := dnf
+else ifeq ($(OS_ID),rhel)
+	PKG_MANAGER := dnf
 else ifeq ($(OS_ID),debian)
 	PKG_MANAGER := apt
+else ifeq ($(OS_ID),ubuntu)
+	PKG_MANAGER := apt
 else
-	$(error Unsupported OS: $(OS_ID). Only Fedora, AlmaLinux, and Debian are supported.)
+	$(error Unsupported OS: $(OS_ID). Only Fedora, AlmaLinux, RHEL, Debian, and Ubuntu are supported.)
 endif
 
 SHELL := /bin/bash
@@ -36,12 +40,14 @@ SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 
 # Base packages (common across all supported OSes)
-BASE_COMMON := curl git tree wget tmux vim
+BASE_COMMON := curl git tree wget tmux vim luarocks
 
 # OS-specific base packages
 BASE_FEDORA := fastfetch ripgrep btop htop bat xclip dictd
 BASE_ALMA :=
+BASE_RHEL := $(BASE_FEDORA)
 BASE_DEBIAN := $(BASE_FEDORA)
+BASE_UBUNTU := $(BASE_FEDORA)
 
 # Dev packages (common)
 DEV_COMMON := cmake unzip texinfo ninja-build
@@ -49,12 +55,16 @@ DEV_COMMON := cmake unzip texinfo ninja-build
 # OS-specific dev packages
 DEV_FEDORA := @development-tools ccache gmp-devel mpfr-devel libmpc-devel isl-devel libzstd-devel
 DEV_ALMA := gcc gcc-c++ make autoconf automake libtool gmp-devel mpfr-devel libmpc-devel libzstd-devel
+DEV_RHEL := $(DEV_ALMA)
 DEV_DEBIAN := build-essential pkg-config libevent-dev bison byacc npm nodejs libgmp-dev libmpfr-dev libmpc-dev libisl-dev libzstd-dev flex help2man
+DEV_UBUNTU := $(DEV_DEBIAN)
 
 # Python packages
 PYTHON_FEDORA := python3 python3-pip python3-devel
 PYTHON_ALMA := python python-pip python3-devel
+PYTHON_RHEL := $(PYTHON_ALMA)
 PYTHON_DEBIAN := python3 python3-pip python3-dev
+PYTHON_UBUNTU := $(PYTHON_DEBIAN)
 
 # Resolve packages and install command based on detected OS
 ifeq ($(OS_ID),fedora)
@@ -67,14 +77,24 @@ else ifeq ($(OS_ID),almalinux)
 	DEV_PKGS  := $(DEV_COMMON) $(DEV_ALMA)
 	PYTHON_PKGS := $(PYTHON_ALMA)
 	INSTALL   := dnf install -y
+else ifeq ($(OS_ID),rhel)
+	BASE_PKGS := $(BASE_COMMON) $(BASE_RHEL)
+	DEV_PKGS  := $(DEV_COMMON) $(DEV_RHEL)
+	PYTHON_PKGS := $(PYTHON_RHEL)
+	INSTALL   := dnf install -y
 else ifeq ($(OS_ID),debian)
 	BASE_PKGS := $(BASE_COMMON) $(BASE_DEBIAN)
 	DEV_PKGS  := $(DEV_COMMON) $(DEV_DEBIAN)
 	PYTHON_PKGS := $(PYTHON_DEBIAN)
 	INSTALL   := apt-get install -y
+else ifeq ($(OS_ID),ubuntu)
+	BASE_PKGS := $(BASE_COMMON) $(BASE_UBUNTU)
+	DEV_PKGS  := $(DEV_COMMON) $(DEV_UBUNTU)
+	PYTHON_PKGS := $(PYTHON_UBUNTU)
+	INSTALL   := apt-get install -y
 endif
 
-.PHONY: help base dev pydev github nvim ai-opencode ai-kilocode dotfiles build-alma build-fedora build-debian run-alma run-fedora run-debian
+.PHONY: help base dev pydev github nvim ai-opencode ai-kilocode dotfiles build-alma build-fedora build-debian build-ubuntu build-rhel run-alma run-fedora run-debian run-ubuntu run-rhel
 
 # Building a docker image using the corresponding docker file
 define docker_build
@@ -133,12 +153,18 @@ help:
 	printf ' %bbuild-alma%b   Build AlmaLinux Docker test image\n' "$(YELLOW)" "$(NC)"
 	printf ' %bbuild-fedora%b Build Fedora Docker test image\n' "$(YELLOW)" "$(NC)"
 	printf ' %bbuild-debian%b Build Debian Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %bbuild-ubuntu%b Build Ubuntu Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %bbuild-rhel%b   Build RHEL Docker test image\n' "$(YELLOW)" "$(NC)"
 	printf ' %brun-alma%b     Run AlmaLinux Docker test image\n' "$(YELLOW)" "$(NC)"
 	printf ' %brun-fedora%b   Run Fedora Docker test image\n' "$(YELLOW)" "$(NC)"
 	printf ' %brun-debian%b   Run Debian Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %brun-ubuntu%b   Run Ubuntu Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %brun-rhel%b     Run RHEL Docker test image\n' "$(YELLOW)" "$(NC)"
 	printf ' %bexec-alma%b    Execute /bin/bash in AlmaLinux container\n' "$(YELLOW)" "$(NC)"
 	printf ' %bexec-fedora%b  Execute /bin/bash in Fedora container\n' "$(YELLOW)" "$(NC)"
 	printf ' %bexec-debian%b  Execute /bin/bash in Debian container\n' "$(YELLOW)" "$(NC)"
+	printf ' %bexec-ubuntu%b  Execute /bin/bash in Ubuntu container\n' "$(YELLOW)" "$(NC)"
+	printf ' %bexec-rhel%b    Execute /bin/bash in RHEL container\n' "$(YELLOW)" "$(NC)"
 	printf ' %bhelp%b         Show this help message\n' "$(YELLOW)" "$(NC)"
 	printf '\n'
 	printf '%bDetected OS:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(OS_ID)" "$(NC)"
@@ -163,9 +189,9 @@ pydev:
 
 github:
 	@printf '%bInstalling GitHub CLI (gh)...%b\n' "$(CYAN)" "$(NC)"
-	if [ "$(OS_ID)" = "fedora" ] || [ "$(OS_ID)" = "almalinux" ]; then
+	if [ "$(OS_ID)" = "fedora" ] || [ "$(OS_ID)" = "almalinux" ] || [ "$(OS_ID)" = "rhel" ]; then
 		sudo $(INSTALL) gh;
-	elif [ "$(OS_ID)" = "debian" ]; then
+	elif [ "$(OS_ID)" = "debian" ] || [ "$(OS_ID)" = "ubuntu" ]; then
 		(type -p curl >/dev/null || sudo apt install curl -y) && sudo mkdir -p -m 755 /etc/apt/keyrings &&
 		curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
 			sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null &&
@@ -276,3 +302,21 @@ run-debian:
 
 exec-debian:
 	$(call docker_exec,debian)
+
+build-ubuntu:
+	$(call docker_build,ubuntu)
+
+run-ubuntu:
+	$(call docker_run,ubuntu)
+
+exec-ubuntu:
+	$(call docker_exec,ubuntu)
+
+build-rhel:
+	$(call docker_build,rhel)
+
+run-rhel:
+	$(call docker_run,rhel)
+
+exec-rhel:
+	$(call docker_exec,rhel)
