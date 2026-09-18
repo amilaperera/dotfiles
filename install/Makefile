@@ -94,7 +94,7 @@ else ifeq ($(OS_ID),ubuntu)
 	INSTALL   := apt-get install -y
 endif
 
-.PHONY: help base dev pydev github nvim ai-opencode ai-kilocode dotfiles build-alma build-fedora build-debian build-ubuntu build-rhel run-alma run-fedora run-debian run-ubuntu run-rhel
+.PHONY: help base dev pydev github nvim tree-sitter ai-opencode ai-kilocode dotfiles build-alma build-fedora build-debian build-ubuntu build-rhel run-alma run-fedora run-debian run-ubuntu run-rhel
 
 # Building a docker image using the corresponding docker file
 define docker_build
@@ -148,6 +148,7 @@ help:
 	printf ' %bpydev%b        Install Python dev tools and uv/uvx\n' "$(YELLOW)" "$(NC)"
 	printf ' %bgithub%b       Install gh CLI and setup SSH authentication\n' "$(YELLOW)" "$(NC)"
 	printf ' %bnvim%b         Install Neovim stable release from AppImage\n' "$(YELLOW)" "$(NC)"
+	printf ' %btree-sitter%b  Install tree-sitter CLI binary\n' "$(YELLOW)" "$(NC)"
 	printf ' %bai-tools%b     Install AI coding assistants (opencode, kilocode)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bdotfiles%b     Clone dotfiles repo and set up configs\n' "$(YELLOW)" "$(NC)"
 	printf ' %bbuild-alma%b   Build AlmaLinux Docker test image\n' "$(YELLOW)" "$(NC)"
@@ -172,6 +173,10 @@ help:
 
 base:
 	@printf '%bInstalling base packages (%s)...%b\n' "$(CYAN)" "$(PKG_MANAGER)" "$(NC)"
+	if [ "$(OS_ID)" = "almalinux" ] || [ "$(OS_ID)" = "rhel" ]; then
+		printf '%bEnabling EPEL repository (required for luarocks)...%b\n' "$(CYAN)" "$(NC)"
+		sudo dnf install -y epel-release;
+	fi
 	sudo $(INSTALL) $(BASE_PKGS)
 	printf '%bBase packages installed successfully!%b\n' "$(GREEN)" "$(NC)"
 
@@ -208,7 +213,7 @@ github:
 	gh auth status
 	printf '\n%bGitHub CLI setup complete.%b Run %bgh auth status%b to verify.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
-nvim:
+nvim: tree-sitter
 	@printf '%bInstalling Neovim...%b\n' "$(CYAN)" "$(NC)"
 	NVIM_ARCH=$$(uname -m);
 	if [ "$$NVIM_ARCH" = "x86_64" ]; then
@@ -237,6 +242,28 @@ nvim:
 	mkdir -p $$HOME/.local/bin
 	ln -sf $$HOME/.local/squashfs-root/usr/bin/nvim $$HOME/.local/bin/nvim;
 	printf '\n%bNeovim installed successfully!%b Run %bnvim%b to start.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
+
+tree-sitter:
+	@printf '%bInstalling tree-sitter CLI...%b\n' "$(CYAN)" "$(NC)"
+	TS_ARCH=$$(uname -m);
+	if [ "$$TS_ARCH" = "x86_64" ]; then
+		TS_BINARY="tree-sitter-linux-x64.gz"
+	elif [ "$$TS_ARCH" = "aarch64" ]; then
+		TS_BINARY="tree-sitter-linux-arm64.gz"
+	else
+		printf '%bUnsupported architecture: %s%b\n' "$(RED)" "$$TS_ARCH" "$(NC)"
+		exit 1
+	fi
+	mkdir -p $$HOME/.local/bin
+	if [ -f $$HOME/.local/bin/tree-sitter ]; then
+		printf '%btree-sitter CLI already exists, skipping.%b\n' "$(YELLOW)" "$(NC)"
+	else
+		printf '%bDownloading %s...%b\n' "$(CYAN)" "$$TS_BINARY" "$(NC)"
+		curl -fsSL "https://github.com/tree-sitter/tree-sitter/releases/latest/download/$$TS_BINARY" | gzip -d > $$HOME/.local/bin/tree-sitter
+		chmod +x $$HOME/.local/bin/tree-sitter
+	fi
+	TS_VERSION=$$($$HOME/.local/bin/tree-sitter --version);
+	printf '%b%s installed.%b Run %btree-sitter --help%b to get started.\n' "$(GREEN)" "$$TS_VERSION" "$(NC)" "$(YELLOW)" "$(NC)"
 
 ai-opencode:
 	@printf '%bInstalling opencode CLI...%b\n' "$(CYAN)" "$(NC)"
