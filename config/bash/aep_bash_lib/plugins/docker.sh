@@ -1,19 +1,17 @@
 # Docker bash plugin
+command -v docker &>/dev/null || return
 
-# Docker completion
-if command -v docker &>/dev/null; then
-    # Try common paths for docker bash completion
-    for _docker_completion in \
-        /usr/share/bash-completion/completions/docker \
-        /etc/bash_completion.d/docker \
-        /usr/local/share/bash-completion/completions/docker; do
-        if [[ -f "$_docker_completion" ]]; then
-            source "$_docker_completion"
-            break
-        fi
-    done
-    unset _docker_completion
-fi
+# Try common paths for docker bash completion
+for _docker_completion in \
+    /usr/share/bash-completion/completions/docker \
+    /etc/bash_completion.d/docker \
+    /usr/local/share/bash-completion/completions/docker; do
+    if [[ -f "$_docker_completion" ]]; then
+        source "$_docker_completion"
+        break
+    fi
+done
+unset _docker_completion
 
 # Aliases inspired by ohmyzsh docker plugin
 alias dbl='docker build'
