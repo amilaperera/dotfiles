@@ -1,0 +1,11 @@
+#!/bin/bash
+
+## This file serves as a sample for the .local.bash file.
+## It is not used directly, but can be copied to ~/.local/.local.bash and modified to suit your needs.
+
+COMPILER_GCC_CC=gcc
+COMPILER_GCC_CXX=g++
+COMPILER_CLANG_CC=clang
+COMPILER_CLANG_CXX=clang++
+
+source ~/.dotfiles/scripts/compilers.sh
