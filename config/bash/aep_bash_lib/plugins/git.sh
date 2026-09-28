@@ -4,6 +4,13 @@ function aep_current_git_branch()
         || echo "default_value"
 }
 
+# Open nvim's 'DiffviewOpen' from command line.
+# It's named 'gdv' so that it works along with other gid diff related aliases 'gd', 'gds' etc.
+function gdv()
+{
+    vim -c "DiffviewOpen ${@}"
+}
+
 # git aliases
 alias ga='git add'
 alias gb='git branch'
@@ -34,3 +41,4 @@ alias gw='git worktree'
 alias gwl='git worktree list'
 alias gshow='git show --ws-error-highlight=all'
 alias gbauthor='git for-each-ref --format="%(authorname): %(refname:short)" refs/remotes/'
+
