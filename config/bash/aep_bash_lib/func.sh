@@ -289,6 +289,14 @@ function rgf()
         --bind 'enter:become(nvim {1} +{2})'
 }
 
+# Open nvim's 'DiffviewOpen' from command line
+# ex:
+# $ vd master..
+function vd()
+{
+    vim -c "DiffviewOpen ${@}"
+}
+
 # Rather than installing pip, just do a direct invocation of the python file from the repo
 # https://github.com/sivel/speedtest-cli
 function check_internet_speed()
