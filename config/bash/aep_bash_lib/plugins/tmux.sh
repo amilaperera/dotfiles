@@ -37,7 +37,7 @@ function aep_create_default_session()
     fi
 }
 
-alias t='aep_create_default_session'
+alias td='aep_create_default_session'
 alias ta='tmux attach-session -t'
 alias tl='tmux list-sessions'
 alias ts='tmux new -s'
