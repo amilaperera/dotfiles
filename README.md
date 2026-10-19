@@ -1,29 +1,18 @@
-Dotfiles — Amila Perera
------------------------
+# Dotfiles
 
-Personal dotfiles and scripts to quickly bootstrap a Linux workstation.
+Personal dotfiles and scripts to bootstrap a Linux workstation (Fedora, AlmaLinux, RHEL, Debian, Ubuntu).
 
-Included configurations
-- bash (with aep_bash_lib)
-- nvim
-- vim (minimal)
-- tmux
-- git
-- wezterm
+## Quick start — no clone needed
+### Fedora: install make + curl, download the root Makefile to /tmp, run a target:
 
-Scripts
-- Install packages (apt/dnf/pacman supported)
-- Build compilers and libraries (gcc, clang, boost)
+      sudo dnf install -y make curl && \
+        curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/Makefile -o /tmp/Makefile && \
+        cd /tmp && make dev
 
-Quick start
-- Remote bootstrap:
-  bash -c "$(curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/bootstrap.sh)"
-- Local:
-  ./bootstrap.sh
+### Debian/Ubuntu: same with `sudo apt-get update && sudo apt-get install -y make curl` instead of dnf.
 
-Apply or test individual configs
-- make -C config all    # install/link everything
-- make -C config nvim   # install/link only nvim config
-
-Edit files under config/ and run the Makefile targets to apply changes.
+## Make targets
+- `make help` — list all targets (base, dev, pydev, github, nvim, tree-sitter, ai-tools, docker)
+- `make build-<os>` / `make run-<os>` / `make exec-<os>` — Docker test images
+- `make all NAME="Your Name" EMAIL="you@example.com"` — link configs (bash, nvim, tmux, git)
 

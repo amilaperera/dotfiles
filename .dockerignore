@@ -1,0 +1,10 @@
+# Docker test builds only need the root Makefile (see install/Dockerfile.*).
+.git
+.github
+.gitignore
+ai
+config
+scripts
+wallpapers
+bootstrap.sh
+README.md
