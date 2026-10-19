@@ -101,7 +101,7 @@ else ifeq ($(OS_ID),ubuntu)
 	INSTALL   := apt-get install -y
 endif
 
-.PHONY: help all base dev pydev github nvim tree-sitter ai-opencode ai-kilocode ai-tools dotfiles build-alma build-fedora build-debian build-ubuntu build-rhel run-alma run-fedora run-debian run-ubuntu run-rhel exec-alma exec-fedora exec-debian exec-ubuntu exec-rhel
+.PHONY: help all base dev pydev docker github nvim tree-sitter ai-opencode ai-kilocode ai-tools dotfiles build-alma build-fedora build-debian build-ubuntu build-rhel run-alma run-fedora run-debian run-ubuntu run-rhel exec-alma exec-fedora exec-debian exec-ubuntu exec-rhel
 
 # Building a docker image using the corresponding Dockerfile in install/
 define docker_build
@@ -154,14 +154,15 @@ help:
 	printf ' %bbase%b         Install base packages (git, tmux, vim, curl, etc.)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bdev%b          Install development tools (compilers, cmake, etc.)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bpydev%b        Install Python dev tools, uv/uvx, and conan\n' "$(YELLOW)" "$(NC)"
+	printf ' %bdocker%b       Install Docker Engine (docker-ce, cli, compose, buildx)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bgithub%b       Install gh CLI and setup SSH authentication\n' "$(YELLOW)" "$(NC)"
 	printf ' %bnvim%b         Install Neovim stable release from AppImage\n' "$(YELLOW)" "$(NC)"
 	printf ' %btree-sitter%b  Install tree-sitter CLI binary\n' "$(YELLOW)" "$(NC)"
 	printf ' %bai-tools%b     Install AI coding assistants (opencode, kilocode)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bdotfiles%b     Clone dotfiles repo and set up configs\n' "$(YELLOW)" "$(NC)"
 	printf ' %bbuild-<os>%b   Build a Docker test image (alma/fedora/debian/ubuntu/rhel)\n' "$(YELLOW)" "$(NC)"
-	printf ' %brun-<os>%b      Run the corresponding Docker test image\n' "$(YELLOW)" "$(NC)"
-	printf ' %bexec-<os>%b     Execute /bin/bash in an existing container\n' "$(YELLOW)" "$(NC)"
+	printf ' %brun-<os>%b     Run the corresponding Docker test image\n' "$(YELLOW)" "$(NC)"
+	printf ' %bexec-<os>%b    Execute /bin/bash in an existing container\n' "$(YELLOW)" "$(NC)"
 	printf ' %bhelp%b         Show this help message\n' "$(YELLOW)" "$(NC)"
 	printf '\n'
 	printf '%bDetected OS:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(OS_ID)" "$(NC)"
@@ -199,6 +200,35 @@ pydev:
 	# reject plain pip installs; retry with --break-system-packages when supported.
 	python3 -m pip install --user conan || python3 -m pip install --user --break-system-packages conan
 	printf '\n%bconan installed.%b Run %b$$HOME/.local/bin/conan --version%b to verify.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
+
+docker:
+	@printf '%bInstalling Docker Engine (%s)...%b\n' "$(CYAN)" "$(PKG_MANAGER)" "$(NC)"
+	if [ "$(OS_ID)" = "fedora" ] || [ "$(OS_ID)" = "almalinux" ] || [ "$(OS_ID)" = "rhel" ]; then
+		# Docker's EL repo is published under "centos"; Fedora/RHEL use their own path.
+		repo_os="$(OS_ID)"
+		if [ "$(OS_ID)" = "almalinux" ]; then
+			repo_os="centos"
+		fi
+		sudo curl -fsSL "https://download.docker.com/linux/$$repo_os/docker-ce.repo" -o /etc/yum.repos.d/docker-ce.repo
+		sudo $(INSTALL) docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	elif [ "$(OS_ID)" = "debian" ] || [ "$(OS_ID)" = "ubuntu" ]; then
+		sudo $(INSTALL) ca-certificates curl
+		sudo install -m 0755 -d /etc/apt/keyrings
+		sudo curl -fsSL "https://download.docker.com/linux/$(OS_ID)/gpg" -o /etc/apt/keyrings/docker.asc
+		sudo chmod a+r /etc/apt/keyrings/docker.asc
+		echo "deb [arch=$$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$(OS_ID) $$(. /etc/os-release && echo $$VERSION_CODENAME) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+		sudo apt-get update
+		sudo $(INSTALL) docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	fi
+	if type -p systemctl >/dev/null; then
+		printf '%bEnabling Docker service...%b\n' "$(CYAN)" "$(NC)"
+		sudo systemctl enable --now docker
+	fi
+	if getent group docker >/dev/null; then
+		sudo usermod -aG docker "$$(id -un)"
+	fi
+	docker --version
+	printf '\n%bDocker installed.%b Log out and back in to run %bdocker%b without sudo.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
 github:
 	@printf '%bInstalling GitHub CLI (gh)...%b\n' "$(CYAN)" "$(NC)"
