@@ -60,10 +60,10 @@ BASE_UBUNTU := $(BASE_FEDORA)
 DEV_COMMON := cmake unzip texinfo ninja-build
 
 # OS-specific dev packages
-DEV_FEDORA := @development-tools ccache gmp-devel mpfr-devel libmpc-devel isl-devel libzstd-devel clang clang-tools-extra llvm lld nodejs npm
+DEV_FEDORA := @development-tools ccache gmp-devel mpfr-devel libmpc-devel isl-devel libzstd-devel clang clang-tools-extra llvm libcxx libcxx-devel lld nodejs npm
 DEV_ALMA := gcc gcc-c++ make autoconf automake libtool gmp-devel mpfr-devel libmpc-devel libzstd-devel clang llvm lld nodejs npm
 DEV_RHEL := $(DEV_ALMA)
-DEV_DEBIAN := build-essential pkg-config libevent-dev bison byacc npm nodejs libgmp-dev libmpfr-dev libmpc-dev libisl-dev libzstd-dev flex help2man clang clang-tools llvm lld
+DEV_DEBIAN := build-essential pkg-config libevent-dev bison byacc npm nodejs libgmp-dev libmpfr-dev libmpc-dev libisl-dev libzstd-dev flex help2man clang clang-tools libc++-dev libc++abi-dev llvm lld
 DEV_UBUNTU := $(DEV_DEBIAN)
 
 # Python packages
