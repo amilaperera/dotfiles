@@ -1,6 +1,6 @@
 # Dotfiles installer — self-contained on purpose so it can be copied anywhere
 # (e.g. /tmp) and run standalone: curl -o /tmp/Makefile ... && make dev
-# Repo-only targets (all, dotfiles, docker) degrade gracefully outside a checkout.
+# Repo-only targets (config, dotfiles, docker) degrade gracefully outside a checkout.
 
 # Directory containing this Makefile (repo root when run from a checkout).
 ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -23,14 +23,12 @@ ifeq ($(OS_ID),fedora)
 	PKG_MANAGER := dnf
 else ifeq ($(OS_ID),almalinux)
 	PKG_MANAGER := dnf
-else ifeq ($(OS_ID),rhel)
-	PKG_MANAGER := dnf
 else ifeq ($(OS_ID),debian)
 	PKG_MANAGER := apt
 else ifeq ($(OS_ID),ubuntu)
 	PKG_MANAGER := apt
 else
-	$(error Unsupported OS: $(OS_ID). Only Fedora, AlmaLinux, RHEL, Debian, and Ubuntu are supported.)
+	$(error Unsupported OS: $(OS_ID). Only Fedora, AlmaLinux, Debian, and Ubuntu are supported.)
 endif
 
 SHELL := /bin/bash
@@ -52,7 +50,6 @@ BASE_COMMON := curl git tree wget tmux vim luarocks gawk
 # OS-specific base packages
 BASE_FEDORA := fastfetch ripgrep btop htop bat xclip dictd
 BASE_ALMA :=
-BASE_RHEL := $(BASE_FEDORA)
 BASE_DEBIAN := $(BASE_FEDORA)
 BASE_UBUNTU := $(BASE_FEDORA)
 
@@ -62,14 +59,12 @@ DEV_COMMON := cmake unzip texinfo ninja-build
 # OS-specific dev packages
 DEV_FEDORA := @development-tools ccache gmp-devel mpfr-devel libmpc-devel isl-devel libzstd-devel clang clang-tools-extra llvm libcxx libcxx-devel lld nodejs npm
 DEV_ALMA := gcc gcc-c++ make autoconf automake libtool gmp-devel mpfr-devel libmpc-devel libzstd-devel clang llvm lld nodejs npm
-DEV_RHEL := $(DEV_ALMA)
 DEV_DEBIAN := build-essential pkg-config libevent-dev bison byacc npm nodejs libgmp-dev libmpfr-dev libmpc-dev libisl-dev libzstd-dev flex help2man clang clang-tools libc++-dev libc++abi-dev llvm lld
 DEV_UBUNTU := $(DEV_DEBIAN)
 
 # Python packages
 PYTHON_FEDORA := python3 python3-pip python3-devel
 PYTHON_ALMA := python python-pip python3-pip python3-devel
-PYTHON_RHEL := $(PYTHON_ALMA)
 PYTHON_DEBIAN := python3 python3-pip python3-dev
 PYTHON_UBUNTU := $(PYTHON_DEBIAN)
 
@@ -84,11 +79,6 @@ else ifeq ($(OS_ID),almalinux)
 	DEV_PKGS  := $(DEV_COMMON) $(DEV_ALMA)
 	PYTHON_PKGS := $(PYTHON_ALMA)
 	INSTALL   := dnf install -y
-else ifeq ($(OS_ID),rhel)
-	BASE_PKGS := $(BASE_COMMON) $(BASE_RHEL)
-	DEV_PKGS  := $(DEV_COMMON) $(DEV_RHEL)
-	PYTHON_PKGS := $(PYTHON_RHEL)
-	INSTALL   := dnf install -y
 else ifeq ($(OS_ID),debian)
 	BASE_PKGS := $(BASE_COMMON) $(BASE_DEBIAN)
 	DEV_PKGS  := $(DEV_COMMON) $(DEV_DEBIAN)
@@ -101,56 +91,13 @@ else ifeq ($(OS_ID),ubuntu)
 	INSTALL   := apt-get install -y
 endif
 
-.PHONY: help all base dev pydev docker github nvim tree-sitter ai-opencode ai-kilocode ai-tools dotfiles build-alma build-fedora build-debian build-ubuntu build-rhel run-alma run-fedora run-debian run-ubuntu run-rhel exec-alma exec-fedora exec-debian exec-ubuntu exec-rhel
-
-# Building a docker image using the corresponding Dockerfile in install/
-define docker_build
-	@img="$(1)"
-	dockerfile="$(ROOT)install/Dockerfile.$$img"
-	tag="dotfiles-test-$$img"
-	if [[ ! -f "$${dockerfile}" ]]; then
-		printf '%bError: install/Dockerfile.%s not found (run from a dotfiles checkout)%b\n' "$(RED)" "$$img" "$(NC)"
-		exit 1
-	fi
-	printf '%b========================================%b\n' "$(BLUE)" "$(NC)"
-	printf '%bBuilding %s with tag: %s%b\n' "$(BLUE)" "$$img" "$$tag" "$(NC)"
-	printf '%b========================================%b\n' "$(BLUE)" "$(NC)"
-	if docker build -f "$${dockerfile}" -t "$${tag}" "$(ROOT)"; then
-		printf '%bPASS: %s%b\n' "$(GREEN)" "$$img" "$(NC)"
-	else
-		printf '%bFAIL: %s%b\n' "$(RED)" "$$img" "$(NC)"
-		exit 1
-	fi
-endef
-
-# Run the docker file
-define docker_run
-	@img="dotfiles-test-$(1)"
-	container="$(1)"
-	if docker image inspect "$$img" >/dev/null 2>&1; then
-		printf '%bRunning %s docker container...%b\n' "$(CYAN)" "$$img" "$(NC)"
-		docker run --name "$$container" -it "$$img" /bin/bash
-	else
-		printf '%bError: Docker image %s not found. Run %bmake build-%s%b first.%b\n' "$(RED)" "$$img" "$(YELLOW)" "$(1)" "$(RED)" "$(NC)"
-	fi
-endef
-
-# Execute /bin/bash in the docker container
-# Once you docker run a container, you can use this target to exec into it.
-define docker_exec
-	@container="$(1)"
-	if docker ps --all | grep "$$container">/dev/null 2>&1; then
-		docker start "$$container" && docker exec -it "$$container" /bin/bash
-	else
-		printf '%bError: Docker container %s not found. Run container with %bmake run-%s%b.%b\n' "$(RED)" "$$container" "$(YELLOW)" "$$container" "$(RED)" "$(NC)"
-	fi
-endef
+.PHONY: help config base dev pydev docker github nvim tree-sitter ai-opencode ai-kilocode ai-tools dotfiles
 
 help:
 	@printf '%b\n' "$(BOLD)$(CYAN)Usage:$(NC) make [target]"
 	printf '\n'
 	printf '%b\n' "$(BOLD)$(GREEN)Targets:$(NC)"
-	printf ' %ball%b          Link all configs (needs NAME=... EMAIL=...)\n' "$(YELLOW)" "$(NC)"
+	printf ' %bconfig%b       Link all configs (needs NAME=... EMAIL=...)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bbase%b         Install base packages (git, tmux, vim, curl, etc.)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bdev%b          Install development tools (compilers, cmake, etc.)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bpydev%b        Install Python dev tools, uv/uvx, and conan\n' "$(YELLOW)" "$(NC)"
@@ -160,24 +107,27 @@ help:
 	printf ' %btree-sitter%b  Install tree-sitter CLI binary\n' "$(YELLOW)" "$(NC)"
 	printf ' %bai-tools%b     Install AI coding assistants (opencode, kilocode)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bdotfiles%b     Clone dotfiles repo and set up configs\n' "$(YELLOW)" "$(NC)"
-	printf ' %bbuild-<os>%b   Build a Docker test image (alma/fedora/debian/ubuntu/rhel)\n' "$(YELLOW)" "$(NC)"
-	printf ' %brun-<os>%b     Run the corresponding Docker test image\n' "$(YELLOW)" "$(NC)"
-	printf ' %bexec-<os>%b    Execute /bin/bash in an existing container\n' "$(YELLOW)" "$(NC)"
 	printf ' %bhelp%b         Show this help message\n' "$(YELLOW)" "$(NC)"
+	printf '\n'
+	printf '%bDocker tests:%b ./tests/docker.sh {build|run|exec|test|list} [os|all]\n' "$(BOLD)$(MAGENTA)" "$(NC)"
 	printf '\n'
 	printf '%bDetected OS:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(OS_ID)" "$(NC)"
 	printf '%bPackage manager:%b %b%s%b\n\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(PKG_MANAGER)" "$(NC)"
 
-all:
+config:
 	@if [ ! -f "$(ROOT)config/Makefile" ]; then
 		printf '%bError: config/Makefile not found. This target needs a dotfiles checkout.%b\n' "$(RED)" "$(NC)"
 		exit 1
 	fi
-	$(MAKE) -C "$(ROOT)config" all
+	@if [ -z "$(NAME)" ] || [ -z "$(EMAIL)" ]; then
+		printf '%bError: NAME and EMAIL are both required. Pass them as: make config NAME="Your Name" EMAIL="your@email.com"%b\n' "$(RED)" "$(NC)"
+		exit 1
+	fi
+	$(MAKE) -C "$(ROOT)config" all NAME="$(NAME)" EMAIL="$(EMAIL)"
 
 base:
 	@printf '%bInstalling base packages (%s)...%b\n' "$(CYAN)" "$(PKG_MANAGER)" "$(NC)"
-	if [ "$(OS_ID)" = "almalinux" ] || [ "$(OS_ID)" = "rhel" ]; then
+	if [ "$(OS_ID)" = "almalinux" ]; then
 		printf '%bEnabling EPEL repository (required for luarocks)...%b\n' "$(CYAN)" "$(NC)"
 		sudo dnf install -y epel-release;
 	fi
@@ -203,8 +153,8 @@ pydev:
 
 docker:
 	@printf '%bInstalling Docker Engine (%s)...%b\n' "$(CYAN)" "$(PKG_MANAGER)" "$(NC)"
-	if [ "$(OS_ID)" = "fedora" ] || [ "$(OS_ID)" = "almalinux" ] || [ "$(OS_ID)" = "rhel" ]; then
-		# Docker's EL repo is published under "centos"; Fedora/RHEL use their own path.
+	if [ "$(OS_ID)" = "fedora" ] || [ "$(OS_ID)" = "almalinux" ]; then
+		# Docker's AlmaLinux repo is published under "centos"; Fedora uses its own path.
 		repo_os="$(OS_ID)"
 		if [ "$(OS_ID)" = "almalinux" ]; then
 			repo_os="centos"
@@ -232,7 +182,7 @@ docker:
 
 github:
 	@printf '%bInstalling GitHub CLI (gh)...%b\n' "$(CYAN)" "$(NC)"
-	if [ "$(OS_ID)" = "fedora" ] || [ "$(OS_ID)" = "almalinux" ] || [ "$(OS_ID)" = "rhel" ]; then
+	if [ "$(OS_ID)" = "fedora" ] || [ "$(OS_ID)" = "almalinux" ]; then
 		sudo $(INSTALL) gh;
 	elif [ "$(OS_ID)" = "debian" ] || [ "$(OS_ID)" = "ubuntu" ]; then
 		(type -p curl >/dev/null || sudo apt install curl -y) && sudo mkdir -p -m 755 /etc/apt/keyrings &&
@@ -317,12 +267,8 @@ ai-tools: ai-opencode ai-kilocode
 	@printf '\n%bAI tools installed successfully!%b You can now use %bopencode%b and %bkilo%b commands.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
 
 dotfiles:
-	@if [ -z "$(NAME)" ]; then
-		printf '%bError: NAME is not set. Pass it as: make dotfiles NAME="Your Name"%b\n' "$(RED)" "$(NC)"
-		exit 1
-	fi
-	@if [ -z "$(EMAIL)" ]; then
-		printf '%bError: EMAIL is not set. Pass it as: make dotfiles EMAIL="your@email.com"%b\n' "$(RED)" "$(NC)"
+	@if [ -z "$(NAME)" ] || [ -z "$(EMAIL)" ]; then
+		printf '%bError: NAME and EMAIL are both required. Pass them as: make dotfiles NAME="Your Name" EMAIL="your@email.com"%b\n' "$(RED)" "$(NC)"
 		exit 1
 	fi
 	@printf '%bSetting up dotfiles...%b\n' "$(CYAN)" "$(NC)"
@@ -338,50 +284,5 @@ dotfiles:
 		printf '%b%s directory already exists%b\n' "$(YELLOW)" "$$HOME/.dotfiles" "$(NC)"
 	fi
 	printf '%bSetting up personal dotfiles...%b\n' "$(CYAN)" "$(NC)"
-	cd $$HOME/.dotfiles/config && $(MAKE) all NAME="$(NAME)" EMAIL="$(EMAIL)"
+	$(MAKE) -C "$$HOME/.dotfiles" config NAME="$(NAME)" EMAIL="$(EMAIL)"
 	printf '\n%bDotfiles configs setup complete!%b\n' "$(GREEN)" "$(NC)"
-
-build-alma:
-	$(call docker_build,alma)
-
-run-alma:
-	$(call docker_run,alma)
-
-exec-alma:
-	$(call docker_exec,alma)
-
-build-fedora:
-	$(call docker_build,fedora)
-
-run-fedora:
-	$(call docker_run,fedora)
-
-exec-fedora:
-	$(call docker_exec,fedora)
-
-build-debian:
-	$(call docker_build,debian)
-
-run-debian:
-	$(call docker_run,debian)
-
-exec-debian:
-	$(call docker_exec,debian)
-
-build-ubuntu:
-	$(call docker_build,ubuntu)
-
-run-ubuntu:
-	$(call docker_run,ubuntu)
-
-exec-ubuntu:
-	$(call docker_exec,ubuntu)
-
-build-rhel:
-	$(call docker_build,rhel)
-
-run-rhel:
-	$(call docker_run,rhel)
-
-exec-rhel:
-	$(call docker_exec,rhel)

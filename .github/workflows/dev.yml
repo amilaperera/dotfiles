@@ -1,0 +1,46 @@
+name: Dev container tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dev-alma:
+    name: AlmaLinux make dev
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/test-dev
+        with:
+          distro: alma
+
+  dev-fedora:
+    name: Fedora make dev
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/test-dev
+        with:
+          distro: fedora
+
+  dev-debian:
+    name: Debian make dev
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/test-dev
+        with:
+          distro: debian
+
+  dev-ubuntu:
+    name: Ubuntu make dev
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/test-dev
+        with:
+          distro: ubuntu

@@ -1,0 +1,14 @@
+name: Test make dev in container
+description: Build a distro's Docker image and run its make dev target
+inputs:
+  distro:
+    description: Short distro name matching a tests/Dockerfile (alma, debian, fedora, ubuntu)
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Build image and run make dev
+      shell: bash
+      env:
+        DISTRO: ${{ inputs.distro }}
+      run: ./tests/docker.sh test "$DISTRO"

@@ -1,8 +1,8 @@
-FROM fedora:latest
+FROM almalinux:latest
 
 RUN dnf install -y make sudo
 
-WORKDIR /install
+WORKDIR /tests
 COPY Makefile .
 
 RUN make base

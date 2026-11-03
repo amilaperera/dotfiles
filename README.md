@@ -1,6 +1,13 @@
 # Dotfiles
 
-Personal dotfiles and scripts to bootstrap a Linux workstation (Fedora, AlmaLinux, RHEL, Debian, Ubuntu).
+Personal dotfiles and scripts to bootstrap a Linux workstation.
+
+| Linux distribution | `make dev` status |
+| --- | --- |
+| <img src="https://cdn.simpleicons.org/almalinux/0F4266" alt="AlmaLinux" width="24"> AlmaLinux | [![AlmaLinux make dev](https://img.shields.io/github/check-runs/amilaperera/dotfiles/master?nameFilter=AlmaLinux%20make%20dev&label=make%20dev)](https://github.com/amilaperera/dotfiles/actions/workflows/dev.yml) |
+| <img src="https://cdn.simpleicons.org/debian/A81D33" alt="Debian" width="24"> Debian | [![Debian make dev](https://img.shields.io/github/check-runs/amilaperera/dotfiles/master?nameFilter=Debian%20make%20dev&label=make%20dev)](https://github.com/amilaperera/dotfiles/actions/workflows/dev.yml) |
+| <img src="https://cdn.simpleicons.org/fedora/51A2DA" alt="Fedora" width="24"> Fedora | [![Fedora make dev](https://img.shields.io/github/check-runs/amilaperera/dotfiles/master?nameFilter=Fedora%20make%20dev&label=make%20dev)](https://github.com/amilaperera/dotfiles/actions/workflows/dev.yml) |
+| <img src="https://cdn.simpleicons.org/ubuntu/E95420" alt="Ubuntu" width="24"> Ubuntu | [![Ubuntu make dev](https://img.shields.io/github/check-runs/amilaperera/dotfiles/master?nameFilter=Ubuntu%20make%20dev&label=make%20dev)](https://github.com/amilaperera/dotfiles/actions/workflows/dev.yml) |
 
 ## Quick start — no clone needed
 
@@ -20,6 +27,5 @@ Same with `sudo apt-get update && sudo apt-get install -y make curl` instead of 
 
 - `make help` — list all targets (base, dev, pydev, github, nvim, tree-sitter, ai-tools, docker)
 - `make docker` — install Docker Engine (docker-ce, cli, compose, buildx)
-- `make build-<os>` / `make run-<os>` / `make exec-<os>` — Docker test images
-- `make all NAME="Your Name" EMAIL="you@example.com"` — link configs (bash, nvim, tmux, git)
-
+- `./tests/docker.sh build|run|exec|test <os>` — manage Docker test environments (alma, debian, fedora, ubuntu)
+- `make config NAME="Your Name" EMAIL="you@example.com"` — link configs (bash, nvim, tmux, git)

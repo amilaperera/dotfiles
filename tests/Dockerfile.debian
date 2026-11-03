@@ -2,7 +2,7 @@ FROM debian:latest
 
 RUN apt-get update && apt-get install -y --no-install-recommends make sudo
 
-WORKDIR /install
+WORKDIR /tests
 COPY Makefile .
 
 RUN make base

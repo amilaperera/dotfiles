@@ -1,4 +1,4 @@
-# Docker test builds only need the root Makefile (see install/Dockerfile.*).
+# Docker test builds only need the root Makefile (see tests/Dockerfile.*).
 .git
 .github
 .gitignore

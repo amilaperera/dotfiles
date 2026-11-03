@@ -60,12 +60,8 @@ wallpaper:
 	ln -sfT $(WALLPAPER) $(HOMEDIR)wallpapers
 
 gitconfig:
-	@if [ -z "$(NAME)" ]; then
-		printf 'Error: NAME is not set. Usage: make gitconfig NAME="Your Name" EMAIL="you@example.com"\n'
-		exit 1
-	fi
-	@if [ -z "$(EMAIL)" ]; then
-		printf 'Error: EMAIL is not set. Usage: make gitconfig NAME="Your Name" EMAIL="you@example.com"\n'
+	@if [ -z "$(NAME)" ] || [ -z "$(EMAIL)" ]; then
+		printf 'Error: NAME and EMAIL are both required. Usage: make gitconfig NAME="Your Name" EMAIL="you@example.com"\n'
 		exit 1
 	fi
 	@echo
