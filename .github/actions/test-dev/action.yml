@@ -1,5 +1,5 @@
-name: Test make dev in container
-description: Build a distro's Docker image and run its make dev target
+name: Test make dev and config in container
+description: Build a distro's Docker image, run make dev, then smoke-test config linking
 inputs:
   distro:
     description: Short distro name matching a tests/Dockerfile (alma, debian, fedora, ubuntu)
@@ -11,4 +11,10 @@ runs:
       shell: bash
       env:
         DISTRO: ${{ inputs.distro }}
-      run: ./tests/docker.sh test "$DISTRO"
+      run: ./tests/docker.sh dev "$DISTRO"
+
+    - name: Run config smoke test
+      shell: bash
+      env:
+        DISTRO: ${{ inputs.distro }}
+      run: ./tests/docker.sh config "$DISTRO"

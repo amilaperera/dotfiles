@@ -13,6 +13,9 @@ WALLPAPER := $(DIR)/../wallpapers
 HOMEDIR := ~/
 UNAME   := $(shell uname -s)
 
+# OFFLINE=1 skips network downloads so smoke tests stay fast and deterministic.
+OFFLINE ?= 0
+
 .ONESHELL:
 
 .PHONY: all fzf bash nvim misc wallpaper gitconfig
@@ -25,9 +28,13 @@ all: fzf bash nvim misc wallpaper gitconfig
 fzf:
 	@echo
 	@echo "================= Installing fzf ================="
-	rm -rf ~/.fzf
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install --key-bindings --completion --no-update-rc
+	if [ "$(OFFLINE)" = "1" ]; then
+		echo "Skipping fzf installation (OFFLINE=1)"
+	else
+		rm -rf ~/.fzf
+		git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+		~/.fzf/install --key-bindings --completion --no-update-rc
+	fi
 
 bash:
 	@echo
@@ -51,7 +58,11 @@ misc:
 	ln -sf $(GDB)/.gdbinit $(HOMEDIR)
 	ln -sf $(WEZTERM)/.wezterm.lua $(HOMEDIR)
 	mkdir -p $(HOMEDIR).local
-	curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh >| $(HOMEDIR).local/git-prompt.sh
+	if [ "$(OFFLINE)" = "1" ]; then
+		echo "Skipping git-prompt.sh download (OFFLINE=1)"
+	else
+		curl -L https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh >| $(HOMEDIR).local/git-prompt.sh
+	fi
 
 wallpaper:
 	@echo

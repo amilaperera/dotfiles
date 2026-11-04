@@ -1,6 +1,6 @@
 # Dotfiles installer — self-contained on purpose so it can be copied anywhere
 # (e.g. /tmp) and run standalone: curl -o /tmp/Makefile ... && make dev
-# Repo-only targets (config, dotfiles, docker) degrade gracefully outside a checkout.
+# Repo-only targets (config, test, dotfiles, docker) degrade gracefully outside a checkout.
 
 # Directory containing this Makefile (repo root when run from a checkout).
 ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -91,25 +91,27 @@ else ifeq ($(OS_ID),ubuntu)
 	INSTALL   := apt-get install -y
 endif
 
-.PHONY: help config base dev pydev docker github nvim tree-sitter ai-opencode ai-kilocode ai-tools dotfiles
+.PHONY: help config test base dev pydev docker github use-ssh nvim tree-sitter ai-opencode ai-kilocode ai-tools dotfiles
 
 help:
 	@printf '%b\n' "$(BOLD)$(CYAN)Usage:$(NC) make [target]"
 	printf '\n'
 	printf '%b\n' "$(BOLD)$(GREEN)Targets:$(NC)"
 	printf ' %bconfig%b       Link all configs (needs NAME=... EMAIL=...)\n' "$(YELLOW)" "$(NC)"
+	printf ' %btest%b         Smoke-test config linking in an isolated HOME\n' "$(YELLOW)" "$(NC)"
 	printf ' %bbase%b         Install base packages (git, tmux, vim, curl, etc.)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bdev%b          Install development tools (compilers, cmake, etc.)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bpydev%b        Install Python dev tools, uv/uvx, and conan\n' "$(YELLOW)" "$(NC)"
 	printf ' %bdocker%b       Install Docker Engine (docker-ce, cli, compose, buildx)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bgithub%b       Install gh CLI and setup SSH authentication\n' "$(YELLOW)" "$(NC)"
+	printf ' %buse-ssh%b      Switch this checkout to the GitHub SSH remote\n' "$(YELLOW)" "$(NC)"
 	printf ' %bnvim%b         Install Neovim stable release from AppImage\n' "$(YELLOW)" "$(NC)"
 	printf ' %btree-sitter%b  Install tree-sitter CLI binary\n' "$(YELLOW)" "$(NC)"
 	printf ' %bai-tools%b     Install AI coding assistants (opencode, kilocode)\n' "$(YELLOW)" "$(NC)"
 	printf ' %bdotfiles%b     Clone dotfiles repo and set up configs\n' "$(YELLOW)" "$(NC)"
 	printf ' %bhelp%b         Show this help message\n' "$(YELLOW)" "$(NC)"
 	printf '\n'
-	printf '%bDocker tests:%b ./tests/docker.sh {build|run|exec|test|list} [os|all]\n' "$(BOLD)$(MAGENTA)" "$(NC)"
+	printf '%bDocker tests:%b ./tests/docker.sh {build|dev|config|run|exec|list} [os|all]\n' "$(BOLD)$(MAGENTA)" "$(NC)"
 	printf '\n'
 	printf '%bDetected OS:%b %b%s%b\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(OS_ID)" "$(NC)"
 	printf '%bPackage manager:%b %b%s%b\n\n' "$(BOLD)$(MAGENTA)" "$(NC)" "$(BLUE)" "$(PKG_MANAGER)" "$(NC)"
@@ -124,6 +126,13 @@ config:
 		exit 1
 	fi
 	$(MAKE) -C "$(ROOT)config" all NAME="$(NAME)" EMAIL="$(EMAIL)"
+
+test:
+	@if [ ! -f "$(ROOT)tests/config-test.sh" ]; then
+		printf '%bError: tests/config-test.sh not found. This target needs a dotfiles checkout.%b\n' "$(RED)" "$(NC)"
+		exit 1
+	fi
+	NETWORK="$(NETWORK)" "$(ROOT)tests/config-test.sh"
 
 base:
 	@printf '%bInstalling base packages (%s)...%b\n' "$(CYAN)" "$(PKG_MANAGER)" "$(NC)"
@@ -200,6 +209,39 @@ github:
 	printf '\n%bVerifying authentication...%b\n' "$(CYAN)" "$(NC)"
 	gh auth status
 	printf '\n%bGitHub CLI setup complete.%b Run %bgh auth status%b to verify.\n' "$(GREEN)" "$(NC)" "$(YELLOW)" "$(NC)"
+	if [ -d "$(ROOT).git" ]; then
+		url=$$(git -C "$(ROOT)" remote get-url origin 2>/dev/null || true)
+		case "$$url" in
+			https://github.com/*)
+				printf '\n%bNext:%b run %bmake use-ssh%b to switch this checkout from HTTPS to SSH.\n' "$(BOLD)" "$(NC)" "$(YELLOW)" "$(NC)"
+				;;
+		esac
+	fi
+
+use-ssh:
+	@if [ ! -d "$(ROOT).git" ]; then
+		printf '%bError: no git checkout found. Run this target from the dotfiles repository.%b\n' "$(RED)" "$(NC)"
+		exit 1
+	fi
+	if ! url=$$(git -C "$(ROOT)" remote get-url origin 2>/dev/null); then
+		printf '%bError: the origin remote is not configured.%b\n' "$(RED)" "$(NC)"
+		exit 1
+	fi
+	case "$$url" in
+		git@github.com:* | ssh://git@github.com/*)
+			printf '%bAlready using SSH:%b %s\n' "$(GREEN)" "$(NC)" "$$url"
+			;;
+		https://github.com/*)
+			repo=$$(printf '%s' "$$url" | sed -E 's#^https://github\.com/##; s#\.git$$##')
+			git -C "$(ROOT)" remote set-url origin "git@github.com:$${repo}.git"
+			printf '%bSwitched origin to:%b git@github.com:%s.git\n' "$(GREEN)" "$(NC)" "$$repo"
+			;;
+		*)
+			printf '%bError: origin is not a GitHub HTTPS or SSH URL:%b %s\n' "$(RED)" "$(NC)" "$$url"
+			exit 1
+			;;
+	esac
+	git -C "$(ROOT)" remote -v
 
 nvim: tree-sitter
 	@printf '%bInstalling Neovim...%b\n' "$(CYAN)" "$(NC)"

@@ -1,31 +1,88 @@
 # Dotfiles
 
-Personal dotfiles and scripts to bootstrap a Linux workstation.
+Personal Linux workstation bootstrap for Fedora, AlmaLinux, Debian, and Ubuntu.
 
-| Linux distribution | `make dev` status |
+| Distro | `make dev` |
 | --- | --- |
 | <img src="https://cdn.simpleicons.org/almalinux/0F4266" alt="AlmaLinux" width="24"> AlmaLinux | [![AlmaLinux make dev](https://img.shields.io/github/check-runs/amilaperera/dotfiles/master?nameFilter=AlmaLinux%20make%20dev&label=make%20dev)](https://github.com/amilaperera/dotfiles/actions/workflows/dev.yml) |
 | <img src="https://cdn.simpleicons.org/debian/A81D33" alt="Debian" width="24"> Debian | [![Debian make dev](https://img.shields.io/github/check-runs/amilaperera/dotfiles/master?nameFilter=Debian%20make%20dev&label=make%20dev)](https://github.com/amilaperera/dotfiles/actions/workflows/dev.yml) |
 | <img src="https://cdn.simpleicons.org/fedora/51A2DA" alt="Fedora" width="24"> Fedora | [![Fedora make dev](https://img.shields.io/github/check-runs/amilaperera/dotfiles/master?nameFilter=Fedora%20make%20dev&label=make%20dev)](https://github.com/amilaperera/dotfiles/actions/workflows/dev.yml) |
 | <img src="https://cdn.simpleicons.org/ubuntu/E95420" alt="Ubuntu" width="24"> Ubuntu | [![Ubuntu make dev](https://img.shields.io/github/check-runs/amilaperera/dotfiles/master?nameFilter=Ubuntu%20make%20dev&label=make%20dev)](https://github.com/amilaperera/dotfiles/actions/workflows/dev.yml) |
 
-## Quick start — no clone needed
+## Full Fedora setup
 
-### Fedora
+Run as your normal user with `sudo` access.
 
-install make + curl, download the root Makefile to /tmp, run a target:
+### 1. Clone
 
-      sudo dnf install -y make curl && \
-        curl -fsSL https://raw.githubusercontent.com/amilaperera/dotfiles/master/Makefile -o /tmp/Makefile && \
-        cd /tmp && make dev
+```sh
+sudo dnf install -y git make curl
+git clone https://github.com/amilaperera/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+```
 
-### Debian/Ubuntu
+### 2. Packages
 
-Same with `sudo apt-get update && sudo apt-get install -y make curl` instead of dnf.
+```sh
+make dev
+```
 
-## Useful make targets
+Includes `make base`.
 
-- `make help` — list all targets (base, dev, pydev, github, nvim, tree-sitter, ai-tools, docker)
-- `make docker` — install Docker Engine (docker-ce, cli, compose, buildx)
-- `./tests/docker.sh build|run|exec|test <os>` — manage Docker test environments (alma, debian, fedora, ubuntu)
-- `make config NAME="Your Name" EMAIL="you@example.com"` — link configs (bash, nvim, tmux, git)
+### 3. Tools
+
+```sh
+make pydev
+make docker
+make nvim
+make ai-tools
+```
+
+- `pydev`: Python, uv, Conan
+- `docker`: Docker Engine
+- `nvim`: tree-sitter, Neovim
+- `ai-tools`: opencode, kilocode
+
+Log out and back in after Docker install.
+
+### 4. GitHub (optional)
+
+```sh
+make github
+make use-ssh
+ssh -T git@github.com
+```
+
+`ssh -T` exits 1 on success. `make use-ssh` is safe if already SSH.
+
+### 5. Configs
+
+```sh
+make config NAME="Your Name" EMAIL="you@example.com"
+```
+
+Links bash, nvim, tmux, vim, gdb, wezterm, and wallpapers. Writes `~/.gitconfig`.
+
+Test safely:
+
+```sh
+make test
+```
+
+### 6. Reload
+
+```sh
+exec bash -l
+```
+
+Only have the Makefile? `make dotfiles NAME="Your Name" EMAIL="you@example.com"` clones and links.
+
+## Useful targets
+
+- `make help` — list targets
+- `make config NAME=... EMAIL=...` — link configs
+- `make test` — test configs in an isolated HOME; `NETWORK=1` includes downloads
+- `make github` — install `gh`, authenticate over SSH
+- `make use-ssh` — switch remote from HTTPS to SSH
+- `make docker` — install Docker Engine
+- `./tests/docker.sh build|dev|config|run|exec <os>` — Docker test environments

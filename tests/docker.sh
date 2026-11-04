@@ -2,13 +2,14 @@
 # Build and run the Docker environments used to smoke-test this repository.
 # Run from anywhere; paths are resolved relative to this script.
 #
-# Usage: tests/docker.sh {build|run|exec|test|list} [distro|all]
+# Usage: tests/docker.sh {build|dev|config|run|exec|list} [distro|all]
 
 set -euo pipefail
 
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 TESTS_DIR="$ROOT/tests"
 DISTROS=(alma debian fedora ubuntu)
+NETWORK="${NETWORK:-0}"
 
 NC=$'\033[0m'
 BOLD=$'\033[1m'
@@ -23,11 +24,15 @@ usage() {
 ${BOLD}Usage:${NC} tests/docker.sh <command> [distro|all]
 
 ${BOLD}Commands:${NC}
-  build <distro|all>  Build the Docker test image
-  run <distro>        Start an interactive container
-  exec <distro>       Open a shell in an existing container
-  test <distro|all>   Build the image and run "make dev" inside it
-  list                List supported distros
+  build <distro|all>   Build the Docker test image
+  dev <distro|all>     Build the image and run "make dev" inside it
+  config <distro|all>  Mount the checkout and run "make test" inside it
+  run <distro>         Start an interactive container
+  exec <distro>        Open a shell in an existing container
+  list                 List supported distros
+
+${BOLD}Environment:${NC}
+  NETWORK=1            Include network downloads in the config test
 
 ${BOLD}Distros:${NC} ${DISTROS[*]}
 EOF
@@ -97,12 +102,27 @@ exec_container() {
 	fi
 }
 
-test_dev() {
+run_dev() {
 	local distro="$1"
 
 	build "$distro"
 	printf '%bRunning make dev in %s...%b\n' "$CYAN" "$distro" "$NC"
 	docker run --rm "$(image_name "$distro")" make dev
+}
+
+run_config() {
+	local distro="$1"
+	local tag
+	tag="$(image_name "$distro")"
+
+	docker image inspect "$tag" >/dev/null 2>&1 || build "$distro"
+
+	printf '%bRunning make test in %s...%b\n' "$CYAN" "$distro" "$NC"
+	docker run --rm \
+		-e NETWORK="$NETWORK" \
+		-v "$ROOT:/src:Z" \
+		-w /src \
+		"$tag" make test
 }
 
 with_distros() {
@@ -131,8 +151,11 @@ main() {
 	build)
 		with_distros build "$target"
 		;;
-	test)
-		with_distros test_dev "$target"
+	dev)
+		with_distros run_dev "$target"
+		;;
+	config)
+		with_distros run_config "$target"
 		;;
 	run)
 		[[ -n "$target" ]] || { usage; exit 1; }
