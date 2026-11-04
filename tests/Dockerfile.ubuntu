@@ -5,4 +5,4 @@ RUN apt-get update && apt-get install -y make sudo
 WORKDIR /tests
 COPY Makefile .
 
-RUN make base
+RUN make dev
