@@ -57,9 +57,59 @@ BASE_UBUNTU := $(BASE_FEDORA)
 DEV_COMMON := cmake unzip texinfo ninja-build
 
 # OS-specific dev packages
-DEV_FEDORA := @development-tools ccache gmp-devel mpfr-devel libmpc-devel isl-devel libzstd-devel clang clang-tools-extra llvm libcxx libcxx-devel lld nodejs npm
-DEV_ALMA := gcc gcc-c++ make autoconf automake libtool gmp-devel mpfr-devel libmpc-devel libzstd-devel clang llvm lld nodejs npm
-DEV_DEBIAN := build-essential pkg-config libevent-dev bison byacc npm nodejs libgmp-dev libmpfr-dev libmpc-dev libisl-dev libzstd-dev flex help2man clang clang-tools libc++-dev libc++abi-dev llvm lld
+DEV_FEDORA := @development-tools \
+			  ccache \
+			  gmp-devel \
+			  mpfr-devel \
+			  libmpc-devel \
+			  isl-devel \
+			  libzstd-devel \
+			  clang \
+			  clang-tools-extra \
+			  llvm \
+			  libcxx \
+			  libcxx-devel \
+			  lld \
+			  nodejs \
+			  npm
+
+DEV_ALMA := gcc \
+			gcc-c++ \
+			make \
+			autoconf \
+			automake \
+			libtool \
+			gmp-devel \
+			mpfr-devel \
+			libmpc-devel \
+			libzstd-devel \
+			clang \
+			llvm \
+			lld \
+			nodejs \
+			npm
+
+DEV_DEBIAN := build-essential \
+			  pkg-config \
+			  libevent-dev \
+			  bison \
+			  byacc \
+			  npm \
+			  nodejs \
+			  libgmp-dev \
+			  libmpfr-dev \
+			  libmpc-dev \
+			  libisl-dev \
+			  libzstd-dev \
+			  flex \
+			  help2man \
+			  clang \
+			  clang-tools \
+			  libc++-dev \
+			  libc++abi-dev \
+			  llvm \
+			  lld
+
 DEV_UBUNTU := $(DEV_DEBIAN)
 
 # Python packages
@@ -175,7 +225,8 @@ docker:
 		sudo install -m 0755 -d /etc/apt/keyrings
 		sudo curl -fsSL "https://download.docker.com/linux/$(OS_ID)/gpg" -o /etc/apt/keyrings/docker.asc
 		sudo chmod a+r /etc/apt/keyrings/docker.asc
-		echo "deb [arch=$$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$(OS_ID) $$(. /etc/os-release && echo $$VERSION_CODENAME) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+		echo "deb [arch=$$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$(OS_ID) $$(. /etc/os-release && echo $$VERSION_CODENAME) stable" | \
+			sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 		sudo apt-get update
 		sudo $(INSTALL) docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 	fi
