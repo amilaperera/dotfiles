@@ -1,4 +1,3 @@
 *.pyc
 .cgdb/readline_history.txt
-nvim/lazy-lock.json
-
+config/nvim/lazy-lock.json
