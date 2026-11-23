@@ -62,6 +62,7 @@ DEV_FEDORA := @development-tools \
 			  ccache \
 			  gmp-devel \
 			  mpfr-devel \
+			  flex \
 			  libmpc-devel \
 			  isl-devel \
 			  libzstd-devel \
@@ -79,11 +80,15 @@ DEV_ALMA := gcc \
 			make \
 			autoconf \
 			automake \
+			flex \
+			bison \
+			byacc \
 			libtool \
 			gmp-devel \
 			mpfr-devel \
 			libmpc-devel \
 			libzstd-devel \
+			isl-devel \
 			clang \
 			llvm \
 			lld \
