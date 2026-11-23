@@ -48,8 +48,9 @@ SHELL := /bin/bash
 BASE_COMMON := curl git tree wget tmux vim luarocks gawk
 
 # OS-specific base packages
-BASE_FEDORA := fastfetch ripgrep btop htop bat xclip dictd
-BASE_ALMA :=
+BASE_FEDORA := fastfetch ripgrep btop htop bat xclip
+# For AlmaLinux, these packages only work when you enable epel repository. See 'base' target.
+BASE_ALMA := $(BASE_FEDORA)
 BASE_DEBIAN := $(BASE_FEDORA)
 BASE_UBUNTU := $(BASE_FEDORA)
 

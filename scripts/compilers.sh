@@ -35,44 +35,6 @@ function activate_clang()
     fi
 }
 
-# gcc
-function activate_gcc15()
-{
-    if ! activate_gcc_compiler "15.2.0"; then
-        return 1
-    fi
-
-    activate_debugger gdb "15.2"
-    export BOOST_ROOT=${compiler_root}/boost_1.89.0.gcc
-}
-
-function activate_gcc14()
-{
-    if ! activate_gcc_compiler "14.2.0"; then
-        return 1
-    fi
-
-    activate_debugger gdb "15.2"
-    export BOOST_ROOT=${compiler_root}/boost_1.86.0.gcc
-}
-
-# clang
-function activate_clang21()
-{
-    if ! activate_clang_compiler "21.1.0" "clang" "21.1.0"; then
-        return 1
-    fi
-    export BOOST_ROOT=${compiler_root}/boost_1.89.0.clang
-}
-
-function activate_clang19()
-{
-    if ! activate_clang_compiler "19.1.3" "clang" "19.1.3"; then
-        return 1
-    fi
-    export BOOST_ROOT=${compiler_root}/boost_1.86.0.clang
-}
-
 # helpers
 function sanitize_compiler_path()
 {

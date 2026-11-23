@@ -9,8 +9,8 @@ source .common.sh
 
 # Parse clang version
 if [[ -z ${1} ]]; then
-  echo "install_clang.sh <VERSION1> <VERSION2> ..."
-  die "No clang version supplied"
+    echo "install_clang.sh <VERSION1> <VERSION2> ..."
+    die "No clang version supplied"
 fi
 
 # OS infomation probing
@@ -73,15 +73,15 @@ function install_version()
 
     # Configure CMake
     cd ${build_dir} && cmake -G "Ninja" \
-                                -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;lldb" \
-                                -DCMAKE_INSTALL_PREFIX=${HOME}/.local/clang-${version} \
-                                -DCMAKE_BUILD_TYPE=Release \
-                                -DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind" \
-                                -DLLVM_DEFAULT_TARGET_TRIPLE="${target_triple}" \
-                                -DLIBCXX_USE_TARGET_INCLUDE_LAYOUT=OFF \
-                                -DLIBCXX_INCLUDE_BENCHMARKS=OFF \
-                                -DLIBCXX_ENABLE_FILESYSTEM=ON \
-                                ../llvm
+        -DLLVM_ENABLE_PROJECTS="clang;lld;lldb;clang-tools-extra" \
+        -DCMAKE_INSTALL_PREFIX=${HOME}/.local/clang-${version} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DLLVM_ENABLE_RUNTIMES="compiler-rt;libcxx;libcxxabi;libunwind" \
+        -DLLVM_DEFAULT_TARGET_TRIPLE="${target_triple}" \
+        -DLIBCXX_USE_TARGET_INCLUDE_LAYOUT=OFF \
+        -DLIBCXX_INCLUDE_BENCHMARKS=OFF \
+        -DLIBCXX_ENABLE_FILESYSTEM=ON \
+        ../llvm
     die_if_error $? "CMake configuration failed"
 
     # make
