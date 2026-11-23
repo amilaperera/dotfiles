@@ -15,12 +15,13 @@ source .common.sh
 
 # Parse gcc version
 if [[ -z ${1} ]]; then
-  echo "install_gcc.sh <VERSION1> <VERSION2> ..."
-  die "No gcc version supplied"
+    echo "[N=4(parallel_jobs)] install_gcc.sh <VERSION1> <VERSION2> ... N=parallel_jobs(4)"
+    die "No gcc version supplied"
 fi
 
 # OS infomation probing
 probe_os_info
+green "Parallel jobs=${N:=4}"
 
 # Working directory
 cwd=${HOME}/work
@@ -30,8 +31,6 @@ project_directory=${cwd}/gcc
 
 # Prepare build directory
 build_dir=${project_directory}/build
-
-parallel_jobs=4
 
 function prepare_project_for_building()
 {
@@ -76,26 +75,26 @@ function install_version()
 
     # configure
     cd ${build_dir} && ../configure -v --prefix=$HOME/.local/gcc-${version} \
-                                       --host=x86_64-pc-linux-gnu \
-                                       --enable-bootstrap \
-                                       --enable-shared \
-                                       --enable-checking=release \
-                                       --enable-__cxa_atexit \
-                                       --enable-languages=c,c++,lto \
-                                       --enable-lto \
-                                       --enable-threads=posix \
-                                       --enable-vtable-verify \
-                                       --disable-multilib \
-                                       --program-suffix=-${version}
+        --host=x86_64-pc-linux-gnu \
+        --enable-bootstrap \
+        --enable-shared \
+        --enable-checking=release \
+        --enable-__cxa_atexit \
+        --enable-languages=c,c++,lto \
+        --enable-lto \
+        --enable-threads=posix \
+        --enable-vtable-verify \
+        --disable-multilib \
+        --program-suffix=-${version}
 
     die_if_error $? "Configuration failed"
 
     # make
-    cd ${build_dir} && make -j${parallel_jobs}
+    cd ${build_dir} && make -j${N}
     die_if_error $? "make failed"
 
     # make install
-    cd ${build_dir} && make install -j${parallel_jobs}
+    cd ${build_dir} && make install -j${N}
     die_if_error $? "make install failed"
 
     echo

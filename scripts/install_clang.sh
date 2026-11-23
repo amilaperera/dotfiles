@@ -9,12 +9,13 @@ source .common.sh
 
 # Parse clang version
 if [[ -z ${1} ]]; then
-    echo "install_clang.sh <VERSION1> <VERSION2> ..."
+    echo "[N=4(parallel_jobs)] install_clang.sh <VERSION1> <VERSION2> ..."
     die "No clang version supplied"
 fi
 
 # OS infomation probing
 probe_os_info
+green "Parallel jobs=${N:=4}"
 
 # Working directory
 cwd=${HOME}/work
@@ -24,8 +25,6 @@ project_directory=${cwd}/llvm-project
 
 # Prepare build directory
 build_dir=${project_directory}/build
-
-parallel_jobs=4
 
 function prepare_project_for_building()
 {
@@ -85,11 +84,11 @@ function install_version()
     die_if_error $? "CMake configuration failed"
 
     # make
-    cd ${build_dir} && ninja -j${parallel_jobs}
+    cd ${build_dir} && ninja -j${N}
     die_if_error $? "ninja build failed"
 
     # make install
-    cd ${build_dir} && ninja install -j${parallel_jobs}
+    cd ${build_dir} && ninja install -j${N}
     die_if_error $? "ninja install failed"
 
     echo
