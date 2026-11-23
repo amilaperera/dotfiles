@@ -116,7 +116,7 @@ DEV_UBUNTU := $(DEV_DEBIAN)
 # Python packages
 PYTHON_FEDORA := python3 python3-pip python3-devel
 PYTHON_ALMA := python python-pip python3-pip python3-devel
-PYTHON_DEBIAN := python3 python3-pip python3-dev
+PYTHON_DEBIAN := python3 python3-pip python3-dev python3-venv
 PYTHON_UBUNTU := $(PYTHON_DEBIAN)
 
 # Resolve packages and install command based on detected OS
