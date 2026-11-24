@@ -15,7 +15,7 @@ function activate_gcc()
         export LD_LIBRARY_PATH=
         export BOOST_ROOT=${compiler_root}/boost_1.89.0.gcc
     else
-        if ! activate_gcc15; then
+        if ! activate_gcc; then
             return 1
         fi
     fi
@@ -29,10 +29,41 @@ function activate_clang()
         export LD_LIBRARY_PATH=
         export BOOST_ROOT=${compiler_root}/boost_1.89.0.clang
     else
-        if ! activate_clang21; then
+        if ! activate_clang; then
             return 1
         fi
     fi
+}
+
+# gcc
+function activate_gcc()
+{
+    activate_gcc16
+}
+
+function activate_gcc16()
+{
+    if ! activate_gcc_compiler "16.2.0"; then
+        return 1
+    fi
+
+    activate_debugger gdb "15.2"
+    export BOOST_ROOT=${compiler_root}/boost_1.89.0.gcc
+}
+
+# clang
+function activate_clang()
+{
+    activate_gcc22
+}
+
+function activate_clang22()
+{
+    if ! activate_clang_compiler "22.1.8" "clang" "22.1.8"; then
+        return 1
+    fi
+
+    export BOOST_ROOT=${compiler_root}/boost_1.89.0.clang
 }
 
 # helpers
